@@ -61,7 +61,8 @@ def comment_out_line_in_file(file_path, line_to_match):
         else:
             newlines.append(line)
     if lines != newlines:
-        rfh.write('\n'.join(newlines) + '\n')
+        with open(file_path, 'w') as rfh:
+            rfh.write('\n'.join(newlines) + '\n')
         return True
     elif commented:
         return True
@@ -101,7 +102,8 @@ def uncomment_line_in_file(file_path, line_to_match):
             newlines.append(line)
 
     if lines != newlines:
-        rfh.write('\n'.join(newlines) + '\n')
+        with open(file_path, 'w') as rfh:
+            rfh.write('\n'.join(newlines) + '\n')
         return True
     if uncommented:
         return True
