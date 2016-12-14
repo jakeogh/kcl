@@ -1,6 +1,7 @@
 #!/bin/sh
+rm /usr/portage/packages/dev-python/kcl-0.0.1.tbz2 -f
 vim -O "${@}"
 #sudo python setup.py install
-sudo emerge --usepkg=n kcl
+sudo emerge --tree --quiet-build=n --usepkg=n kcl
 sudo rm -rf build
 

@@ -101,7 +101,7 @@ def uncomment_line_in_file(file_path, line_to_match):
             newlines.append(line)
 
     if lines != newlines:
-        fh.write('\n'.join(newlines) + '\n')
+        rfh.write('\n'.join(newlines) + '\n')
         return True
     if uncommented:
         return True
