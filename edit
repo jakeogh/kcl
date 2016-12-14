@@ -1,0 +1,6 @@
+#!/bin/sh
+vim -O "${@}"
+#sudo python setup.py install
+sudo emerge --usepkg=n kcl
+sudo rm -rf build
+
