@@ -11,6 +11,7 @@ __version__ = "0.0.1"
 import requests
 from kcl.printops import eprint
 from kcl.printops import LOG
+from kcl.printops import cprint
 
 def remove_comments_from_bytes(line): #todo check for (assert <=1 line break) multiple linebreaks?
     assert isinstance(line, bytes)
@@ -23,7 +24,7 @@ def remove_comments_from_bytes(line): #todo check for (assert <=1 line break) mu
             break
     return uncommented_line
 
-def read_url_bytes(url, no_cache=False):
+def read_url_bytes(url):
     eprint("GET: %s", url, level=LOG['DEBUG'])
     user_agent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:24.0) Gecko/20100101 Firefox/24.0'
     try:
@@ -32,7 +33,11 @@ def read_url_bytes(url, no_cache=False):
     except Exception as e:
         eprint(e, level=LOG['WARNING'])
         return False
-    if not no_cache:
+    return raw_url_bytes
+
+def read_url_bytes_and_cache(url, cache=True):
+    raw_url_bytes = read_url_bytes(url)
+    if cache:
         cache_index_file = CACHE_DIRECTORY + '/sha1_index'
         cache_file = generate_cache_file_name(url)
         with open(cache_file, 'xb') as fh:

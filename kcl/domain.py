@@ -8,8 +8,11 @@ from kcl.fileops import read_file_bytes
 from kcl.byteops import remove_comments_from_bytes
 from kcl.printops import eprint
 from kcl.printops import LOG
-from kcl.byteops import read_url_bytes
-from global_vars import TLD_EXTRACT
+from kcl.byteops import read_url_bytes_and_cache
+import tldextract
+
+TLDEXTRACT_CACHE = '/var/tmp/tldextract_cache'
+TLD_EXTRACT = tldextract.TLDExtract(cache_file=TLDEXTRACT_CACHE)
 
 def group_by_tld(domains):
     eprint('Sorting domains by their subdomain and grouping by TLD.',
@@ -120,8 +123,8 @@ def extract_domain_set_from_hosts_format_bytes(hosts_format_bytes):
             domains.add(line)
     return domains
 
-def extract_domain_set_from_hosts_format_url(url, no_cache=False):
-    url_bytes = read_url_bytes(url, no_cache)
+def extract_domain_set_from_hosts_format_url(url, cache=True):
+    url_bytes = read_url_bytes_and_cache(url, cache)
     domains = extract_domain_set_from_hosts_format_bytes(url_bytes)
     eprint("Domains in %s:%s", url, len(domains), level=LOG['DEBUG'])
     return domains

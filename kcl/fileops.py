@@ -12,7 +12,21 @@ import time
 import os
 import shutil
 import pprint
+import psutil
 from shutil import copyfileobj
+import subprocess
+import stat
+
+def all_files(folder):
+    #all_files = [os.path.join(path, filename) for path, dirs, files in os.walk(folder) for filename in files]
+    all_files = []
+    for path, dirs, files in os.walk(folder):
+        for filename in files:
+            all_files.append(os.path.join(path, filename))
+        for d in dirs:
+            all_files.append(os.path.join(path, d))
+    return all_files
+
 
 def comment_out_line_in_file(file_path, line_to_match):
     '''
@@ -47,7 +61,7 @@ def comment_out_line_in_file(file_path, line_to_match):
         else:
             newlines.append(line)
     if lines != newlines:
-        fh.write('\n'.join(newlines) + '\n')
+        rfh.write('\n'.join(newlines) + '\n')
         return True
     elif commented:
         return True
@@ -123,5 +137,57 @@ def read_file_bytes(path):
 def path_exists(path):
     return os.path.lexists(path) #returns True for broken symlinks
 
+def file_exists(file):
+    if os.path.isfile(file): #unlike os.path.exists(False), os.path.isfile(False) returns False so no need to call path_exists() first.
+        return True
+    return False
+
+def path_is_block_special(path):
+    if path_exists(path):
+        mode = os.stat(path).st_mode
+        if stat.S_ISBLK(mode):
+            return True
+        else:
+            return False
+    else:
+        return False
+
+def block_special_path_is_mounted(path):
+    string_to_match = path + ' on'
+    assert path_is_block_special(path)
+    mount_output = subprocess.getoutput("mount")
+    #print(mount_output)
+    if string_to_match in mount_output:
+        return True
+    return False
+
+def path_is_mounted(path):
+    string_to_match = 'on ' + path + ' '
+    #assert path_is_block_special(path)
+    mount_output = subprocess.getoutput("mount")
+    #print(mount_output)
+    if string_to_match in mount_output:
+        return True
+    return False
+
+
+def get_file_size(filename):
+    fd = os.open(filename, os.O_RDONLY)
+    try:
+        return os.lseek(fd, 0, os.SEEK_END)
+    finally:
+        os.close(fd)
+
+
+def is_zero_length_file(fpath):
+    if os.path.isfile(fpath):
+        if os.path.getsize(fpath) == 0:
+            return True
+    return False
+
+
+
+
 if __name__ == '__main__':
     quit(0)
+

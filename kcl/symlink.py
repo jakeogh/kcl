@@ -10,6 +10,20 @@ __version__ = "0.0.1"
 
 from kcl.printops import LOG
 from kcl.printops import eprint
+from kcl.fileops import path_exists
+import os
+
+def symlink_or_exit(target, link_name):
+    try:
+        os.symlink(target, link_name)
+    except Exception as e:
+        print("Got Exception: %s", e)
+        print("Unable to symlink link_name: %s to target: %s Exiting." % (link_name, target))
+        os._exit(1)
+
+def is_symlink_to_dir(link):
+    if os.path.islink(link):
+        return os.path.isdir(link)
 
 def is_broken_symlink(path):
     if os.path.islink(path): # path is a symlink
