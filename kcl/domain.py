@@ -103,7 +103,6 @@ def extract_domain_set_from_dnsgate_format_file(dnsgate_file):
             domains.add(line)
     return set(domains)
 
-
 def extract_domain_set_from_hosts_format_bytes(hosts_format_bytes):
     assert isinstance(hosts_format_bytes, bytes)
     domains = set()
