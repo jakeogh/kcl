@@ -45,8 +45,11 @@ def read_url_bytes_and_cache(url, cache=True):
         line_to_write = cache_file + ' ' + url + '\n'
         write_unique_line(line_to_write, cache_index_file)
 
-    eprint("Returning %d bytes from %s", len(raw_url_bytes), url, level=LOG['DEBUG'])
-    return raw_url_bytes
+    if raw_url_bytes:
+        eprint("Returning %d bytes from %s", len(raw_url_bytes), url, level=LOG['DEBUG'])
+        return raw_url_bytes
+    else:
+        return False
 
 
 if __name__ == '__main__':
