@@ -27,7 +27,6 @@ def all_files(folder):
             all_files.append(os.path.join(path, d))
     return all_files
 
-
 def comment_out_line_in_file(file_path, line_to_match):
     '''
     add a # to the beginning of all instances of line_to_match
@@ -172,7 +171,6 @@ def path_is_mounted(path):
         return True
     return False
 
-
 def get_file_size(filename):
     fd = os.open(filename, os.O_RDONLY)
     try:
@@ -180,15 +178,12 @@ def get_file_size(filename):
     finally:
         os.close(fd)
 
-
-def is_zero_length_file(fpath):
+#def is_zero_length_file(fpath): # prob should be called "empty_file()"
+def empty_file(fpath): # prob should be called "empty_file()"
     if os.path.isfile(fpath):
         if os.path.getsize(fpath) == 0:
             return True
     return False
-
-
-
 
 if __name__ == '__main__':
     quit(0)
