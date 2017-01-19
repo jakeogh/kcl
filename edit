@@ -5,7 +5,7 @@ vim -O "${@}"
 git add "${@}"
 git commit -m "auto-commit"
 
-sudo emerge --unmerge kcl
+sudo emerge --rage-clean kcl
 sudo emerge --tree --quiet-build=n --usepkg=n kcl
 sudo rm /usr/portage/packages/dev-python/kcl-0.0.1.tbz2 -f
 sudo rm -rf build

@@ -222,6 +222,31 @@ def move_file_only_if_new_or_exit(source, dest):
         logger.error("move_file_only_if_new_or_exit(): error. Exiting.")
         os._exit(1)
 
+def make_file_only_if_new(file, data):
+    if len(data) == 0:
+        logger.error("Refusing to make zero length file. Exiting")
+        os._exit(1)
+    if file_exists(file):
+        logger.debug("File: %s exists, skipping.", file)
+        return False
+    write_file(file, data)
+
+def make_file_only_if_new_or_exit(file, data):
+    try:
+        if make_file_only_if_new(file, data):
+            return True
+    except Exception as e:
+        print_traceback()
+        logger.critical("Got Exception: %s", e)
+        logger.critical("Problem writing file: %s Exiting.", file)
+        os._exit(1)
+    else:
+        return False    #if it's true, return should have already returned true
+
+
+
+
+
 
 if __name__ == '__main__':
     quit(0)
