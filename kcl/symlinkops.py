@@ -12,6 +12,7 @@ from kcl.printops import LOG
 from kcl.printops import eprint
 from kcl.fileops import path_exists
 import os
+import subprocess
 
 def is_symlink(file):
     if os.path.islink(file):
