@@ -206,8 +206,6 @@ def make_file_immutable(file):
     else:
         return True
 
-
-@log_prefix
 def rename_or_exit(src, dest):
     try:
         os.rename(src, dest)
@@ -216,7 +214,6 @@ def rename_or_exit(src, dest):
         logger.error("Unable to rename src: %s to dest: %s Exiting.", src, dest)
         os._exit(1)
 
-@log_prefix
 def move_file_only_if_new_or_exit(source, dest):
     try:
         shutil.move(source, dest)   #todo: fix race condition beacuse shutil.move overwrites existing dest
@@ -224,8 +221,6 @@ def move_file_only_if_new_or_exit(source, dest):
         logger.error("Exception: %s", e)
         logger.error("move_file_only_if_new_or_exit(): error. Exiting.")
         os._exit(1)
-
-
 
 
 if __name__ == '__main__':
