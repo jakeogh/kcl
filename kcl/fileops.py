@@ -134,22 +134,22 @@ def read_file_bytes(path):
         file_bytes = fh.read()
     return file_bytes
 
-def read_file_bytes_or_exit(file):
+def read_file_bytes_or_exit(infile):
     try:
-        with open(file,'rb') as string_fh:
+        with open(infile,'rb') as string_fh:
             string = string_fh.read()
             if len(string) == 0:
-                logger.error("Error, read empty file: " + file)
+                cprint("Error, read empty file: " + infile)
             return string
     except Exception as e:
-        logger.error("Got Exception: %s", e)
-        logger.error("Unable to read file: %s Exiting.", file)
+        cprint("Got Exception: %s", e)
+        cprint("Unable to read file: %s Exiting.", infile)
 
 def path_exists(path):
     return os.path.lexists(path) #returns True for broken symlinks
 
-def file_exists(file):
-    if os.path.isfile(file): #unlike os.path.exists(False), os.path.isfile(False) returns False so no need to call path_exists() first.
+def file_exists(infile):
+    if os.path.isfile(infile): #unlike os.path.exists(False), os.path.isfile(False) returns False so no need to call path_exists() first.
         return True
     return False
 
@@ -195,10 +195,10 @@ def empty_file(fpath): # prob should be called "empty_file()"
             return True
     return False
 
-def make_file_immutable(file):
-    command = "sudo /usr/bin/chattr +i " + file
+def make_file_immutable(infile):
+    command = "sudo /usr/bin/chattr +i " + infile
     os.system(command)
-    result_command = "/usr/bin/lsattr " + file
+    result_command = "/usr/bin/lsattr " + infile
     result = os.popen(result_command).read()
     if result[4] != 'i':
         cprint('make_file_immutable(%s) failed. Exiting')
@@ -222,14 +222,14 @@ def move_file_only_if_new_or_exit(source, dest):
         cprint("move_file_only_if_new_or_exit(): error. Exiting.")
         os._exit(1)
 
-def make_file_only_if_new(file, data):
+def make_file_only_if_new(infile, data):
     if len(data) == 0:
         cprint("Refusing to make zero length file. Exiting")
         os._exit(1)
-    if file_exists(file):
-        cprint("File: %s exists, skipping.", file)
+    if file_exists(infile):
+        cprint("File: %s exists, skipping.", infile)
         return False
-    write_file(file, data)
+    write_file(infile, data)
 
 def make_file_only_if_new_or_exit(infile, data):
     try:
@@ -243,6 +243,33 @@ def make_file_only_if_new_or_exit(infile, data):
     else:
         return False    #if it's true, return should have already returned true
 
+def write_file(infile, data):
+    #On Python 3 we have one text type: str which holds Unicode data and two byte types bytes and bytearray.
+    if isinstance(data, str): #which is unicode in py3
+        try:
+            with open(infile, "x", encoding='utf-8') as python_fd: #py3 default str byte encoding is UTF-8
+                python_fd.write(data)
+        except Exception as e:
+            cprint("Got Exception: %s", e)
+            cprint("Could not create python file descriptor (write mode wx): %s Exiting.", infile)
+            os._exit(1)
+        else:
+            cprint("opened a str file descriptor: %s", python_fd)
+            python_fd.close()   #is this necessary?
+    elif isinstance(data, bytes):
+        try:
+            with  open(infile, "bx") as python_fd:
+                python_fd.write(data)
+        except Exception as e:
+            cprint("Got Exception: %s", e)
+            cprint("Could not create python file descriptor (write mode wb): %s Exiting.", infile)
+            os._exit(1)
+        else:
+            cprint("opened a bytes file descriptor: %s", python_fd)
+            python_fd.close()
+    else:
+        cprint("Unknown type for data: %s. Could not create python file descriptor: %s Exiting.", type(data), infile)
+        os._exit(1)
 
 
 
