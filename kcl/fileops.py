@@ -210,24 +210,24 @@ def rename_or_exit(src, dest):
     try:
         os.rename(src, dest)
     except Exception as e:
-        logger.error("Got Exception: %s", e)
-        logger.error("Unable to rename src: %s to dest: %s Exiting.", src, dest)
+        cprint("Got Exception: %s", e)
+        cprint("Unable to rename src: %s to dest: %s Exiting.", src, dest)
         os._exit(1)
 
 def move_file_only_if_new_or_exit(source, dest):
     try:
         shutil.move(source, dest)   #todo: fix race condition beacuse shutil.move overwrites existing dest
     except Exception as e:
-        logger.error("Exception: %s", e)
-        logger.error("move_file_only_if_new_or_exit(): error. Exiting.")
+        cprint("Exception: %s", e)
+        cprint("move_file_only_if_new_or_exit(): error. Exiting.")
         os._exit(1)
 
 def make_file_only_if_new(file, data):
     if len(data) == 0:
-        logger.error("Refusing to make zero length file. Exiting")
+        cprint("Refusing to make zero length file. Exiting")
         os._exit(1)
     if file_exists(file):
-        logger.debug("File: %s exists, skipping.", file)
+        cprint("File: %s exists, skipping.", file)
         return False
     write_file(file, data)
 
@@ -237,8 +237,8 @@ def make_file_only_if_new_or_exit(infile, data):
             return True
     except Exception as e:
         #print_traceback()
-        logger.critical("Got Exception: %s", e)
-        logger.critical("Problem writing file: %s Exiting.", infile)
+        cprint("Got Exception: %s", e)
+        cprint("Problem writing file: %s Exiting.", infile)
         os._exit(1)
     else:
         return False    #if it's true, return should have already returned true
