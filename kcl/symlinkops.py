@@ -13,12 +13,10 @@ from kcl.printops import eprint
 from kcl.fileops import path_exists
 import os
 
-
 def is_symlink(file):
     if os.path.islink(file):
         return True
     return False
-
 
 def symlink_or_exit(target, link_name):
     try:
@@ -101,7 +99,6 @@ def symlink_destination(link):
     #cprint("dest:", dest)
     return dest
 
-@log_prefix(log_level='DEBUG')
 def readlinkf(path):
         p = subprocess.Popen(['readlink', '-f', path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         readlink_output, errors = p.communicate()
@@ -111,7 +108,6 @@ def readlinkf(path):
         else:
                 return readlink_output_clean
 
-@log_prefix(log_level='DEBUG')
 def get_symlink_target(symlink_file):
         #print(symlink_file)
         assert isinstance(symlink_file, str)
@@ -124,7 +120,6 @@ def get_symlink_target(symlink_file):
         #print("target_file:", target_file)
         return target_file
 
-@log_prefix(log_level='DEBUG')
 def symlink_or_exit(target, link_name, hash_folder=''):
     if hash_folder != '':
         os.chdir(hash_folder)
