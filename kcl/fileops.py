@@ -231,14 +231,14 @@ def make_file_only_if_new(file, data):
         return False
     write_file(file, data)
 
-def make_file_only_if_new_or_exit(file, data):
+def make_file_only_if_new_or_exit(infile, data):
     try:
-        if make_file_only_if_new(file, data):
+        if make_file_only_if_new(infile, data):
             return True
     except Exception as e:
-        print_traceback()
+        #print_traceback()
         logger.critical("Got Exception: %s", e)
-        logger.critical("Problem writing file: %s Exiting.", file)
+        logger.critical("Problem writing file: %s Exiting.", infile)
         os._exit(1)
     else:
         return False    #if it's true, return should have already returned true
