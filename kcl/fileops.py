@@ -99,7 +99,6 @@ def uncomment_line_in_file(file_path, line_to_match):
                     continue
         else:
             newlines.append(line)
-
     if lines != newlines:
         with open(file_path, 'w') as rfh:
             rfh.write('\n'.join(newlines) + '\n')
@@ -184,6 +183,18 @@ def empty_file(fpath): # prob should be called "empty_file()"
         if os.path.getsize(fpath) == 0:
             return True
     return False
+
+def make_file_immutable(file):
+    command = "sudo /usr/bin/chattr +i " + file
+    os.system(command)
+    result_command = "/usr/bin/lsattr " + file
+    result = os.popen(result_command).read()
+    if result[4] != 'i':
+        cprint('make_file_immutable(%s) failed. Exiting')
+        os._exit(1)
+    else:
+        return True
+
 
 if __name__ == '__main__':
     quit(0)
