@@ -94,6 +94,42 @@ def symlink_destination(link):
     #cprint("dest:", dest)
     return dest
 
+@log_prefix(log_level='DEBUG')
+def readlinkf(path):
+        p = subprocess.Popen(['readlink', '-f', path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        readlink_output, errors = p.communicate()
+        readlink_output_clean = readlink_output.strip()
+        if errors:
+                cprint(errors)
+        else:
+                return readlink_output_clean
+
+@log_prefix(log_level='DEBUG')
+def get_symlink_target(symlink_file):
+        #print(symlink_file)
+        assert isinstance(symlink_file, str)
+        if os.path.islink(symlink_file):
+                target = os.readlink(symlink_file)
+                target_joined = os.path.join(os.path.dirname(symlink_file), target)
+                target_file = readlinkf(target_joined).decode('UTF-8')
+        else:
+                target_file = readlinkf(symlink_file).decode('UTF-8')
+        #print("target_file:", target_file)
+        return target_file
+
+@log_prefix(log_level='DEBUG')
+def symlink_or_exit(target, link_name, hash_folder=''):
+    if hash_folder != '':
+        os.chdir(hash_folder)
+    try:
+        os.symlink(target, link_name)
+    except Exception as e:
+        logger.error("Got Exception: %s", e)
+        logger.error("Unable to symlink link_name: %s to target: %s Exiting.", link_name, target)
+        if len(error_msg) > 0:
+            logger.error("PRINTING ERROR MESSAGE...")
+            logger.error(error_msg)
+        os._exit(1)
 
 
 
