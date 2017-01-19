@@ -230,6 +230,7 @@ def make_file_only_if_new(infile, data):
         cprint("File: %s exists, skipping.", infile)
         return False
     write_file(infile, data)
+    return True
 
 def make_file_only_if_new_or_exit(infile, data):
     try:
@@ -254,8 +255,9 @@ def write_file(infile, data):
             cprint("Could not create python file descriptor (write mode wx): %s Exiting.", infile)
             os._exit(1)
         else:
-            cprint("opened a str file descriptor: %s", python_fd)
-            python_fd.close()   #is this necessary?
+            cprint("closing str file descriptor: %s", python_fd)
+            python_fd.close()
+            return True
     elif isinstance(data, bytes):
         try:
             with  open(infile, "bx") as python_fd:
@@ -265,7 +267,7 @@ def write_file(infile, data):
             cprint("Could not create python file descriptor (write mode wb): %s Exiting.", infile)
             os._exit(1)
         else:
-            cprint("opened a bytes file descriptor: %s", python_fd)
+            cprint("closing a bytes file descriptor: %s", python_fd)
             python_fd.close()
     else:
         cprint("Unknown type for data: %s. Could not create python file descriptor: %s Exiting.", type(data), infile)
