@@ -13,6 +13,13 @@ from kcl.printops import eprint
 from kcl.fileops import path_exists
 import os
 
+
+def is_symlink(file):
+    if os.path.islink(file):
+        return True
+    return False
+
+
 def symlink_or_exit(target, link_name):
     try:
         os.symlink(target, link_name)
