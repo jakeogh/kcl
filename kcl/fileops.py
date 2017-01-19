@@ -234,8 +234,8 @@ def make_file_only_if_new(infile, data):
 
 def make_file_only_if_new_or_exit(infile, data):
     try:
-        if make_file_only_if_new(infile, data):
-            return True
+        make_file_only_if_new(infile, data)
+        return True
     except Exception as e:
         #print_traceback()
         cprint("Got Exception: %s", e)
@@ -248,27 +248,27 @@ def write_file(infile, data):
     #On Python 3 we have one text type: str which holds Unicode data and two byte types bytes and bytearray.
     if isinstance(data, str): #which is unicode in py3
         try:
-            with open(infile, "x", encoding='utf-8') as python_fd: #py3 default str byte encoding is UTF-8
+            with open(infile, "x", encoding='utf-8') as python_fd:
                 python_fd.write(data)
         except Exception as e:
             cprint("Got Exception: %s", e)
             cprint("Could not create python file descriptor (write mode wx): %s Exiting.", infile)
             os._exit(1)
-        else:
-            cprint("closing str file descriptor: %s", python_fd)
-            python_fd.close()
-            return True
+        #else:
+        #    cprint("closing str file descriptor: %s", python_fd)
+        #    python_fd.close()
+        #    return True
     elif isinstance(data, bytes):
         try:
-            with  open(infile, "bx") as python_fd:
+            with open(infile, "bx") as python_fd:
                 python_fd.write(data)
         except Exception as e:
             cprint("Got Exception: %s", e)
             cprint("Could not create python file descriptor (write mode wb): %s Exiting.", infile)
             os._exit(1)
-        else:
-            cprint("closing a bytes file descriptor: %s", python_fd)
-            python_fd.close()
+        #else:
+        #    cprint("closing a bytes file descriptor: %s", python_fd)
+        #    python_fd.close()
     else:
         cprint("Unknown type for data: %s. Could not create python file descriptor: %s Exiting.", type(data), infile)
         os._exit(1)
