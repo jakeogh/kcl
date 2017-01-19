@@ -134,6 +134,17 @@ def read_file_bytes(path):
         file_bytes = fh.read()
     return file_bytes
 
+def read_file_bytes_or_exit(file):
+    try:
+        with open(file,'rb') as string_fh:
+            string = string_fh.read()
+            if len(string) == 0:
+                logger.error("Error, read empty file: " + file)
+            return string
+    except Exception as e:
+        logger.error("Got Exception: %s", e)
+        logger.error("Unable to read file: %s Exiting.", file)
+
 def path_exists(path):
     return os.path.lexists(path) #returns True for broken symlinks
 
@@ -194,6 +205,27 @@ def make_file_immutable(file):
         os._exit(1)
     else:
         return True
+
+
+@log_prefix
+def rename_or_exit(src, dest):
+    try:
+        os.rename(src, dest)
+    except Exception as e:
+        logger.error("Got Exception: %s", e)
+        logger.error("Unable to rename src: %s to dest: %s Exiting.", src, dest)
+        os._exit(1)
+
+@log_prefix
+def move_file_only_if_new_or_exit(source, dest):
+    try:
+        shutil.move(source, dest)   #todo: fix race condition beacuse shutil.move overwrites existing dest
+    except Exception as e:
+        logger.error("Exception: %s", e)
+        logger.error("move_file_only_if_new_or_exit(): error. Exiting.")
+        os._exit(1)
+
+
 
 
 if __name__ == '__main__':
