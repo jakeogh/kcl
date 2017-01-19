@@ -71,5 +71,32 @@ def create_relative_symlink(target, link_name):
     relative_target = os.path.relpath(target, link_name_folder)
     os.symlink(relative_target, link_name)
 
+def symlink_destination(link):
+    """
+    Return absolute path for the destination of a symlink. This prob should be split into "first dest" and "final dest"
+    """
+    assert (os.path.islink(link))
+    p = link
+    while os.path.islink(p):
+        p = os.path.normpath(os.readlink(link))
+        #cprint("p:", p)
+        if os.path.isabs(p):
+            #cprint("returning p:", p)
+            return p
+        else:
+            #cprint("in else p:", p)
+            p = os.path.join(os.path.dirname(link), p)
+            #cprint("in else p:", p)
+            #cprint("looping again")
+    #return os.path.join(os.path.dirname(link), p)
+    #dest = os.path.normpath(p) #prepends extra /home/user
+    dest = os.path.realpath(p)
+    #cprint("dest:", dest)
+    return dest
+
+
+
+
+
 if __name__ == '__main__':
     quit(0)
