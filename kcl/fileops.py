@@ -242,7 +242,7 @@ def make_file_only_if_new_or_exit(infile, data):
         cprint("Problem writing file: %s Exiting.", infile)
         os._exit(1)
     else:
-        return False    #if it's true, return should have already returned true
+        return False
 
 def write_file(infile, data):
     #On Python 3 we have one text type: str which holds Unicode data and two byte types bytes and bytearray.
