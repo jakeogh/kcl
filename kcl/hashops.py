@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-#from .sa_logging import log_prefix, logger, print_traceback
 
 import hashlib
 import os
 import tempfile
 import requests
+from .printops import eprint
 
 def generate_hash(data):
     sha1 = hashlib.sha1()
@@ -18,24 +18,23 @@ def generate_hash(data):
         return_dict['hash'] = sha1.hexdigest()
         return return_dict
     if isinstance(data, requests.models.Response):
-        temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False) #todo make temp_folder configurable, make sure it exists
+        #todo make temp_folder configurable, make sure it exists
+        temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
         for chunk in data.iter_content(chunk_size):
             sha1.update(chunk)
             temp_file.write(chunk)
         temp_file.close()
-        #logger.debug('finished writing temp_file: %s', temp_file.name)
+        #eprint('finished writing temp_file: %s', temp_file.name)
         if os.path.getsize(temp_file.name) == 0:
-            #logger.error('content is zero bytes, returning False')        #this happens
+            #eprint('content is zero bytes, returning False')        #this happens
             return False
         return_dict['hash'] = sha1.hexdigest()
         return_dict['temp_file'] = temp_file
         return return_dict
     if len(data) == 0:
         empty_hash = hashlib.sha1(data).hexdigest()
-        #logger.error("hey! Error, you are attempting to hash a empty string. (not) Exiting on hash: " + empty_hash)
+        #eprint("Error: you are attempting to hash a empty string.")
         raise FileNotFoundError
-#       return False
-#       os._exit(1)
     if type(data) is str:
         return_dict['hash'] = hashlib.sha1(data.encode('utf-8')).hexdigest()
     else:
