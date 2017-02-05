@@ -11,7 +11,6 @@ __version__ = "0.0.1"
 import requests
 from kcl.printops import eprint
 from kcl.printops import LOG
-from kcl.printops import cprint
 
 def remove_comments_from_bytes(line): #todo check for (assert <=1 line break) multiple linebreaks?
     assert isinstance(line, bytes)
