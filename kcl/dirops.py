@@ -58,7 +58,7 @@ def path_is_dir_or_symlink_to_dir(path):
 def check_or_create_dir(folder, confirm=True):
     if not os.path.isdir(folder):
         if confirm:
-            make_folder_answer =
+            make_folder_answer = \
                 input(b"The folder " + folder + b" does not exist.
                  This is not normal. Type yes to create it and continue,
                  otherwise exiting here.: ")
