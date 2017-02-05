@@ -16,7 +16,7 @@ import psutil
 from shutil import copyfileobj
 import subprocess
 import stat
-from kcl.printops import cprint
+from .printops import cprint
 
 def all_files(folder):
     #all_files = [os.path.join(path, filename) for path, dirs, files in os.walk(folder) for filename in files]
@@ -44,15 +44,24 @@ def list_files(folder):
     return set(all_files)
 
 def path_is_dir(path):
-    if os.path.isdir(path): #could still be a symlink :(
+    if os.path.isdir(path): #could still be a symlink
         if os.path.islink(path):
             return False
         return True
 
+def path_is_dir_or_symlink_to_dir(path):
+    # unlike os.path.exists(False), os.path.isdir(False) returns False
+    if os.path.isdir(path): # returns False if it's a symlink to a file
+        return True
+    return False
+
 def check_or_create_dir(folder, confirm=True):
     if not os.path.isdir(folder):
         if confirm:
-            make_folder_answer = input(b"The folder " + folder + b" does not exist. This is not normal. Type yes to create it and continue, otherwise exiting here.: ")
+            make_folder_answer =
+                input(b"The folder " + folder + b" does not exist.
+                 This is not normal. Type yes to create it and continue,
+                 otherwise exiting here.: ")
             if make_folder_answer.lower() != "yes":
                 cprint("Exiting before mkdir.")
                 os._exit(1)
@@ -60,19 +69,8 @@ def check_or_create_dir(folder, confirm=True):
         return True
 
 def create_dir(folder):
-#    try:
     os.makedirs(folder)
-    return True
-#    except Exception as e:
-#        cprint(e)
-#        cprint("Something went wrong making the folder:", folder, "Exiting.")
-#        os._exit(1)
 
-def dir_exists(path):
-    cprint("dir_exists():", path)
-    if os.path.isdir(path): #unlike os.path.exists(False), os.path.isdir(False) returns False so no need to call path_exists() first.
-        return True
-    return False
 
 if __name__ == '__main__':
     quit(0)
