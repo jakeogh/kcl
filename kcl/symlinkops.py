@@ -14,8 +14,8 @@ from kcl.fileops import path_exists
 import os
 import subprocess
 
-def is_symlink(file):
-    if os.path.islink(file):
+def is_symlink(infile):
+    if os.path.islink(infile):
         return True
     return False
 
@@ -85,19 +85,11 @@ def symlink_destination(link):
     p = link
     while os.path.islink(p):
         p = os.path.normpath(os.readlink(link))
-        #cprint("p:", p)
         if os.path.isabs(p):
-            #cprint("returning p:", p)
             return p
         else:
-            #cprint("in else p:", p)
             p = os.path.join(os.path.dirname(link), p)
-            #cprint("in else p:", p)
-            #cprint("looping again")
-    #return os.path.join(os.path.dirname(link), p)
-    #dest = os.path.normpath(p) #prepends extra /home/user
     dest = os.path.realpath(p)
-    #cprint("dest:", dest)
     return dest
 
 def readlinkf(path):
@@ -105,7 +97,7 @@ def readlinkf(path):
         readlink_output, errors = p.communicate()
         readlink_output_clean = readlink_output.strip()
         if errors:
-                cprint(errors)
+                eprint(errors)
         else:
                 return readlink_output_clean
 
@@ -127,14 +119,12 @@ def symlink_or_exit(target, link_name, hash_folder=''):
     try:
         os.symlink(target, link_name)
     except Exception as e:
-        logger.error("Got Exception: %s", e)
-        logger.error("Unable to symlink link_name: %s to target: %s Exiting.", link_name, target)
+        eprint("Got Exception: %s", e)
+        eprint("Unable to symlink link_name: %s to target: %s Exiting.", link_name, target)
         if len(error_msg) > 0:
-            logger.error("PRINTING ERROR MESSAGE...")
-            logger.error(error_msg)
+            eprint("PRINTING ERROR MESSAGE...")
+            eprint(error_msg)
         os._exit(1)
-
-
 
 
 if __name__ == '__main__':
