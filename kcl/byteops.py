@@ -5,7 +5,8 @@
 # MIT License
 # https://github.com/jakeogh/dnsgate/blob/master/LICENSE
 #
-# common symlink functions
+# common functions acting on bytes
+
 __version__ = "0.0.1"
 
 import requests
