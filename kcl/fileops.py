@@ -274,6 +274,12 @@ def write_file(infile, data):
         os._exit(1)
 
 
+def is_regular_file(path):
+    mode = os.stat(path)[ST_MODE]
+    if S_ISREG(mode):
+        return True
+    else:
+        return False
 
 
 
