@@ -50,5 +50,6 @@ def cprint(*args, **kwargs):
     #print("source_file:", source_file)
     print(str("%.5f" % time.time()), os.getpid(), source_file, '{0: <29}'.format(caller+'()'), *args, file=sys.stderr, **kwargs)
 
-
+def seprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 
