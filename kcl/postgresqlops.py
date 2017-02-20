@@ -22,10 +22,10 @@ def install_extensions(dbname):
         connection.execute('CREATE EXTENSION uint;')
 
 def delete_and_recreate_database(dbname):
-    try:
-        drop_database(dbname)
-    except:
-        pass
+    #try:
+    drop_database(dbname)
+    #except:
+    #    pass
     finally:
         create_database(dbname)
         #install_extensions(dbname)
