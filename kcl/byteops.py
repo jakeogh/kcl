@@ -7,8 +7,6 @@
 #
 # common functions acting on bytes
 
-__version__ = "0.0.1"
-
 import requests
 from kcl.printops import eprint
 from kcl.printops import LOG
