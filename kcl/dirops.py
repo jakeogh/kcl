@@ -66,7 +66,10 @@ def check_or_create_dir(folder, confirm=True):
         return True
 
 def create_dir(folder):
-    os.makedirs(folder)
+    try:
+        os.makedirs(folder)
+    except FileExistsError:
+        pass
 
 def mkdir_or_exit(folder):
     try:
