@@ -26,4 +26,3 @@ def delete_and_recreate_database(dbname):
     finally:
         create_database(dbname)
         install_extensions(dbname)
-
