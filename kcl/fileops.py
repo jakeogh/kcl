@@ -286,3 +286,6 @@ def is_regular_file(path):
 if __name__ == '__main__':
     quit(0)
 
+# todo
+# https://github.com/MostAwesomeDude/betterpath/blob/master/bp/filepath.py
+# https://github.com/twisted/twisted/blob/trunk/twisted/python/filepath.py
