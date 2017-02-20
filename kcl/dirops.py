@@ -68,6 +68,14 @@ def check_or_create_dir(folder, confirm=True):
 def create_dir(folder):
     os.makedirs(folder)
 
+def mkdir_or_exit(folder):
+    try:
+        os.makedirs(folder)
+    except Exception as e:
+        print("Exception: %s", e)
+        quit(1)
+    return True
+
 
 if __name__ == '__main__':
     quit(0)
