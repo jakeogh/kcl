@@ -30,4 +30,13 @@ def delete_and_recreate_database(dbname):
 def start_database():
     os.system('sudo /etc/init.d/postgresql-9.6 start')
 
+def create_tables(dbname, schema):
+    temp_engine = create_engine("postgres://postgres@localhost/" + dbname, echo=False)
+    # Base.metadata.create_all(temp_engine)
+    schema.metadata.create_all(temp_engine)
+
+def create_database_and_session(database, schema):
+    delete_and_recreate_database(database)
+    create_tables(database, schema)
+    return create_session()
 
