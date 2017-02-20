@@ -72,9 +72,20 @@ def mkdir_or_exit(folder):
     try:
         os.makedirs(folder)
     except Exception as e:
-        print("Exception: %s", e)
-        quit(1)
+        print("Exception:", e)
+        os._exit(1)
     return True
+
+def chdir_or_exit(targetdir):
+    try:
+        os.chdir(targetdir)
+    except Exception as e:
+        print("Exception:", e)
+        print("Unable to os.chdir(%s). Exiting.", targetdir)
+        os._exit(1)
+    return True
+
+
 
 
 if __name__ == '__main__':
