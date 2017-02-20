@@ -26,9 +26,9 @@ def delete_and_recreate_database(dbname):
     drop_database(dbname)
     #except:
     #    pass
-    finally:
-        create_database(dbname)
-        #install_extensions(dbname)
+    #finally:
+    create_database(dbname)
+    #install_extensions(dbname)
 
 def start_database():
     os.system('sudo /etc/init.d/postgresql-9.6 start')
