@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.pool import NullPool
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
+from psycopg2 import ProgrammingError
 
 def drop_database(dbname):
     with create_engine('postgresql://postgres@localhost/postgres',
@@ -22,13 +23,13 @@ def install_extensions(dbname):
         connection.execute('CREATE EXTENSION uint;')
 
 def delete_and_recreate_database(dbname):
-    #try:
+    try:
     drop_database(dbname)
-    #except:
-    #    pass
-    #finally:
-    create_database(dbname)
-    #install_extensions(dbname)
+    except ProgrammingError:
+            pass #db didnt exist
+    finally:
+        create_database(dbname)
+        #install_extensions(dbname)
 
 def start_database():
     os.system('sudo /etc/init.d/postgresql-9.6 start')
