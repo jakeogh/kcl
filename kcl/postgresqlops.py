@@ -24,7 +24,7 @@ def install_extensions(dbname):
 
 def delete_and_recreate_database(dbname):
     try:
-    drop_database(dbname)
+        drop_database(dbname)
     except ProgrammingError:
             pass #db didnt exist
     finally:
