@@ -27,8 +27,6 @@ def delete_and_recreate_database(dbname):
     try:
         drop_database(dbname)
     except ProgrammingError:
-            #except Exception as e:
-            #print(e)
             pass #db didnt exist
     finally:
         create_database(dbname)
