@@ -53,3 +53,10 @@ def cprint(*args, **kwargs):
 def seprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
+#def log_uncaught_exceptions(ex_cls, ex, tb):
+##      cprint("CURRENT_THREAD: " + str(threading.current_thread()))
+#       cprint(''.join(traceback.format_tb(tb)))
+#       cprint('{0}: {1}'.format(ex_cls, ex))
+#sys.excepthook = log_uncaught_exceptions
+
+
