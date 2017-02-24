@@ -6,7 +6,6 @@
 # https://github.com/jakeogh/dnsgate/blob/master/LICENSE
 #
 # common dir functions
-__version__ = "0.0.1"
 
 import time
 import os
