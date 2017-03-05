@@ -6,7 +6,6 @@
 # https://github.com/jakeogh/dnsgate/blob/master/LICENSE
 #
 # common file functions
-__version__ = "0.0.1"
 
 import time
 import os
@@ -153,6 +152,12 @@ def file_exists(infile):
         return True
     return False
 
+def file_exists_nonzero(infile):
+    if file_exists(infile):
+        if not empty_file(infile):
+            return True
+    return False
+
 def path_is_block_special(path):
     if path_exists(path):
         mode = os.stat(path).st_mode
@@ -189,7 +194,7 @@ def get_file_size(filename):
         os.close(fd)
 
 #def is_zero_length_file(fpath): # prob should be called "empty_file()"
-def empty_file(fpath): # prob should be called "empty_file()"
+def empty_file(fpath):
     if os.path.isfile(fpath):
         if os.path.getsize(fpath) == 0:
             return True
