@@ -6,8 +6,13 @@ from urllib.parse import urlparse
 import urllib.request
 import lxml.html
 import re
+from bs4 import BeautifulSoup
 from kcl.fileops import read_file_bytes_or_exit
 from kcl.printops import cprint
+
+def soup(content):
+    soup = BeautifulSoup(content, 'lxml')
+    return soup
 
 def get_title_from_dom_tree(dom_tree):
     return dom_tree.find(".//title").text
