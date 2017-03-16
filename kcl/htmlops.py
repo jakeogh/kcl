@@ -14,6 +14,11 @@ def soup(content):
     soup = BeautifulSoup(content, 'lxml')
     return soup
 
+def soup_from_file(file_name):
+    with open(file_name, 'r') as fh:
+        file_soup = soup(fh.read())
+    return file_soup
+
 def get_title_from_dom_tree(dom_tree):
     return dom_tree.find(".//title").text
 
