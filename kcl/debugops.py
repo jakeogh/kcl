@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-from IPython import embed
+#from IPython import embed
+import ipdb
 
 def embed_ipython():
-    return embed
+    ipdb.set_trace()
