@@ -42,7 +42,6 @@ def start_database():
 
 def create_tables(dbname, schema):
     temp_engine = create_engine("postgres://postgres@localhost/" + dbname, echo=False)
-    # Base.metadata.create_all(temp_engine)
     schema.metadata.create_all(temp_engine)
 
 def create_session(dbname):
