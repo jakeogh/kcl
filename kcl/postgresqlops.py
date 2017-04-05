@@ -51,7 +51,7 @@ def create_session(dbname):
 #                                         autoflush=False, bind=ENGINE))    #single thread
     return Session
 
-def create_database_and_session(dbname, schema):
+def delete_and_recreate_database_and_session(dbname, schema):
     delete_and_recreate_database(dbname)
     create_tables(dbname, schema)
     return create_session(dbname)
