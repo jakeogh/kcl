@@ -7,7 +7,6 @@ from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 #from psycopg2 import ProgrammingError
 from sqlalchemy.exc import ProgrammingError
-from .sa_orm_model import Base
 
 def drop_database(dbname):
     with create_engine('postgresql://postgres@localhost/postgres',
@@ -21,7 +20,7 @@ def create_database(dbname):
 
 def create_database_and_tables(dbname, schema):
     create_database(dbname)
-    create_tables(dbname, schema=Base)
+    create_tables(dbname, schema)
 
 
 def install_extensions(dbname):
