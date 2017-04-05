@@ -27,6 +27,7 @@ def install_extensions(dbname):
                        isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
         connection.execute('CREATE EXTENSION uint;')
 
+
 def delete_and_recreate_database(dbname):
     try:
         drop_database(dbname)
