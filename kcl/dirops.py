@@ -55,6 +55,7 @@ def path_is_dir_or_symlink_to_dir(path):
     return False
 
 def check_or_create_dir(folder, confirm=True):
+    assert isinstance(folder, bytes)
     if not os.path.isdir(folder):
         if confirm:
             make_folder_answer = \
