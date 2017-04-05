@@ -22,7 +22,6 @@ def create_database_and_tables(dbname, schema):
     create_database(dbname)
     create_tables(dbname, schema)
 
-
 def install_extensions(dbname):
     with create_engine('postgresql://postgres@localhost/' + dbname,
                        isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
