@@ -55,11 +55,13 @@ def path_is_dir_or_symlink_to_dir(path):
     return False
 
 def check_or_create_dir(folder, confirm=True):
-    assert isinstance(folder, bytes)
+    #assert isinstance(folder, bytes)
     if not os.path.isdir(folder):
         if confirm:
-            make_folder_answer = \
-                input(b"The folder " + folder + b" does not exist. Type yes to create it and continue, otherwise exiting.: ")
+            print("The folder:")
+            print(folder)
+            print("does not exist. Type yes to create it and continue, otherwise exiting:")
+            make_folder_answer = input(folder)
             if make_folder_answer.lower() != "yes":
                 cprint("Exiting before mkdir.")
                 os._exit(1)
