@@ -92,8 +92,6 @@ def chdir_or_exit(targetdir):
     return True
 
 
-
-
 if __name__ == '__main__':
     quit(0)
 
