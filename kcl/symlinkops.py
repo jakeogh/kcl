@@ -8,7 +8,6 @@
 # common symlink functions
 __version__ = "0.0.1"
 
-from kcl.printops import LOG
 from kcl.printops import eprint
 from kcl.fileops import path_exists
 import os
@@ -58,20 +57,17 @@ def create_relative_symlink(target, link_name):
     target = os.path.abspath(target)
     link_name = os.path.abspath(link_name)
     if not path_exists(target):
-        eprint('target: %s does not exist. Refusing to make broken symlink. Exiting.',
-            target, level=LOG['ERROR'])
+        eprint('target: %s does not exist. Refusing to make broken symlink. Exiting.' % target)
         quit(1)
 
     if is_broken_symlink(link_name):
         eprint('ERROR: %s exists as a broken symlink. ' +
-            'Remove it before trying to make a new symlink. Exiting.',
-            link_name, level=LOG['ERROR'])
+            'Remove it before trying to make a new symlink. Exiting.' % link_name)
         quit(1)
 
     link_name_folder = '/'.join(link_name.split('/')[:-1])
     if not os.path.isdir(link_name_folder):
-        eprint('link_name_folder: %s does not exist. Exiting.',
-            link_name_folder, level=LOG['ERROR'])
+        eprint('link_name_folder: %s does not exist. Exiting.' % link_name_folder)
         quit(1)
 
     relative_target = os.path.relpath(target, link_name_folder)
