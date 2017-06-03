@@ -8,7 +8,7 @@ import lxml.html
 import re
 from bs4 import BeautifulSoup
 from kcl.fileops import read_file_bytes_or_exit
-from kcl.printops import cprint
+from kcl.printops import eprint
 
 def soup(content):
     soup = BeautifulSoup(content, 'lxml')
@@ -88,5 +88,5 @@ if __name__ == '__main__':
     with open('/dev/stdin', 'r') as f:
         html = f.read()
     for url in  extract_urls_lxml(html, domain):
-        cprint(url)
+        eprint(url)
 
