@@ -15,7 +15,7 @@ import psutil
 from shutil import copyfileobj
 import subprocess
 import stat
-from .printops import cprint
+from .printops import eprint
 
 def all_files(folder):
     #all_files = [os.path.join(path, filename) for path, dirs, files in os.walk(folder) for filename in files]
@@ -63,7 +63,7 @@ def check_or_create_dir(folder, confirm=True):
             print("does not exist. Type yes to create it and continue, otherwise exiting:")
             make_folder_answer = input(folder)
             if make_folder_answer.lower() != "yes":
-                cprint("Exiting before mkdir.")
+                eprint("Exiting before mkdir.")
                 os._exit(1)
         create_dir(folder)
         return True
