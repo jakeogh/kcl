@@ -42,23 +42,6 @@ def set_verbose(ctx, param, verbose=False):
         logger_quiet.logger.setLevel(LOG['INFO'] + 1)
 
 
-def cprint(*args, **kwargs):
-    '''Simple debugging replacement for print()'''
-    caller = sys._getframe(1).f_code.co_name
-    frm = inspect.stack()[1]
-    mod = str(inspect.getmodule(frm[0]))
-    source_file = mod.split()[-1].split('>')[0].split("'")[1].split('/')[-1]
-    print(str("%.5f" % time.time()),
-          os.getpid(),
-          source_file,
-          '{0: <29}'.format(caller+'()'),
-          *args,
-          file=sys.stderr,
-          **kwargs)
-
-def seprint(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)
-
 #def log_uncaught_exceptions(ex_cls, ex, tb):
 ##      cprint("CURRENT_THREAD: " + str(threading.current_thread()))
 #       cprint(''.join(traceback.format_tb(tb)))
