@@ -9,7 +9,7 @@
 
 import requests
 from kcl.printops import eprint
-from kcl.printops import LOG
+from kcl.logops import LOG
 
 def remove_comments_from_bytes(line): #todo check for (assert <=1 line break) multiple linebreaks?
     assert isinstance(line, bytes)
