@@ -41,7 +41,6 @@ def set_verbose(ctx, param, verbose=False):
     else:
         logger_quiet.logger.setLevel(LOG['INFO'] + 1)
 
-
 #def log_uncaught_exceptions(ex_cls, ex, tb):
 ##      cprint("CURRENT_THREAD: " + str(threading.current_thread()))
 #       cprint(''.join(traceback.format_tb(tb)))
