@@ -47,4 +47,3 @@ def set_verbose(ctx, param, verbose=False):
 #       cprint('{0}: {1}'.format(ex_cls, ex))
 #sys.excepthook = log_uncaught_exceptions
 
-
