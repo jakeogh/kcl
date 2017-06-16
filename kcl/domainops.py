@@ -6,7 +6,7 @@ import os
 import copy
 from kcl.fileops import read_file_bytes
 from kcl.byteops import remove_comments_from_bytes
-from kcl.logops import eprint
+from kcl.logops import leprint
 from kcl.logops import LOG
 from kcl.byteops import read_url_bytes_and_cache
 import tldextract
@@ -15,7 +15,7 @@ TLDEXTRACT_CACHE = '/var/tmp/tldextract_cache'
 TLD_EXTRACT = tldextract.TLDExtract(cache_file=TLDEXTRACT_CACHE)
 
 def group_by_tld(domains):
-    eprint('Sorting domains by their subdomain and grouping by TLD.',
+    leprint('Sorting domains by their subdomain and grouping by TLD.',
         level=LOG['INFO'])
     sorted_output = []
     reversed_domains = []
@@ -40,7 +40,7 @@ def strip_to_psl(domains):
     It does not make sense to use this flag if you are generating a /etc/hosts
     format file since the effect would be to block google.com and not
     *.google.com.'''
-    eprint('Removing subdomains on %d domains.', len(domains),
+    leprint('Removing subdomains on %d domains.', len(domains),
         level=LOG['INFO'])
     domains_stripped = set()
     for line in domains:
@@ -72,7 +72,7 @@ def valid_name(domain):
     pass
 
 def validate_domain_list(domains):
-    eprint('Validating %d domains.', len(domains), level=LOG['DEBUG'])
+    leprint('Validating %d domains.', len(domains), level=LOG['DEBUG'])
     valid_domains = set([])
     for hostname in domains:
         try:
@@ -81,7 +81,7 @@ def validate_domain_list(domains):
             hostname = hostname.encode('idna').decode('ascii')
             valid_domains.add(hostname.encode('utf-8'))
         except Exception as e:
-            eprint("WARNING: %s is not a valid domain. Skipping", hostname,
+            leprint("WARNING: %s is not a valid domain. Skipping", hostname,
                 level=LOG['WARNING'])
     return valid_domains
 
@@ -125,7 +125,7 @@ def extract_domain_set_from_hosts_format_bytes(hosts_format_bytes):
 def extract_domain_set_from_hosts_format_url(url, cache=True):
     url_bytes = read_url_bytes_and_cache(url, cache)
     domains = extract_domain_set_from_hosts_format_bytes(url_bytes)
-    eprint("Domains in %s:%s", url, len(domains), level=LOG['DEBUG'])
+    leprint("Domains in %s:%s", url, len(domains), level=LOG['DEBUG'])
     return domains
 
 def prune_redundant_rules(domains):
@@ -135,7 +135,7 @@ def prune_redundant_rules(domains):
         for index in range(len(domain_parts_msb)):
             domain_to_check = b'.'.join(domain_parts_msb[0:index])
             if domain_to_check in domains_orig:
-                eprint("removing: %s because it's parent domain: %s is already blocked",
+                leprint("removing: %s because it's parent domain: %s is already blocked",
                     domain, domain_to_check, level=LOG['DEBUG'])
                 domains.remove(domain)
 
