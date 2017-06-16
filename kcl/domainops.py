@@ -6,7 +6,7 @@ import os
 import copy
 from kcl.fileops import read_file_bytes
 from kcl.byteops import remove_comments_from_bytes
-from kcl.printops import eprint
+from kcl.logops import eprint
 from kcl.logops import LOG
 from kcl.byteops import read_url_bytes_and_cache
 import tldextract
