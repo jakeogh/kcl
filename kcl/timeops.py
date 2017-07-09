@@ -6,6 +6,14 @@ def timestamp():
     timestamp = str("%.22f" % time.time())
     return timestamp
 
+def timestamp_to_epoch(date_time):
+#   date_time = '2016-03-14T18:54:56.1942132'.split('.')[0]
+    date_time = date_time.split('.')[0]
+    pattern = '%Y-%m-%dT%H:%M:%S'
+    epoch = int(time.mktime(time.strptime(date_time, pattern)))
+    return epoch
+
+
 if __name__ == '__main__':
     timestamp = timestamp()
     print(timestamp)
