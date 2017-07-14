@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from decimal import *
+import collections
 
 try:
     unicode = unicode
@@ -16,8 +17,6 @@ else:
     bytes = str
     basestring = basestring
 
-import collections
-from .sa_logging import log_prefix, logger
 
 def get_values_from_dict(dict):
     all_uris = list(dict.values())
@@ -31,25 +30,21 @@ def make_flatten_generator(l):
         else:
             yield el
 
-@log_prefix
 def flatten_list(list):
     return [item for item in make_flatten_generator(list)]
 
-@log_prefix
 def list_of_lists_to_list_of_sets(list):
     list_of_sets = []
     for item in list:
         list_of_sets.append(set(item))
     return list_of_sets
 
-@log_prefix
 def tag_union(tags):
     tag_dict = return_tag_dict(tags)
     all_valuess = get_values_from_dict(tag_dict)
     union_set = set(flatten_list(all_values))
     return(union_set)
 
-@log_prefix
 def tag_intersection(tags):
     tag_dict = return_tag_dict(tags)
     all_values = get_values_from_dict(tag_dict)
