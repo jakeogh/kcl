@@ -29,7 +29,7 @@ logger_quiet = logmaker(output_format=QUIET_FORMAT, name="logging_quiet",
     level=LOG['INFO'])
 
 
-def leprint(*args, level, **kwargs):
+def leprint(*args, level=LOG['DEBUG'], **kwargs):
     if level == LOG['INFO']:
         logger_quiet.logger.info(*args, **kwargs)
     elif level >= LOG['WARNING']:
