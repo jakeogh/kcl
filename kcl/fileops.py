@@ -120,9 +120,9 @@ def write_unique_line_to_file(line, file_to_write):
 
 def backup_file_if_exists(file_to_backup):
     timestamp = str(time.time())
-    dest_file = file_to_backup.name + '.bak.' + timestamp
+    dest_file = file_to_backup + '.bak.' + timestamp
     try:
-        with open(file_to_backup.name, 'r') as sf:
+        with open(file_to_backup, 'r') as sf:
             with open(dest_file, 'x') as df:
                 copyfileobj(sf, df)
     except FileNotFoundError:
