@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import os
 import time
 
 def timestamp():
@@ -28,3 +28,7 @@ def timeit(f):
         return result
     return timed
 
+
+def get_mtime(infile):
+    mtime = os.lstat(file).st_mtime #does not follow symlinks
+    return mtime
