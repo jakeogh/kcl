@@ -13,7 +13,6 @@ import shutil
 import pprint
 import psutil
 from shutil import copyfileobj
-import subprocess
 import stat
 
 def all_files(folder):
@@ -168,23 +167,6 @@ def path_is_block_special(path):
     else:
         return False
 
-def block_special_path_is_mounted(path):
-    string_to_match = path + ' on'
-    assert path_is_block_special(path)
-    mount_output = subprocess.getoutput("mount")
-    #print(mount_output)
-    if string_to_match in mount_output:
-        return True
-    return False
-
-def path_is_mounted(path):
-    string_to_match = 'on ' + path + ' '
-    #assert path_is_block_special(path)
-    mount_output = subprocess.getoutput("mount")
-    #print(mount_output)
-    if string_to_match in mount_output:
-        return True
-    return False
 
 def get_file_size(filename):
     fd = os.open(filename, os.O_RDONLY)
