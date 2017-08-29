@@ -105,6 +105,15 @@ def extract_iris_from_text(text=False):   #todo, buggy, already had to add the ~
     url_set=set(url_list)
     return url_set
 
+
+
+def extract_iris_from_text_file(infile):   #todo, buggy, already had to add the ~ below
+    with open(infile, 'r') as fh:
+        text = fh.read()
+    url_set = extract_iris_from_text(text)
+    return url_set
+
+
 #if __name__ == '__main__':
 #    htmlops()
     #try:
