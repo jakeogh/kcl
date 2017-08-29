@@ -201,13 +201,13 @@ def rename_or_exit(src, dest):
         cprint("Unable to rename src: %s to dest: %s Exiting.", src, dest)
         os._exit(1)
 
-def move_file_only_if_new_or_exit(source, dest):
-    try:
-        shutil.move(source, dest)   #todo: fix race condition beacuse shutil.move overwrites existing dest
-    except Exception as e:
-        cprint("Exception: %s", e)
-        cprint("move_file_only_if_new_or_exit(): error. Exiting.")
-        os._exit(1)
+#def move_file_only_if_new_or_exit(source, dest):
+#    try:
+#        shutil.move(source, dest)   #todo: fix race condition beacuse shutil.move overwrites existing dest
+#    except Exception as e:
+#        cprint("Exception: %s", e)
+#        cprint("move_file_only_if_new_or_exit(): error. Exiting.")
+#        os._exit(1)
 
 def make_file_only_if_new(infile, data):
     if len(data) == 0:
