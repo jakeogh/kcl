@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 from kcl.fileops import read_file_bytes_or_exit
 from kcl.printops import eprint
 from kcl.logops import set_verbose
+from kcl.command import run_command
 import click
 import shutil
 
@@ -113,6 +114,10 @@ def extract_iris_from_text_file(infile):   #todo, buggy, already had to add the 
     url_set = extract_iris_from_text(text)
     return url_set
 
+def extract_iris_from_html_file(infile):   #todo, buggy, already had to add the ~ below
+    text = run_command(['/home/cfg/html/html2text', infile])
+    url_set = extract_iris_from_text(text)
+    return url_set
 
 #if __name__ == '__main__':
 #    htmlops()
