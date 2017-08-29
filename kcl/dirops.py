@@ -17,7 +17,7 @@ import subprocess
 import stat
 from .printops import eprint
 
-def all_files(folder): #todo add flags for recursive, follow symlinks etc
+def all_files(folder): #todo add flags for recursive, follow symlinks etc, return a generator
     assert path_is_dir(folder)
     ##all_files = [os.path.join(path, filename) for path, dirs, files in os.walk(folder) for filename in files]
     all_files = []
