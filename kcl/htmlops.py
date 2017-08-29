@@ -107,6 +107,9 @@ def extract_iris_from_text(text=False):   #todo, buggy, already had to add the ~
     return url_set
 
 
+#def extract_iris_from_html(html):
+#    text = run_command(['/home/cfg/html/html2text', infile])
+#    url_set = extract_iris_from_text(text)
 
 def extract_iris_from_text_file(infile):   #todo, buggy, already had to add the ~ below
     with open(infile, 'r') as fh:
