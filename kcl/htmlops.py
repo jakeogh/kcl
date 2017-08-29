@@ -9,6 +9,7 @@ import re
 from bs4 import BeautifulSoup
 from kcl.fileops import read_file_bytes_or_exit
 from kcl.printops import eprint
+from kcl.logops import set_verbose
 import click
 import shutil
 
