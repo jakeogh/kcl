@@ -9,9 +9,29 @@ import re
 from bs4 import BeautifulSoup
 from kcl.fileops import read_file_bytes_or_exit
 from kcl.printops import eprint
+import click
 
-def soup(content):
-    soup = BeautifulSoup(content, 'lxml')
+
+# https://github.com/mitsuhiko/click/issues/441
+CONTEXT_SETTINGS = \
+    dict(help_option_names=['--help'],
+         terminal_width=shutil.get_terminal_size((80, 20)).columns)
+
+# pylint: disable=C0326
+# http://pylint-messages.wikidot.com/messages:c0326
+@click.group(context_settings=CONTEXT_SETTINGS)
+@click.option('--verbose', is_flag=True, callback=set_verbose, expose_value=False)
+# pylint: enable=C0326
+@click.pass_context
+def htmlops(ctx):
+    '''
+       various html related functions
+    '''
+    pass
+
+
+def soup(html):
+    soup = BeautifulSoup(html, 'lxml')
     return soup
 
 def soup_from_file(file_name):
@@ -67,8 +87,13 @@ def extract_urls_lxml_nofollow(html, url):
             pass
     return url_list
 
-def extract_iris_from_text(text):   #todo, buggy, already had to add the ~ below
-    text_list=text.split("\n")
+@htmlops.command()
+@click.argument('text', required=False)
+def extract_iris_from_text(text=False):   #todo, buggy, already had to add the ~ below
+    if not text:
+        with open('/dev/stdin', 'r') as fh:
+            text = fh.read()
+    text_list = text.split("\n")
     clean_text = filter(None, text_list)
     url_list=[]
     for line in clean_text:
@@ -80,13 +105,14 @@ def extract_iris_from_text(text):   #todo, buggy, already had to add the ~ below
     return url_set
 
 if __name__ == '__main__':
-    try:
-        domain = sys.argv[1]
-    except:
-        print("a domain is reqired. exiting.")
-        os._exit(1)
-    with open('/dev/stdin', 'r') as f:
-        html = f.read()
-    for url in  extract_urls_lxml(html, domain):
-        eprint(url)
+    htmlops()
+    #try:
+    #    domain = sys.argv[1]
+    #except:
+    #    print("a domain is reqired. exiting.")
+    #    os._exit(1)
+    #with open('/dev/stdin', 'r') as f:
+    #    html = f.read()
+    #for url in  extract_urls_lxml(html, domain):
+    #    eprint(url)
 
