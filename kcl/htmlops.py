@@ -13,22 +13,22 @@ from kcl.logops import set_verbose
 import click
 import shutil
 
-# https://github.com/mitsuhiko/click/issues/441
-CONTEXT_SETTINGS = \
-    dict(help_option_names=['--help'],
-         terminal_width=shutil.get_terminal_size((80, 20)).columns)
-
-# pylint: disable=C0326
-# http://pylint-messages.wikidot.com/messages:c0326
-@click.group(context_settings=CONTEXT_SETTINGS)
-@click.option('--verbose', is_flag=True, callback=set_verbose, expose_value=False)
-# pylint: enable=C0326
-@click.pass_context
-def htmlops(ctx):
-    '''
-       various html related functions
-    '''
-    pass
+## https://github.com/mitsuhiko/click/issues/441
+#CONTEXT_SETTINGS = \
+#    dict(help_option_names=['--help'],
+#         terminal_width=shutil.get_terminal_size((80, 20)).columns)
+#
+## pylint: disable=C0326
+## http://pylint-messages.wikidot.com/messages:c0326
+#@click.group(context_settings=CONTEXT_SETTINGS)
+#@click.option('--verbose', is_flag=True, callback=set_verbose, expose_value=False)
+## pylint: enable=C0326
+#@click.pass_context
+#def htmlops(ctx):
+#    '''
+#       various html related functions
+#    '''
+#    pass
 
 
 def soup(html):
@@ -88,8 +88,8 @@ def extract_urls_lxml_nofollow(html, url):
             pass
     return url_list
 
-@htmlops.command()
-@click.argument('text', required=False)
+#@htmlops.command()
+#@click.argument('text', required=False)
 def extract_iris_from_text(text=False):   #todo, buggy, already had to add the ~ below
     if not text:
         with open('/dev/stdin', 'r') as fh:
@@ -105,8 +105,8 @@ def extract_iris_from_text(text=False):   #todo, buggy, already had to add the ~
     url_set=set(url_list)
     return url_set
 
-if __name__ == '__main__':
-    htmlops()
+#if __name__ == '__main__':
+#    htmlops()
     #try:
     #    domain = sys.argv[1]
     #except:
