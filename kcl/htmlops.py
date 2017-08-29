@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from kcl.fileops import read_file_bytes_or_exit
 from kcl.printops import eprint
 import click
-
+import shutil
 
 # https://github.com/mitsuhiko/click/issues/441
 CONTEXT_SETTINGS = \
