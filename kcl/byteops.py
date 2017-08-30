@@ -16,7 +16,8 @@ def get_random_bytes(count, exclude=[]):
 
     with open('/dev/urandom', "rb") as python_fd:
         while len(accepted_bytes) != count:
-            new_bytes = bytearray(python_fd.read(count))
+            bytes_needed = count - len(accepted_bytes)
+            new_bytes = bytearray(python_fd.read(bytes_needed))
             for exclude_byte in exclude:
                 new_bytes = new_bytes.replace(exclude_byte, b'')
             print("len(new_bytes):", len(new_bytes))
