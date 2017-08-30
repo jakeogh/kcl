@@ -11,18 +11,27 @@ import requests
 from kcl.logops import leprint
 from kcl.logops import LOG
 
-def get_random_bytes(count):
-    with open('/dev/urandom', "rb") as python_fd:
-        return python_fd.read(count)
+def get_random_bytes(count, exclude=[]):
+    accepted_bytes = bytearray()
 
-def get_random_non_null_bytes(count):
-    by = bytearray(get_random_bytes(100)).replace(b'\x00', b'')
-    while len(by) != count:
-        bytes_needed = count - len(by)
-        print("bytes_needed:", bytes_needed)
-        new_bytes = bytearray(get_random_bytes(bytes_needed)).replace(b'\x00', b'')
-        by = by + new_bytes
-    return(bytes(by))
+    with open('/dev/urandom', "rb") as python_fd:
+        while len(accepted_bytes) != count:
+            new_bytes = bytearray(python_fd.read(count))
+            new_bytes = new_bytes.replace(exclude, b'')
+            print("len(new_bytes):", len(new_bytes))
+            accepted_bytes = accepted_bytes + new_bytes
+        return accepted_bytes
+
+
+
+#def get_random_bytes_exclude(count, exclude=[]):
+#    by = bytearray(get_random_bytes(100)).replace(b'\x00', b'')
+#    while len(by) != count:
+#        bytes_needed = count - len(by)
+#        print("bytes_needed:", bytes_needed)
+#        new_bytes = bytearray(get_random_bytes(bytes_needed)).replace(b'\x00', b'')
+#        by = by + new_bytes
+#    return(bytes(by))
 
 
 
