@@ -11,6 +11,21 @@ import requests
 from kcl.logops import leprint
 from kcl.logops import LOG
 
+def get_random_bytes(count):
+    with open('/dev/urandom', "rb") as python_fd:
+        return python_fd.read(count)
+
+def get_random_non_null_bytes(count):
+    by = bytearray(get_random_bytes(100)).replace(b'\x00', b'')
+    while len(by) != count:
+        bytes_needed = count - len(by)
+        print("bytes_needed:", bytes_needed)
+        new_bytes = bytearray(get_random_bytes(bytes_needed)).replace(b'\x00', b'')
+        by = by + new_bytes
+    return(bytes(by))
+
+
+
 def remove_comments_from_bytes(line): #todo check for (assert <=1 line break) multiple linebreaks?
     assert isinstance(line, bytes)
     uncommented_line = b''
