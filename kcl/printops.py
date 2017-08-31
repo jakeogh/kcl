@@ -23,6 +23,7 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 def print_object_attrs(obj):
+    eprint("type(obj):", type(obj))
     obj_attrs = vars(obj)
     eprint('\n'.join("%s: %s" % item for item in obj_attrs.items()))
 
