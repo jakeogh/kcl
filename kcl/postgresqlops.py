@@ -19,8 +19,8 @@ def create_database(dbname):
         connection.execute('CREATE DATABASE ' + dbname)
 
 def create_database_and_tables(dbname, schema):
-    create_database(dbname)
-    create_tables(dbname, schema)
+    create_database(dbname=dbname)
+    create_tables(dbname=dbname, schema=schema)
 
 def install_extensions(dbname):
     with create_engine('postgresql://postgres@localhost/' + dbname,
@@ -44,23 +44,28 @@ def create_tables(dbname, schema):
     temp_engine = create_engine("postgres://postgres@localhost/" + dbname, echo=False)
     schema.metadata.create_all(temp_engine)
 
-def create_session(dbname):
-    ENGINE = create_engine("postgres://postgres@localhost/" + dbname,
-                           echo=False, poolclass=NullPool)                  #for processes
-#   ENGINE = create_engine("postgres://postgres@localhost/" + dbname,
-#                          echo=False, pool_size=20, max_overflow=100)      #for processes
-    Session = scoped_session(sessionmaker(autocommit=False,
-                                          autoflush=False, bind=ENGINE))
-#   Session = scoped_session(sessionmaker(autocommit=True,
-#                                         autoflush=False, bind=ENGINE))    #single thread
+def create_session(dbname, multithread):
+    if not multithread:
+        ENGINE = create_engine("postgres://postgres@localhost/" + dbname,
+                               echo=False, poolclass=NullPool)
+        Session = scoped_session(sessionmaker(autocommit=False,
+                                              autoflush=False, bind=ENGINE))
+    else:
+        ENGINE = create_engine("postgres://postgres@localhost/" + dbname,
+                               echo=False, pool_size=20, max_overflow=100)
+        Session = scoped_session(sessionmaker(autocommit=True,
+                                              autoflush=False, bind=ENGINE))
     return Session
+
 
 def delete_and_recreate_database_and_session(dbname, schema):
     delete_and_recreate_database(dbname)
     create_tables(dbname, schema)
     return create_session(dbname)
 
-
-
+def get_engine(dbpath):
+    assert isinstance(dbpath, str)
+    engine = create_engine(dbpath, echo=False)
+    return engine
 
 
