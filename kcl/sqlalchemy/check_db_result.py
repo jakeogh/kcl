@@ -31,7 +31,7 @@ from kcl.postgresqlops import drop_database
 #SESSION = create_session(dbname=CONFIG.dbname, multithread=False)
 
 
-def check_db_result(config, db_result):
+def check_db_result(config, db_result, session):
     ENGINE = get_engine(dbpath=config.dbpath)
     tables = set(ENGINE.table_names())
     print("tables:", tables)
@@ -56,5 +56,5 @@ def check_db_result(config, db_result):
     assert not tables
 
     ENGINE.dispose()
-    SESSION.close()
+    session.close()
     drop_database(dbname=config.dbname)
