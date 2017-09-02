@@ -12,7 +12,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import CheckConstraint
 from sqlalchemy import Integer
 from sqlalchemy import LargeBinary # bytea on postgresql
-from anormbookmarker.get_one_or_create import get_one_or_create #fixme
+from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from anormbookmarker.BaseMixin import BASE #fixme
 
 class Filename(BASE):
