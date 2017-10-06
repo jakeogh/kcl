@@ -14,6 +14,7 @@ import pprint
 import psutil
 from shutil import copyfileobj
 import stat
+from .printops import eprint
 
 def all_files(folder):
     #all_files = [os.path.join(path, filename) for path, dirs, files in os.walk(folder) for filename in files]
@@ -137,11 +138,11 @@ def read_file_bytes_or_exit(infile):
         with open(infile,'rb') as string_fh:
             string = string_fh.read()
             if len(string) == 0:
-                cprint("Error, read empty file: " + infile)
+                eprint("Error, read empty file: " + infile)
             return string
     except Exception as e:
-        cprint("Got Exception: %s", e)
-        cprint("Unable to read file: %s Exiting.", infile)
+        eprint("Got Exception: %s", e)
+        eprint("Unable to read file: %s Exiting.", infile)
 
 def path_exists(path):
     return os.path.lexists(path) #returns True for broken symlinks
@@ -188,7 +189,7 @@ def make_file_immutable(infile):
     result_command = "/usr/bin/lsattr " + infile
     result = os.popen(result_command).read()
     if result[4] != 'i':
-        cprint('make_file_immutable(%s) failed. Exiting')
+        eprint('make_file_immutable(%s) failed. Exiting')
         os._exit(1)
     else:
         return True
@@ -197,24 +198,24 @@ def rename_or_exit(src, dest):
     try:
         os.rename(src, dest)
     except Exception as e:
-        cprint("Got Exception: %s", e)
-        cprint("Unable to rename src: %s to dest: %s Exiting.", src, dest)
+        eprint("Got Exception: %s", e)
+        eprint("Unable to rename src: %s to dest: %s Exiting.", src, dest)
         os._exit(1)
 
 def move_file_only_if_new_or_exit(source, dest):
     try:
         shutil.move(source, dest)   #todo: fix race condition beacuse shutil.move overwrites existing dest
     except Exception as e:
-        cprint("Exception: %s", e)
-        cprint("move_file_only_if_new_or_exit(): error. Exiting.")
+        eprint("Exception: %s", e)
+        eprint("move_file_only_if_new_or_exit(): error. Exiting.")
         os._exit(1)
 
 def make_file_only_if_new(infile, data):
     if len(data) == 0:
-        cprint("Refusing to make zero length file. Exiting")
+        eprint("Refusing to make zero length file. Exiting")
         os._exit(1)
     if file_exists(infile):
-        cprint("File: %s exists, skipping.", infile)
+        eprint("File: %s exists, skipping.", infile)
         return False
     write_file(infile, data)
     return True
@@ -225,8 +226,8 @@ def make_file_only_if_new_or_exit(infile, data):
         return True
     except Exception as e:
         #print_traceback()
-        cprint("Got Exception: %s", e)
-        cprint("Problem writing file: %s Exiting.", infile)
+        eprint("Got Exception: %s", e)
+        eprint("Problem writing file: %s Exiting.", infile)
         os._exit(1)
     else:
         return False
@@ -257,7 +258,7 @@ def write_file(infile, data):
         #    cprint("closing a bytes file descriptor: %s", python_fd)
         #    python_fd.close()
     else:
-        cprint("Unknown type for data: %s. Could not create python file descriptor: %s Exiting.", type(data), infile)
+        eprint("Unknown type for data: %s. Could not create python file descriptor: %s Exiting.", type(data), infile)
         os._exit(1)
 
 
