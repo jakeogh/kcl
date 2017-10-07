@@ -48,6 +48,31 @@ def parse_html_to_dom(html):
     dom_tree = lxml.html.fromstring(html)
     return dom_tree
 
+
+def extract_urls_lxml_with_link_text(html, url):
+    url_list = []
+    dom = lxml.html.fromstring(html)
+    dom.make_links_absolute(url)
+    links = dom.cssselect('a')
+    for link in links:
+        try:
+            if link.attrib['href'].startswith("javascript"):
+                pass
+            else:
+                try:
+                    current_url = link.attrib['href']
+                    if current_url != 'http://' and current_url != 'https://':
+                        url_list.append(link.attrib['href'])
+                        import IPython; IPython.embed()
+                except:
+                    pass
+        except:
+            pass
+    return set(url_list)
+
+
+
+
 def extract_urls_lxml(html, url):
     url_list = []
     dom = lxml.html.fromstring(html)
