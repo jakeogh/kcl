@@ -62,8 +62,8 @@ def extract_urls_lxml_with_link_text(html, url):
                 try:
                     current_url = link.attrib['href']
                     if current_url != 'http://' and current_url != 'https://':
-                        url_list.append(link.attrib['href'])
-                        import IPython; IPython.embed()
+                        url_list.append((link.attrib['href'], link.text))
+                        #import IPython; IPython.embed()
                 except:
                     pass
         except:
