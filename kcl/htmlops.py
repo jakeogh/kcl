@@ -32,7 +32,6 @@ import shutil
 #    '''
 #    pass
 
-
 def soup(html):
     soup = BeautifulSoup(html, 'lxml')
     return soup
