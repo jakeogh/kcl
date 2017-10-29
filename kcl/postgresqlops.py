@@ -44,7 +44,7 @@ def create_tables(dbname, schema):
     temp_engine = create_engine("postgres://postgres@localhost/" + dbname, echo=False)
     schema.metadata.create_all(temp_engine)
 
-def create_session(dbname, multithread):
+def create_session(dbname, multithread=False):
     if not multithread:
         ENGINE = create_engine("postgres://postgres@localhost/" + dbname,
                                echo=False, poolclass=NullPool)
