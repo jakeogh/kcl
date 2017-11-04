@@ -132,7 +132,7 @@ def extract_iris_from_text_file(infile):   #todo, buggy, already had to add the 
     return url_set
 
 def extract_iris_from_html_file(infile):   #todo, buggy, already had to add the ~ below
-    text = run_command(['/home/cfg/html/html2text', infile], verbose=True)
+    text = run_command(' '.join(['/home/cfg/html/html2text', infile]), verbose=True)
     url_set = extract_iris_from_text(text)
     return url_set
 
