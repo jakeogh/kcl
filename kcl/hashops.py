@@ -6,6 +6,7 @@ import tempfile
 import requests
 from .printops import eprint
 
+
 def generate_hash(data, verbose=False):
     sha1 = hashlib.sha1()
     chunk_size = 128 * sha1.block_size  #8MB
