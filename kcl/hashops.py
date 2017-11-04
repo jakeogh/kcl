@@ -28,7 +28,7 @@ def generate_hash(data, verbose=False):
         for chunk in data.iter_content(chunk_size):
             sha1.update(chunk)
             temp_file.write(chunk)
-            current_file_size = os.path.getsize(temp_file.name)
+            current_file_size = int(os.path.getsize(temp_file.name))
             eprint(temp_file.name, current_file_size, str((current_file_size/data_size)*100)+'%', end='\r', flush=True)
         temp_file.close()
         if verbose: eprint('\n', end='')
