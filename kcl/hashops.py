@@ -24,7 +24,7 @@ def generate_hash(data, verbose=False):
         if verbose:
             import IPython; IPython.embed()
             eprint(data.url)
-            data_size = data.headers['Content-Length']
+            data_size = int(data.headers['Content-Length'])
         for chunk in data.iter_content(chunk_size):
             sha1.update(chunk)
             temp_file.write(chunk)
