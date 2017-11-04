@@ -4,6 +4,7 @@ import hashlib
 import os
 import tempfile
 import requests
+                logger.debug("saving internal link: %s", internal_iri2
 from .printops import eprint
 
 
@@ -26,6 +27,7 @@ def generate_hash(data, verbose=False):
         for chunk in data.iter_content(chunk_size):
             sha1.update(chunk)
             temp_file.write(chunk)
+            eprint(temp_file.name, os.path.getsize(temp_file.name), end='')
         temp_file.close()
         #eprint('finished writing temp_file: %s', temp_file.name)
         if os.path.getsize(temp_file.name) == 0:
