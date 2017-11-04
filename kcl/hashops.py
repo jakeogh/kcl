@@ -4,7 +4,6 @@ import hashlib
 import os
 import tempfile
 import requests
-                logger.debug("saving internal link: %s", internal_iri2
 from .printops import eprint
 
 
