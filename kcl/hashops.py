@@ -25,11 +25,12 @@ def generate_hash(data, verbose=False):
             #import IPython; IPython.embed()
             eprint(data.url)
             data_size = int(data.headers['Content-Length'])
+            eprint("data_size:", data_size)
         for chunk in data.iter_content(chunk_size):
             sha1.update(chunk)
             temp_file.write(chunk)
             current_file_size = int(os.path.getsize(temp_file.name))
-            eprint(temp_file.name, current_file_size, str(int((data_size/current_file_size)*100))+'%', end='\r', flush=True)
+            eprint(temp_file.name, current_file_size, str(int((current_file_size/data_size)*100))+'%', end='\r', flush=True)
         temp_file.close()
         if verbose: eprint('\n', end='')
         #eprint('finished writing temp_file: %s', temp_file.name)
