@@ -34,7 +34,7 @@ def generate_hash(data, verbose=False):
             temp_file.write(chunk)
             current_file_size = int(os.path.getsize(temp_file.name))
             if data_size:
-                eprint(temp_file.name, current_file_size, str(int((current_file_size/data_size)*100))+'%', data.url, end='\r', flush=True)
+                eprint(temp_file.name, str(int((current_file_size/data_size)*100))+'%', current_file_size, data.url, end='\r', flush=True)
             else:
                 eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
         temp_file.close()
