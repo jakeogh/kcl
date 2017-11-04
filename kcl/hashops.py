@@ -23,7 +23,7 @@ def generate_hash(data, verbose=False):
         temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
         if verbose:
             #import IPython; IPython.embed()
-            eprint(data.url)
+            #eprint(data.url)
             try:
                 data_size = int(data.headers['Content-Length'])
             except KeyError:
@@ -34,9 +34,9 @@ def generate_hash(data, verbose=False):
             temp_file.write(chunk)
             current_file_size = int(os.path.getsize(temp_file.name))
             if data_size:
-                eprint(temp_file.name, current_file_size, str(int((current_file_size/data_size)*100))+'%', end='\r', flush=True)
+                eprint(data.url, temp_file.name, current_file_size, str(int((current_file_size/data_size)*100))+'%', end='\r', flush=True)
             else:
-                eprint(temp_file.name, current_file_size, end='\r', flush=True)
+                eprint(data.url, temp_file.name, current_file_size, end='\r', flush=True)
         temp_file.close()
         if verbose: eprint('\n', end='')
         #eprint('finished writing temp_file: %s', temp_file.name)
