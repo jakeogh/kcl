@@ -26,8 +26,9 @@ def generate_hash(data, verbose=False):
         for chunk in data.iter_content(chunk_size):
             sha1.update(chunk)
             temp_file.write(chunk)
-            eprint(temp_file.name, os.path.getsize(temp_file.name), end='')
+            eprint(temp_file.name, os.path.getsize(temp_file.name), end='\r', flush=True)
         temp_file.close()
+        if verbose: eprint('\n', end='')
         #eprint('finished writing temp_file: %s', temp_file.name)
         if os.path.getsize(temp_file.name) == 0:
             #eprint('content is zero bytes, returning False')        #this happens
