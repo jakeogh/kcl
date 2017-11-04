@@ -106,6 +106,8 @@ def extract_urls_lxml_nofollow(html, url):
 #@htmlops.command()
 #@click.argument('text', required=False)
 def extract_iris_from_text(text=False):   #todo, buggy, already had to add the ~ below
+    if isinstance(text, bytes):
+        text = text.decode('utf8')
     if not text:
         with open('/dev/stdin', 'r') as fh:
             eprint("getting text from stdin")
