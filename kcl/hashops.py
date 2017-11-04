@@ -28,7 +28,7 @@ def generate_hash(data, verbose=False):
                 data_size = int(data.headers['Content-Length'])
             except KeyError:
                 data_size = False
-            eprint("data_size:", data_size)
+            #eprint("data_size:", data_size)
         for chunk in data.iter_content(chunk_size):
             sha1.update(chunk)
             temp_file.write(chunk)
