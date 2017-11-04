@@ -108,16 +108,18 @@ def extract_urls_lxml_nofollow(html, url):
 def extract_iris_from_text(text=False):   #todo, buggy, already had to add the ~ below
     if not text:
         with open('/dev/stdin', 'r') as fh:
+            eprint("getting text from stdin")
             text = fh.read()
     text_list = text.split("\n")
     clean_text = filter(None, text_list)
+    eprint("len(clean_text):", len(clean_text))
     url_list=[]
     for line in clean_text:
         for word in line.split(' '):
             urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$-_@.&+#]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             for url in urls:
                 url_list.append(url)
-    url_set=set(url_list)
+    url_set = set(url_list)
     return url_set
 
 
@@ -133,6 +135,7 @@ def extract_iris_from_text_file(infile):   #todo, buggy, already had to add the 
 
 def extract_iris_from_html_file(infile):   #todo, buggy, already had to add the ~ below
     text = run_command(' '.join(['/home/cfg/html/html2text', infile]), verbose=True)
+
     url_set = extract_iris_from_text(text)
     return url_set
 
