@@ -114,7 +114,6 @@ def extract_iris_from_text(text=False):   #todo, buggy, already had to add the ~
             text = fh.read()
     text_list = text.split("\n")
     clean_text = filter(None, text_list)
-    eprint("len(clean_text):", len(clean_text))
     url_list=[]
     for line in clean_text:
         for word in line.split(' '):
