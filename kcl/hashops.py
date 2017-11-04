@@ -6,7 +6,7 @@ import tempfile
 import requests
 from .printops import eprint
 
-def generate_hash(data):
+def generate_hash(data, verbose=False):
     sha1 = hashlib.sha1()
     chunk_size = 128 * sha1.block_size  #8MB
     return_dict = {}
@@ -20,6 +20,8 @@ def generate_hash(data):
     if isinstance(data, requests.models.Response):
         #todo make temp_folder configurable, make sure it exists
         temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
+        if verbose:
+            import IPython; IPython.embed()
         for chunk in data.iter_content(chunk_size):
             sha1.update(chunk)
             temp_file.write(chunk)
