@@ -23,10 +23,13 @@ def generate_hash(data, verbose=False):
         temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
         if verbose:
             import IPython; IPython.embed()
+            eprint(data.url)
+            data_size = data.headers['Content-Length']
         for chunk in data.iter_content(chunk_size):
             sha1.update(chunk)
             temp_file.write(chunk)
-            eprint(temp_file.name, os.path.getsize(temp_file.name), end='\r', flush=True)
+            current_file_size = os.path.getsize(temp_file.name)
+            eprint(temp_file.name, current_file_size, str((current_file_size/data_size)*100)+'%', end='\r', flush=True)
         temp_file.close()
         if verbose: eprint('\n', end='')
         #eprint('finished writing temp_file: %s', temp_file.name)
