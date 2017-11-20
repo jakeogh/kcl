@@ -142,7 +142,7 @@ def read_file_bytes_or_exit(infile):
             return string
     except Exception as e:
         eprint("Got Exception: %s", e)
-        eprint("Unable to read file: %s Exiting.", infile)
+        eprint("Unable to read file:", infile, "Exiting.")
 
 def path_exists(path):
     return os.path.lexists(path) #returns True for broken symlinks
