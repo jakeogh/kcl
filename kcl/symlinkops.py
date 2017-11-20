@@ -93,19 +93,19 @@ def readlinkf(path):
         readlink_output, errors = p.communicate()
         readlink_output_clean = readlink_output.strip()
         if errors:
-                eprint(errors)
+            eprint(errors)
         else:
-                return readlink_output_clean
+            return readlink_output_clean
 
-def get_symlink_target(symlink_file):
-        #print(symlink_file)
-        assert isinstance(symlink_file, str)
-        if os.path.islink(symlink_file):
-                target = os.readlink(symlink_file)
-                target_joined = os.path.join(os.path.dirname(symlink_file), target)
-                target_file = readlinkf(target_joined).decode('UTF-8')
+def get_symlink_target(path):
+        #print(path)
+        assert isinstance(path, str)
+        if os.path.islink(path):
+            target = os.readlink(path)
+            target_joined = os.path.join(os.path.dirname(path), target)
+            target_file = readlinkf(target_joined).decode('UTF-8')
         else:
-                target_file = readlinkf(symlink_file).decode('UTF-8')
+            target_file = readlinkf(path).decode('UTF-8')
         #print("target_file:", target_file)
         return target_file
 
