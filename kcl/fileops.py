@@ -211,12 +211,9 @@ def move_file_only_if_new_or_exit(source, dest):
         os._exit(1)
 
 def make_file_only_if_new(infile, data):
-    if len(data) == 0:
-        eprint("Refusing to make zero length file. Exiting")
-        os._exit(1)
+    assert len(data) > 0
     if file_exists(infile):
-        eprint("File: %s exists, skipping.", infile)
-        return False
+        raise FileExistsError
     write_file(infile, data)
     return True
 
