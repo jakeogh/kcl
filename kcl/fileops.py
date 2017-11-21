@@ -230,30 +230,13 @@ def make_file_only_if_new_or_exit(infile, data):
         return False
 
 def write_file(infile, data):
-    #On Python 3 we have one text type: str which holds Unicode data and two byte types bytes and bytearray.
-    if isinstance(data, str): #which is unicode in py3
-        #try:
-        with open(infile, "x", encoding='utf-8') as python_fd:
-            python_fd.write(data)
-        #except Exception as e:
-        #    cprint("Got Exception: %s", e)
-        #    cprint("Could not create python file descriptor (write mode wx): %s Exiting.", infile)
-        #    os._exit(1)
-        #else:
-        #    cprint("closing str file descriptor: %s", python_fd)
-        #    python_fd.close()
-        #    return True
+    #On Py3 we have one text type, str which holds Unicode data and two byte types; bytes and bytearray.
+    if isinstance(data, str): #unicode in py3
+        with open(infile, "x", encoding='utf-8') as fd:
+            fd.write(data)
     elif isinstance(data, bytes):
-        #try:
-        with open(infile, "bx") as python_fd:
-            python_fd.write(data)
-        #except Exception as e:
-        #    cprint("Got Exception: %s", e)
-        #    cprint("Could not create python file descriptor (write mode wb): %s Exiting.", infile)
-        #    os._exit(1)
-        #else:
-        #    cprint("closing a bytes file descriptor: %s", python_fd)
-        #    python_fd.close()
+        with open(infile, "bx") as fd:
+            fd.write(data)
     else:
         eprint("Unknown type for data: %s. Could not create python file descriptor: %s Exiting.", type(data), infile)
         os._exit(1)
