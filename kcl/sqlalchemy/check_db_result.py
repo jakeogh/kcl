@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-
 from kcl.postgresqlops import get_engine
 from kcl.postgresqlops import drop_database
+import os
 
 def check_db_result(config, db_result, session):
     ENGINE = get_engine(dbpath=config.dbpath)
