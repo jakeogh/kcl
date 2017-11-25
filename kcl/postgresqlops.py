@@ -7,8 +7,10 @@ from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 #from psycopg2 import ProgrammingError
 from sqlalchemy.exc import ProgrammingError
+from .printops import eprint
 
 def drop_database(dbname):
+    eprint("dropping database:", dbname)
     with create_engine('postgresql://postgres@localhost/postgres',
                        isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
         connection.execute('DROP DATABASE ' + dbname)
