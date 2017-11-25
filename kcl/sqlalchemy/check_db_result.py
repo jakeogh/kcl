@@ -31,3 +31,5 @@ def check_db_result(config, db_result, session):
     session.close()
     if not os.getenv("iridb_keep_test_databases"):
         drop_database(dbname=config.dbname)
+    else:
+        print("skipped drop_database on:", config.dbname)
