@@ -71,7 +71,7 @@ def delete_and_recreate_database_and_session(database, schema):
 
 def get_engine(database):
     assert isinstance(database, str)
-    engine = create_engine(database=database, echo=False)
+    engine = create_engine(database, echo=False)
     return engine
 
 
