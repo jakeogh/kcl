@@ -29,4 +29,5 @@ def check_db_result(config, db_result, session):
 
     ENGINE.dispose()
     session.close()
-    drop_database(dbname=config.dbname)
+    if not os.getenv("iridb_keep_test_databases"):
+        drop_database(dbname=config.dbname)
