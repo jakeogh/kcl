@@ -10,20 +10,22 @@ from sqlalchemy.exc import ProgrammingError
 from .printops import eprint
 
 def drop_database(database):
-    dbpath = 'postgresql://postgres@localhost/postgres'
+    dbpath = 'postgresql://postgres@localhost/'
+    pg_dbpath = dbpath + 'postgres'
     assert dbpath in database
     dbname = database.split(dbpath)[-1]
     eprint("dropping database:", dbname)
     #with create_engine('postgresql://postgres@localhost/postgres',
-    with create_engine(dbpath, isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
+    with create_engine(pg_dbpath, isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
         connection.execute('DROP DATABASE ' + dbname)
 
 def create_database(database):
-    dbpath = 'postgresql://postgres@localhost/postgres'
+    dbpath = 'postgresql://postgres@localhost/'
+    pg_dbpath = dbpath + 'postgres'
     assert dbpath in database
     dbname = database.split(dbpath)[-1]
     eprint("CREATE DATABASE:", dbname)
-    with create_engine(dbpath, isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
+    with create_engine(pg_dbpath, isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
         connection.execute('CREATE DATABASE ' + dbname)
 
 def create_database_and_tables(database, schema):
