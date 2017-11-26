@@ -5,6 +5,7 @@ from kcl.dirops import all_files
 from kcl.printops import eprint
 import os
 import pkg_resources
+import sys
 
 
 @click.command()
@@ -12,7 +13,8 @@ import pkg_resources
 @click.option('--keep-databases', is_flag=True)
 @click.option('--count', is_flag=False, type=int, required=False)
 def test(package, keep_databases, count):
-    parent = '.'.join(__name__.split('.')[:-1])
+    #parent = '.'.join(__name__.split('.')[:-1]) # returns kcl.sqlalchemy, not the name of the module that imported test.py
+    parent = sys._getframe(1).f_globals.get('__name__')
     print("parent:", parent)
     test_path = pkg_resources.resource_filename(package, 'test/tests')
     if keep_databases:
