@@ -8,20 +8,21 @@ from sqlalchemy.exc import ProgrammingError
 @click.command()
 @click.argument("database", nargs=1)
 @click.option("--verbose", is_flag=True)
-def list_tables(database, verbose):
+@click.option("--contents", is_flag=True)
+def list_tables(database, verbose, contents):
     session = create_session(database=database)
     engine = session.bind
-    if verbose:
-        BASE.metadata.reflect(engine)
-        table_names = BASE.metadata.tables.keys()
-        for table in table_names:
-            print(" ")
-            table_instance = BASE.metadata.tables[table]
+    BASE.metadata.reflect(engine)
+    table_names = BASE.metadata.tables.keys()
+    for table in table_names:
+        print(" ")
+        table_instance = BASE.metadata.tables[table]
+        if verbose:
             pprint(table_instance)
+        else:
+            print(table)
+        if contents:
             try:
                 pprint(session.query(table_instance).all())
             except ProgrammingError:
                 session.rollback()
-    else:
-        tables = engine.table_names()
-        print("tables:", tables)
