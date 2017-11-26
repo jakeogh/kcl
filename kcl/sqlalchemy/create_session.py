@@ -7,7 +7,7 @@ from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 #from psycopg2 import ProgrammingError
 #from sqlalchemy.exc import ProgrammingError
-from .printops import eprint
+#from kcl.printops import eprint
 
 #def delete_database(database):
 #    dbpath = 'postgresql://postgres@localhost/'
