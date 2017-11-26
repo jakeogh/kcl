@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import click
+#import click
 from kcl.dirops import all_files
 from kcl.printops import eprint
 import os
@@ -8,10 +8,10 @@ import pkg_resources
 import sys
 
 
-@click.command()
-@click.argument('package')
-@click.option('--keep-databases', is_flag=True)
-@click.option('--count', is_flag=False, type=int, required=False)
+#@click.command()
+#@click.argument('package')
+#@click.option('--keep-databases', is_flag=True)
+#@click.option('--count', is_flag=False, type=int, required=False)
 def test(package, keep_databases, count):
     test_path = pkg_resources.resource_filename(package, 'test/tests')
     if keep_databases:
