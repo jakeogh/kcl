@@ -4,6 +4,7 @@ import os
 import sys
 import time
 import inspect
+from pprint import pprint
 
 def ceprint(*args, **kwargs):
     '''Simple debugging replacement for print()'''
@@ -21,6 +22,10 @@ def ceprint(*args, **kwargs):
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
+
+def epprint(*args, **kwargs):
+    pprint(*args, stream=sys.stderr, **kwargs)
+
 
 def print_object_attrs(obj):
     eprint("type(obj):", type(obj))
