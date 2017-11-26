@@ -18,7 +18,7 @@ def run_test(db_test, engine):
 
 def check_db_result(config, db_result, session, orm_result=False):
     ENGINE = get_engine(database=config.timestamp_database)
-    tables = set(ENGINE.table_names())
+    tables = list(ENGINE.table_names())
     print("tables:", tables)
     assert tables
     for db_test in db_result:
@@ -28,9 +28,11 @@ def check_db_result(config, db_result, session, orm_result=False):
         #print("db_test_table:", db_test_table)
         tables.remove(db_test_table)
 
-    if tables:
+
+    unchecked_tables = tables
+    if unchecked_tables:
         print("Missed table test(s):", tables)
-        for table in tables:
+        for table in unchecked_tables:
             constructed_test = 'select COUNT(*) from %s;' % table
             run_test(db_test=(constructed_test, 0), engine=ENGINE)
             tables.remove(table)
