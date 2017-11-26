@@ -5,7 +5,7 @@ import os
 
 
 def run_test(db_test, engine):
-
+    pass
 
 def check_db_result(config, db_result, session, orm_result=False):
     ENGINE = get_engine(database=config.timestamp_database)
