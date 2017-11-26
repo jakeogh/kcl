@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import ProgrammingError
 from .printops import eprint
 
-def drop_database(database):
+def delete_database(database):
     dbpath = 'postgresql://postgres@localhost/'
     pg_dbpath = dbpath + 'postgres'
     assert dbpath in database
@@ -40,7 +40,7 @@ def install_extensions(dbname):
 
 def delete_and_recreate_database(database):
     try:
-        drop_database(database=database)
+        delete_database(database=database)
     except ProgrammingError:
             pass #db didnt exist
     finally:
