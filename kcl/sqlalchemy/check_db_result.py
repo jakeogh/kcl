@@ -5,7 +5,16 @@ import os
 
 
 def run_test(db_test, engine):
-    pass
+    print(db_test)
+    with engine.connect() as connection:
+        answer = connection.execute(db_test[0])
+        for row in answer:
+            try:
+                assert row[0] == db_test[1]
+            except AssertionError as e:
+                print("\nAssertionError on db test:", db_test[0])
+                print("row[0] != db_test[0]:\n", row[0], "!=", db_test[1])
+                raise e
 
 def check_db_result(config, db_result, session, orm_result=False):
     ENGINE = get_engine(database=config.timestamp_database)
@@ -13,16 +22,7 @@ def check_db_result(config, db_result, session, orm_result=False):
     print("tables:", tables)
     assert tables
     for db_test in db_result:
-        print(db_test)
-        with ENGINE.connect() as connection:
-            answer = connection.execute(db_test[0])
-            for row in answer:
-                try:
-                    assert row[0] == db_test[1]
-                except AssertionError as e:
-                    print("\nAssertionError on db test:", db_test[0])
-                    print("row[0] != db_test[0]:\n", row[0], "!=", db_test[1])
-                    raise e
+        run_test(db_test=db_test, engine=engine)
 
         db_test_table = db_test[0].split()[-1].split(';')[0]
         #print("db_test_table:", db_test_table)
