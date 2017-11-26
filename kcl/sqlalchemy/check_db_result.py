@@ -33,8 +33,17 @@ def check_db_result(config, db_result, session, orm_result=False):
     if unchecked_tables:
         print("constructing missed table test(s) for:", tables)
         for table in unchecked_tables:
+            hash_set = []
+            if table == 'hash':
+                assert orm_result
+                for key in orm_result.keys():
+                    if orm_result[key]:
+                        hash_set.append(orm_result[key])
+                hash_set = set(hash_set)
+
             constructed_test = 'select COUNT(*) from %s;' % table
-            run_test(db_test=(constructed_test, 0), engine=ENGINE)
+
+            run_test(db_test=(constructed_test, len(hash_set)), engine=ENGINE) #hash_set is usually len() == 0 so it works for the default case of 0
             tables.remove(table)
 
     eprint("remaning tables:", tables)
