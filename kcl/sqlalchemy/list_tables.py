@@ -3,6 +3,7 @@ from kcl.postgresqlops import create_session
 from kcl.sqlalchemy.BaseMixin import BASE
 from pprint import pprint
 import click
+from sqlalchemy.exc import ProgrammingError
 
 @click.command()
 @click.argument("database", nargs=1)
@@ -17,7 +18,10 @@ def list_tables(database, verbose):
             print(" ")
             table_instance = BASE.metadata.tables[table]
             pprint(table_instance)
-            pprint(session.query(table_instance).all())
+            try:
+                pprint(session.query(table_instance).all())
+            except ProgrammingError:
+                pass
     else:
         tables = engine.table_names()
         print("tables:", tables)
