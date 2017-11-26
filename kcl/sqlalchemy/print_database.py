@@ -5,10 +5,12 @@
 import pprint
 import click
 from sqlalchemy import inspect as sqlalchemy_inspect
+from kcl.sqlalchemy.create_session import create_session
 
 @click.command()
-@click.argument('session')
-def print_database(session):
+@click.argument('database')
+def print_database(database):
+    session = create_session(database=database)
     inspector = sqlalchemy_inspect(session.bind)
     for table_name in sorted(inspector.get_table_names()):
         print('\n' + table_name + ':')
