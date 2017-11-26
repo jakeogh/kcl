@@ -36,11 +36,11 @@ def check_db_result(config, db_result, session, orm_result=False):
         for table in unchecked_tables:
             hash_set = []
             if table == 'hash':
-                assert orm_result
-                for key in orm_result.keys():
-                    if orm_result[key]:
-                        hash_set.append(orm_result[key])
-                hash_set = set(hash_set)
+                if orm_result:
+                    for key in orm_result.keys():
+                        if orm_result[key]:
+                            hash_set.append(orm_result[key])
+                    hash_set = set(hash_set)
 
             constructed_test = 'select COUNT(*) from %s;' % table
 
