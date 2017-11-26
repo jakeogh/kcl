@@ -39,5 +39,4 @@ def check_db_result(config, db_result, session, orm_result=False):
     if not os.getenv("iridb_keep_test_databases"):
         delete_database(database=config.timestamp_database)
     else:
-from iridb.model.Config import confi2
         print("skipped delete_database on:", config.timestamp_database)
