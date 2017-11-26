@@ -29,7 +29,7 @@ def check_db_result(config, db_result, session, orm_result=False):
         tables.remove(db_test_table)
 
 
-    unchecked_tables = tables
+    unchecked_tables = list(tables)
     if unchecked_tables:
         print("constructing missed table test(s) for:", tables)
         for table in unchecked_tables:
@@ -37,6 +37,7 @@ def check_db_result(config, db_result, session, orm_result=False):
             run_test(db_test=(constructed_test, 0), engine=ENGINE)
             tables.remove(table)
 
+    eprint("remaning tables:", tables)
     assert len(tables) == 0
 
     ENGINE.dispose()
