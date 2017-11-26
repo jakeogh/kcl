@@ -4,7 +4,7 @@ from kcl.postgresqlops import drop_database
 import os
 
 def check_db_result(config, db_result, session):
-    ENGINE = get_engine(dbpath=config.dbpath)
+    ENGINE = get_engine(database=config.timestamp_database)
     tables = set(ENGINE.table_names())
     print("tables:", tables)
     assert tables
@@ -30,6 +30,6 @@ def check_db_result(config, db_result, session):
     ENGINE.dispose()
     session.close()
     if not os.getenv("iridb_keep_test_databases"):
-        drop_database(dbname=config.dbname)
+        drop_database(database=config.timestamp_database)
     else:
-        print("skipped drop_database on:", config.dbname)
+        print("skipped drop_database on:", config.timestamp_database)
