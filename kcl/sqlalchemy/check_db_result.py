@@ -31,7 +31,7 @@ def check_db_result(config, db_result, session, orm_result=False):
     if tables:
         print("Missed table test(s):", tables)
         for table in tables:
-            constructed_test = "'select COUNT(*) from %s;'" % table
+            constructed_test = 'select COUNT(*) from %s;' % table
             run_test(db_test=(constructed_test, 0), engine=ENGINE)
             tables.remove(table)
 
