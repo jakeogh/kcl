@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from kcl.postgresqlops import get_engine
 from kcl.postgresqlops import delete_database
+from kcl.printops import eprint
 import os
 
 
@@ -46,7 +47,7 @@ def check_db_result(config, db_result, session, orm_result=False):
             run_test(db_test=(constructed_test, len(hash_set)), engine=ENGINE) #hash_set is usually len() == 0 so it works for the default case of 0
             tables.remove(table)
 
-    eprint("remaning tables:", tables)
+    #eprint("remaning tables:", tables)
     assert len(tables) == 0
 
     ENGINE.dispose()
