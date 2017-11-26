@@ -12,6 +12,8 @@ import pkg_resources
 @click.option('--keep-databases', is_flag=True)
 @click.option('--count', is_flag=False, type=int, required=False)
 def test(package, keep_databases, count):
+    parent = '.'.join(__name__.split('.')[:-1])
+    print("parent:", parent)
     test_path = pkg_resources.resource_filename(package, 'test/tests')
     if keep_databases:
         os.putenv("iridb_keep_test_databases", "True")
