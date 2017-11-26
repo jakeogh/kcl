@@ -6,19 +6,20 @@ from kcl.printops import eprint
 import os
 import pkg_resources
 
-TEST_PATH = pkg_resources.resource_filename('iridb', 'test/tests')
 
 @click.command()
+@click.argument('package')
 @click.option('--keep-databases', is_flag=True)
 @click.option('--count', is_flag=False, type=int, required=False)
-def test(keep_databases, count):
+def test(package, keep_databases, count):
+    test_path = pkg_resources.resource_filename(package, 'test/tests')
     if keep_databases:
         os.putenv("iridb_keep_test_databases", "True")
         print(os.getenv("iridb_keep_test_databases"))
-    eprint("TEST_PATH:", TEST_PATH)
+    eprint("test_path:", test_path)
     os.system('sudo /home/cfg/database/postgresql/start')
     index = 0
-    for test_file in all_files(TEST_PATH):
+    for test_file in all_files(test_path):
 
         if test_file.endswith('''.py''') and not test_file.endswith('__init__.py'):
             index += 1
