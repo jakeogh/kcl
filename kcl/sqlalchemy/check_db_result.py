@@ -3,7 +3,7 @@ from kcl.postgresqlops import get_engine
 from kcl.postgresqlops import drop_database
 import os
 
-def check_db_result(config, db_result, session):
+def check_db_result(config, db_result, session, orm_result=False):
     ENGINE = get_engine(database=config.timestamp_database)
     tables = set(ENGINE.table_names())
     print("tables:", tables)
