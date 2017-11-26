@@ -31,13 +31,13 @@ def check_db_result(config, db_result, session, orm_result=False):
 
     unchecked_tables = tables
     if unchecked_tables:
-        print("Missed table test(s):", tables)
+        print("constructing missed table test(s) for:", tables)
         for table in unchecked_tables:
             constructed_test = 'select COUNT(*) from %s;' % table
             run_test(db_test=(constructed_test, 0), engine=ENGINE)
             tables.remove(table)
 
-    assert not tables
+    assert len(tables) == 0
 
     ENGINE.dispose()
     session.close()
