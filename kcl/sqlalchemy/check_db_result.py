@@ -22,7 +22,7 @@ def check_db_result(config, db_result, session, orm_result=False):
     print("tables:", tables)
     assert tables
     for db_test in db_result:
-        run_test(db_test=db_test, engine=engine)
+        run_test(db_test=db_test, engine=ENGINE)
 
         db_test_table = db_test[0].split()[-1].split(';')[0]
         #print("db_test_table:", db_test_table)
