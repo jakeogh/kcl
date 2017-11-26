@@ -21,7 +21,7 @@ def list_tables(database, verbose):
             try:
                 pprint(session.query(table_instance).all())
             except ProgrammingError:
-                pass
+                session.rollback()
     else:
         tables = engine.table_names()
         print("tables:", tables)
