@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from kcl.postgresqlops import get_engine
-from kcl.postgresqlops import drop_database
+from kcl.postgresqlops import delete_database
 import os
 
 def check_db_result(config, db_result, session, orm_result=False):
@@ -30,6 +30,6 @@ def check_db_result(config, db_result, session, orm_result=False):
     ENGINE.dispose()
     session.close()
     if not os.getenv("iridb_keep_test_databases"):
-        drop_database(database=config.timestamp_database)
+        delete_database(database=config.timestamp_database)
     else:
-        print("skipped drop_database on:", config.timestamp_database)
+        print("skipped delete_database on:", config.timestamp_database)
