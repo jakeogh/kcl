@@ -30,7 +30,7 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
             print("create_method:", create_method)
             print("kwargs:", [str(kwargs)])
             print(model, "calling session.rollback()")
-            session.rollback()
+            session.rollback() # inklesspen | get_one_or_create() is _sometimes_ going to roll back a transaction
 
             # catches the race condition assuming the IntegrityError was due to the race hitting a unique constraint
             # in the case where the IntegrityError was caused by something other than a race, like voilating a
@@ -41,6 +41,6 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
             except NoResultFound:
                 print("raising IntegrityError")
                 import pdb; pdb.set_trace()
-                raise IntegrityError
+                raise e
             return result
     return result
