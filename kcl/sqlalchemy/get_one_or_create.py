@@ -34,5 +34,6 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
             #result = session.query(model).filter_by(**kwargs).one() # why do this?
             #print("IntegrityError: got result:", result)
             #return result
+            print("raising IntegrityError")
             raise IntegrityError
     return result
