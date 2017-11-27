@@ -17,7 +17,7 @@ def run_test(db_test, engine):
                 print("row[0] != db_test[0]:\n", row[0], "!=", db_test[1])
                 raise e
 
-def check_db_result(config, db_result, session, orm_result=False):
+def check_db_result(config, db_result, session, orm_result_list=False):
     ENGINE = get_engine(database=config.timestamp_database)
     tables = list(ENGINE.table_names())
     print("tables:", tables)
@@ -36,11 +36,12 @@ def check_db_result(config, db_result, session, orm_result=False):
         for table in unchecked_tables:
             hash_set = []
             if table == 'hash':
-                if orm_result:
-                    for result in orm_result:
-                        for key in result.keys():
-                            if result[key]:
-                                hash_set.append(result[key])
+                if orm_result_list:
+                    for result in orm_result_list:
+                        orm_result = result['orm_result']
+                        for key in orm_result.keys():
+                            if orm_result[key]:
+                                hash_set.append(orm_result[key])
 
                     hash_set = set(hash_set)
 
