@@ -37,9 +37,11 @@ def check_db_result(config, db_result, session, orm_result=False):
             hash_set = []
             if table == 'hash':
                 if orm_result:
-                    for key in orm_result.keys():
-                        if orm_result[key]:
-                            hash_set.append(orm_result[key])
+                    for result in orm_result:
+                        for key in result.keys():
+                            if result[key]:
+                                hash_set.append(result[key])
+
                     hash_set = set(hash_set)
 
             constructed_test = 'select COUNT(*) from %s;' % table
