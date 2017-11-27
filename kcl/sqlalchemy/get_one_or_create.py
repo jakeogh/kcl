@@ -39,8 +39,8 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
             try:
                 result = session.query(model).filter_by(**kwargs).one()
             except NoResultFound:
-                print("raising IntegrityError")
-                import pdb; pdb.set_trace()
+                print("re-raising IntegrityError")
+                #import pdb; pdb.set_trace()
                 raise e
             return result
     return result
