@@ -31,9 +31,16 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
             print("kwargs:", [str(kwargs)])
             print(model, "calling session.rollback()")
             session.rollback()
-            #result = session.query(model).filter_by(**kwargs).one() # why do this?
+
+            # catches the race condition assuming the IntegrityError was due to the race hitting a unique constraint
+            # in the case where the IntegrityError was caused by something other than a race, like voilating a
+            # CheckConstraint("position(' ' in word) = 0") then result will be None
+            # if so, it makes sense to re-raise the IntegrityError so the calling code can do something about it.
+            result = session.query(model).filter_by(**kwargs).one()
             #print("IntegrityError: got result:", result)
-            #return result
-            print("raising IntegrityError")
-            raise IntegrityError
+            if result:
+                return result
+            else:
+                print("raising IntegrityError")
+                raise IntegrityError
     return result
