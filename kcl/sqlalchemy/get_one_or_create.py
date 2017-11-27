@@ -25,13 +25,14 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
             session.flush(objects=[created])
             return created
         except IntegrityError as e:
-            print("IntegrityError:", e, model,
-                   "calling getattr() model:", model,
-                   "create_method:", create_method,
-                   "kwargs:", [str(kwargs)])
+            print("IntegrityError:", e, model)
+            print("calling getattr() model:", model)
+            print("create_method:", create_method)
+            print("kwargs:", [str(kwargs)])
             print(model, "calling session.rollback()")
             session.rollback()
-            result = session.query(model).filter_by(**kwargs).one()
-            print("IntegrityError: got result:", result)
-            return result
+            #result = session.query(model).filter_by(**kwargs).one() # why do this?
+            #print("IntegrityError: got result:", result)
+            #return result
+            raise IntegrityError
     return result
