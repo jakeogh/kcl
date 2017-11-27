@@ -36,11 +36,10 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
             # in the case where the IntegrityError was caused by something other than a race, like voilating a
             # CheckConstraint("position(' ' in word) = 0") then result will be None
             # if so, it makes sense to re-raise the IntegrityError so the calling code can do something about it.
-            result = session.query(model).filter_by(**kwargs).one()
-            #print("IntegrityError: got result:", result)
-            if result:
-                return result
-            else:
+            try:
+                result = session.query(model).filter_by(**kwargs).one()
+            except NoResultFound:
                 print("raising IntegrityError")
                 raise IntegrityError
+            return result
     return result
