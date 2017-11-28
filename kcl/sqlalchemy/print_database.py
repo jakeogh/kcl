@@ -6,6 +6,7 @@ import pprint
 import click
 from sqlalchemy import inspect as sqlalchemy_inspect
 from kcl.sqlalchemy.create_session import create_session
+from kcl.printops import eprint
 
 @click.command()
 @click.argument('database')
