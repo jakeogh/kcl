@@ -14,8 +14,7 @@ def delete_database(database):
     pg_dbpath = dbpath + 'postgres'
     assert dbpath in database
     dbname = database.split(dbpath)[-1]
-    eprint("dropping database:", dbname)
-    #with create_engine('postgresql://postgres@localhost/postgres',
+    eprint("DROP DATABASE:", database)
     with create_engine(pg_dbpath, isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
         connection.execute('DROP DATABASE ' + dbname)
 
@@ -24,7 +23,7 @@ def create_database(database):
     pg_dbpath = dbpath + 'postgres'
     assert dbpath in database
     dbname = database.split(dbpath)[-1]
-    eprint("CREATE DATABASE:", dbname)
+    eprint("CREATE DATABASE:", database)
     with create_engine(pg_dbpath, isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
         connection.execute('CREATE DATABASE ' + dbname)
 
@@ -36,7 +35,6 @@ def install_extensions(dbname):
     with create_engine('postgresql://postgres@localhost/' + dbname,
                        isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
         connection.execute('CREATE EXTENSION uint;')
-
 
 def delete_and_recreate_database(database):
     try:
@@ -55,17 +53,6 @@ def create_tables(database, schema):
     temp_engine = create_engine(database, echo=False)
     schema.metadata.create_all(temp_engine)
 
-#def create_session(database, multithread=False):
-#    if not multithread:
-#        #ENGINE = create_engine("postgres://postgres@localhost/" + dbname,
-#        engine = create_engine(database, echo=False, poolclass=NullPool)
-#        session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
-#    else:
-#        engine = create_engine(database, echo=False, pool_size=20, max_overflow=100)
-#        session = scoped_session(sessionmaker(autocommit=True, autoflush=False, bind=engine))
-#    return session
-
-
 def delete_and_recreate_database_and_session(database, schema):
     delete_and_recreate_database(database=database)
     create_tables(database=database, schema=schema)
@@ -75,5 +62,3 @@ def get_engine(database):
     assert isinstance(database, str)
     engine = create_engine(database, echo=False)
     return engine
-
-
