@@ -17,7 +17,7 @@ def print_database(database, table):
     table_list = sorted(inspector.get_table_names())
     if table:
         if table not in table_list:
-            eprint("table:", table, "is not in table_list:", table_list)
+            eprint("table: '%s' is not in table_list: '%s'" % table, table_list)
             quit(1)
     for table_name in table_list:
         if table:
