@@ -13,7 +13,12 @@ from kcl.sqlalchemy.create_session import create_session
 def print_database(database, table):
     session = create_session(database=database)
     inspector = sqlalchemy_inspect(session.bind)
-    for table_name in sorted(inspector.get_table_names()):
+    table_list = sorted(inspector.get_table_names())
+    if table:
+        if table not in table_list:
+            eprint("table:", table, "is not in table_list:", table_list)
+            quit(1)
+    for table_name in table_list:
         if table:
             if table_name != table:
                 continue
