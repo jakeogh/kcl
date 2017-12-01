@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from kcl.sqlalchemyidelete_database import delete_database
+from kcl.sqlalchemy.delete_database import delete_database
 from kcl.printops import eprint
 import os
 
