@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from kcl.sqlalchemy.delete_database import delete_database
 from kcl.printops import eprint
+from kcl.sqlalchemy.get_engine import get_engine
 import os
 
 def run_test(db_test, engine):
@@ -15,8 +16,9 @@ def run_test(db_test, engine):
                 print("row[0] != db_test[0]:\n", row[0], "!=", db_test[1])
                 raise e
 
-def check_db_result(config, db_result, session, orm_result_list=False):
-    ENGINE = session.bind
+def check_db_result(config, db_result, orm_result_list=False):
+    #ENGINE = session.bind
+    ENGINE = get_engine(config.timestamp_database)
     tables = list(ENGINE.table_names())
     print("tables:", tables)
     assert tables
@@ -52,7 +54,6 @@ def check_db_result(config, db_result, session, orm_result_list=False):
     assert len(tables) == 0
 
     ENGINE.dispose()
-    session.close()
     if not os.getenv("iridb_keep_test_databases"):
         delete_database(database=config.timestamp_database)
     else:
