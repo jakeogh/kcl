@@ -3,7 +3,8 @@
 import hashlib
 import os
 import tempfile
-import requests
+#import requests
+from requests.models import Response
 from .printops import eprint
 
 
@@ -18,7 +19,8 @@ def generate_hash(data, verbose=False):
                 sha1.update(chunk)
         return_dict['hash'] = sha1.hexdigest()
         return return_dict
-    if isinstance(data, requests.models.Response):
+    #if isinstance(data, requests.models.Response):
+    if isinstance(data, Response):
         #todo make temp_folder configurable, make sure it exists
         temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
         if verbose:
