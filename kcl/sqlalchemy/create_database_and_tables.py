@@ -6,7 +6,7 @@ from sqlalchemy.pool import NullPool
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import ProgrammingError
-from .printops import eprint
+from kcl.printops import eprint
 from kcl.sqlalchemy.create_session import create_session
 
 def create_database_and_tables(database, schema):
