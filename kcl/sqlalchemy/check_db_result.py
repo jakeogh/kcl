@@ -4,7 +4,6 @@ from kcl.postgresqlops import delete_database
 from kcl.printops import eprint
 import os
 
-
 def run_test(db_test, engine):
     print(db_test)
     with engine.connect() as connection:
@@ -18,7 +17,8 @@ def run_test(db_test, engine):
                 raise e
 
 def check_db_result(config, db_result, session, orm_result_list=False):
-    ENGINE = get_engine(database=config.timestamp_database)
+    #ENGINE = get_engine(database=config.timestamp_database)
+    ENGINE = session.bind
     tables = list(ENGINE.table_names())
     print("tables:", tables)
     assert tables
