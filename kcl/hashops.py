@@ -93,7 +93,7 @@ def get_openssl_hash_algs_real():
     return set(results) - blacklist
 
 def get_openssl_hash_algs():
-    return set(list('SHA1', 'MD5', 'RIPEMD160', 'SHA256', 'SHA384', 'SHA512', 'whirlpool', 'SHA224'))
+    return set(['SHA1', 'MD5', 'RIPEMD160', 'SHA256', 'SHA384', 'SHA512', 'whirlpool', 'SHA224'])
 
 def read_blocks(filename):
     if filename == '-':
