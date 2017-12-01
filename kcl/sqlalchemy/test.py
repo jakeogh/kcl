@@ -12,7 +12,7 @@ import sys
 #@click.argument('package')
 #@click.option('--keep-databases', is_flag=True)
 #@click.option('--count', is_flag=False, type=int, required=False)
-def test(package, keep_databases, count, test_class=None):
+def test(package, keep_databases, count, test_class=None, test_match=None):
     if test_class:
         test_path = pkg_resources.resource_filename(package, 'test/tests/' + test_class)
     else:
@@ -24,6 +24,9 @@ def test(package, keep_databases, count, test_class=None):
     os.system('sudo /home/cfg/database/postgresql/start')
     index = 0
     for test_file in all_files(test_path):
+        if test_match:
+            if test_match not in test_file:
+                continue
 
         if test_file.endswith('''.py''') and not test_file.endswith('__init__.py'):
             index += 1
