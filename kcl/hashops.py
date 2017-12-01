@@ -19,7 +19,6 @@ def generate_hash(data, verbose=False):
                 sha1.update(chunk)
         return_dict['hash'] = sha1.hexdigest()
         return return_dict
-    #if isinstance(data, requests.models.Response):
     if isinstance(data, Response):
         #todo make temp_folder configurable, make sure it exists
         temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
@@ -79,7 +78,7 @@ import subprocess
 from queue import Queue
 from kcl.printops import eprint
 
-def get_openssl_hash_algs():
+def get_openssl_hash_algs_real():
     blacklist = set(['SHA', 'MD4', 'ecdsa-with-SHA1', 'DSA', 'DSA-SHA', 'MDC2'])
     results = []
     command = ' '.join(['openssl', 'list-message-digest-algorithms'])
@@ -92,6 +91,9 @@ def get_openssl_hash_algs():
             line = line.decode('ascii')
             results.append(line)
     return set(results) - blacklist
+
+def get_openssl_hash_algs()
+    return set(list('SHA1', 'MD5', 'RIPEMD160', 'SHA256', 'SHA384', 'SHA512', 'whirlpool', 'SHA224'))
 
 def read_blocks(filename):
     if filename == '-':
