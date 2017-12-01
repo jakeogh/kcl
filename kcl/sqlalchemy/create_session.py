@@ -8,11 +8,12 @@ from sqlalchemy.orm import sessionmaker
 from kcl.printops import eprint
 
 def create_session(database, multithread=False):
-    eprint("creating session for:", database)
     if not multithread:
+        eprint("creating NullPool session for:", database)
         engine = create_engine(database, echo=False, poolclass=NullPool)
         session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
     else:
+        eprint("creating pool_size=20 session for:", database)
         engine = create_engine(database, echo=False, pool_size=20, max_overflow=100)
         session = scoped_session(sessionmaker(autocommit=True, autoflush=False, bind=engine))
     return session
