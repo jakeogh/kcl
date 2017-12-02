@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
+
+import click
 from kcl.sqlalchemy.create_session import create_session
 from kcl.sqlalchemy.BaseMixin import BASE
 from pprint import pprint
-import click
 from sqlalchemy.exc import ProgrammingError
 
 @click.command()
