@@ -170,9 +170,7 @@ class MtHasher(Hasher):
                 q.put(data)
 
     def hexdigests(self):
-        '''
-        Wait until all calculations are done and yield hexdigests in the meantime.
-        '''
+        '''Wait until all calculations are done and yield hexdigests in the meantime.'''
         for algo in self.algos:
             q = self._queues[algo]
             q.put(b'')  # Terminate
@@ -181,9 +179,7 @@ class MtHasher(Hasher):
         return super(MtHasher, self).hexdigests()
 
     def digests(self):
-        '''
-        Wait until all calculations are done and yield digests in the meantime.
-        '''
+        '''Wait until all calculations are done and yield digests in the meantime.'''
         for algo in self.algos:
             q = self._queues[algo]
             q.put(b'')  # Terminate
@@ -193,31 +189,17 @@ class MtHasher(Hasher):
 
 def hash_file(file):
     hasher = MtHasher()
-    '''
-    Read the file and update the hash states.
-    '''
-    try:
-        for data in read_blocks(file):
-            hasher.update(data)
-    except OSError as e:
-        eprint('digest: {0}: {1}'.format(file, e.strerror))
-        quit(1)
+    '''Read the file and update the hash states.'''
+    for data in read_blocks(file):
+        hasher.update(data)
     return hasher
 
 def hash_bytes(byte_string):
     if isinstance(byte_string, str):
         byte_string = byte_string.encode('UTF-8')
-
     hasher = MtHasher()
-    '''
-    encode unicode to UTF-8, read bytes
-    and update the hash states.
-    '''
-    try:
-        hasher.update(byte_string)
-    except Exception as e:
-        eprint(e)
-        quit(1)
+    '''encode unicode to UTF-8, read bytes and update the hash states. '''
+    hasher.update(byte_string)
     return hasher
 
 def bytes_dict_file(file):

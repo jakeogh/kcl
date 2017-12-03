@@ -9,12 +9,8 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
     '''Find and return existing ORM object or create and return a new one. Adapted from examples.'''
     assert session
     for key in kwargs.keys():
-        try:
-            if issubclass(kwargs[key].__class__, model):
-                return kwargs[key]
-        except Exception as e:
-            print("Exception:", e)
-            quit(1)
+        if issubclass(kwargs[key].__class__, model):
+            return kwargs[key]
     try:
         result = session.query(model).filter_by(**kwargs).one()
     except NoResultFound as e:

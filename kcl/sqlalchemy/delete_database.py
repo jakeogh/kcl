@@ -16,5 +16,6 @@ def delete_database(database):
     dbname = database.split(dbpath)[-1]
     eprint("DROP DATABASE:", database)
     with create_engine(pg_dbpath, isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
+        connection.execute("COMMIT") # end the transaction, technically not nessary with AUTOCOMMIT
         connection.execute('DROP DATABASE ' + dbname)
 
