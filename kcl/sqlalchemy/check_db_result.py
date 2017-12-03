@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-from kcl.sqlalchemy.delete_database import delete_database
+#from kcl.sqlalchemy.delete_database import delete_database
+from sqlalchemy_utils.functions import drop_database
 from kcl.printops import eprint
 from kcl.sqlalchemy.get_engine import get_engine
 import os
@@ -55,6 +56,6 @@ def check_db_result(config, db_result, orm_result_list=False):
 
     ENGINE.dispose()
     if not os.getenv("iridb_keep_test_databases"):
-        delete_database(database=config.timestamp_database)
+        drop_database(config.timestamp_database)
     else:
         print("skipped delete_database on:", config.timestamp_database)
