@@ -10,10 +10,10 @@ from sqlalchemy_utils.functions import create_database
 from sqlalchemy_utils.functions import database_exists
 
 @contextlib.contextmanager # https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
-def self_contained_session(db_url):
+def self_contained_session(db_url, echo=False):
     if not database_exists(db_url):
         create_database(db_url)
-    engine = create_engine(db_url, poolclass=NullPool)
+    engine = create_engine(db_url, poolclass=NullPool, echo=echo)
     connection = engine.connect()
     db_session = scoped_session(sessionmaker(autocommit=False, autoflush=True, bind=engine))
     yield db_session
