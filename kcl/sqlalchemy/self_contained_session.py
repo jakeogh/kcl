@@ -29,6 +29,5 @@ def self_contained_session(db_url):
     # so in short, even though its not throwing a runtime error, dont db_session.close()
     # instead call db_session.remove() if using scoped_session
     db_session.remove() # should call Session.close() on its own
-    print("calling connection.close()")
     connection.close()
     engine.dispose() # not sure how necessary this is
