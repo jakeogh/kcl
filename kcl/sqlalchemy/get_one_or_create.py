@@ -14,8 +14,7 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
     try:
         result = session.query(model).filter_by(**kwargs).one()
     except NoResultFound as e:
-        print("line 17!")
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         kwargs.update(create_method_kwargs or {})
         created = getattr(model, create_method, model)(*args, **kwargs)
         try:
