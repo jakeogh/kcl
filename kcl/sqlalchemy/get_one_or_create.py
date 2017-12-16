@@ -23,11 +23,11 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
             return created
         except IntegrityError as e:
             print("IntegrityError:", e, model)
-            print("calling getattr() model:", model)
-            print("create_method:", create_method)
-            print("kwargs:", [str(kwargs)])
-            print(model, "calling session.rollback()")
+            print("calling session.rollback()")
             session.rollback() # inklesspen | get_one_or_create() is _sometimes_ going to roll back a transaction
+            #print("calling getattr() model:", model)
+            #print("create_method:", create_method)
+            #print("kwargs:", [str(kwargs)])
 
             # catches the race condition assuming the IntegrityError was due to the race hitting a unique constraint
             # in the case where the IntegrityError was caused by something other than a race, like voilating a
