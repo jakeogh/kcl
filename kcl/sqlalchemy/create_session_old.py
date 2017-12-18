@@ -7,7 +7,7 @@ from kcl.printops import eprint
 from kcl.sqlalchemy.get_engine import get_engine
 #from sqlalchemy.pool import QueuePool
 
-def create_session(database, multithread=False):
+def create_session_old(database, multithread=False):
     if not multithread:
         eprint("creating NullPool session for:", database)
         engine = get_engine(database, echo=False)
