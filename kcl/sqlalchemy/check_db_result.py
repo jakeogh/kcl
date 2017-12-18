@@ -19,7 +19,7 @@ def run_test(db_test, engine):
 
 def check_db_result(config, db_result, orm_result_list=False):
     #ENGINE = session.bind
-    ENGINE = get_engine(config.timestamp_database)
+    ENGINE = get_engine(config.database)
     tables = list(ENGINE.table_names())
     print("tables:", tables)
     assert tables
@@ -56,6 +56,6 @@ def check_db_result(config, db_result, orm_result_list=False):
 
     ENGINE.dispose()
     if not os.getenv("iridb_keep_test_databases"):
-        drop_database(config.timestamp_database)
+        drop_database(config.database)
     else:
         print("skipped delete_database on:", config.timestamp_database)
