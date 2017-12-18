@@ -8,10 +8,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.pool import NullPool
 from sqlalchemy_utils.functions import create_database
 from sqlalchemy_utils.functions import database_exists
+from kcl.printops import eprint
 
 @contextlib.contextmanager # https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
 def self_contained_session(db_url, echo=False):
     if not database_exists(db_url):
+        eprint("creating empty database:", db_url)
         create_database(db_url)
     engine = create_engine(db_url, poolclass=NullPool, echo=echo)
     connection = engine.connect()
