@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
 
-import click
 from pprint import pprint
 from sqlalchemy.exc import ProgrammingError
 from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 
-@click.command()
-@click.argument("database", nargs=1)
-@click.option("--verbose", is_flag=True)
-@click.option("--contents", is_flag=True)
 def list_tables(database, verbose, contents):
     with self_contained_session(database) as session:
         engine = session.bind
@@ -27,4 +22,3 @@ def list_tables(database, verbose, contents):
                     pprint(session.query(table_instance).all())
                 except ProgrammingError:
                     session.rollback()
-
