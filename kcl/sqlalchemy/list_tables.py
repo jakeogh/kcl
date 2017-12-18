@@ -10,9 +10,8 @@ from kcl.sqlalchemy.self_contained_session import self_contained_session
 @click.argument("database", nargs=1)
 @click.option("--verbose", is_flag=True)
 @click.option("--contents", is_flag=True)
-@click.pass_obj
-def list_tables(config, database, verbose, contents):
-    with self_contained_session(config.database) as session:
+def list_tables(database, verbose, contents):
+    with self_contained_session(database) as session:
         engine = session.bind
         BASE.metadata.reflect(engine)
         table_names = BASE.metadata.tables.keys()
