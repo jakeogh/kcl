@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 from kcl.dirops import all_files
 from kcl.printops import eprint
 import os
