@@ -5,7 +5,7 @@ from sqlalchemy.exc import ProgrammingError
 from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 
-def list_tables(database, verbose, contents):
+def list_tables(database, verbose=False, contents=False):
     with self_contained_session(database) as session:
         engine = session.bind
         BASE.metadata.reflect(engine)
