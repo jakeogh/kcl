@@ -11,7 +11,6 @@ def list_tables(database, verbose=False, contents=False):
         BASE.metadata.reflect(engine)
         table_names = BASE.metadata.tables.keys()
         for table in table_names:
-            print(" ")
             table_instance = BASE.metadata.tables[table]
             if verbose:
                 pprint(table_instance)
@@ -20,5 +19,6 @@ def list_tables(database, verbose=False, contents=False):
             if contents:
                 try:
                     pprint(session.query(table_instance).all())
+                    print('')
                 except ProgrammingError:
                     session.rollback()
