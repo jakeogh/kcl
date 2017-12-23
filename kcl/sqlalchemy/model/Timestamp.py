@@ -3,7 +3,7 @@
 # MIT License
 
 '''
- if the application needs Timestamps, this should be applied to Bookmark attributes, not the Bookmarks themselves
+ Timestamp with timezone
 '''
 import os
 import decimal
