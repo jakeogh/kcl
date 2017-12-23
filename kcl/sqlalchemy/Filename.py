@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 # MIT License
 '''
-Example Filename class that is being Bookmarked
-The goal is to be able to apply the Bookmark class to any ORM table, not just
-the Filename example.
+Filename class
 '''
 
 from sqlalchemy import Column
@@ -19,15 +17,13 @@ class Filename(BASE):
     '''
     UNIX filenames can be anything but NULL and / therefore a binary type is required.
     max file name length is 255 on all UNIX-like filesystems
-    this stores paths to the name as well, so / is allowed
-    a Bookmark can only have 1 Filename
-    a Filename can have many Bookmarks
+    this does not store the path path to the filename, so / is not allowed
     '''
     id = Column(Integer, primary_key=True)
 
     #filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0"
-    #filename_constraint = "position('\\x00' in filename) = 0"
-    filename = Column(LargeBinary(255), unique=True, nullable=False, index=True)
+    filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
+    filename = Column(LargeBinary(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
 
     @classmethod
     def construct(cls, session, filename):
