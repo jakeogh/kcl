@@ -9,5 +9,8 @@ class Config():
         self.dbpath_postgres = self.db_uri + 'postgres'
         self.dbname_timestamp = 'test_' + str(time.time()).replace('.', '_')
         self.database_timestamp = self.db_uri + self.dbname_timestamp
+    def database_real(self, dbname):
+        self.database_real = self.db_uri + dbname
+        return self.database.real
 
 CONFIG = Config()
