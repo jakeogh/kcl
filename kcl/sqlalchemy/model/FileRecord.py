@@ -92,8 +92,6 @@ class FileRecord(BASE):
                     continue
                 print("hashing file >1GB:", path, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
             data_hash = sha1_hash_file(path)
-        else:
-            continue
 
 
         path      = Path.construct(session, path=path)
