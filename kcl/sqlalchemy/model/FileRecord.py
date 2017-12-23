@@ -83,15 +83,16 @@ class FileRecord(BASE):
         path, filename = os.path.split(inpath)
         stat = os.stat(inpath)
         if is_regular_file(inpath):
-            if stat.st_size == 0:
-                break
-            if stat.st_size >= 1024*1024*1024: #1GB
-                if stat.st_size >= 1024*1024*1024*1024: #1TB
-                    print("skipping file >=1TB:", path)
-                    #skipped_file_list.append(path)
-                    break
-                print("hashing file >1GB:", path, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
-            data_hash = sha1_hash_file(path)
+            if stat.st_size > 0:
+                if stat.st_size >= 1024*1024*1024: #1GB
+                    print("hashing file >1GB:", path, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
+                    if stat.st_size >= 1024*1024*1024*1024: #1TB
+                        print("skipping file >=1TB:", path)
+                        #skipped_file_list.append(path)
+                    else:
+                        data_hash = sha1_hash_file(path)
+                else: #not a big file
+                    data_hash = sha1_hash_file(path)
 
 
         path      = Path.construct(session, path=path)
