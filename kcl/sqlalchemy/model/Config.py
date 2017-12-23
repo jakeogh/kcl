@@ -11,6 +11,6 @@ class Config():
         self.database_timestamp = self.db_uri + self.dbname_timestamp
     def database_real(self, dbname):
         self.database_real = self.db_uri + dbname
-        return self.database.real
+        return self.database_real
 
 CONFIG = Config()
