@@ -103,7 +103,7 @@ class FileRecord(BASE):
         # hash the file _every time_
         byteshash  = BytesHash.construct(session, bytes_like_object=inpath)
         timestamp = Timestamp.construct(session)
-
+        import IPython; IPython.embed()
         result = get_one_or_create(session, FileRecord, path=path,
                                                         filename=filename,
                                                         byteshash=byteshash,

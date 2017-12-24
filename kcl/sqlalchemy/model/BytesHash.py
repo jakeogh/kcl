@@ -39,7 +39,7 @@ class BytesHash(BASE):
             bytes_dict = bytes_dict_bytes(bytes_like_object)
         else:
             bytes_dict = bytes_dict_file(bytes_like_object)
-        import IPython; IPython.embed()
+        #import IPython; IPython.embed()
         byteshash = get_one_or_create(session, BytesHash, **bytes_dict)
         return byteshash
 
