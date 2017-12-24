@@ -32,8 +32,8 @@ class BytesHash(BASE):
     # https://docs.python.org/3.6/library/hashlib.html
     #blake2    = Column(BYTEA(64), CheckConstraint('octet_length(blake2)    = 64'), unique=True, nullable=True, index=True)
 
-
-    def construct(self, session, bytes_like_object):
+    @classmethod
+    def construct(cls, session, bytes_like_object):
         if isinstance(bytes_like_object, bytes):
             bytes_dict = bytes_dict_bytes(bytes_like_object)
         else:
