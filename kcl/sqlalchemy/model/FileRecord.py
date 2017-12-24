@@ -127,7 +127,7 @@ class FileRecord(BASE):
         else:
             symlink_target_path = None
 
-        import IPython; IPython.embed()
+        #import IPython; IPython.embed()
         # pointless to use get_one_or_create due to using a timestamp
         result = get_one_or_create(session, FileRecord, path=path,
                                                         filename=filename,
