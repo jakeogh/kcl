@@ -67,7 +67,7 @@ class FileRecord(BASE):
                      'S_ISDOOR',
                      'S_ISPORT',
                      'S_ISWHT')
-    stat_st_mode = Column(Enum(*stat_st_modes), unique=False, nullable=False, index=True)
+    stat_st_mode = Column(Enum(*stat_st_modes, name='stat_st_modes_enum'), unique=False, nullable=False, index=True)
 
     stat_st_inode = Column(BigInteger, unique=False, nullable=False, index=True)
     stat_st_dev   = Column(Integer,    unique=False, nullable=False, index=True)
