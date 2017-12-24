@@ -34,4 +34,6 @@ class Path(BASE):
         return result
 
     def __repr__(self):
-        return str(self.path)    #todo: going to fail if it's outside Unicode
+        return self.path
+    def __bytes__(self):
+        return self.path

@@ -32,4 +32,6 @@ class Filename(BASE):
         return result
 
     def __repr__(self):
-        return str(self.filename)    #todo: going to fail if it's outside Unicode
+        return self.filename
+    def __bytes__(self):
+        return self.filename
