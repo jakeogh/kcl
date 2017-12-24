@@ -160,7 +160,7 @@ def file_exists_nonzero(infile):
 
 def path_is_block_special(path):
     if path_exists(path):
-        mode = os.stat(path).st_mode
+        mode = os.stat(path, follow_symlinks=False).st_mode
         if stat.S_ISBLK(mode):
             return True
         else:
@@ -243,7 +243,7 @@ def write_file(infile, data):
 
 
 def is_regular_file(path):
-    mode = os.stat(path)[stat.ST_MODE]
+    mode = os.stat(path, follow_symlinks=False)[stat.ST_MODE]
     if stat.S_ISREG(mode):
         return True
     else:
