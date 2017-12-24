@@ -10,7 +10,7 @@ from sqlalchemy.dialects.postgresql import BYTEA
 from sqlalchemy.schema import Sequence
 from kcl.sqlalchemy.BaseMixin import BASE
 
-class Hash(BASE):
+class BytesHash(BASE):
     __table_args__ = (UniqueConstraint('md5', 'ripemd160', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'whirlpool'),)
     id = Column(BigInteger, Sequence('id_seq', start=0, minvalue=0), autoincrement=True, primary_key=True, index=True)
 

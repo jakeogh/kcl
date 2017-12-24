@@ -27,7 +27,7 @@ from sqlalchemy.schema import Sequence
 from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.model.Filename import Filename
 from kcl.sqlalchemy.model.Path import Path
-from kcl.sqlalchemy.model.Hash import Hash
+from kcl.sqlalchemy.model.BytesHash import BytesHash
 from kcl.sqlalchemy.model.Timestamp import Timestamp
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.printops import eprint
@@ -51,8 +51,8 @@ class FileRecord(BASE):
     filename_id = Column(Integer, ForeignKey('filename.id'), unique=False, nullable=False, index=True)
     filename = relationship('Filename', backref='files')
 
-    filehash_id = Column(Integer, ForeignKey('filehash.id'), unique=False, nullable=False, index=True)
-    filehash = relationship('Hash', backref='files')
+    byteshash_id = Column(Integer, ForeignKey('byteshash.id'), unique=False, nullable=False, index=True)
+    byteshash = relationship('BytesHash', backref='files')
 
     timestamp_id = Column(Integer, ForeignKey('timestamp.id'), unique=True, nullable=False, index=True)
     timestamp = relationship('Timestamp', backref='file')
@@ -85,7 +85,7 @@ class FileRecord(BASE):
         inpath = os.path.abspath(inpath)
         path, filename = os.path.split(inpath)
         stat = os.stat(inpath)
-        if is_regular_file(inpath): #this stuff should be in Hash.construct
+        if is_regular_file(inpath): #this stuff should be in BytesHash.construct
             if stat.st_size > 0:
                 if stat.st_size >= 1024*1024*1024: #1GB
                     print("hashing file >1GB:", path, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
@@ -101,12 +101,12 @@ class FileRecord(BASE):
         path      = Path.construct(session, path=path)
         filename  = Filename.construct(session, filename=filename)
         # hash the file _every time_
-        filehash  = Hash.construct(session, infile=infile)
+        byteshash  = BytesHash.construct(session, infile=infile)
         timestamp = Timestamp.construct(session)
 
         result = get_one_or_create(session, FileRecord, path=path,
                                                         filename=filename,
-                                                        filehash=filehash,
+                                                        byteshash=byteshash,
                                                         timestamp=timestamp,
                                                         stat_st_mode=stat.st_mode,
                                                         stat_st_inode=stat.st_ino,
