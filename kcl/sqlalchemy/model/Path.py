@@ -28,7 +28,7 @@ class Path(BASE):
     def construct(cls, session, path):
         assert isinstance(path, bytes)
         assert path.startswith(b'/')
-        assert path.endswith(b'/')
+        #assert path.endswith(b'/')
         #print("Path.construct()")
         result = get_one_or_create(session, Path, path=path)
         return result
