@@ -121,8 +121,8 @@ class FileRecord(BASE):
         else:
             symlink_target_path = None
 
-        eprint("type(symlink_target_path):", type(symlink_target_path))
-        eprint("symlink_target_path:", symlink_target_path)
+        #eprint("type(symlink_target_path):", type(symlink_target_path))
+        #eprint("symlink_target_path:", symlink_target_path)
         timestamp = Timestamp.construct(session)
         result = get_one_or_create(session, FileRecord, path=path,
                                                         filename=filename,
@@ -143,7 +143,10 @@ class FileRecord(BASE):
         return result
 
     def __bytes__(self):
-        return b'/'.join([bytes(self.path), bytes(self.filename)])
+        outfile = b'/'.join([bytes(self.path), bytes(self.filename)])
+        if self.symlink_target_path:
+            outfile = b' -> '.join(outfile, bytes(self.symlink_target_path))
+        return outfile
 
     #@hybrid_property
     #def tags(self):
