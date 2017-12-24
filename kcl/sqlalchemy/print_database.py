@@ -12,7 +12,7 @@ from kcl.printops import eprint
 @click.argument('database')
 @click.option('--table', type=str, default=False)
 def print_database(database, table):
-    with self_contained_session(config.database) as session:
+    with self_contained_session(database) as session:
         inspector = sqlalchemy_inspect(session.bind)
         table_list = sorted(inspector.get_table_names())
         if table:
