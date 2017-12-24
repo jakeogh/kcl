@@ -146,7 +146,7 @@ class FileRecord(BASE):
     def __bytes__(self):
         outfile = b'/'.join([bytes(self.path), bytes(self.filename)])
         if self.symlink_target_path:
-            outfile = b' -> '.join(outfile, bytes(self.symlink_target_path))
+            outfile = b' -> '.join([outfile, bytes(self.symlink_target_path)])
         return outfile
 
     def __repr__(self):
