@@ -28,13 +28,14 @@ from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.model.Filename import Filename
 from kcl.sqlalchemy.model.Path import Path
 from kcl.sqlalchemy.model.BytesHash import BytesHash
-from kcl.sqlalchemy.model.Timestamp import Timestamp
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.printops import eprint
 from kcl.fileops import is_regular_file
 from kcl.hashops import generate_hash
 from kcl.symlinkops import is_symlink
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.types import DateTime
+from sqlalchemy.sql import func
 
 class FileRecord(BASE):
     '''
@@ -64,8 +65,10 @@ class FileRecord(BASE):
     byteshash_id = Column(Integer, ForeignKey('byteshash.id'), unique=False, nullable=True, index=True)
     byteshash = relationship('BytesHash', backref='files')
 
-    timestamp_id = Column(Integer, ForeignKey('timestamp.id'), unique=True, nullable=False, index=True)
-    timestamp = relationship('Timestamp', backref='file')
+    #timestamp_id = Column(Integer, ForeignKey('timestamp.id'), unique=True, nullable=False, index=True)
+    #timestamp = relationship('Timestamp', backref='file')
+    timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, server_default=func.now())
+
 
     #stat_st_modes = ('S_ISDIR',
     #                 'S_ISCHR',
@@ -121,14 +124,12 @@ class FileRecord(BASE):
         else:
             symlink_target_path = None
 
-        #eprint("type(symlink_target_path):", type(symlink_target_path))
-        #eprint("symlink_target_path:", symlink_target_path)
-        timestamp = Timestamp()
+
+        # pointless to use get_one_or_create due to using a timestamp
         result = get_one_or_create(session, FileRecord, path=path,
                                                         filename=filename,
                                                         symlink_target_path=symlink_target_path,
                                                         byteshash=byteshash,
-                                                        timestamp=timestamp,
                                                         stat_st_mode=stat.st_mode,
                                                         stat_st_inode=stat.st_ino,
                                                         stat_st_dev=stat.st_dev,
