@@ -9,6 +9,9 @@ from sqlalchemy import BigInteger
 from sqlalchemy.dialects.postgresql import BYTEA
 from sqlalchemy.schema import Sequence
 from kcl.sqlalchemy.BaseMixin import BASE
+from kcl.hashops import bytes_dict_file
+from kcl.hashops import bytes_dict_bytes
+
 
 class BytesHash(BASE):
     __table_args__ = (UniqueConstraint('md5', 'ripemd160', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'whirlpool'),)
@@ -28,6 +31,16 @@ class BytesHash(BASE):
     # gotta move to 3.6 to use blake2
     # https://docs.python.org/3.6/library/hashlib.html
     #blake2    = Column(BYTEA(64), CheckConstraint('octet_length(blake2)    = 64'), unique=True, nullable=True, index=True)
+
+
+    def construct(self, session, bytes_like_object):
+        if isinstance(bytes_like_object, bytes):
+            bytes_dict = bytes_dict_bytes(bytes_like_object)
+        else:
+            bytes_dict = bytes_dict_file(bytes_like_object)
+        import IPython; IPython.embed()
+        byteshash = get_one_or_create(session, Hash, **bytes_dict)
+        return byteshash
 
     def __repr__(self):
         return str(binascii.hexlify(self.whirlpool))

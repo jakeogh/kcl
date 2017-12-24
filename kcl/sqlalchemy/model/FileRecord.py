@@ -101,7 +101,7 @@ class FileRecord(BASE):
         path      = Path.construct(session, path=path)
         filename  = Filename.construct(session, filename=filename)
         # hash the file _every time_
-        byteshash  = BytesHash.construct(session, infile=infile)
+        byteshash  = BytesHash.construct(session, bytes_like_object=infile)
         timestamp = Timestamp.construct(session)
 
         result = get_one_or_create(session, FileRecord, path=path,
