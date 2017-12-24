@@ -13,4 +13,4 @@ class BaseConfig():
         self.database_real = self.db_uri + dbname
         return self.database_real
 
-CONFIG = Config()
+#CONFIG = BaseConfig()
