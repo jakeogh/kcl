@@ -57,18 +57,19 @@ class FileRecord(BASE):
     timestamp_id = Column(Integer, ForeignKey('timestamp.id'), unique=True, nullable=False, index=True)
     timestamp = relationship('Timestamp', backref='file')
 
-    stat_st_modes = ('S_ISDIR',
-                     'S_ISCHR',
-                     'S_ISBLK',
-                     'S_ISREG',
-                     'S_ISFIFO',
-                     'S_ISLNK',
-                     'S_ISSOCK',
-                     'S_ISDOOR',
-                     'S_ISPORT',
-                     'S_ISWHT')
-    stat_st_mode = Column(Enum(*stat_st_modes, name='stat_st_modes_enum'), unique=False, nullable=False, index=True)
+    #stat_st_modes = ('S_ISDIR',
+    #                 'S_ISCHR',
+    #                 'S_ISBLK',
+    #                 'S_ISREG',
+    #                 'S_ISFIFO',
+    #                 'S_ISLNK',
+    #                 'S_ISSOCK',
+    #                 'S_ISDOOR',
+    #                 'S_ISPORT',
+    #                 'S_ISWHT')
+    #stat_st_mode = Column(Enum(*stat_st_modes, name='stat_st_modes_enum'), unique=False, nullable=False, index=True)
 
+    stat_st_mode  = Column(Integer,    unique=False, nullable=False, index=True)
     stat_st_inode = Column(BigInteger, unique=False, nullable=False, index=True)
     stat_st_dev   = Column(Integer,    unique=False, nullable=False, index=True)
     stat_st_nlink = Column(BigInteger, unique=False, nullable=False, index=True)

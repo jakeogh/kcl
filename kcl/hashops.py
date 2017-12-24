@@ -3,7 +3,6 @@
 import hashlib
 import os
 import tempfile
-#import requests
 from requests.models import Response
 from .printops import eprint
 
