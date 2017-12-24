@@ -48,6 +48,9 @@ class FileRecord(BASE):
     path_id = Column(Integer, ForeignKey('path.id'), unique=False, nullable=False, index=True)
     path = relationship('Path', backref='files')
 
+    symlink_target_path_id = Column(Integer, ForeignKey('path.id'), unique=False, nullable=True, index=True)
+    symlink_target_path = relationship('Path', backref='targets')
+
     filename_id = Column(Integer, ForeignKey('filename.id'), unique=False, nullable=False, index=True)
     filename = relationship('Filename', backref='files')
 
