@@ -49,7 +49,15 @@ class FileRecord(BASE):
     path = relationship('Path', backref='files')
 
     symlink_target_path_id = Column(Integer, ForeignKey('path.id'), unique=False, nullable=True, index=True)
-    symlink_target_path = relationship('Path', backref='targets')
+    symlink_target_path = relationship('Path', foreign_keys=[symlink_target_path_id], backref='targets')
+
+    #EmployeeID = Column(Integer, ForeignKey('Employee.EmployeeId'), primary_key=True)
+    #employee = relationship('Employee', foreign_keys=[EmployeeID], backref='Employee')
+
+    #OldemployeeID = Column(Integer, ForeignKey('Employee.EmployeeId'))
+    #old_employee = relationship("Employee", foreign_keys=[OldemployeeID], backref='Employee')
+
+
 
     filename_id = Column(Integer, ForeignKey('filename.id'), unique=False, nullable=False, index=True)
     filename = relationship('Filename', backref='files')
@@ -107,7 +115,6 @@ class FileRecord(BASE):
         # hash the file _every time_
         byteshash  = BytesHash.construct(session, bytes_like_object=inpath)
         timestamp = Timestamp.construct(session)
-        #import IPython; IPython.embed()
         result = get_one_or_create(session, FileRecord, path=path,
                                                         filename=filename,
                                                         byteshash=byteshash,
