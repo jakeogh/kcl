@@ -123,7 +123,7 @@ class FileRecord(BASE):
 
         #eprint("type(symlink_target_path):", type(symlink_target_path))
         #eprint("symlink_target_path:", symlink_target_path)
-        timestamp = Timestamp.construct(session)
+        timestamp = Timestamp()
         result = get_one_or_create(session, FileRecord, path=path,
                                                         filename=filename,
                                                         symlink_target_path=symlink_target_path,
