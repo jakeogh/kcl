@@ -95,6 +95,7 @@ class FileRecord(BASE):
 
     @classmethod
     def construct(cls, session, inpath, debug=False):
+        eprint("inpath:", inpath)
         assert isinstance(inpath, bytes)
         inpath = os.path.abspath(inpath)
         assert inpath.startswith(b'/')
