@@ -82,7 +82,7 @@ class FileRecord(BASE):
     @classmethod
     def construct(cls, session, inpath, debug=False):
         assert isinstance(inpath, bytes)
-        inpath = os.path.abspath(inpath)
+        inpath = os.path.abspath(inpath) #click.Path does all this
         path, filename = os.path.split(inpath)
         stat = os.stat(inpath)
         if is_regular_file(inpath): #this stuff should be in BytesHash.construct
@@ -101,7 +101,7 @@ class FileRecord(BASE):
         path      = Path.construct(session, path=path)
         filename  = Filename.construct(session, filename=filename)
         # hash the file _every time_
-        byteshash  = BytesHash.construct(session, bytes_like_object=infile)
+        byteshash  = BytesHash.construct(session, bytes_like_object=inpath)
         timestamp = Timestamp.construct(session)
 
         result = get_one_or_create(session, FileRecord, path=path,
