@@ -122,7 +122,7 @@ class FileRecord(BASE):
 
         return result
 
-    def __repr__(self):
+    def __bytes__(self):
         return b'/'.join([bytes(self.path), bytes(self.filename)])
 
     #@hybrid_property
