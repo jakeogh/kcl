@@ -33,6 +33,7 @@ from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.printops import eprint
 from kcl.fileops import is_regular_file
 from kcl.hashops import generate_hash
+from kcl.symlinkops import is_symlink
 from sqlalchemy.orm.exc import NoResultFound
 
 class FileRecord(BASE):
@@ -96,7 +97,7 @@ class FileRecord(BASE):
         assert isinstance(inpath, bytes)
         inpath = os.path.abspath(inpath) #click.Path does all this
         path, filename = os.path.split(inpath)
-        stat = os.stat(inpath)
+        stat = os.stat(inpath, follow_symlinks=False)
         if is_regular_file(inpath): #this stuff should be in BytesHash.construct
             if stat.st_size > 0:
                 if stat.st_size >= 1024*1024*1024: #1GB
