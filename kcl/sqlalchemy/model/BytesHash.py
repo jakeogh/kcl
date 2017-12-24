@@ -40,7 +40,7 @@ class BytesHash(BASE):
         else:
             bytes_dict = bytes_dict_file(bytes_like_object)
         import IPython; IPython.embed()
-        byteshash = get_one_or_create(session, Hash, **bytes_dict)
+        byteshash = get_one_or_create(session, BytesHash, **bytes_dict)
         return byteshash
 
     def __repr__(self):
