@@ -121,6 +121,7 @@ class FileRecord(BASE):
         else:
             symlink_target_path = None
 
+        eprint("symlink_target_path:", symlink_target_path)
         timestamp = Timestamp.construct(session)
         result = get_one_or_create(session, FileRecord, path=path,
                                                         filename=filename,
