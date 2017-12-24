@@ -58,12 +58,10 @@ class FileRecord(BASE):
     #OldemployeeID = Column(Integer, ForeignKey('Employee.EmployeeId'))
     #old_employee = relationship("Employee", foreign_keys=[OldemployeeID], backref='Employee')
 
-
-
     filename_id = Column(Integer, ForeignKey('filename.id'), unique=False, nullable=False, index=True)
     filename = relationship('Filename', backref='files')
 
-    byteshash_id = Column(Integer, ForeignKey('byteshash.id'), unique=False, nullable=False, index=True)
+    byteshash_id = Column(Integer, ForeignKey('byteshash.id'), unique=False, nullable=True, index=True)
     byteshash = relationship('BytesHash', backref='files')
 
     timestamp_id = Column(Integer, ForeignKey('timestamp.id'), unique=True, nullable=False, index=True)
@@ -95,9 +93,14 @@ class FileRecord(BASE):
     @classmethod
     def construct(cls, session, inpath, debug=False):
         assert isinstance(inpath, bytes)
-        inpath = os.path.abspath(inpath) #click.Path does all this
+        inpath = os.path.abspath(inpath)
+        assert inpath.startswith(b'/')
         path, filename = os.path.split(inpath)
         stat = os.stat(inpath, follow_symlinks=False)
+
+        path      = Path.construct(session, path=path)
+        filename  = Filename.construct(session, filename=filename)
+
         if is_regular_file(inpath): #this stuff should be in BytesHash.construct
             if stat.st_size > 0:
                 if stat.st_size >= 1024*1024*1024: #1GB
@@ -106,18 +109,24 @@ class FileRecord(BASE):
                         print("skipping file >=1TB:", path)
                         #skipped_file_list.append(path)
                     else:
-                        data_hash = generate_hash(path)
+                        byteshash  = BytesHash.construct(session, bytes_like_object=inpath)
+                        #data_hash = generate_hash(path)
                 else: #not a big file
-                    data_hash = generate_hash(path)
+                    byteshash  = BytesHash.construct(session, bytes_like_object=inpath)
+                    #data_hash = generate_hash(path)
+        else:
+            byteshash = None
 
+        if is_symlink(inpath):
+            symlink_target = os.readlink(inpath)
+            symlink_target_path = Path.construct(session, path=symlink_target)
+        else:
+            symlink_target_path = None
 
-        path      = Path.construct(session, path=path)
-        filename  = Filename.construct(session, filename=filename)
-        # hash the file _every time_
-        byteshash  = BytesHash.construct(session, bytes_like_object=inpath)
         timestamp = Timestamp.construct(session)
         result = get_one_or_create(session, FileRecord, path=path,
                                                         filename=filename,
+                                                        symlink_target_path=symlink_target_path,
                                                         byteshash=byteshash,
                                                         timestamp=timestamp,
                                                         stat_st_mode=stat.st_mode,
