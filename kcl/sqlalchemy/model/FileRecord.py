@@ -149,7 +149,7 @@ class FileRecord(BASE):
         return outfile
 
     def __repr__(self):
-        return str(__bytes__(self))
+        return str(bytes(self))
 
     #@hybrid_property
     #def tags(self):
