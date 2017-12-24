@@ -36,7 +36,7 @@ def check_db_result(config, db_result, orm_result_list=False):
         print("constructing missed table test(s) for:", tables)
         for table in unchecked_tables:
             hash_set = []
-            if table == 'hash':
+            if table == 'byteshash':
                 if orm_result_list:
                     for result in orm_result_list:
                         orm_result = result['orm_result']
