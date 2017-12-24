@@ -73,7 +73,7 @@ def create_relative_symlink(target, link_name):
     relative_target = os.path.relpath(target, link_name_folder)
     os.symlink(relative_target, link_name)
 
-def symlink_destination(link):
+def symlink_destination(link): #broken for multi level symlinks
     """
     Return absolute path for the destination of a symlink. This prob should be split into "first dest" and "final dest"
     """
@@ -88,7 +88,7 @@ def symlink_destination(link):
     dest = os.path.realpath(p)
     return dest
 
-def readlinkf(path):
+def readlinkf(path): # ugly
         p = subprocess.Popen(['readlink', '-f', path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         readlink_output, errors = p.communicate()
         readlink_output_clean = readlink_output.strip()
@@ -97,9 +97,12 @@ def readlinkf(path):
         else:
             return readlink_output_clean
 
-def get_symlink_target(path):
-        #print(path)
-        assert isinstance(path, str)
+def get_symlink_target_next(path):
+        assert os.path.islink(path)
+        target = os.readlink(path)
+        return target
+
+def get_symlink_target_final(path): #broken for bytes
         if os.path.islink(path):
             target = os.readlink(path)
             target_joined = os.path.join(os.path.dirname(path), target)
@@ -121,7 +124,3 @@ def symlink_or_exit(target, link_name, hash_folder=''):
             eprint("PRINTING ERROR MESSAGE...")
             eprint(error_msg)
         os._exit(1)
-
-
-if __name__ == '__main__':
-    quit(0)
