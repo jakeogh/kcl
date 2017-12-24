@@ -20,6 +20,7 @@ class Timestamp(BASE):
 
     #@classmethod
     #def construct(cls, session):
+    #    result = getattr(Timestamp, )
     #    result = get_one_or_create(session, Timestamp)
     #    return result
 
