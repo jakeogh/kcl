@@ -31,6 +31,7 @@ from kcl.sqlalchemy.model.Hash import Hash
 from kcl.sqlalchemy.model.Timestamp import Timestamp
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.printops import eprint
+from kcl.fileops import is_regular_file
 from sqlalchemy.orm.exc import NoResultFound
 
 class FileRecord(BASE):
