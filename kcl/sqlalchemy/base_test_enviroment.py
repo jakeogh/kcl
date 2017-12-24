@@ -2,7 +2,6 @@
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
-from sqlalchemy_utils.functions import create_database
 from kcl.sqlalchemy.delete_database import delete_database
 from kcl.sqlalchemy.check_db_result import check_db_result
 from kcl.sqlalchemy.BaseMixin import BASE
