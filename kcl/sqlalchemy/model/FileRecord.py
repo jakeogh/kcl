@@ -32,6 +32,7 @@ from kcl.sqlalchemy.model.Timestamp import Timestamp
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.printops import eprint
 from kcl.fileops import is_regular_file
+from kcl.hashops import generate_hash
 from sqlalchemy.orm.exc import NoResultFound
 
 class FileRecord(BASE):
@@ -84,7 +85,7 @@ class FileRecord(BASE):
         inpath = os.path.abspath(inpath)
         path, filename = os.path.split(inpath)
         stat = os.stat(inpath)
-        if is_regular_file(inpath):
+        if is_regular_file(inpath): #this stuff should be in Hash.construct
             if stat.st_size > 0:
                 if stat.st_size >= 1024*1024*1024: #1GB
                     print("hashing file >1GB:", path, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
@@ -92,9 +93,9 @@ class FileRecord(BASE):
                         print("skipping file >=1TB:", path)
                         #skipped_file_list.append(path)
                     else:
-                        data_hash = sha1_hash_file(path)
+                        data_hash = generate_hash(path)
                 else: #not a big file
-                    data_hash = sha1_hash_file(path)
+                    data_hash = generate_hash(path)
 
 
         path      = Path.construct(session, path=path)
