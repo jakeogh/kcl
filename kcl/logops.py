@@ -40,6 +40,7 @@ def set_verbose(ctx, param, verbose=False):
         logger_quiet.logger.setLevel(LOG['DEBUG'])
     else:
         logger_quiet.logger.setLevel(LOG['INFO'] + 1)
+    return True
 
 #def log_uncaught_exceptions(ex_cls, ex, tb):
 ##      cprint("CURRENT_THREAD: " + str(threading.current_thread()))
