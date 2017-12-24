@@ -29,6 +29,6 @@ class Path(BASE):
         return result
 
     def __repr__(self):
-        return self.path
+        return str(self.path)
     def __bytes__(self):
         return self.path
