@@ -110,10 +110,8 @@ class FileRecord(BASE):
                         #skipped_file_list.append(path)
                     else:
                         byteshash  = BytesHash.construct(session, bytes_like_object=inpath)
-                        #data_hash = generate_hash(path)
                 else: #not a big file
                     byteshash  = BytesHash.construct(session, bytes_like_object=inpath)
-                    #data_hash = generate_hash(path)
         else:
             byteshash = None
 
