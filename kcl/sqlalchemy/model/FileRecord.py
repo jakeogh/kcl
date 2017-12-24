@@ -106,7 +106,9 @@ class FileRecord(BASE):
         filename  = Filename.construct(session, filename=filename)
 
         if is_regular_file(inpath): #this stuff should be in BytesHash.construct
-            if stat.st_size > 0:
+            if stat.st_size == 0:
+                byteshash = None
+            else:
                 if stat.st_size >= 1024*1024*1024: #1GB
                     print("hashing file >1GB:", path, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
                     if stat.st_size >= 1024*1024*1024*1024: #1TB
