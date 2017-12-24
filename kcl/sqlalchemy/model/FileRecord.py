@@ -123,7 +123,7 @@ class FileRecord(BASE):
         return result
 
     def __repr__(self):
-        return str(self.path + self.filename)
+        return str(self.path) + str(self.filename)
 
     #@hybrid_property
     #def tags(self):
