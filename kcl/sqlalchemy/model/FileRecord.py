@@ -148,6 +148,9 @@ class FileRecord(BASE):
             outfile = b' -> '.join(outfile, bytes(self.symlink_target_path))
         return outfile
 
+    def __repr__(self):
+        return str(__bytes__(self))
+
     #@hybrid_property
     #def tags(self):
     #    tags = []
