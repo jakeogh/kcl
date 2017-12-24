@@ -2,7 +2,7 @@
 import os
 import time
 
-class Config():
+class BaseConfig():
     '''Simple configuration class.'''
     def __init__(self):
         self.db_uri = 'postgresql://postgres@localhost/'
