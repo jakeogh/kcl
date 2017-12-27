@@ -3,14 +3,14 @@
 # MIT License
 
 import pprint
-import click
+#import click
 from sqlalchemy import inspect as sqlalchemy_inspect
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.printops import eprint
 
-@click.command()
-@click.argument('database')
-@click.option('--table', type=str, default=False)
+#@click.command()
+#@click.argument('database')
+#@click.option('--table', type=str, default=False)
 def print_database(database, table):
     with self_contained_session(database) as session:
         inspector = sqlalchemy_inspect(session.bind)
