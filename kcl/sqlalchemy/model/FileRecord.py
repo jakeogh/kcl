@@ -36,6 +36,7 @@ from kcl.symlinkops import is_symlink
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import DateTime
 from sqlalchemy.sql import func
+from datetime import datetime
 
 class FileRecord(BASE):
     '''
@@ -53,12 +54,6 @@ class FileRecord(BASE):
     symlink_target_path_id = Column(Integer, ForeignKey('path.id'), unique=False, nullable=True, index=True)
     symlink_target_path = relationship('Path', foreign_keys=[symlink_target_path_id], backref='targets')
 
-    #EmployeeID = Column(Integer, ForeignKey('Employee.EmployeeId'), primary_key=True)
-    #employee = relationship('Employee', foreign_keys=[EmployeeID], backref='Employee')
-
-    #OldemployeeID = Column(Integer, ForeignKey('Employee.EmployeeId'))
-    #old_employee = relationship("Employee", foreign_keys=[OldemployeeID], backref='Employee')
-
     filename_id = Column(Integer, ForeignKey('filename.id'), unique=False, nullable=False, index=True)
     filename = relationship('Filename', backref='files')
 
@@ -67,7 +62,8 @@ class FileRecord(BASE):
 
     #timestamp_id = Column(Integer, ForeignKey('timestamp.id'), unique=True, nullable=False, index=True)
     #timestamp = relationship('Timestamp', backref='file')
-    timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, server_default=func.now())
+    #timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, server_default=func.now())
+    timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, default=datetime.now())
 
 
     #stat_st_modes = ('S_ISDIR',
