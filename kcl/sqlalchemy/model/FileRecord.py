@@ -36,7 +36,7 @@ from kcl.symlinkops import is_symlink
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import DateTime
 from sqlalchemy.sql import func
-from datetime import datetime
+#from datetime import datetime
 
 class FileRecord(BASE):
     '''
@@ -62,8 +62,9 @@ class FileRecord(BASE):
 
     #timestamp_id = Column(Integer, ForeignKey('timestamp.id'), unique=True, nullable=False, index=True)
     #timestamp = relationship('Timestamp', backref='file')
-    #timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, server_default=func.now())
-    timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, default=datetime.now())
+    timestamp = Column(DateTime(timezone=True), unique=False, nullable=False, index=True, server_default=func.now())
+    #timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, default=datetime.now())
+    #timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, default=datetime.now())
 
 
     #stat_st_modes = ('S_ISDIR',
