@@ -14,15 +14,26 @@ from kcl.click.CONTEXT_SETTINGS import CONTEXT_SETTINGS
 
 __version__ = 0.01
 
+def mydecorator(f):
+   def wrapped_f(self, *args, **kwargs):
+       argument = self.argument
+       print("argument:", argument)
+       return f(self, *args, **kwargs)
+   return wrapped_f
+return wrap
+
+
 class ClickApp():
     def __init__(self, config):
         print("__init__")
         self.config = config
         assert self.config.appname
+        print("__init__() self.config.appname:", self.config.appname)
 
     # pylint: disable=C0326
     # http://pylint-messages.wikidot.com/messages:c0326
     #@click.group(context_settings=CONTEXT_SETTINGS, help="generic click orm interface")
+    @mydecorator
     @click.group(context_settings=CONTEXT_SETTINGS, help=ClickApp.config.appname)
     @click.option('--verbose', is_flag=True)
     @click.option('--database', is_flag=False, type=str, required=False)
