@@ -13,7 +13,6 @@ def sa_display(remote_globals):
 
     #with codecs.open('schema.plantuml', 'w', encoding='utf-8') as f:
     #    f.write(sadisplay.plantuml(desc))
-
     with codecs.open(dotfile, 'w', encoding='utf-8') as f:
         f.write(sadisplay.dot(desc))
 
