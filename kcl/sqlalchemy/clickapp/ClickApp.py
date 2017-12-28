@@ -22,7 +22,7 @@ def mydecorator(f):
    return wrapped_f
 
 def my_decorator(arg_name, *args, **kwargs):
-    def wrap(f):
+    def wrap(f, *args, **kwargs):
         def wrapped_f(self, *args, **kwargs):
             argument = getattr(self, arg_name)
             print("argument:", argument)
