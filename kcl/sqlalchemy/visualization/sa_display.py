@@ -23,6 +23,6 @@ def sa_display(remote_globals):
     #(graph,) = pydot.graph_from_dot_file(dotfile)
     (graph,) = pydot.graph_from_dot_data(sadisplay.dot(desc))
     graph.write_png(pngfile)
-    os.system("xdg-open " pngfile)
+    os.system("xdg-open " + pngfile)
     #image = Image.open(dotfile + '.png')
     #image.show()
