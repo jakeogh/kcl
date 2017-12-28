@@ -20,7 +20,6 @@ def mydecorator(f):
        print("argument:", argument)
        return f(self, *args, **kwargs)
    return wrapped_f
-return wrap
 
 
 class ClickApp():
