@@ -22,6 +22,7 @@ __version__ = 0.01
 
 class ClickApp():
     def __init__(self, config):
+        print("__init__")
         self.config = config
 
     def add_doc(self):
