@@ -17,7 +17,7 @@ __version__ = 0.01
 def mydecorator(f):
    def wrapped_f(self, *args, **kwargs):
        argument = self.argument
-       print("argument:", argument)
+       print("(old) argument:", argument)
        return f(self, *args, **kwargs)
    return wrapped_f
 
