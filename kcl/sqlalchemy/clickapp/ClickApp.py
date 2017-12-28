@@ -34,7 +34,7 @@ class ClickApp():
 
     # pylint: disable=C0326
     # http://pylint-messages.wikidot.com/messages:c0326
-    @add_doc
+    #@add_doc
     @click.group(context_settings=CONTEXT_SETTINGS)
     #@click.option('--verbose', is_flag=True, callback=set_verbose, expose_value=True)
     @click.option('--verbose', is_flag=True)
@@ -43,7 +43,7 @@ class ClickApp():
     @click.option('--delete-database', is_flag=True, required=False)
     @click.pass_context
     def clickapp(self, ctx, verbose, database, temp_database, delete_database):
-        #__doc__ = self.config.appname + "orm interface"
+        __doc__ = self.config.appname + "orm interface"
         #self.__doc__ = self.config.appname + "orm interface"
         #''' clickapp orm interface'''
         if database:
