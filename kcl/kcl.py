@@ -4,5 +4,5 @@
 from kcl.sqlalchemy.clickapp.ClickApp import ClickApp
 from kcl.sqlalchemy.model.BaseConfig import BASECONFIG as CONFIG
 
-CA = ClickApp(config=config)
+CA = ClickApp(config=CONFIG)
 clickapp = CA.clickapp
