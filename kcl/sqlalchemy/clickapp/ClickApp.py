@@ -21,6 +21,14 @@ def mydecorator(f):
        return f(self, *args, **kwargs)
    return wrapped_f
 
+def my_decorator(arg_name):
+    def wrap(f):
+        def wrapped_f(self, *args, **kwargs):
+            argument = getattr(self, arg_name)
+            print("argument:", argument)
+        return wrapped_f
+    return wrap
+
 
 class ClickApp():
     def __init__(self, config):
@@ -32,7 +40,7 @@ class ClickApp():
     # pylint: disable=C0326
     # http://pylint-messages.wikidot.com/messages:c0326
     #@click.group(context_settings=CONTEXT_SETTINGS, help="generic click orm interface")
-    @mydecorator
+    @my_decorator('config')
     @click.group(context_settings=CONTEXT_SETTINGS, help="generic")
     @click.option('--verbose', is_flag=True)
     @click.option('--database', is_flag=False, type=str, required=False)
