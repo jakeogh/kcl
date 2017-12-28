@@ -5,7 +5,7 @@ from kcl.model.Config import CONFIG
 builtins.config = CONFIG
 
 
-from kcl.sqlalchemy.clickapp.ClickApp import clickapp
+from kcl.sqlalchemy.clickapp.clickapp import clickapp
 from kcl.sqlalchemy.ipython import ipython
 #from kcl.sqlalchemy.visualization.sa_display import sa_display
 
