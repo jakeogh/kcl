@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-#from kcl.sqlalchemy.clickapp.ClickApp import ClickApp
+import __builtin__
 from kcl.sqlalchemy.clickapp.ClickApp import clickapp
 from kcl.model.Config import CONFIG
+__builtin__.config = CONFIG
 from kcl.sqlalchemy.ipython import ipython
 
 #CA = ClickApp(config=CONFIG)

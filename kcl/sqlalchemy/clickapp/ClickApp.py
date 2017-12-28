@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import __builtin__
 import click
 from sqlalchemy_utils.functions import database_exists
 from sqlalchemy_utils.functions import create_database
@@ -9,7 +10,9 @@ from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.ipython import ipython
 from kcl.click.CONTEXT_SETTINGS import CONTEXT_SETTINGS
-from kcl.sqlalchemy.model.BaseConfig import BASECONFIG as CONFIG
+#from kcl.sqlalchemy.model.BaseConfig import BASECONFIG as CONFIG
+
+CONFIG = __builtin__.config
 
 __version__ = 0.01
 
