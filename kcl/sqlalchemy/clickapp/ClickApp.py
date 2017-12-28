@@ -5,8 +5,6 @@ from sqlalchemy_utils.functions import database_exists
 from sqlalchemy_utils.functions import create_database
 from sqlalchemy_utils.functions import drop_database
 from kcl.printops import eprint
-#from kcl.sqlalchemy.test import test as kcltest
-#from kcl.sqlalchemy.print_database import print_database as kcl_print_database
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.ipython import ipython
@@ -21,12 +19,7 @@ class ClickApp():
         #assert self.config.appname
         #print("__init__() self.config.appname:", self.config.appname)
 
-    # pylint: disable=C0326
-    # http://pylint-messages.wikidot.com/messages:c0326
-    #@click.group(context_settings=CONTEXT_SETTINGS, help="generic click orm interface")
-    #@my_decorator('config')
-    #@click.group(context_settings=CONTEXT_SETTINGS, help="generic")
-    @click_group(arg_name='config', context_settings=CONTEXT_SETTINGS, help="generic")
+    @click.group(context_settings=CONTEXT_SETTINGS, help="generic")
     @click.option('--verbose', is_flag=True)
     @click.option('--database', is_flag=False, type=str, required=False)
     @click.option('--temp-database', is_flag=True, required=False)
