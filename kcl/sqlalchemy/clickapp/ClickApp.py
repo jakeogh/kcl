@@ -14,29 +14,12 @@ from kcl.click.CONTEXT_SETTINGS import CONTEXT_SETTINGS
 
 __version__ = 0.01
 
-def mydecorator(f):
-   def wrapped_f(self, *args, **kwargs):
-       argument = self.argument
-       print("(old) argument:", argument)
-       return f(self, *args, **kwargs)
-   return wrapped_f
-
-def my_decorator(arg_name, *args, **kwargs):
-    def wrap(f, *args, **kwargs):
-        def wrapped_f(self, *args, **kwargs):
-            argument = getattr(self, arg_name)
-            print("argument:", argument)
-        return wrapped_f
-    return wrap
-
-click_group = my_decorator(click.group)
-
 class ClickApp():
     def __init__(self, config):
         print("__init__")
         self.config = config
-        assert self.config.appname
-        print("__init__() self.config.appname:", self.config.appname)
+        #assert self.config.appname
+        #print("__init__() self.config.appname:", self.config.appname)
 
     # pylint: disable=C0326
     # http://pylint-messages.wikidot.com/messages:c0326
