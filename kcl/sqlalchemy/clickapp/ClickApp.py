@@ -18,19 +18,11 @@ class ClickApp():
     def __init__(self, config):
         print("__init__")
         self.config = config
-
-    def add_doc(self):
-        print("self:", self)
-        def _doc(func):
-            func.__doc__ = "test"
-            return func
-        return _doc
+        assert self.config.appname
 
     # pylint: disable=C0326
     # http://pylint-messages.wikidot.com/messages:c0326
-    #@add_doc
     @click.group(context_settings=CONTEXT_SETTINGS, help="generic click orm interface")
-    #@click.option('--verbose', is_flag=True, callback=set_verbose, expose_value=True)
     @click.option('--verbose', is_flag=True)
     @click.option('--database', is_flag=False, type=str, required=False)
     @click.option('--temp-database', is_flag=True, required=False)
