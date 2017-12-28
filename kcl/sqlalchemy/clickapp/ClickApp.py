@@ -14,12 +14,9 @@ __version__ = 0.01
 
 class ClickApp():
     def __init__(self, config):
-        print("__init__")
         self.config = config
-        #assert self.config.appname
-        #print("__init__() self.config.appname:", self.config.appname)
 
-    @click.group(context_settings=CONTEXT_SETTINGS, help="generic")
+    @click.group(context_settings=CONTEXT_SETTINGS, help="boilerplate orm interface")
     @click.option('--verbose', is_flag=True)
     @click.option('--database', is_flag=False, type=str, required=False)
     @click.option('--temp-database', is_flag=True, required=False)
