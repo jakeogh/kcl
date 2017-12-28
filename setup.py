@@ -8,9 +8,7 @@ if not sys.version_info[0] == 3:
 
 import re
 from setuptools import find_packages, setup
-
 dependencies = ['requests', 'psutil', 'sqlalchemy', 'sqlalchemy-utils', 'sadisplay', 'pydot']
-
 version = 0.01
 
 setup(
@@ -27,6 +25,11 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=dependencies,
+    entry_points={
+        'console_scripts': [
+            'kcl = kcl.kcl:clickapp',
+        ],
+    },
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
         # 'Development Status :: 1 - Planning',
