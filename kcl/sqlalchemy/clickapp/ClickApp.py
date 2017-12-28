@@ -33,7 +33,7 @@ class ClickApp():
     # http://pylint-messages.wikidot.com/messages:c0326
     #@click.group(context_settings=CONTEXT_SETTINGS, help="generic click orm interface")
     @mydecorator
-    @click.group(context_settings=CONTEXT_SETTINGS, help=ClickApp.config.appname)
+    @click.group(context_settings=CONTEXT_SETTINGS, help="generic")
     @click.option('--verbose', is_flag=True)
     @click.option('--database', is_flag=False, type=str, required=False)
     @click.option('--temp-database', is_flag=True, required=False)
