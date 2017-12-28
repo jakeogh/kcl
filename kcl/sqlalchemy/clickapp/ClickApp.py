@@ -29,7 +29,7 @@ class ClickApp():
     # pylint: disable=C0326
     # http://pylint-messages.wikidot.com/messages:c0326
     #@add_doc
-    @click.group(context_settings=CONTEXT_SETTINGS)
+    @click.group(context_settings=CONTEXT_SETTINGS, help="generic click orm interface")
     #@click.option('--verbose', is_flag=True, callback=set_verbose, expose_value=True)
     @click.option('--verbose', is_flag=True)
     @click.option('--database', is_flag=False, type=str, required=False)
