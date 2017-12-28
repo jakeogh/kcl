@@ -6,6 +6,8 @@ import codecs
 import time
 import pydot
 
+from PIL import Image
+
 def sa_display(remote_globals):
     desc = sadisplay.describe(remote_globals.values())
     #desc = sadisplay.describe(globals().values())
@@ -19,4 +21,5 @@ def sa_display(remote_globals):
     #(graph,) = pydot.graph_from_dot_file(dotfile)
     (graph,) = pydot.graph_from_dot_data(sadisplay.dot(desc))
     graph.write_png(dotfile + '.png')
-
+    image = Image.open(dotfile + '.png')
+    image.show()
