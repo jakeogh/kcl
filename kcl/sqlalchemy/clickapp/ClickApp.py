@@ -25,6 +25,7 @@ class ClickApp():
         self.config = config
 
     def add_doc(self):
+        print("self:", self)
         def _doc(func):
             func.__doc__ = "test"
             return func
@@ -39,7 +40,7 @@ class ClickApp():
     @click.option('--temp-database', is_flag=True, required=False)
     @click.option('--delete-database', is_flag=True, required=False)
     @click.pass_context
-    @add_doc()
+    @add_doc
     def clickapp(self, ctx, verbose, database, temp_database, delete_database):
         #__doc__ = self.config.appname + "orm interface"
         #self.__doc__ = self.config.appname + "orm interface"
