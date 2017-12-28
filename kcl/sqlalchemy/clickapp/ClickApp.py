@@ -38,7 +38,7 @@ class ClickApp():
     @click.option('--temp-database', is_flag=True, required=False)
     @click.option('--delete-database', is_flag=True, required=False)
     @click.pass_context
-    @add_doc(self.config.appname)
+    @add_doc(__self__.config.appname)
     def clickapp(self, ctx, verbose, database, temp_database, delete_database):
         #__doc__ = self.config.appname + "orm interface"
         #self.__doc__ = self.config.appname + "orm interface"
