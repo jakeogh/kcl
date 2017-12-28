@@ -21,7 +21,7 @@ def mydecorator(f):
        return f(self, *args, **kwargs)
    return wrapped_f
 
-def my_decorator(arg_name):
+def my_decorator(arg_name, *args, **kwargs):
     def wrap(f):
         def wrapped_f(self, *args, **kwargs):
             argument = getattr(self, arg_name)
@@ -43,7 +43,7 @@ class ClickApp():
     #@click.group(context_settings=CONTEXT_SETTINGS, help="generic click orm interface")
     #@my_decorator('config')
     #@click.group(context_settings=CONTEXT_SETTINGS, help="generic")
-    @click_group(context_settings=CONTEXT_SETTINGS, help="generic")
+    @click_group(arg_name='config', context_settings=CONTEXT_SETTINGS, help="generic")
     @click.option('--verbose', is_flag=True)
     @click.option('--database', is_flag=False, type=str, required=False)
     @click.option('--temp-database', is_flag=True, required=False)
