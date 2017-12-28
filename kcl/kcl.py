@@ -7,3 +7,5 @@ from kcl.model.Config import CONFIG
 
 CA = ClickApp(config=CONFIG)
 clickapp = CA.clickapp
+clickapp.__doc__ == "here"
+
