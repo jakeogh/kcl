@@ -5,4 +5,4 @@ from kcl.model.Config import CONFIG
 
 CA = ClickApp(config=CONFIG)
 clickapp = CA.clickapp
-
+clickapp.help = "new help"
