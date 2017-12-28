@@ -6,8 +6,9 @@ import codecs
 import time
 import pydot
 
-def sa_display():
-    desc = sadisplay.describe(globals().values())
+def sa_display(remote_globals):
+    desc = sadisplay.describe(remote_globals().values())
+    #desc = sadisplay.describe(globals().values())
     dotfile = 'sadisplay.schema.' + str(time.time()) + '.dot'
 
     #with codecs.open('schema.plantuml', 'w', encoding='utf-8') as f:
