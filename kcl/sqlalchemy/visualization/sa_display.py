@@ -7,7 +7,7 @@ import time
 import pydot
 
 def sa_display(remote_globals):
-    desc = sadisplay.describe(remote_globals().values())
+    desc = sadisplay.describe(remote_globals.values())
     #desc = sadisplay.describe(globals().values())
     dotfile = 'sadisplay.schema.' + str(time.time()) + '.dot'
 
