@@ -16,6 +16,7 @@ def sa_display(remote_globals):
     with codecs.open(dotfile, 'w', encoding='utf-8') as f:
         f.write(sadisplay.dot(desc))
 
-    (graph,) = pydot.graph_from_dot_file(dotfile)
+    #(graph,) = pydot.graph_from_dot_file(dotfile)
+    (graph,) = pydot.graph_from_dot_data(sadisplay.dot(desc))
     graph.write_png(dotfile + '.png')
 
