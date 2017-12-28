@@ -18,16 +18,17 @@ from kcl.click.CONTEXT_SETTINGS import CONTEXT_SETTINGS
 
 __version__ = 0.01
 
-def add_doc(value):
-    def _doc(func):
-        func.__doc__ = value
-        return func
-    return _doc
 
 
 class ClickApp():
     def __init__(self, config):
         self.config = config
+
+    def add_doc(self, value):
+        def _doc(func):
+            func.__doc__ = "test"
+            return func
+        return _doc
 
     # pylint: disable=C0326
     # http://pylint-messages.wikidot.com/messages:c0326
@@ -38,7 +39,7 @@ class ClickApp():
     @click.option('--temp-database', is_flag=True, required=False)
     @click.option('--delete-database', is_flag=True, required=False)
     @click.pass_context
-    @add_doc(__self__.config.appname)
+    @add_doc
     def clickapp(self, ctx, verbose, database, temp_database, delete_database):
         #__doc__ = self.config.appname + "orm interface"
         #self.__doc__ = self.config.appname + "orm interface"
