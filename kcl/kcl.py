@@ -7,6 +7,6 @@ from kcl.model.Config import CONFIG
 
 CA = ClickApp(config=CONFIG)
 clickapp = CA.clickapp
-print(clickapp.__doc__)
+#print(clickapp.__doc__)
 #clickapp.__doc__ == "here"
 
