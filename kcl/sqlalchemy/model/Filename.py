@@ -14,6 +14,12 @@ from sqlalchemy.dialects.postgresql import BYTEA
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.sqlalchemy.BaseMixin import BASE
 
+# https://www.postgresql.org/docs/current/static/datatype-binary.html
+# https://www.postgresql.org/docs/current/static/functions-binarystring.html
+# https://stackoverflow.com/questions/6637843/query-bytea-field-in-postgres-via-command-line
+# https://dba.stackexchange.com/questions/130812/query-bytea-column-using-prefix
+# https://www.postgresql.org/message-id/1657180000.1070472048%40gnarzelwicht.delirium-arts.de
+
 
 class Filename(BASE):
     '''
@@ -23,7 +29,6 @@ class Filename(BASE):
     '''
     id = Column(Integer, primary_key=True)
 
-    #filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0"
     filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
     #filename = Column(LargeBinary(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
     filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)

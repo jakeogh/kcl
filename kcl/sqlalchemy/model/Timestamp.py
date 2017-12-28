@@ -14,6 +14,8 @@ from sqlalchemy.sql import func
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.sqlalchemy.BaseMixin import BASE
 
+# https://sqlalchemy-utils.readthedocs.io/en/latest/_modules/sqlalchemy_utils/models.html#Timestamp
+
 class Timestamp(BASE):
     id = Column(Integer, primary_key=True)
     timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, server_default=func.now())
