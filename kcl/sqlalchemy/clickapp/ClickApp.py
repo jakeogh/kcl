@@ -26,10 +26,6 @@ class ClickApp():
     @click.option('--delete-database', is_flag=True, required=False)
     @click.pass_context
     def clickapp(self, ctx, verbose, database, temp_database, delete_database):
-        #clickapp.__doc__ = "orm interface"
-        #__doc__ = self.config.appname + "orm interface"
-        #self.__doc__ = self.config.appname + "orm interface"
-        #''' clickapp orm interface'''
         if database:
             if temp_database:
                 eprint("Error: --database and --temp-database are mutually exclusive.")
