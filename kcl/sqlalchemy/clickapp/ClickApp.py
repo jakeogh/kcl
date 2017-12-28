@@ -12,7 +12,7 @@ from kcl.sqlalchemy.ipython import ipython
 from kcl.click.CONTEXT_SETTINGS import CONTEXT_SETTINGS
 #from kcl.sqlalchemy.model.BaseConfig import BASECONFIG as CONFIG
 
-CONFIG = builtin.config
+CONFIG = builtins.config
 
 __version__ = 0.01
 
