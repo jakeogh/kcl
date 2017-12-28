@@ -24,7 +24,7 @@ class ClickApp():
     def __init__(self, config):
         self.config = config
 
-    def add_doc(self, value):
+    def add_doc(self):
         def _doc(func):
             func.__doc__ = "test"
             return func
