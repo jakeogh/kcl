@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import __builtin__
+import builtins
 import click
 from sqlalchemy_utils.functions import database_exists
 from sqlalchemy_utils.functions import create_database
@@ -12,7 +12,7 @@ from kcl.sqlalchemy.ipython import ipython
 from kcl.click.CONTEXT_SETTINGS import CONTEXT_SETTINGS
 #from kcl.sqlalchemy.model.BaseConfig import BASECONFIG as CONFIG
 
-CONFIG = __builtin__.config
+CONFIG = builtin.config
 
 __version__ = 0.01
 
