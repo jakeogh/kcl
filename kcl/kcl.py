@@ -7,9 +7,9 @@ builtins.config = CONFIG
 
 from kcl.sqlalchemy.clickapp.ClickApp import clickapp
 from kcl.sqlalchemy.ipython import ipython
+from kcl.sqlalchemy.sa_display import sa_display
 
-#CA = ClickApp(config=CONFIG)
-#clickapp = CA.clickapp
 clickapp.help = CONFIG.appname + " interface"
-
 clickapp.add_command(ipython)
+clickapp.add_command(sa_display)
+
