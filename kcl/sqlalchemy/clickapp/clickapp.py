@@ -77,7 +77,7 @@ def print_database(ctx, table):
 #clickapp.add_command(create_objects, name='create')
 #clickapp.add_command(print_database)
 clickapp.add_command(ipython)
-clickapp.add_command(sa_display)
+#clickapp.add_command(sa_display)
 
 #clickapp.add_command(bookmark)
 #clickapp.add_command(show_config, name='config')
