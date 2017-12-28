@@ -30,7 +30,7 @@ def clickapp(ctx, verbose, database, temp_database, delete_database):
     elif temp_database:
         CONFIG.database = CONFIG.database_timestamp
     else:
-        CONFIG.database = CONFIG.database_real('clickapp')
+        CONFIG.database = CONFIG.database_real(CONFIG.appname)
     if delete_database:
         if database_exists(CONFIG.database):
             drop_database(CONFIG.database)
