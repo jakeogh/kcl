@@ -38,7 +38,7 @@ class FileRecord(BASE):
     filename = relationship('Filename', backref='filerecords')
 
     byteshash_id = Column(Integer, ForeignKey('byteshash.id'), unique=False, nullable=True, index=True)
-    byteshash = relationship('BytesHash', backref='files')
+    byteshash = relationship('BytesHash', backref='filerecords')
 
     timestamp = Column(DateTime(timezone=True), unique=False, nullable=False, index=True, server_default=func.now())
 
