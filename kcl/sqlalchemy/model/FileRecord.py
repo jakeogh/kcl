@@ -2,21 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
-from sqlalchemy import Table
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
-from sqlalchemy import PrimaryKeyConstraint
-from sqlalchemy import UniqueConstraint
-from sqlalchemy import CheckConstraint
 from sqlalchemy import Integer
 from sqlalchemy import BigInteger
-from sqlalchemy import String
-from sqlalchemy import UnicodeText
-from sqlalchemy import Unicode
-from sqlalchemy import Numeric
-from sqlalchemy import Enum
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import Sequence
 from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.model.Filename import Filename
@@ -25,9 +15,7 @@ from kcl.sqlalchemy.model.BytesHash import BytesHash
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.printops import eprint
 from kcl.fileops import is_regular_file
-from kcl.hashops import generate_hash
 from kcl.symlinkops import is_symlink
-from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import DateTime
 from sqlalchemy.sql import func
 
@@ -38,7 +26,6 @@ class FileRecord(BASE):
         Path
         metadata
     '''
-
     id = Column(Integer, Sequence('id_seq', start=0, minvalue=0), autoincrement=True, primary_key=True, index=True)
 
     path_id = Column(Integer, ForeignKey('path.id'), unique=False, nullable=False, index=True)
@@ -53,12 +40,7 @@ class FileRecord(BASE):
     byteshash_id = Column(Integer, ForeignKey('byteshash.id'), unique=False, nullable=True, index=True)
     byteshash = relationship('BytesHash', backref='files')
 
-    #timestamp_id = Column(Integer, ForeignKey('timestamp.id'), unique=True, nullable=False, index=True)
-    #timestamp = relationship('Timestamp', backref='file')
     timestamp = Column(DateTime(timezone=True), unique=False, nullable=False, index=True, server_default=func.now())
-    #timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, default=datetime.now())
-    #timestamp = Column(DateTime(timezone=True), unique=True, nullable=False, index=True, default=datetime.now())
-
 
     #stat_st_modes = ('S_ISDIR',
     #                 'S_ISCHR',
@@ -84,7 +66,7 @@ class FileRecord(BASE):
     stat_st_ctime = Column(Integer, unique=False, nullable=False, index=True)
 
     @classmethod
-    def construct(cls, session, inpath, debug=False):
+    def construct(cls, session, inpath):
         eprint("inpath:", inpath)
         assert isinstance(inpath, bytes)
         inpath = os.path.abspath(inpath)
@@ -105,9 +87,9 @@ class FileRecord(BASE):
                         print("skipping file >=1TB:", path)
                         #skipped_file_list.append(path)
                     else:
-                        byteshash  = BytesHash.construct(session, bytes_like_object=inpath)
+                        byteshash = BytesHash.construct(session, bytes_like_object=inpath)
                 else: #not a big file
-                    byteshash  = BytesHash.construct(session, bytes_like_object=inpath)
+                    byteshash = BytesHash.construct(session, bytes_like_object=inpath)
         else:
             byteshash = None
 
@@ -120,19 +102,19 @@ class FileRecord(BASE):
         #import IPython; IPython.embed()
         # pointless to use get_one_or_create due to using a timestamp
         result = get_one_or_create(session, FileRecord, path=path,
-                                                        filename=filename,
-                                                        symlink_target_path=symlink_target_path,
-                                                        byteshash=byteshash,
-                                                        stat_st_mode=stat.st_mode,
-                                                        stat_st_inode=stat.st_ino,
-                                                        stat_st_dev=stat.st_dev,
-                                                        stat_st_nlink=stat.st_nlink,
-                                                        stat_st_uid=stat.st_uid,
-                                                        stat_st_gid=stat.st_gid,
-                                                        stat_st_size=stat.st_size,
-                                                        stat_st_atime=stat.st_atime,
-                                                        stat_st_mtime=stat.st_mtime,
-                                                        stat_st_ctime=stat.st_ctime)
+                                   filename=filename,
+                                   symlink_target_path=symlink_target_path,
+                                   byteshash=byteshash,
+                                   stat_st_mode=stat.st_mode,
+                                   stat_st_inode=stat.st_ino,
+                                   stat_st_dev=stat.st_dev,
+                                   stat_st_nlink=stat.st_nlink,
+                                   stat_st_uid=stat.st_uid,
+                                   stat_st_gid=stat.st_gid,
+                                   stat_st_size=stat.st_size,
+                                   stat_st_atime=stat.st_atime,
+                                   stat_st_mtime=stat.st_mtime,
+                                   stat_st_ctime=stat.st_ctime)
 
         return result
 
