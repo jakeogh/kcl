@@ -3,24 +3,18 @@
 
 import os
 from sqlalchemy import Table
-from sqlalchemy import Column           #                                                                                                                               http://docs.sqlalchemy.org/en/rel_0_9/core/metadata.html#sqlalchemy.schema.Column
-from sqlalchemy import ForeignKey       #                                                                                                                               http://docs.sqlalchemy.org/en/rel_0_9/core/metadata.html#sqlalchemy.schema.Column
+from sqlalchemy import Column
+from sqlalchemy import ForeignKey
 from sqlalchemy import PrimaryKeyConstraint
 from sqlalchemy import UniqueConstraint
-from sqlalchemy import CheckConstraint  #                                                                                                                               http://docs.sqlalchemy.org/en/rel_0_9/core/constraints.html#check-constraint
-
-from sqlalchemy import Integer          # int4 integer    4 bytes -2147483648 to +2147483647 1,400,384,814(typical timestamp)                                           http://docs.sqlalchemy.org/en/rel_0_9/core/type_basics.html#sqlalchemy.types.uInteger
-from sqlalchemy import BigInteger       # int8 bigint     8 bytes -9223372036854775808 to +9223372036854775807                                                          http://www.postgresql.org/docs/9.4/static/datatype-numeric.html
-from sqlalchemy import String           #The base for all string and character types. In SQL, corresponds to VARCHAR. Can also take py unicode is db bind set           http://docs.sqlalchemy.org/en/rel_0_9/core/type_basics.html#sqlalchemy.types.String
-from sqlalchemy import UnicodeText      #An unbounded-length Unicode string type.
-from sqlalchemy import Unicode          #The Unicode type is a String subclass that assumes input and output as Python unicode data                                     http://docs.sqlalchemy.org/en/rel_0_9/core/type_basics.html#sqlalchemy.types.Unicode
-                                        #in pgsql this is VARCHAR: http://www.postgresql.org/docs/9.2/static/datatype-character.html
-from sqlalchemy import Numeric          #A type for fixed precision numbers, such as NUMERIC or DECIMAL.                                                                http://docs.sqlalchemy.org/en/rel_0_9/core/type_basics.html#sqlalchemy.types.Numeric
-from sqlalchemy import Enum             #Generic Enum Type. By default, uses the backend’s native ENUM type if available, else uses VARCHAR + a CHECK constraint.       http://docs.sqlalchemy.org/en/rel_0_9/core/type_basics.html#sqlalchemy.types.Enum
-#from sqlalchemy import LargeBinary      #A type for large binary byte data. PG: bytea (i think)                                                                         http://www.postgresql.org/docs/9.4/static/datatype-binary.html
-#from sqlalchemy.types import BINARY     #SQL BINARY type                                                                                                                http://docs.sqlalchemy.org/en/rel_1_0/core/type_basics.html#sqlalchemy.types.BINARY
-#from sqlalchemy.types import CHAR       #fixed length string (unicode?)                                                                                                 http://www.postgresql.org/docs/9.4/static/datatype-character.html
-#from sqlalchemy.dialects.postgresql import BYTEA
+from sqlalchemy import CheckConstraint
+from sqlalchemy import Integer
+from sqlalchemy import BigInteger
+from sqlalchemy import String
+from sqlalchemy import UnicodeText
+from sqlalchemy import Unicode
+from sqlalchemy import Numeric
+from sqlalchemy import Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import Sequence
@@ -36,7 +30,6 @@ from kcl.symlinkops import is_symlink
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import DateTime
 from sqlalchemy.sql import func
-#from datetime import datetime
 
 class FileRecord(BASE):
     '''
@@ -55,7 +48,7 @@ class FileRecord(BASE):
     symlink_target_path = relationship('Path', foreign_keys=[symlink_target_path_id], backref='targets')
 
     filename_id = Column(Integer, ForeignKey('filename.id'), unique=False, nullable=False, index=True)
-    filename = relationship('Filename', backref='files')
+    filename = relationship('Filename', backref='filerecords')
 
     byteshash_id = Column(Integer, ForeignKey('byteshash.id'), unique=False, nullable=True, index=True)
     byteshash = relationship('BytesHash', backref='files')
