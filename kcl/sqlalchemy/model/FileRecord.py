@@ -92,8 +92,8 @@ class FileRecord(BASE):
         path, filename = os.path.split(inpath)
         stat = os.stat(inpath, follow_symlinks=False)
 
-        path      = Path.construct(session, path=path)
-        filename  = Filename.construct(session, filename=filename)
+        path = Path.construct(session, path=path)
+        filename = Filename.construct(session, filename=filename)
 
         if is_regular_file(inpath): #this stuff should be in BytesHash.construct
             if stat.st_size == 0:
