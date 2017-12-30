@@ -27,7 +27,7 @@ setup(
     install_requires=dependencies,
     entry_points={
         'console_scripts': [
-            'kcl = kcl.kcl:clickapp',
+            'kcl = kcl.kcl:kcl',
         ],
     },
     classifiers=[
