@@ -72,16 +72,16 @@ class FileRecord(BASE):
     #                 'S_ISWHT')
     #stat_st_mode = Column(Enum(*stat_st_modes, name='stat_st_modes_enum'), unique=False, nullable=False, index=True)
 
-    stat_st_mode  = Column(Integer,    unique=False, nullable=False, index=True)
+    stat_st_mode = Column(Integer, unique=False, nullable=False, index=True)
     stat_st_inode = Column(BigInteger, unique=False, nullable=False, index=True)
-    stat_st_dev   = Column(Integer,    unique=False, nullable=False, index=True)
+    stat_st_dev = Column(Integer, unique=False, nullable=False, index=True)
     stat_st_nlink = Column(BigInteger, unique=False, nullable=False, index=True)
-    stat_st_uid   = Column(Integer,    unique=False, nullable=False, index=True)
-    stat_st_gid   = Column(Integer,    unique=False, nullable=False, index=True)
-    stat_st_size  = Column(BigInteger, unique=False, nullable=False, index=True)
-    stat_st_atime = Column(Integer,    unique=False, nullable=False, index=True)
-    stat_st_mtime = Column(Integer,    unique=False, nullable=False, index=True)
-    stat_st_ctime = Column(Integer,    unique=False, nullable=False, index=True)
+    stat_st_uid = Column(Integer, unique=False, nullable=False, index=True)
+    stat_st_gid = Column(Integer, unique=False, nullable=False, index=True)
+    stat_st_size = Column(BigInteger, unique=False, nullable=False, index=True)
+    stat_st_atime = Column(Integer, unique=False, nullable=False, index=True)
+    stat_st_mtime = Column(Integer, unique=False, nullable=False, index=True)
+    stat_st_ctime = Column(Integer, unique=False, nullable=False, index=True)
 
     @classmethod
     def construct(cls, session, inpath, debug=False):
