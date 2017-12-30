@@ -9,7 +9,6 @@ kcl.help = CONFIG.appname + " interface"
 CONFIG.appobject = kcl
 
 from kcl.sqlalchemy.clickapp.default import *
-#CONFIG.appobject.add_command(ipython)
 
 #from kcl.sqlalchemy.visualization.sa_display import sa_display
 #kcl.add_command(sa_display)
