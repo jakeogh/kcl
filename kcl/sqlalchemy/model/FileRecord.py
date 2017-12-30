@@ -42,7 +42,7 @@ class FileRecord(BASE):
     id = Column(Integer, Sequence('id_seq', start=0, minvalue=0), autoincrement=True, primary_key=True, index=True)
 
     path_id = Column(Integer, ForeignKey('path.id'), unique=False, nullable=False, index=True)
-    path = relationship('Path', foreign_keys=[path_id], backref='files')
+    path = relationship('Path', foreign_keys=[path_id], backref='filerecords')
 
     symlink_target_path_id = Column(Integer, ForeignKey('path.id'), unique=False, nullable=True, index=True)
     symlink_target_path = relationship('Path', foreign_keys=[symlink_target_path_id], backref='targets')
