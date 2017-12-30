@@ -9,5 +9,8 @@ from kcl.printops import eprint
 @click.command()
 def show_config():
     print_object_attrs(CONFIG)
-    print_object_attrs(CONFIG.sa_config)
+    try:
+        print_object_attrs(CONFIG.sa_config)
+    except AttributeError:
+        pass #temp for iridb fixme
 
