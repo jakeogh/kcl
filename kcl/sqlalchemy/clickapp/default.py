@@ -3,8 +3,11 @@
 import builtins
 CONFIG = builtins.config
 
-from kcl.sqlalchemy.clickapp.cli.debug.ipython import ipython
-CONFIG.appobject.add_command(ipython)
+#from kcl.sqlalchemy.clickapp.cli.debug.ipython import ipython
+#CONFIG.appobject.add_command(ipython)
+
+from kcl.sqlalchemy.clickapp.cli.debug import debug
+CONFIG.appobject.add_command(debug)
 
 from kcl.sqlalchemy.clickapp.print_database import print_database
 CONFIG.appobject.add_command(print_database)
