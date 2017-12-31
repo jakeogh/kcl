@@ -19,8 +19,9 @@ __version__ = 0.01
 @click.option('--database', is_flag=False, type=str, required=False)
 @click.option('--temp-database', is_flag=True, required=False)
 @click.option('--delete-database', is_flag=True, required=False)
+@click.option('--start-pudb', is_flag=True, required=False)
 @click.pass_context
-def clickapp(ctx, verbose, database, temp_database, delete_database):
+def clickapp(ctx, verbose, database, temp_database, delete_database, start_pudb):
     if database:
         if temp_database:
             eprint("Error: --database and --temp-database are mutually exclusive.")
@@ -41,4 +42,6 @@ def clickapp(ctx, verbose, database, temp_database, delete_database):
         eprint(CONFIG.database)
         CONFIG.database_echo = True
     ctx.obj = CONFIG
+    if start_pudb:
+        from pudb import set_trace; set_trace(paused=True)
 
