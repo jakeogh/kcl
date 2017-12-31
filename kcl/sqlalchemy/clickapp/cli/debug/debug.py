@@ -8,4 +8,3 @@ def debug():
     pass
 
 debug.add_command(ipython)
-debug.add_command(start_pudb, name='pudb')
