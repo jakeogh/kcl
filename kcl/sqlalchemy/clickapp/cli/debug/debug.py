@@ -7,4 +7,4 @@ from kcl.sqlalchemy.clickapp.cli.debug.ipython import ipython
 def debug():
     pass
 
-create_objects.add_command(ipython)
+debug.add_command(ipython)
