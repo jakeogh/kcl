@@ -3,6 +3,8 @@
 import builtins
 CONFIG = builtins.config
 
+from kcl.printops import eprint
+
 #from kcl.sqlalchemy.clickapp.cli.debug.ipython import ipython
 #CONFIG.appobject.add_command(ipython)
 
