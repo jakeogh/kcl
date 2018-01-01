@@ -7,4 +7,4 @@ from kcl.sqlalchemy.clickapp.cli.database.tables import tables
 def database():
     pass
 
-debug.add_command(tables)
+database.add_command(tables)
