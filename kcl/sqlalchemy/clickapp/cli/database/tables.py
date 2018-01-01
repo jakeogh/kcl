@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import click
-from kcl.sqlalchemy.list_tables import list_tables as sqla_list_tables
+from kcl.sqlalchemy.table_list import table_list as sqla_list_tables
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 
 @click.command()
