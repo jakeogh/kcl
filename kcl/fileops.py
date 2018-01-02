@@ -231,8 +231,7 @@ def is_regular_file(path):
     mode = os.stat(path, follow_symlinks=False)[stat.ST_MODE]
     if stat.S_ISREG(mode):
         return True
-    else:
-        return False
+    return False
 
 if __name__ == '__main__':
     quit(0)
