@@ -133,7 +133,7 @@ def read_file_bytes(path):
 
 def read_file_bytes_or_exit(infile):
     try:
-        with open(infile,'rb') as string_fh:
+        with open(infile, 'rb') as string_fh:
             string = string_fh.read()
             if len(string) == 0:
                 eprint("Error, read empty file: " + infile)
