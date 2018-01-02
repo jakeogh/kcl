@@ -14,16 +14,6 @@ from shutil import copyfileobj
 import stat
 from .printops import eprint
 
-def all_files(folder):
-    #all_files = [os.path.join(path, filename) for path, dirs, files in os.walk(folder) for filename in files]
-    all_files = []
-    for path, dirs, files in os.walk(folder):
-        for filename in files:
-            all_files.append(os.path.join(path, filename))
-        for d in dirs:
-            all_files.append(os.path.join(path, d))
-    return all_files
-
 def comment_out_line_in_file(file_path, line_to_match):
     '''
     add a # to the beginning of all instances of line_to_match
