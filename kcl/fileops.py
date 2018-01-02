@@ -10,8 +10,8 @@
 import time
 import os
 import shutil
-import pprint
-import psutil
+#import pprint
+#import psutil
 from shutil import copyfileobj
 import stat
 from .printops import eprint
@@ -248,7 +248,6 @@ def is_regular_file(path):
         return True
     else:
         return False
-
 
 if __name__ == '__main__':
     quit(0)
