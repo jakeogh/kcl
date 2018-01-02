@@ -151,8 +151,6 @@ def path_is_block_special(path):
         mode = os.stat(path, follow_symlinks=False).st_mode
         if stat.S_ISBLK(mode):
             return True
-        else:
-            return False
     return False
 
 
