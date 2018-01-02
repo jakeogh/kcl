@@ -153,8 +153,7 @@ def path_is_block_special(path):
             return True
         else:
             return False
-    else:
-        return False
+    return False
 
 
 def get_file_size(filename):
