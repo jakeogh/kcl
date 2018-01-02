@@ -10,8 +10,6 @@
 import time
 import os
 import shutil
-#import pprint
-#import psutil
 from shutil import copyfileobj
 import stat
 from .printops import eprint
