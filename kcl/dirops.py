@@ -17,15 +17,16 @@ import subprocess
 import stat
 from .printops import eprint
 
-def all_files(folder): #todo add flags for recursive, follow symlinks etc, return a generator
+def all_files(folder, files_only=False): #todo add flags for recursive, follow symlinks etc, return a generator
     assert path_is_dir(folder)
     ##all_files = [os.path.join(path, filename) for path, dirs, files in os.walk(folder) for filename in files]
     all_files = []
     for path, dirs, files in os.walk(folder):
         for filename in files:
             all_files.append(os.path.join(path, filename))
-        for d in dirs:
-            all_files.append(os.path.join(path, d))
+        if not files_only:
+            for d in dirs:
+                all_files.append(os.path.join(path, d))
     return all_files
 
 def count_files(folder):
