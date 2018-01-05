@@ -45,7 +45,7 @@ class Path(BASE):
     pathfilenames = relationship("PathFilename", backref='path')
 
     def __init__(self, session, path):
-        assert isinstance(path, str)
+        assert isinstance(path, bytes)
         assert not find_path(session=session, path=path) # because get_one_or_create should have already found it
         for index, filename in enumerate(path.split(b'/')):
             previous_position = index - 1
@@ -58,7 +58,7 @@ class Path(BASE):
         session.flush(objects=[self])
 
     def __repr__(self):
-        return str(self.path)
+        return str(bytes(self.path))
 
     @classmethod
     def construct(cls, session, path, **kwargs):
