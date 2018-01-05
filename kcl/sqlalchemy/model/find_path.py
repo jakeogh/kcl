@@ -15,7 +15,7 @@ def find_path(session, path):
     '''
     corrected_path = path
     possible_path_set = set([])
-    assert isinstance(path, str)
+    assert isinstance(path, bytes)
 
     corrected_path = path
     corrected_path_split = corrected_path.split(' ')
