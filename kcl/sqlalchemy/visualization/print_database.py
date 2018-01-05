@@ -28,7 +28,10 @@ def print_database(database, table, contents):
                 print('\n' + table_name + ':')
             columns = inspector.get_columns(table_name)
             for column in columns:
-                print("%s, " % column['name'], end='')
+                if table:
+                    print(column['name'])
+                else:
+                    print("%s, " % column['name'], end='')
             print('\n', end='')
             if contents:
                 select_statement = "select * from " + table_name + ";"
