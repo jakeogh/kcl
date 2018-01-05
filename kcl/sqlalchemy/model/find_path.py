@@ -18,7 +18,7 @@ def find_path(session, path):
     assert isinstance(path, bytes)
 
     corrected_path = path
-    corrected_path_split = corrected_path.split(' ')
+    corrected_path_split = corrected_path.split(b'/')
 
     try:
         for index, filename in enumerate(corrected_path_split):
