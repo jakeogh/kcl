@@ -75,7 +75,7 @@ class Path(BASE):
 
     @property
     def path(self):  # appears to always return the same result as path_with_checks()
-        path = b'/'.join([filename for filename in self.filenames])
+        path = b'/'.join([filename.filename for filename in self.filenames])
         return path
 
     @hybrid_property
