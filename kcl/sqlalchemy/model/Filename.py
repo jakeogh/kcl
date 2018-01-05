@@ -40,7 +40,7 @@ class Filename(BASE):
         return result
 
     def __repr__(self):
-        return b"<Filename(filename='%s')>" % (self.filename)
+        return "<Filename(filename='%s')>" % (str(self.filename))
 
     #def __repr__(self):
     #    return str(self.filename)
