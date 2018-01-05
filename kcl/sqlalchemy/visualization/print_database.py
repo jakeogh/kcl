@@ -32,7 +32,8 @@ def print_database(database, table, contents):
                     print(column['name'])
                 else:
                     print("%s, " % column['name'], end='')
-            print('\n', end='')
+            if not table:
+                print('\n', end='')
             if contents:
                 select_statement = "select * from " + table_name + ";"
                 pprint.pprint(session.execute(select_statement).fetchall())
