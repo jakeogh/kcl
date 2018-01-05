@@ -11,7 +11,8 @@ from kcl.printops import eprint
 @click.command()
 @click.argument('database')
 @click.option('--table', type=str, default=False)
-def print_database(database, table):
+@click.option('--contents', is_flag=True)
+def print_database(database, table, contents):
     with self_contained_session(database) as session:
         inspector = sqlalchemy_inspect(session.bind)
         table_list = sorted(inspector.get_table_names())
@@ -23,10 +24,12 @@ def print_database(database, table):
             if table:
                 if table_name != table:
                     continue
-            print('\n' + table_name + ':')
+            else:
+                print('\n' + table_name + ':')
             columns = inspector.get_columns(table_name)
             for column in columns:
                 print("%s, " % column['name'], end='')
             print('\n', end='')
-            select_statement = "select * from " + table_name + ";"
-            pprint.pprint(session.execute(select_statement).fetchall())
+            if contents:
+                select_statement = "select * from " + table_name + ";"
+                pprint.pprint(session.execute(select_statement).fetchall())
