@@ -57,8 +57,6 @@ class Path(BASE):
         session.add(self)
         session.flush(objects=[self])
 
-    def __repr__(self):
-        return str(bytes(self.path))
 
     @classmethod
     def construct(cls, session, path, **kwargs):
@@ -84,7 +82,16 @@ class Path(BASE):
         for pathfilename in self.pathfilenames:
             # path_filename = getattr(filename, self.pathfilename)
             filename_list.append(pathfilename.filename)
-        return filename_list # cant be a set because "a a" -> "a"
+        return filename_list  # cant be a set because "a a" -> "a"
+
+
+    def __repr__(self):
+        return "<Path(path=%s)>" % (str(self.path))
+
+    def __bytes__(self):
+        return self.path
+
+
 
 
 #class PathClassConstructor():
