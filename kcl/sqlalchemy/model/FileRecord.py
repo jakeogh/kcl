@@ -66,18 +66,18 @@ class FileRecord(BASE):
     stat_st_ctime = Column(Integer, unique=False, nullable=False, index=True)
 
     @classmethod
-    def construct(cls, session, inpath):
-        eprint("inpath:", inpath)
-        assert isinstance(inpath, bytes)
-        inpath = os.path.abspath(inpath)
-        assert inpath.startswith(b'/')
-        path, filename = os.path.split(inpath)
-        stat = os.stat(inpath, follow_symlinks=False)
+    def construct(cls, session, path):
+        eprint("path:", path)
+        assert isinstance(path, bytes)
+        abspath = os.path.abspath(path)
+        assert abspath.startswith(b'/')
+        path, filename = os.path.split(abspath)
+        stat = os.stat(abspath, follow_symlinks=False)
 
         path = Path.construct(session, path=path)
         filename = Filename.construct(session, filename=filename)
 
-        if is_regular_file(inpath): #this stuff should be in BytesHash.construct
+        if is_regular_file(abspath): #this stuff should be in BytesHash.construct
             if stat.st_size == 0:
                 byteshash = None
             else:
@@ -87,14 +87,14 @@ class FileRecord(BASE):
                         print("skipping file >=1TB:", path)
                         #skipped_file_list.append(path)
                     else:
-                        byteshash = BytesHash.construct(session, bytes_like_object=inpath)
+                        byteshash = BytesHash.construct(session, bytes_like_object=abspath)
                 else: #not a big file
-                    byteshash = BytesHash.construct(session, bytes_like_object=inpath)
+                    byteshash = BytesHash.construct(session, bytes_like_object=abspath)
         else:
             byteshash = None
 
-        if is_symlink(inpath):
-            symlink_target = os.readlink(inpath)
+        if is_symlink(abspath):
+            symlink_target = os.readlink(abspath)
             symlink_target_path = Path.construct(session, path=symlink_target)
         else:
             symlink_target_path = None
