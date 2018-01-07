@@ -2,7 +2,7 @@
 
 import click
 from kcl.printops import eprint
-from fsindex.cli._mcreate.record import record
+from kcl.sqlalchemy.clickapp.cli._mcreate.record import record
 
 @click.group()
 def _mcreate():
