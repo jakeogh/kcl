@@ -7,7 +7,7 @@ from kcl.printops import print_object_attrs
 from kcl.printops import eprint
 
 @click.command()
-def show_config():
+def config():
     print_object_attrs(CONFIG)
     try:
         print_object_attrs(CONFIG.sa_config)
