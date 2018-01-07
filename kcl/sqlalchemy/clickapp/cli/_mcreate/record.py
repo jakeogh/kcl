@@ -17,11 +17,7 @@ def record(config, class_name):
         full_class_path = class_path + '.' + class_name
         #globals()[class_name] = __import__(full_class_path, globals=globals(), locals=locals(), fromlist=[class_name], level=0)
         globals()[class_name] = getattr(__import__(full_class_path, globals=globals(), locals=locals(), fromlist=[class_name], level=0), class_name)
-        #cmd_to_eval = class_name + ' = ' + class_name + '.' + class_name
-        #print(cmd_to_eval)
-        #exec(cmd_to_eval)
-
-        #class_name = getattr(class_name, class_name)
+        new_object = globals()[class_name].construct()
         import IPython; IPython.embed()
         #session.commit()
         #print(bytes(filerecord))
