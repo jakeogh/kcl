@@ -2,11 +2,11 @@
 
 import click
 from kcl.sqlalchemy.self_contained_session import self_contained_session
-#from kcl.sqlalchemy.model.FileRecord import FileRecord
 from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.click.CONTEXT_SETTINGS import CONTEXT_SETTINGS
 CONTEXT_SETTINGS['ignore_unknown_options'] = True
 CONTEXT_SETTINGS['allow_extra_args'] = True
+
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument('class_name', type=str, nargs=1)
@@ -21,8 +21,6 @@ def record(ctx, class_name):
         class_name = class_name.split('.')[-1]
         full_class_path = class_path + '.' + class_name
         globals()[class_name] = getattr(__import__(full_class_path, globals=globals(), locals=locals(), fromlist=[class_name], level=0), class_name)
-        print(ctx.args)
         new_object = globals()[class_name].construct(session=session, **d)
-        import IPython; IPython.embed()
-        #session.commit()
-        #print(bytes(filerecord))
+        session.add(new_object)
+        session.commit()
