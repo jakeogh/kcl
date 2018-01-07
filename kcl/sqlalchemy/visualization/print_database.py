@@ -16,6 +16,7 @@ def print_database(database, table, contents):
     with self_contained_session(database) as session:
         inspector = sqlalchemy_inspect(session.bind)
         table_list = sorted(inspector.get_table_names())
+        max_length_table_name = max(table_list, key=len)
         if table:
             if table not in table_list:
                 eprint("table: '%s' is not in table_list: %s" % (table, table_list))
@@ -25,7 +26,7 @@ def print_database(database, table, contents):
                 if table_name != table:
                     continue
             else:
-                print('\n' + table_name + ': ', end='')
+                print('\n' + table_name + ':'.lpad(max_length_table_name), end='')
             columns = inspector.get_columns(table_name)
             for column in columns:
                 if table:
