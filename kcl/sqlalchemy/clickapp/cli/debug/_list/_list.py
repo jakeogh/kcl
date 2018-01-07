@@ -14,9 +14,6 @@ CONTEXT_SETTINGS['allow_extra_args'] = True
 def _list(ctx, class_name):
     with self_contained_session(ctx.obj.database) as session:
         BASE.metadata.create_all(session.bind)
-        d = dict()
-        for item in ctx.args:
-            d.update([item.split('=')])
         class_path = '.'.join(class_name.split('.')[0:-1])
         class_name = class_name.split('.')[-1]
         full_class_path = class_path + '.' + class_name
