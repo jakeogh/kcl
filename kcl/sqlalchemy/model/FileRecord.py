@@ -67,7 +67,7 @@ class FileRecord(BASE):
 
     @classmethod
     def construct(cls, session, path):
-        eprint("path:", path)
+        #eprint("path:", path)
         if not isinstance(path, bytes):
             path = bytes(path, encoding='UTF8') # allow command line args
         abspath = os.path.abspath(path)
