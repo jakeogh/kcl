@@ -75,8 +75,8 @@ class FileRecord(BASE):
         path, filename = os.path.split(abspath)
         stat = os.stat(abspath, follow_symlinks=False)
 
-        path = Path.construct(session, path=path)
-        filename = Filename.construct(session, filename=filename)
+        path = Path.construct(session=session, path=path)
+        filename = Filename.construct(session=session, filename=filename)
 
         if is_regular_file(abspath): #this stuff should be in BytesHash.construct
             if stat.st_size == 0:
@@ -96,7 +96,7 @@ class FileRecord(BASE):
 
         if is_symlink(abspath):
             symlink_target = os.readlink(abspath)
-            symlink_target_path = Path.construct(session, path=symlink_target)
+            symlink_target_path = Path.construct(session=session, path=symlink_target)
         else:
             symlink_target_path = None
 
