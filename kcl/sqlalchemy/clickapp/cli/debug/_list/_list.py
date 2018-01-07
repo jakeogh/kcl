@@ -11,7 +11,7 @@ CONTEXT_SETTINGS['allow_extra_args'] = True
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument('class_name', type=str, nargs=1)
 @click.pass_context
-def create(ctx, class_name):
+def _list(ctx, class_name):
     with self_contained_session(ctx.obj.database) as session:
         BASE.metadata.create_all(session.bind)
         d = dict()
@@ -21,6 +21,6 @@ def create(ctx, class_name):
         class_name = class_name.split('.')[-1]
         full_class_path = class_path + '.' + class_name
         globals()[class_name] = getattr(__import__(full_class_path, globals=globals(), locals=locals(), fromlist=[class_name], level=0), class_name)
-        new_object = globals()[class_name].construct(session=session, **d)
-        session.add(new_object)
-        session.commit()
+        object_generator = session.query(globals()[class_name])
+        for obj in object_generator:
+            print(obj)
