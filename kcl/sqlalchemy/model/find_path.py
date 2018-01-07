@@ -28,7 +28,7 @@ def find_path(session, path):
             pathfilename_list = session.query(PathFilename).filter_by(filename=filename, position=index).all()
             ceprint("pathfilename_list:", pathfilename_list)
             if pathfilename_list:
-                pathfilename_list_path_set = set([pathfilename.path for pathfilename in pathfilename_list])
+                pathfilename_list_path_set = set([pathfilename.filename for pathfilename in pathfilename_list])
                 ceprint("pathfilename_list_path_set:", pathfilename_list_path_set)
                 if not possible_path_set:
                     possible_path_set = pathfilename_list_path_set
