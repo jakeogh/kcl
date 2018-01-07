@@ -28,49 +28,47 @@ def find_path(session, path):
         for index, filename in enumerate(path_split):
             ceprint(index, filename)
             filename = session.query(Filename).filter_by(filename=filename).one()
-            ceprint("filename:", filename)
+            #ceprint("filename:", filename)
 
             pathfilenames_that_match_filename = session.query(PathFilename).filter_by(filename=filename, position=index).all()
-            ceprint("pathfilenames_that_match_filename:")
-            for pf in pathfilenames_that_match_filename:
-                ceprint(pf)
+            #ceprint("pathfilenames_that_match_filename:")
+            #for pf in pathfilenames_that_match_filename:
+            #    ceprint(pf)
 
             paths_that_match_filename = set([pathfilename.path for pathfilename in pathfilenames_that_match_filename])
-            ceprint("paths_that_match_filename:")
-            for pf in paths_that_match_filename:
-                ceprint(pf)
+            #ceprint("paths_that_match_filename:")
+            #for pf in paths_that_match_filename:
+            #    ceprint(pf)
 
             if len(possible_path_set) == 0:
                 assert index == 0
                 possible_path_set = paths_that_match_filename
-                ceprint("*possible_path_set:")
+            #    ceprint("*possible_path_set:")
             else:
                 possible_path_set = possible_path_set & paths_that_match_filename
-                ceprint("possible_path_set:")
-            for pf in possible_path_set:
-                ceprint(pf)
+            #    ceprint("possible_path_set:")
+            #for pf in possible_path_set:
+            #    ceprint(pf)
 
             for pathfilename in pathfilenames_that_match_filename:
                 #if index == 0:  # only add paths that start with the correct filename
                 #    possible_path_set.add(pathfilename.path)
                 #else:
                 if pathfilename.path not in possible_path_set:
-                    ceprint(" pathfilename.path not in possible_path_set, returning False")
+                    #ceprint(" pathfilename.path not in possible_path_set, returning False")
                     return False
 
             if not possible_path_set:
-                ceprint("not possible_path_set, returning False")
+                #ceprint("not possible_path_set, returning False")
                 return False
 
             if len(possible_path_set) == 1:
                 last_path = list(possible_path_set)[0]
-                ceprint("last_path:", last_path)
-                #last_path_text = str(last_path)
-                #ceprint("last_path_text:", last_path_text)
+                #ceprint("last_path:", last_path)
                 if last_path.path == path:
                     return last_path
                 return False
 
     except NoResultFound:  # any failed query
-        ceprint("NoResultFound returning False")
+        #ceprint("NoResultFound returning False")
         return False
