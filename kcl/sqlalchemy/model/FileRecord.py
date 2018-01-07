@@ -127,7 +127,7 @@ class FileRecord(BASE):
         return outfile
 
     def __repr__(self):
-        return str(bytes(self))
+        return "<FileRecord(id=%s path=%s filename=%s)>" % (str(self.id), str(self.path), str(self.filename))
 
     #@hybrid_property
     #def tags(self):
