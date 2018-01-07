@@ -4,6 +4,7 @@ import click
 from kcl.sqlalchemy.clickapp.cli.debug.ipython import ipython
 from kcl.sqlalchemy.clickapp.cli.debug.database.database import database
 from kcl.sqlalchemy.clickapp.cli.debug.config import config
+from kcl.sqlalchemy.clickapp.cli.debug.create.create import create
 
 @click.group()
 def debug():
@@ -12,3 +13,4 @@ def debug():
 debug.add_command(ipython)
 debug.add_command(database)
 debug.add_command(config)
+debug.add_command(create)
