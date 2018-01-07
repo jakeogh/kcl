@@ -34,6 +34,7 @@ from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
+from kcl.printops import ceprint
 from kcl.sqlalchemy.BaseMixin import BASE
 from .Filename import Filename
 from .PathFilename import PathFilename
