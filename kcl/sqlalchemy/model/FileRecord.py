@@ -130,7 +130,7 @@ class FileRecord(BASE):
         #return "<FileRecord(id=%s path=%s filename=%s byteshash=%s)>" % (str(self.id), str(self.path), str(self.filename), str(self.byteshash))
         return "<FileRecord(id=%s path=%s filename=%s)>" % (str(self.id), str(self.path), str(self.filename))
 
-    @property
+    @hybrid_property
     def file(self):
         return b'/'.join([bytes(self.path), bytes(self.filename)])
 
