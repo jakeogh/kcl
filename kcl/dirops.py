@@ -7,15 +7,18 @@
 #
 # common dir functions
 
-import time
 import os
-import shutil
-import pprint
-import psutil
 from shutil import copyfileobj
-import subprocess
-import stat
 from .printops import eprint
+
+def all_files_iter(p):
+    yield p
+    for sub in p.iterdir():
+        if sub.is_dir():
+            yield from all_files_iter(sub)
+        else:
+            yield sub
+
 
 def all_files(folder, files_only=False): #todo add flags for recursive, follow symlinks etc, return a generator
     assert path_is_dir(folder)
@@ -37,7 +40,6 @@ def count_files(folder):
 
 def list_files(folder):
     all_files = []
-    total = 0
     for root, dirs, files in os.walk(folder):
         for file in files:
             relative_file_path = root + b'/' + file
@@ -96,7 +98,4 @@ def chdir_or_exit(targetdir):
         os._exit(1)
     return True
 
-
-if __name__ == '__main__':
-    quit(0)
 
