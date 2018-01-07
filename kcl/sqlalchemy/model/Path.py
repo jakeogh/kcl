@@ -59,7 +59,7 @@ class Path(BASE):
 
 
     @classmethod
-    def construct(cls, session, path, **kwargs):
+    def construct(cls, *, session, path, **kwargs):
         '''
         prevents creation of duplicate paths
         prevents creation of a path that conflicts with an existing alias
