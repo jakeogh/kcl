@@ -26,7 +26,7 @@ def find_path(session, path):
 
     try:
         for index, filename in enumerate(path_split):
-            ceprint(index, filename)
+            #ceprint(index, filename)
             filename = session.query(Filename).filter_by(filename=filename).one()
             #ceprint("filename:", filename)
 
