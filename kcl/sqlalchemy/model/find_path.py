@@ -29,6 +29,7 @@ def find_path(session, path):
             ceprint("pathfilename_list:", pathfilename_list)
             if pathfilename_list:
                 pathfilename_list_path_set = set([pathfilename.path for pathfilename in pathfilename_list])
+                ceprint("pathfilename_list_path_set:", pathfilename_list_path_set)
                 if not possible_path_set:
                     possible_path_set = pathfilename_list_path_set
                 else:
