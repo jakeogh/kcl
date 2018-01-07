@@ -83,9 +83,9 @@ class FileRecord(BASE):
                 byteshash = None
             else:
                 if stat.st_size >= 1024*1024*1024: #1GB
-                    print("hashing file >1GB:", path, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
+                    print("hashing file >1GB:", abspath, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
                     if stat.st_size >= 1024*1024*1024*1024: #1TB
-                        print("skipping file >=1TB:", path)
+                        print("skipping file >=1TB:", abspath)
                         #skipped_file_list.append(path)
                     else:
                         byteshash = BytesHash.construct(session, bytes_like_object=abspath)
