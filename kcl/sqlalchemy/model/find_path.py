@@ -5,8 +5,10 @@
 from sqlalchemy.orm.exc import NoResultFound
 from .Filename import Filename
 from .PathFilename import PathFilename
+from kcl.printops import ceprint
 
 def find_path(session, path):
+    ceprint("path:", path)
     '''
     iterates over the pathfilenames table to check for a existing path
     returns the path if found, else returns False

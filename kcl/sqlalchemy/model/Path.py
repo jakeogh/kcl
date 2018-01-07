@@ -71,6 +71,7 @@ class Path(BASE):
         existing_path = find_path(session=session, path=path)
         if existing_path:
             return existing_path
+        ceprint("new_path:", path)
         new_path = cls(path=path, session=session)
         return new_path
 
