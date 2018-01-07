@@ -130,6 +130,10 @@ class FileRecord(BASE):
         #return "<FileRecord(id=%s path=%s filename=%s byteshash=%s)>" % (str(self.id), str(self.path), str(self.filename), str(self.byteshash))
         return "<FileRecord(id=%s path=%s filename=%s)>" % (str(self.id), str(self.path), str(self.filename))
 
+    @property
+    def file(self):
+        return b'/'.join([self.path, self.filename])
+
     #@hybrid_property
     #def tags(self):
     #    tags = []
