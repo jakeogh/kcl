@@ -66,7 +66,7 @@ class Path(BASE):
         '''
         assert path
         if isinstance(path, str):
-            filename = bytes(path, encoding='UTF8') # handle command line input
+            path = bytes(path, encoding='UTF8') # handle command line input
 
         existing_path = find_path(session=session, path=path)
         if existing_path:
