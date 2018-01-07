@@ -14,6 +14,7 @@ from .printops import eprint
 def all_files_iter(p):
     yield p
     for sub in p.iterdir():
+        eprint("sub:", sub)
         if sub.is_symlink(): # must be before is_dir()
             yield sub
         if sub.is_dir():
