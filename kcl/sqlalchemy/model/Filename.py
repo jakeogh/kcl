@@ -37,7 +37,7 @@ class Filename(BASE):
     def construct(cls, *, session, filename):
         #print("Filename.construct()")
         assert filename #hm..
-        if instance(filename, str):
+        if isinstance(filename, str):
             filename = bytes(filename, encoding='UTF8') # handle command line input
         result = get_one_or_create(session, Filename, filename=filename)
         return result
