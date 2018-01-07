@@ -42,4 +42,5 @@ def print_database(database, table, contents):
                 if data:
                     print(' '*pad, end='')
                     for result in data:
-                        pprint.pprint(' '*pad, result)
+                        print(' '*pad, end='')
+                        pprint.pprint(result)
