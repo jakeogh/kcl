@@ -16,7 +16,7 @@ def print_database(database, table, contents):
     with self_contained_session(database) as session:
         inspector = sqlalchemy_inspect(session.bind)
         table_list = sorted(inspector.get_table_names())
-        pad = len(max(table_list, key=len)) + 3
+        pad = len(max(table_list, key=len)) + 2
         if table:
             if table not in table_list:
                 eprint("table: '%s' is not in table_list: %s" % (table, table_list))
@@ -27,7 +27,7 @@ def print_database(database, table, contents):
                     continue
             else:
                 padded_table_name = '\n' + table_name + ':'
-                print(padded_table_name.ljust(pad), end='')
+                print(padded_table_name.ljust(pad+1), end='')
             columns = inspector.get_columns(table_name)
             for column in columns:
                 if table:
@@ -40,7 +40,6 @@ def print_database(database, table, contents):
                 select_statement = "select * from " + table_name + ";"
                 data = session.execute(select_statement).fetchall()
                 if data:
-                    print(' '*pad, end='')
                     for result in data:
                         print(' '*pad, end='')
                         pprint.pprint(result)
