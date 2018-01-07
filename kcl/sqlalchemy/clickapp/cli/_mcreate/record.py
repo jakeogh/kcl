@@ -14,15 +14,15 @@ CONTEXT_SETTINGS['allow_extra_args'] = True
 def record(ctx, class_name):
     with self_contained_session(ctx.obj.database) as session:
         BASE.metadata.create_all(session.bind)
-        d = dict()
-        for item in ctx.args:
-            d.update([item.split('=')])
+        #d = dict()
+        #for item in ctx.args:
+        #    d.update([item.split('=')])
         class_path = '.'.join(class_name.split('.')[0:-1])
         class_name = class_name.split('.')[-1]
         full_class_path = class_path + '.' + class_name
         globals()[class_name] = getattr(__import__(full_class_path, globals=globals(), locals=locals(), fromlist=[class_name], level=0), class_name)
         print(d)
-        new_object = globals()[class_name].construct(session, d)
+        new_object = globals()[class_name].construct(session=session, ctx.kwargs)
         import IPython; IPython.embed()
         #session.commit()
         #print(bytes(filerecord))
