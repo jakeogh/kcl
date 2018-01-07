@@ -65,6 +65,9 @@ class Path(BASE):
         prevents creation of a path that conflicts with an existing alias
         '''
         assert path
+        if isinstance(path, str):
+            filename = bytes(path, encoding='UTF8') # handle command line input
+
         existing_path = find_path(session=session, path=path)
         if existing_path:
             return existing_path
