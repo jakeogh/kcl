@@ -32,8 +32,10 @@ def find_path(session, path):
                 ceprint("pathfilename_list_path_set:", pathfilename_list_path_set)
                 if not possible_path_set:
                     possible_path_set = pathfilename_list_path_set
+                    ceprint("*possible_path_set:", possible_path_set)
                 else:
                     possible_path_set = possible_path_set & pathfilename_list_path_set
+                    ceprint("possible_path_set:", possible_path_set)
                 for pathfilename in pathfilename_list:
                     if index == 0:  # only add paths that start with the correct filename
                         possible_path_set.add(pathfilename.path)
