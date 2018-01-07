@@ -27,7 +27,7 @@ def print_database(database, table, contents):
                     continue
             else:
                 padded_table_name = '\n' + table_name + ':'
-                print(padded_table_name.ljust(max_length_table_name+2), end='')
+                print(padded_table_name.ljust(max_length_table_name+3), end='')
             columns = inspector.get_columns(table_name)
             for column in columns:
                 if table:
@@ -40,4 +40,5 @@ def print_database(database, table, contents):
                 select_statement = "select * from " + table_name + ";"
                 data = session.execute(select_statement).fetchall()
                 if data:
+                    print(':'.ljust(max_length_table_name+3))
                     pprint.pprint(data)
