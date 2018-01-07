@@ -17,7 +17,7 @@ def all_files_iter(p):
         eprint("sub:", sub)
         if sub.is_symlink(): # must be before is_dir()
             yield sub
-        if sub.is_dir():
+        elif sub.is_dir():
             yield from all_files_iter(sub)
         else:
             yield sub
