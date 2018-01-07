@@ -16,10 +16,11 @@ def record(config, class_name):
         class_name = class_name.split('.')[-1]
         full_class_path = class_path + '.' + class_name
         globals()[class_name] = __import__(full_class_path, globals=globals(), locals=locals(), fromlist=[class_name], level=0)
-        cmd_to_eval = class_name + ' = ' + class_name + '.' + class_name
-        print(cmd_to_eval)
-        exec(cmd_to_eval)
-        #filerecord = FileRecord.construct(session=session, inpath=path)
+        #cmd_to_eval = class_name + ' = ' + class_name + '.' + class_name
+        #print(cmd_to_eval)
+        #exec(cmd_to_eval)
+
+        class_name = getattr(class_name, class_name)
         import IPython; IPython.embed()
         #session.commit()
         #print(bytes(filerecord))
