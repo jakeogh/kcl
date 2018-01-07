@@ -11,7 +11,7 @@ CONTEXT_SETTINGS['allow_extra_args'] = True
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument('class_name', type=str, nargs=1)
 @click.pass_context
-def record(ctx, class_name):
+def create(ctx, class_name):
     with self_contained_session(ctx.obj.database) as session:
         BASE.metadata.create_all(session.bind)
         d = dict()
