@@ -8,5 +8,4 @@ from fsindex.cli._mcreate.record import record
 def _mcreate():
     pass
 
-_mcreate.add_command(filerecord, name='record')
-#_create.add_command(filerecord_index, name='index')
+_mcreate.add_command(record, name='record')
