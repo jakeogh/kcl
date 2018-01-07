@@ -9,7 +9,7 @@ from kcl.printops import ceprint
 from kcl.printops import eprint
 
 def find_path(session, path):
-    ceprint("path:", path)
+    #ceprint("path:", path)
     '''
     iterates over the pathfilenames table to check for a existing path
     returns the path if found, else returns False
