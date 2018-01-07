@@ -26,8 +26,8 @@ def print_database(database, table, contents):
                 if table_name != table:
                     continue
             else:
-                padded_table_name = '\n' + table_name + ':'
-                print(padded_table_name.ljust(pad+1), end='')
+                padded_table_name = table_name + ':'
+                print(padded_table_name.ljust(pad), end='')
             columns = inspector.get_columns(table_name)
             for column in columns:
                 if table:
