@@ -41,4 +41,5 @@ def print_database(database, table, contents):
                 data = session.execute(select_statement).fetchall()
                 if data:
                     print(''.ljust(max_length_table_name+3), end='')
-                    pprint.pprint(data)
+                    for result in data:
+                        pprint.pprint(''.ljust(max_length_table_name+3), result)
