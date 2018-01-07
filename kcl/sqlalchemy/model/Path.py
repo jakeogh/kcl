@@ -91,7 +91,7 @@ class Path(BASE):
 
 
     def __repr__(self):
-        return "<Path(path=%s)>" % (str(self.path))
+        return "<Path(id=%s path=%s)>" % (str(self.path), str(self.id))
 
     def __bytes__(self):
         return self.path
