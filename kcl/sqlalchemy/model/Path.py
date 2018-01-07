@@ -47,7 +47,7 @@ class Path(BASE):
 
     def __init__(self, session, path):
         assert isinstance(path, bytes)
-        assert not find_path(session=session, path=path) # because get_one_or_create should have already found it
+        #assert not find_path(session=session, path=path) # because get_one_or_create should have already found it
         for index, filename in enumerate(path.split(b'/')):
             previous_position = index - 1
             if previous_position == -1:
