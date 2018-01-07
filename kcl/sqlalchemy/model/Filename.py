@@ -36,6 +36,7 @@ class Filename(BASE):
     @classmethod
     def construct(cls, session, filename):
         #print("Filename.construct()")
+        assert filename #hm..
         result = get_one_or_create(session, Filename, filename=filename)
         return result
 
