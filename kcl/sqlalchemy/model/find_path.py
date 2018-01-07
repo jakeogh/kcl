@@ -59,10 +59,12 @@ def find_path(session, path):
                     return False
 
             if not possible_path_set:
+                ceprint("not possible_path_set, returning False")
                 return False
 
             if len(possible_path_set) == 1:
                 last_path = list(possible_path_set)[0]
+                ceprint("last_path:", last_path)
                 last_path_text = str(last_path)
                 if last_path_text == path:
                     return last_path
