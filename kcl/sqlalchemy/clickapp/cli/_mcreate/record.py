@@ -21,7 +21,7 @@ def record(ctx, class_name):
         class_name = class_name.split('.')[-1]
         full_class_path = class_path + '.' + class_name
         globals()[class_name] = getattr(__import__(full_class_path, globals=globals(), locals=locals(), fromlist=[class_name], level=0), class_name)
-        print(d)
+        #print(d)
         new_object = globals()[class_name].construct(session=session, **ctx.kwargs)
         import IPython; IPython.embed()
         #session.commit()
