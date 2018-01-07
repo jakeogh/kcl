@@ -35,18 +35,13 @@ class Filename(BASE):
 
     @classmethod
     def construct(cls, *, session, filename):
-        #print("Filename.construct()")
-        #assert filename #hm.. there is one empty filename, /
         if isinstance(filename, str):
             filename = bytes(filename, encoding='UTF8') # handle command line input
         result = get_one_or_create(session, Filename, filename=filename)
         return result
 
     def __repr__(self):
-        return "<Filename(filename=%s)>" % (str(self.filename))
-
-    #def __repr__(self):
-    #    return str(self.filename)
+        return "<Filename(id=%s filename=%s)>" % (str(self.id), str(self.filename))
 
     def __bytes__(self):
         return self.filename
