@@ -34,7 +34,7 @@ class Filename(BASE):
     filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
 
     @classmethod
-    def construct(cls, session, filename):
+    def construct(cls, *, session, filename):
         #print("Filename.construct()")
         assert filename #hm..
         result = get_one_or_create(session, Filename, filename=filename)
