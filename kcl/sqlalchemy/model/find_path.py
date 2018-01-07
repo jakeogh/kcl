@@ -26,6 +26,9 @@ def find_path(session, path):
             filename = session.query(Filename).filter_by(filename=filename).one()
             ceprint("filename:", filename)
             pathfilename_list = session.query(PathFilename).filter_by(filename=filename, position=index).all()
+            ceprint("pathfilename_list:")
+            for pf in pathfilename_list:
+                ceprint(pf)
             ceprint("pathfilename_list:", pathfilename_list)
             if pathfilename_list:
                 pathfilename_list_path_set = set([pathfilename.filename for pathfilename in pathfilename_list])
