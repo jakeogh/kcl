@@ -18,11 +18,13 @@ def find_path(session, path):
     possible_path_set = set([])
     assert isinstance(path, bytes)
     path_split = path.split(b'/')
+    assert path_split
 
     try:
         for index, filename in enumerate(path_split):
             ceprint(index, filename)
             filename = session.query(Filename).filter_by(filename=filename).one()
+            ceprint("filename:", filename)
             pathfilename_list = session.query(PathFilename).filter_by(filename=filename, position=index).all()
             if pathfilename_list:
                 pathfilename_list_path_set = set([pathfilename.path for pathfilename in pathfilename_list])
@@ -45,5 +47,5 @@ def find_path(session, path):
                         return last_path
                     return False
     except NoResultFound:  # any failed query
-        print("NoResultFound returning False")
+        ceprint("NoResultFound returning False")
         return False
