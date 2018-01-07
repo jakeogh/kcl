@@ -14,8 +14,8 @@ from .printops import eprint
 def all_files_iter(p):
     yield p
     for sub in p.iterdir():
-        eprint("sub:", sub)
-        if sub.is_symlink(): # must be before is_dir()
+        #eprint("sub:", sub)  # todo: read by terminal, so bell etc happens.... eprint bug?
+        if sub.is_symlink():  # must be before is_dir()
             yield sub
         elif sub.is_dir():
             yield from all_files_iter(sub)
