@@ -6,8 +6,6 @@ Filename class
 '''
 
 from sqlalchemy import Column
-from sqlalchemy import Index
-from sqlalchemy import func
 from sqlalchemy import CheckConstraint
 from sqlalchemy import Integer
 from sqlalchemy import Unicode
