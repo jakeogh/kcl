@@ -68,7 +68,7 @@ class FileRecord(BASE):
     stat_st_ctime = Column(Integer, unique=False, nullable=False, index=True)
 
     @classmethod
-    def construct(cls, session, path):
+    def construct(cls, session, path, calc_hash=False):
         #eprint("path:", path)
         if isinstance(path, str):
             path = bytes(path, encoding='UTF8') # allow command line args
@@ -80,7 +80,7 @@ class FileRecord(BASE):
         path = Path.construct(session=session, path=path)
         filename = Filename.construct(session=session, filename=filename)
 
-        if is_regular_file(abspath): #this stuff should be in BytesHash.construct
+        if calc_hash and is_regular_file(abspath): #this stuff should be in BytesHash.construct
             if stat.st_size == 0:
                 byteshash = None
             else:
