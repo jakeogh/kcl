@@ -43,7 +43,6 @@ class Filename(BASE):
         if isinstance(filename, str):
             filename = bytes(filename, encoding='UTF8') # handle command line input
         filename_lower = filename.lower()
-        print("filename_lower:", filename_lower)
         result = get_one_or_create(session, Filename, filename=filename, filename_lower=filename_lower)
         return result
 
