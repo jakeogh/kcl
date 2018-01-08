@@ -68,8 +68,9 @@ class FileRecord(BASE):
     stat_st_ctime = Column(Integer, unique=False, nullable=False, index=True)
 
     @classmethod
-    def construct(cls, session, path, calc_hash=False):
-        #eprint("path:", path)
+    def construct(cls, session, path, calc_hash=False, verbose=False):
+        if verbose:
+            eprint("FileRecord.construct():", path)
         if isinstance(path, str):
             path = bytes(path, encoding='UTF8') # allow command line args
         abspath = os.path.abspath(path)
