@@ -8,13 +8,13 @@
 # common dir functions
 
 import os
-from shutil import copyfileobj
 from .printops import eprint
+
 
 def all_files_iter(p):
     yield p
     for sub in p.iterdir():
-        #eprint("sub:", sub)  # todo: read by terminal, so bell etc happens.... eprint bug?
+        # eprint("sub:", sub)  # todo: read by terminal, so bell etc happens.... eprint bug?
         if sub.is_symlink():  # must be before is_dir()
             yield sub
         elif sub.is_dir():
@@ -23,9 +23,8 @@ def all_files_iter(p):
             yield sub
 
 
-def all_files(folder, files_only=False): #todo add flags for recursive, follow symlinks etc, return a generator
+def all_files(folder, files_only=False): # todo add flags for recursive, follow symlinks etc, return a generator
     assert path_is_dir(folder)
-    ##all_files = [os.path.join(path, filename) for path, dirs, files in os.walk(folder) for filename in files]
     all_files = []
     for path, dirs, files in os.walk(folder):
         for filename in files:
@@ -35,11 +34,13 @@ def all_files(folder, files_only=False): #todo add flags for recursive, follow s
                 all_files.append(os.path.join(path, d))
     return all_files
 
+
 def count_files(folder):
     total = 0
     for root, dirs, files in os.walk(folder):
         total += len(files)
     return total
+
 
 def list_files(folder):
     all_files = []
@@ -49,8 +50,10 @@ def list_files(folder):
             all_files.append(relative_file_path)
     return set(all_files)
 
+
 def dir_exists(path):
     return path_is_dir(path)
+
 
 def path_is_dir(path):
     if os.path.isdir(path): #could still be a symlink
