@@ -36,13 +36,13 @@ class Filename(BASE):
 
     # because I cant figure out how to get the orm to emit:
     # bytes(session.execute("SELECT filename FROM filename WHERE encode(filename, 'escape') ILIKE encode('%JaguarAJ-V8EnginE%'::bytea, 'escape')").scalar())
-    filename_lower = Column(Unicode, unique=False, nullable=False, index=True)
+    filename_lower = Column(BYTEA(255), unique=False, nullable=False, index=True)
 
     @classmethod
     def construct(cls, *, session, filename):
         if isinstance(filename, str):
             filename = bytes(filename, encoding='UTF8') # handle command line input
-        result = get_one_or_create(session, Filename, filename=filename, filename_lower=filename.lower())
+        result = get_one_or_create(session, Filename, filename=filename)
         return result
 
     def __repr__(self):
