@@ -8,10 +8,9 @@ Filename class
 from sqlalchemy import Column
 from sqlalchemy import Index
 from sqlalchemy import func
-#from sqlalchemy import ForeignKey
 from sqlalchemy import CheckConstraint
 from sqlalchemy import Integer
-#from sqlalchemy import LargeBinary  # bytea on postgresql
+from sqlalchemy import Unicode
 from sqlalchemy.dialects.postgresql import BYTEA
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.sqlalchemy.BaseMixin import BASE
@@ -34,13 +33,16 @@ class Filename(BASE):
     filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
     #filename = Column(LargeBinary(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
     filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
-    filename_lower = Index(func.lower(filename))
+
+    # because I cant figure out how to get the orm to emit:
+    # bytes(session.execute("SELECT filename FROM filename WHERE encode(filename, 'escape') ILIKE encode('%JaguarAJ-V8EnginE%'::bytea, 'escape')").scalar())
+    filename_lower = Column(Unicode, unique=False, nullable=False, index=True)
 
     @classmethod
     def construct(cls, *, session, filename):
         if isinstance(filename, str):
             filename = bytes(filename, encoding='UTF8') # handle command line input
-        result = get_one_or_create(session, Filename, filename=filename)
+        result = get_one_or_create(session, Filename, filename=filename, filename_lower=filename.lower())
         return result
 
     def __repr__(self):
