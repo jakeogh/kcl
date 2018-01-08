@@ -6,6 +6,8 @@ Filename class
 '''
 
 from sqlalchemy import Column
+from sqlalchemy import Index
+from sqlalchemy import func
 #from sqlalchemy import ForeignKey
 from sqlalchemy import CheckConstraint
 from sqlalchemy import Integer
@@ -32,6 +34,7 @@ class Filename(BASE):
     filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
     #filename = Column(LargeBinary(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
     filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
+    filename_lower = Index(func.lower(filename))
 
     @classmethod
     def construct(cls, *, session, filename):
