@@ -14,5 +14,5 @@ CONTEXT_SETTINGS['allow_extra_args'] = True
 def _count(ctx, table_name):
     with self_contained_session(ctx.obj.database) as session:
         constructed_test = 'select COUNT(*) from %s;' % table_name
-        answer = session.execute(constructed_test)
+        answer = session.execute(constructed_test).one()
         print(answer)
