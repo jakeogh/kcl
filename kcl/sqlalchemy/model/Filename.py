@@ -46,9 +46,8 @@ class Filename(BASE):
 
     filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
     filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
-    filename_lower = column_property(
-        select([func.count(id)])
-    )
+    #filename_lower = column_property(select([func.count(id)]))
+    filename_lower = column_property(select([func.encode(filename, 'escape')]))
 
     @classmethod
     def construct(cls, *, session, filename):
@@ -64,6 +63,7 @@ class Filename(BASE):
     # https://github.com/python/cpython/blob/6f0eb93183519024cb360162bdd81b9faec97ba6/Include/pyctype.h#L29
     # https://github.com/python/cpython/blob/6f0eb93183519024cb360162bdd81b9faec97ba6/Python/pyctype.c#L145
     # lower() on a bytes object maps 0x41-0x5a to 0x61-0x7a
+    # b'\xc3\xb0\xc3\xb0\xc3\xb0'.decode('UTF8') == b'\xf0\xf0\xf0'.decode('latin1')
     @hybrid_property
     def filename_lowerp(self):
         #return bytes(self.filename).lower() #nope, sqlalchemy cant translate because LOWER() is not defined for bytea
