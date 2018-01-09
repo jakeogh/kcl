@@ -16,4 +16,4 @@ def _count(ctx, table_name):
         constructed_test = 'select COUNT(*) from %s;' % table_name
         answer = session.execute(constructed_test)
         for result in answer:
-            print(result)
+            print(result[0])
