@@ -10,6 +10,7 @@ from sqlalchemy import CheckConstraint
 from sqlalchemy import Integer
 from sqlalchemy import Unicode
 from sqlalchemy.dialects.postgresql import BYTEA
+from sqlalchemy.ext.hybrid import hybrid_property
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.sqlalchemy.BaseMixin import BASE
 
@@ -18,7 +19,7 @@ from kcl.sqlalchemy.BaseMixin import BASE
 # https://stackoverflow.com/questions/6637843/query-bytea-field-in-postgres-via-command-line
 # https://dba.stackexchange.com/questions/130812/query-bytea-column-using-prefix
 # https://www.postgresql.org/message-id/1657180000.1070472048%40gnarzelwicht.delirium-arts.de
-
+# https://anonscm.debian.org/cgit/collab-maint/musl.git/tree/src/ctype/tolower.c
 
 class Filename(BASE):
     '''
@@ -29,12 +30,11 @@ class Filename(BASE):
     id = Column(Integer, primary_key=True)
 
     filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
-    #filename = Column(LargeBinary(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
     filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
 
     # because I cant figure out how to get the orm to emit:
     # bytes(session.execute("SELECT filename FROM filename WHERE encode(filename, 'escape') ILIKE encode('%JaguarAJ-V8EnginE%'::bytea, 'escape')").scalar())
-    filename_lower = Column(BYTEA(255), unique=False, nullable=False, index=True)
+    #filename_lower = Column(BYTEA(255), unique=False, nullable=False, index=True)
 
     @classmethod
     def construct(cls, *, session, filename):
@@ -43,6 +43,10 @@ class Filename(BASE):
         filename_lower = filename.lower()
         result = get_one_or_create(session, Filename, filename=filename, filename_lower=filename_lower)
         return result
+
+    @hybrid_property
+    def filename_lower(self):
+        return self.filename.lower()
 
     def __repr__(self):
         return "<Filename(id=%s filename=%s)>" % (str(self.id), str(self.filename))
