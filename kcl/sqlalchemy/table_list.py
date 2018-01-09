@@ -19,8 +19,8 @@ def table_list(database, verbose=False, contents=False, table=False):
             table_instance = BASE.metadata.tables[table]
             if verbose:
                 pprint(table_instance)
-            else:
-                print(table)
+            #else:
+            #    print(table)
             if contents:
                 try:
                     pprint(session.query(table_instance).all())
