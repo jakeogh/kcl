@@ -9,6 +9,6 @@ from kcl.sqlalchemy.self_contained_session import self_contained_session
 @click.option('--contents', is_flag=True)
 @click.pass_obj
 def tables(config, table, contents):
-    with self_contained_session(config.database) as session:
-        sqla_list_tables(database=config.database, contents=contents, table=table)
+#   with self_contained_session(config.database) as session:
+    sqla_list_tables(database=config.database, contents=contents, table=table)
 
