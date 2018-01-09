@@ -16,6 +16,7 @@ from kcl.sqlalchemy.BaseMixin import BASE
 
 from sqlalchemy.ext.hybrid import Comparator
 from sqlalchemy.orm import column_property
+from sqlalchemy import select, func
 
 #class CaseInsensitiveComparator(Comparator):
 #    def __eq__(self, other):
