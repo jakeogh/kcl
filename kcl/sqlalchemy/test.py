@@ -3,7 +3,8 @@ from kcl.dirops import all_files
 from kcl.printops import eprint
 import os
 import pkg_resources
-import sys
+#import sys
+
 
 def test(package, keep_databases, count, test_class=None, test_match=None):
     if test_class:
