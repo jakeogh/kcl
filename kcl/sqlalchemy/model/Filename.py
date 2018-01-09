@@ -63,7 +63,7 @@ class Filename(BASE):
     @hybrid_property
     def filename_lower(self):
         #return bytes(self.filename).lower() #nope, sqlalchemy cant translate because LOWER() is not defined for bytea
-        latin1_str = str(self.filename, encoding='Latin1').lower()
+        latin1_str = str(bytes(self.filename), encoding='Latin1').lower()
         print("latin1_str:", latin1_str)
         return latin1_str
 
