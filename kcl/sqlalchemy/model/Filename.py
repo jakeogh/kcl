@@ -40,16 +40,16 @@ class Filename(BASE):
     @classmethod
     def construct(cls, *, session, filename):
         if isinstance(filename, str):
-            filename = bytes(filename, encoding='UTF8') # handle command line input
-        filename_lower = filename.lower()
+            filename = bytes(filename, encoding='UTF8')  # handle command line input
+        #filename_lower = filename.lower()
         #result = get_one_or_create(session, Filename, filename=filename, filename_lower=filename_lower)
         result = get_one_or_create(session, Filename, filename=filename)
         return result
 
     @hybrid_property
     def filename_lower(self):
-        print(type(self.filename))
-        import IPython; IPython.embed()
+        #print(type(self.filename))
+        #import IPython; IPython.embed()
         return self.filename
 
     def __repr__(self):
@@ -57,3 +57,4 @@ class Filename(BASE):
 
     def __bytes__(self):
         return self.filename
+
