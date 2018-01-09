@@ -27,29 +27,29 @@ class Filename(BASE):
     UNIX filenames can be anything but NULL and / therefore a binary type is required.
     max file name length is 255 on all UNIX-like filesystems
     this does not store the path to the filename, so / is not allowed
+
+    Most filesystems do not _have_ a byte encoding, all bytes but NULL are valid in a path.
+    The user enviroment might interperit the names with a encoding like UTF8, but this has
+    no effect on what bytes are possible to store in filenames.
+
     '''
     id = Column(Integer, primary_key=True)
 
     filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
     filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
 
-    # because I cant figure out how to get the orm to emit:
-    # bytes(session.execute("SELECT filename FROM filename WHERE encode(filename, 'escape') ILIKE encode('%JaguarAJ-V8EnginE%'::bytea, 'escape')").scalar())
-    #filename_lower = Column(BYTEA(255), unique=False, nullable=False, index=True)
-
     @classmethod
     def construct(cls, *, session, filename):
         if isinstance(filename, str):
             filename = bytes(filename, encoding='UTF8')  # handle command line input
-        #filename_lower = filename.lower()
-        #result = get_one_or_create(session, Filename, filename=filename, filename_lower=filename_lower)
         result = get_one_or_create(session, Filename, filename=filename)
         return result
 
+    # because I cant figure out how to get the orm to emit:
+    # bytes(session.execute("SELECT filename FROM filename WHERE encode(filename, 'escape') ILIKE encode('%JaguarAJ-V8EnginE%'::bytea, 'escape')").scalar())
+    # https://docs.python.org/3/library/stdtypes.html#bytes.lower
     @hybrid_property
     def filename_lower(self):
-        #print(type(self.filename))
-        #import IPython; IPython.embed()
         return bytes(self.filename).lower()
 
     def __repr__(self):
