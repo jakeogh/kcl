@@ -17,9 +17,9 @@ from kcl.sqlalchemy.BaseMixin import BASE
 from sqlalchemy.ext.hybrid import Comparator
 
 
-class CaseInsensitiveComparator(Comparator):
-    def __eq__(self, other):
-        return func.lower(self.__clause_element__()) == func.lower(other)
+#class CaseInsensitiveComparator(Comparator):
+#    def __eq__(self, other):
+#        return func.lower(self.__clause_element__()) == func.lower(other)
 
 
 # https://www.postgresql.org/docs/current/static/datatype-binary.html
@@ -56,13 +56,18 @@ class Filename(BASE):
     # because I cant figure out how to get the orm to emit:
     # bytes(session.execute("SELECT filename FROM filename WHERE encode(filename, 'escape') ILIKE encode('%JaguarAJ-V8EnginE%'::bytea, 'escape')").scalar())
     # https://docs.python.org/3/library/stdtypes.html#bytes.lower
+    # https://github.com/python/cpython/blob/43ba8861e0ad044efafa46a7cc04e12ac5df640e/Objects/bytes_methods.c#L248
+    # https://github.com/python/cpython/blob/6f0eb93183519024cb360162bdd81b9faec97ba6/Include/pyctype.h#L29
+    # https://github.com/python/cpython/blob/6f0eb93183519024cb360162bdd81b9faec97ba6/Python/pyctype.c#L145
+    # lower() on a bytes object maps 0x41-0x5a to 0x61-0x7a
     @hybrid_property
     def filename_lower(self):
-        return bytes(self.filename).lower()
+        #return bytes(self.filename).lower() #nope, sqlalchemy cant translate because LOWER() is not defined for bytea
+        return self.filename.decode('Latin1').lower()
 
-    @filename_lower.comparator
-    def word_insensitive(cls):
-        return CaseInsensitiveComparator(cls.filename)
+#    @filename_lower.comparator
+#    def word_insensitive(cls):
+#        return CaseInsensitiveComparator(cls.filename)
 
 
     def __repr__(self):
