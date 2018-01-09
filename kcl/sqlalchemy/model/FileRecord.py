@@ -19,6 +19,12 @@ from kcl.symlinkops import is_symlink
 from sqlalchemy.types import DateTime
 from sqlalchemy.sql import func
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.ext.hybrid import Comparator
+
+
+class CaseInsensitiveComparator(Comparator):
+    def __eq__(self, other):
+        return func.lower(self.__clause_element__()) == func.lower(other)
 
 
 class FileRecord(BASE):

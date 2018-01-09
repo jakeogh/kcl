@@ -14,6 +14,14 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.sqlalchemy.BaseMixin import BASE
 
+from sqlalchemy.ext.hybrid import Comparator
+
+
+class CaseInsensitiveComparator(Comparator):
+    def __eq__(self, other):
+        return func.lower(self.__clause_element__()) == func.lower(other)
+
+
 # https://www.postgresql.org/docs/current/static/datatype-binary.html
 # https://www.postgresql.org/docs/current/static/functions-binarystring.html
 # https://stackoverflow.com/questions/6637843/query-bytea-field-in-postgres-via-command-line
@@ -51,6 +59,11 @@ class Filename(BASE):
     @hybrid_property
     def filename_lower(self):
         return bytes(self.filename).lower()
+
+    @filename_lower.comparator
+    def word_insensitive(cls):
+        return CaseInsensitiveComparator(cls.filename)
+
 
     def __repr__(self):
         return "<Filename(id=%s filename=%s)>" % (str(self.id), str(self.filename))
