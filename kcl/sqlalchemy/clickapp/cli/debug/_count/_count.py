@@ -10,14 +10,14 @@ CONTEXT_SETTINGS['allow_extra_args'] = True
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.argument('--table', type=str, default=None)
+@click.argument('--table', type=str, default=None, required=False)
 @click.pass_context
 def _count(ctx, table):
     with self_contained_session(ctx.obj.database) as session:
         if table:
             tables = [table]
         else:
-            tables = sqla_list_tables(database=config.database, contents=False, table=None)
+            tables = sqla_list_tables(database=ctx.obj.config.database, contents=False, table=None)
         for table in tables:
             constructed_test = 'select COUNT(*) from %s;' % table
             answer = session.execute(constructed_test)
