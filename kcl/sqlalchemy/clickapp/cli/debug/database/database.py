@@ -4,8 +4,8 @@ import click
 from kcl.sqlalchemy.clickapp.cli.debug.database.tables import tables
 from kcl.sqlalchemy.clickapp.cli.debug.database.fields import fields
 from kcl.sqlalchemy.clickapp.cli.debug.database.print_database import print_database
-from kcl.sqlalchemy.clickapp.cli.debug._count._count import _count
-from kcl.sqlalchemy.clickapp.cli.debug._list._list import _list
+from kcl.sqlalchemy.clickapp.cli.debug.database._count._count import _count
+from kcl.sqlalchemy.clickapp.cli.debug.database._list._list import _list
 
 @click.group()
 def database():
