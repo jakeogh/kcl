@@ -20,6 +20,7 @@ from kcl.sqlalchemy.BaseMixin import BASE
 # https://dba.stackexchange.com/questions/130812/query-bytea-column-using-prefix
 # https://www.postgresql.org/message-id/1657180000.1070472048%40gnarzelwicht.delirium-arts.de
 # https://anonscm.debian.org/cgit/collab-maint/musl.git/tree/src/ctype/tolower.c
+# https://docs.python.org/3.6/library/os.html#file-names-command-line-arguments-and-environment-variables
 
 class Filename(BASE):
     '''
@@ -46,7 +47,8 @@ class Filename(BASE):
 
     @hybrid_property
     def filename_lower(self):
-        return self.filename.lower()
+        print(type(self.filename))
+        #return self.filename.lower()
 
     def __repr__(self):
         return "<Filename(id=%s filename=%s)>" % (str(self.id), str(self.filename))
