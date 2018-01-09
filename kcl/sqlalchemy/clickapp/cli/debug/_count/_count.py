@@ -17,7 +17,7 @@ def _count(ctx, table):
         if table:
             tables = [table]
         else:
-            tables = sqla_list_tables(database=ctx.obj.config.database, contents=False, table=None)
+            tables = sqla_list_tables(database=ctx.obj.database, contents=False, table=None)
         for table in tables:
             constructed_test = 'select COUNT(*) from %s;' % table
             answer = session.execute(constructed_test)
