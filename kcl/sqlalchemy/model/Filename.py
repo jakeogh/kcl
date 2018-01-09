@@ -48,7 +48,7 @@ class Filename(BASE):
     filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
     #filename_lower = column_property(select([func.count(id)]))
     #filename_lower = column_property(select([func.encode(filename, 'escape')]))
-    filename_lower = column_property([func.encode(filename, 'escape')]))
+    filename_lower = column_property([func.encode(filename, 'escape')])
 
     @classmethod
     def construct(cls, *, session, filename):
