@@ -5,13 +5,17 @@ from sqlalchemy.exc import ProgrammingError
 from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 
-def table_list(database, verbose=False, contents=False):
+def table_list(database, verbose=False, contents=False, table=False):
     with self_contained_session(database) as session:
         engine = session.bind
         BASE.metadata.reflect(engine)
         table_names = BASE.metadata.tables.keys()
         table_list = []
+        only_table = table
         for table in table_names:
+            if only_table:
+                if table != only_table:
+                    continue
             table_instance = BASE.metadata.tables[table]
             if verbose:
                 pprint(table_instance)
