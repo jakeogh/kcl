@@ -50,7 +50,7 @@ class Filename(BASE):
     def filename_lower(self):
         #print(type(self.filename))
         #import IPython; IPython.embed()
-        return self.filename
+        return bytes(self.filename).lower()
 
     def __repr__(self):
         return "<Filename(id=%s filename=%s)>" % (str(self.id), str(self.filename))
