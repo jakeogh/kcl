@@ -15,7 +15,7 @@ from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.sqlalchemy.BaseMixin import BASE
 
 from sqlalchemy.ext.hybrid import Comparator
-
+from sqlalchemy.orm import column_property
 
 #class CaseInsensitiveComparator(Comparator):
 #    def __eq__(self, other):
@@ -45,6 +45,9 @@ class Filename(BASE):
 
     filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
     filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
+    filename_lower = column_property(
+        select([func.count(id)])
+    )
 
     @classmethod
     def construct(cls, *, session, filename):
@@ -61,7 +64,7 @@ class Filename(BASE):
     # https://github.com/python/cpython/blob/6f0eb93183519024cb360162bdd81b9faec97ba6/Python/pyctype.c#L145
     # lower() on a bytes object maps 0x41-0x5a to 0x61-0x7a
     @hybrid_property
-    def filename_lower(self):
+    def filename_lowerp(self):
         #return bytes(self.filename).lower() #nope, sqlalchemy cant translate because LOWER() is not defined for bytea
         #latin1_str = str(bytes(self.filename), encoding='Latin1').lower()
         latin1_str = str(bytes(self.filename), encoding='Latin1')
