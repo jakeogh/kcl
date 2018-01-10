@@ -2,5 +2,5 @@
 short_package="kcl"
 group="dev-python"
 package="${group}/${short_package}"
-remote="git@github.com:jakeogh/kcl.git"
+remote=""
 test_command_arg=""
