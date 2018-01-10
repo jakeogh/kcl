@@ -38,7 +38,7 @@ class PathFilename(BASE):
                      unique=False,
                      primary_key=True)
     base_path_id = Column(Integer,
-                          ForeignKey("base_path.id"),
+                          ForeignKey("path.id"),
                           unique=False,
                           primary_key=False,
                           nullable=True)
