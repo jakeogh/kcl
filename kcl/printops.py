@@ -14,7 +14,7 @@ def ceprint(*args, **kwargs):
     source_file = mod.split()[-1].split('>')[0].split("'")[1].split('/')[-1]
     #head = ' '.join([str("%.5f" % time.time()), str(os.getpid()), source_file, '{0: <29}'.format(caller+'()')])
     head = ' '.join([str("%.5f" % time.time()), str(os.getpid()), source_file, caller+'()'])
-    print('{0: <29}'.format(head),
+    print('{0: <49}'.format(head),
           *args,
           file=sys.stderr,
           **kwargs)
