@@ -58,7 +58,6 @@ class Path(BASE):
         session.add(self)
         session.flush(objects=[self])
 
-
     @classmethod
     def construct(cls, *, session, path, **kwargs):
         '''
@@ -67,10 +66,12 @@ class Path(BASE):
         '''
         assert path
         if isinstance(path, str):
-            path = bytes(path, encoding='UTF8') #  handle command line input
+            path = bytes(path, encoding='UTF8')  # handle command line input
 
+        ceprint("path:", path)
         existing_path = find_path(session=session, path=path)
         if existing_path:
+            ceprint("found existing_path:", existing_path)
             return existing_path
         ceprint("new_path:", path)
         new_path = cls(path=path, session=session)
