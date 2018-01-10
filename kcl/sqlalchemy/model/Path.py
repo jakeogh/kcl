@@ -43,7 +43,7 @@ from .find_path import find_path
 
 class Path(BASE):
     id = Column(Integer, primary_key=True)
-    pathfilenames = relationship("PathFilename", backref='path') #only 1 now that every path (except /) has a base_path
+    pathfilenames = relationship("PathFilename", backref='path', foreign_keys=[path_id]) #only 1 now that every path (except /) has a base_path
 
     def __init__(self, session, path, base_path):
         assert isinstance(path, bytes)
