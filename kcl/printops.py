@@ -12,20 +12,25 @@ def ceprint(*args, **kwargs):
     frm = inspect.stack()[1]
     mod = str(inspect.getmodule(frm[0]))
     source_file = mod.split()[-1].split('>')[0].split("'")[1].split('/')[-1]
-    print(str("%.5f" % time.time()),
-          os.getpid(),
-          source_file,
+    head = ' '.join([str("%.5f" % time.time()), os.getpid(),  source_file])
+    print(head,
           '{0: <29}'.format(caller+'()'),
           *args,
           file=sys.stderr,
           **kwargs)
 
+    #print(str("%.5f" % time.time()),
+    #      os.getpid(),
+    #      source_file,
+    #      '{0: <29}'.format(caller+'()'),
+    #      *args,
+    #      file=sys.stderr,
+    #      **kwargs)
 def eprint(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)
+    pprint(*args, file=sys.stderr, **kwargs)
 
 def epprint(*args, **kwargs):
     pprint(*args, stream=sys.stderr, **kwargs)
-
 
 def print_object_attrs(obj):
     eprint("type(obj):", type(obj))
