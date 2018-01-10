@@ -61,7 +61,7 @@ def find_path(session, path):
                     return False
 
             if not possible_path_set:
-                #ceprint("not possible_path_set, returning False")
+                ceprint("empty possible_path_set, returning False")
                 return False
 
             if len(possible_path_set) == 1:
