@@ -32,11 +32,16 @@ class PathFilename(BASE):
     Does not appear to be a big deal because it's not exp and most paths have 0 spaces
 
     '''
-    __table_args__ = (UniqueConstraint('path_id', 'filename_id', 'position', 'previous_position'),) #previous_position?
+    __table_args__ = (UniqueConstraint('path_id', 'base_path_id', 'filename_id', 'position', 'previous_position'),) #previous_position?
     path_id = Column(Integer,
                      ForeignKey("path.id"),
                      unique=False,
                      primary_key=True)
+    base_path_id = Column(Integer,
+                          ForeignKey("base_path.id"),
+                          unique=False,
+                          primary_key=False,
+                          nullable=True)
     filename_id = Column(Integer,
                          ForeignKey("filename.id"),
                          unique=False,
@@ -62,7 +67,6 @@ class PathFilename(BASE):
             'filename: ' + str(self.filename) + \
             ', path_id: ' + str(self.path_id) + \
             ', filename_id: ' + str(self.filename_id) + \
-            ', position: ' + str(self.position) + '>'
+            ', position: ' + str(self.position) + \
+            ', previous_position: ' + str(self.previous_position) + '>'
 
-#    def __repr__(self):
-#        return str(self.filename)
