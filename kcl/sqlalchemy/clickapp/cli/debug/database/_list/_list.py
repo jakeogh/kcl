@@ -8,5 +8,5 @@ from kcl.sqlalchemy.clickapp.cli.debug.database._list._fields import _fields
 def _list():
     pass
 
-database.add_command(_class, name="class")
-database.add_command(_fields, name="fields")
+_list.add_command(_class, name="class")
+_list.add_command(_fields, name="fields")
