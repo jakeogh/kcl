@@ -9,7 +9,7 @@ from kcl.printops import ceprint
 from kcl.printops import eprint
 
 def find_path(session, path):
-    #ceprint("path:", path)
+    ceprint("path:", path)
     '''
     iterates over the pathfilenames table to check for a existing path
     returns the path if found, else returns False
@@ -20,15 +20,16 @@ def find_path(session, path):
     assert isinstance(path, bytes)
     path_split = path.split(b'/')
     assert path_split
+    ceprint("path_split:", path_split)
 
     if path_split[-1] == b'':
         eprint("special case for /")
 
     try:
         for index, filename in enumerate(path_split):
-            #ceprint(index, filename)
+            ceprint(index, filename)
             filename = session.query(Filename).filter_by(filename=filename).one()
-            #ceprint("filename:", filename)
+            ceprint("filename:", filename)
 
             pathfilenames_that_match_filename = session.query(PathFilename).filter_by(filename=filename, position=index).all()
             #ceprint("pathfilenames_that_match_filename:")
@@ -70,5 +71,5 @@ def find_path(session, path):
                 return False
 
     except NoResultFound:  # any failed query
-        #ceprint("NoResultFound returning False")
+        ceprint("NoResultFound returning False")
         return False
