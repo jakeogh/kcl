@@ -65,10 +65,10 @@ def find_path(session, path):
                 return False
 
             if len(possible_path_set) == 1:
-                last_path = list(possible_path_set)[0]
-                #ceprint("last_path:", last_path)
-                if last_path.path == path:
-                    return last_path
+                only_path = list(possible_path_set)[0]
+                ceprint("only_path:", only_path, "path:", path)
+                if only_path.path == path:
+                    return only_path
                 return False
 
     except NoResultFound:  # any failed query
