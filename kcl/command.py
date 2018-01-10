@@ -22,4 +22,3 @@ def run_command(command, verbose=False):
         os._exit(1)
 
     return output
-
