@@ -49,7 +49,8 @@ class Filename(BASE):
     #filename_lower = column_property(select([func.count(id)]))
     #filename_lower = column_property(select([func.encode(filename, 'escape')]))
     filename_lower_escape = column_property(func.lower(func.encode(filename, 'escape')))
-    filename_utf8 = column_property(func.convert_from(filename, 'utf8'))
+    filename_latin1 = column_property(func.convert_from(filename, 'latin1'))
+    filename_latin1_lower = column_property(func.lower(func.convert_from(filename, 'latin1')))
 
     @classmethod
     def construct(cls, *, session, filename):
