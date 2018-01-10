@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
 import click
-from kcl.sqlalchemy.clickapp.cli.debug.database.tables import tables
-from kcl.sqlalchemy.clickapp.cli.debug.database.fields import fields
-from kcl.sqlalchemy.clickapp.cli.debug.database.print_database import print_database
-from kcl.sqlalchemy.clickapp.cli.debug.database._count._count import _count
 from kcl.sqlalchemy.clickapp.cli.debug.database._list._list import _list
+from kcl.sqlalchemy.clickapp.cli.debug.database._list._tables import _tables
+from kcl.sqlalchemy.clickapp.cli.debug.database._list._fields import _fields
+from kcl.sqlalchemy.clickapp.cli.debug.database._count._count import _count
 from kcl.sqlalchemy.clickapp.cli.debug.database._create._create import _create
 from kcl.sqlalchemy.clickapp.cli.debug.database._print import _print
 
