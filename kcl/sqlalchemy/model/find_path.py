@@ -68,7 +68,9 @@ def find_path(session, path):
                 only_path = list(possible_path_set)[0]
                 ceprint("only_path:", only_path, "path:", path)
                 if only_path.path == path:
+                    ceprint("returning only_path:", only_path)
                     return only_path
+                ceprint("returning False")
                 return False
 
     except NoResultFound:  # any failed query
