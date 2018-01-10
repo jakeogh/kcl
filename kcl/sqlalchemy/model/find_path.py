@@ -51,7 +51,7 @@ def find_path(session, path):
                 for pf in paths_that_match_filename: ceprint('\t', pf)
 
             if len(possible_path_set) == 0:
-                assert index == 0
+                #assert index == 0
                 possible_path_set = paths_that_match_filename
             else:
                 possible_path_set = possible_path_set & paths_that_match_filename  # intersection
