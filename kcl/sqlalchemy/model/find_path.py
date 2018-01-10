@@ -77,6 +77,15 @@ def find_path(session, path):
                 ceprint("returning False")
                 return False
 
+        # ran out of path elements to loop through
+        # if there are any paths left in possible_path_set, then it _must_ contain the match
+        for possible_path in possible_path_set:
+            if possible_path.path == path:
+                return possible_path
+
+        if possible_path_set:
+            assert False  # shouldnt happen
+
     except NoResultFound:  # any failed query
         ceprint("NoResultFound returning False")
         return False
