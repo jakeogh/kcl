@@ -27,8 +27,7 @@ def ceprint(*args, **kwargs):
     #      file=sys.stderr,
     #      **kwargs)
 def eprint(*args, **kwargs):
-    #print(*args, file=sys.stderr, **kwargs)
-    pprint(*args, stream=sys.stderr, **kwargs)
+    print(*args, file=sys.stderr, **kwargs)
 
 def epprint(*args, **kwargs):
     pprint(*args, stream=sys.stderr, **kwargs)
