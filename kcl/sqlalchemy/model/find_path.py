@@ -31,10 +31,10 @@ def find_path(session, path):
 
     try:
         for index, filename in enumerate(path_split):
+            ceprint(index, filename)
             if index != 0: assert filename
             if absolute and index == 0:
                 continue  # skip matching every single absolute pathfilename
-            ceprint(index, filename)
             filename = session.query(Filename).filter_by(filename=filename).one()
             ceprint("filename:", filename)
 
