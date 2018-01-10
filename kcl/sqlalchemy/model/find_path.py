@@ -22,8 +22,8 @@ def find_path(session, path):
     assert path_split
     #ceprint("path_split:", path_split)
 
-    if path_split[-1] == b'':
-        eprint("special case for /")
+    #if path_split[-1] == b'':
+    #    eprint("special case for /")
     if path.startswith(b'/'):
         absolute = True
     else:
