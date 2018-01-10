@@ -37,16 +37,17 @@ def find_path(session, path):
                 print('\t', pf)
 
             paths_that_match_filename = set([pathfilename.path for pathfilename in pathfilenames_with_filename_in_correct_position])
-            #ceprint("paths_that_match_filename:")
-            #for pf in paths_that_match_filename:
-            #    ceprint(pf)
+            if paths_that_match_filename:
+                ceprint("paths_that_match_filename:")
+                for pf in paths_that_match_filename:
+                    ceprint('\t', pf)
 
             if len(possible_path_set) == 0:
                 assert index == 0
                 possible_path_set = paths_that_match_filename
             #    ceprint("*possible_path_set:")
             else:
-                possible_path_set = possible_path_set & paths_that_match_filename
+                possible_path_set = possible_path_set & paths_that_match_filename  # intersection
             #    ceprint("possible_path_set:")
             #for pf in possible_path_set:
             #    ceprint(pf)
@@ -56,7 +57,7 @@ def find_path(session, path):
                 #    possible_path_set.add(pathfilename.path)
                 #else:
                 if pathfilename.path not in possible_path_set:
-                    #ceprint(" pathfilename.path not in possible_path_set, returning False")
+                    ceprint("pathfilename.path", pathfilename.path, "not in possible_path_set, returning False")
                     return False
 
             if not possible_path_set:
