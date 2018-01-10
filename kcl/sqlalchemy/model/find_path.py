@@ -44,7 +44,7 @@ def find_path(session, path):
 
             paths_that_match_filename = \
                 set([pathfilename.path for pathfilename in pathfilenames_with_filename_in_correct_position])
-            if paths_that_match_filename:
+            #if paths_that_match_filename:
                 #ceprint("paths_that_match_filename:")
                 #for pf in paths_that_match_filename: ceprint('\t', pf)
 
