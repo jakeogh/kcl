@@ -49,6 +49,7 @@ class Filename(BASE):
     #filename_lower = column_property(select([func.count(id)]))
     #filename_lower = column_property(select([func.encode(filename, 'escape')]))
     filename_lower_escape = column_property(func.lower(func.encode(filename, 'escape')))
+    filename_utf8 = column_property(func.convert_from(filename, 'utf8'))
 
     @classmethod
     def construct(cls, *, session, filename):
@@ -65,13 +66,13 @@ class Filename(BASE):
     # https://github.com/python/cpython/blob/6f0eb93183519024cb360162bdd81b9faec97ba6/Python/pyctype.c#L145
     # lower() on a bytes object maps 0x41-0x5a to 0x61-0x7a
     # b'\xc3\xb0\xc3\xb0\xc3\xb0'.decode('UTF8') == b'\xf0\xf0\xf0'.decode('latin1')
-    @hybrid_property
-    def filename_lowerp(self):
-        #return bytes(self.filename).lower() #nope, sqlalchemy cant translate because LOWER() is not defined for bytea
-        #latin1_str = str(bytes(self.filename), encoding='Latin1').lower()
-        latin1_str = str(bytes(self.filename), encoding='Latin1')
-        print("latin1_str:", latin1_str)
-        return latin1_str
+    #@hybrid_property
+    #def filename_lowerp(self):
+    #    #return bytes(self.filename).lower() #nope, sqlalchemy cant translate because LOWER() is not defined for bytea
+    #    #latin1_str = str(bytes(self.filename), encoding='Latin1').lower()
+    #    latin1_str = str(bytes(self.filename), encoding='Latin1')
+    #    print("latin1_str:", latin1_str)
+    #    return latin1_str
 
 #    @filename_lower.comparator
 #    def word_insensitive(cls):
