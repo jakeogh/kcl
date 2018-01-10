@@ -32,7 +32,7 @@ def find_path(session, path):
             ceprint("filename:", filename)
 
             pathfilenames_that_match_filename = session.query(PathFilename).filter_by(filename=filename, position=index).all()
-            #ceprint("pathfilenames_that_match_filename:")
+            ceprint("pathfilenames_that_match_filename:", pathfilenames_that_match_filename)
             #for pf in pathfilenames_that_match_filename:
             #    ceprint(pf)
 
