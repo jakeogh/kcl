@@ -31,12 +31,12 @@ def find_path(session, path):
             filename = session.query(Filename).filter_by(filename=filename).one()
             ceprint("filename:", filename)
 
-            pathfilenames_that_match_filename = session.query(PathFilename).filter_by(filename=filename, position=index).all()
-            ceprint("pathfilenames_that_match_filename:")
-            for pf in pathfilenames_that_match_filename:
-                print(pf)
+            pathfilenames_with_filename_in_correct_position = session.query(PathFilename).filter_by(filename=filename, position=index).all()
+            ceprint("pathfilenames_with_filename_in_correct_position:")
+            for pf in pathfilenames_with_filename_in_correct_position:
+                print('\t', pf)
 
-            paths_that_match_filename = set([pathfilename.path for pathfilename in pathfilenames_that_match_filename])
+            paths_that_match_filename = set([pathfilename.path for pathfilename in pathfilenames_with_filename_in_correct_position])
             #ceprint("paths_that_match_filename:")
             #for pf in paths_that_match_filename:
             #    ceprint(pf)
@@ -51,7 +51,7 @@ def find_path(session, path):
             #for pf in possible_path_set:
             #    ceprint(pf)
 
-            for pathfilename in pathfilenames_that_match_filename:
+            for pathfilename in pathfilenames_with_filename_in_correct_position:
                 #if index == 0:  # only add paths that start with the correct filename
                 #    possible_path_set.add(pathfilename.path)
                 #else:
