@@ -62,17 +62,24 @@ def find_path(session, path):
                 #ceprint("empty possible_path_set, returning False")
                 return False
 
+            # if true, then there is only one possible path
+            # it is either a match or a basepath
             if len(possible_path_set) == 1:
                 only_path = list(possible_path_set)[0]
                 #ceprint("only_path:", only_path, "path:", path)
                 if only_path.path == path:
-                    #ceprint("returning only_path:", only_path)
+                    ceprint("returning only_path:", only_path)
+                    return only_path
+                if only_path.path == os.path.dirname(path):
+                    ceprint("returning only_path as a base path:", only_path)
                     return only_path
                 #ceprint("returning False")
                 return False
 
         # ran out of path elements to loop through
+        # and more than one possible path remains
         # if there are any paths left in possible_path_set, then it _must_ contain the match
+        # along with longer paths
         for possible_path in possible_path_set:
             if possible_path.path == path:
                 return possible_path
