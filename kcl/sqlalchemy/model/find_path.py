@@ -40,13 +40,13 @@ def find_path(session, path):
             pathfilenames_with_filename_in_correct_position = \
                 session.query(PathFilename).filter_by(filename=filename, position=index).all()
             #ceprint("pathfilenames_with_filename_in_correct_position:")
-            for pf in pathfilenames_with_filename_in_correct_position: print('\t', pf)
+            #for pf in pathfilenames_with_filename_in_correct_position: print('\t', pf)
 
             paths_that_match_filename = \
                 set([pathfilename.path for pathfilename in pathfilenames_with_filename_in_correct_position])
             if paths_that_match_filename:
                 #ceprint("paths_that_match_filename:")
-                for pf in paths_that_match_filename: #ceprint('\t', pf)
+                #for pf in paths_that_match_filename: ceprint('\t', pf)
 
             if len(possible_path_set) == 0:
                 possible_path_set = paths_that_match_filename
