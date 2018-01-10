@@ -8,5 +8,5 @@ from kcl.sqlalchemy.visualization.print_database import print_database as kcl_pr
 @click.command()
 @click.option('--table', type=str, default=False)
 @click.pass_context
-def print_database(ctx, table):
+def _print(ctx, table):
     ctx.invoke(kcl_print_database, database=CONFIG.database, table=table, contents=True)
