@@ -24,33 +24,37 @@ def find_path(session, path):
 
     if path_split[-1] == b'':
         eprint("special case for /")
+    if path.startswith(b'/'):
+        absolute = True
+    else:
+        absolute = False
 
     try:
         for index, filename in enumerate(path_split):
+            if index != 0: assert filename
+            if absolute and index == 0:
+                continue  # skip matching every single absolute pathfilename
             ceprint(index, filename)
             filename = session.query(Filename).filter_by(filename=filename).one()
             ceprint("filename:", filename)
 
-            pathfilenames_with_filename_in_correct_position = session.query(PathFilename).filter_by(filename=filename, position=index).all()
+            pathfilenames_with_filename_in_correct_position = \
+                session.query(PathFilename).filter_by(filename=filename, position=index).all()
+            # first query returns all pathfilenames because everything starts with filename=''
             ceprint("pathfilenames_with_filename_in_correct_position:")
-            for pf in pathfilenames_with_filename_in_correct_position:
-                print('\t', pf)
+            for pf in pathfilenames_with_filename_in_correct_position: print('\t', pf)
 
-            paths_that_match_filename = set([pathfilename.path for pathfilename in pathfilenames_with_filename_in_correct_position])
+            paths_that_match_filename = \
+                set([pathfilename.path for pathfilename in pathfilenames_with_filename_in_correct_position])
             if paths_that_match_filename:
                 ceprint("paths_that_match_filename:")
-                for pf in paths_that_match_filename:
-                    ceprint('\t', pf)
+                for pf in paths_that_match_filename: ceprint('\t', pf)
 
             if len(possible_path_set) == 0:
                 assert index == 0
                 possible_path_set = paths_that_match_filename
-            #    ceprint("*possible_path_set:")
             else:
                 possible_path_set = possible_path_set & paths_that_match_filename  # intersection
-            #    ceprint("possible_path_set:")
-            #for pf in possible_path_set:
-            #    ceprint(pf)
 
             for pathfilename in pathfilenames_with_filename_in_correct_position:
                 #if index == 0:  # only add paths that start with the correct filename
