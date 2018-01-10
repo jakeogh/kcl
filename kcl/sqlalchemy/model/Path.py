@@ -68,12 +68,12 @@ class Path(BASE):
         if isinstance(path, str):
             path = bytes(path, encoding='UTF8')  # handle command line input
 
-        ceprint("constructing path:", path)
+        #ceprint("constructing path:", path)
         existing_path = find_path(session=session, path=path)
         if existing_path:
-            ceprint("found existing_path:", existing_path)
+            #ceprint("found existing_path:", existing_path)
             return existing_path
-        ceprint("new_path:", path)
+        #ceprint("new_path:", path)
         new_path = cls(path=path, session=session)
         return new_path
 
