@@ -46,7 +46,7 @@ from .find_path import find_path
 class Path(BASE):
     id = Column(Integer, primary_key=True)
 
-    pathrecord_id = Column(Integer, ForeignKey('pathrecord.id'), unique=False, nullable=False, index=True) # fix unique
+    pathrecord_id = Column(Integer, ForeignKey('pathrecord.id'), unique=True, nullable=False, index=True) # fix unique
     pathrecord = relationship("PathRecord", backref='path') #only 1 now that every path (except /) has a base_path
 
 
