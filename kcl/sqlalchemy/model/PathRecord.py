@@ -44,6 +44,16 @@ class PathRecord(BASE):
                          primary_key=False)
     filename = relationship("Filename", backref='pathrecords')
 
+
+    @classmethod
+    def construct(cls, *, session, path, **kwargs):
+        base_path = os.path.dirname(path)
+        if base_path == b'/':
+            ceprint("found /")
+        filename = path.split(b'/')[-1]
+
+
+
     ## Must be signed int because -1 has special meaning
     ##position_constraint = 'position<100' # limit filenames/path to 100
     ##position = Column(Integer, CheckConstraint(position_constraint), unique=False, primary_key=True)

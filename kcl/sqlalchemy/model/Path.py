@@ -35,74 +35,110 @@ from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.orm import column_property
 from sqlalchemy.ext.hybrid import hybrid_property
 from kcl.printops import ceprint
 from kcl.sqlalchemy.BaseMixin import BASE
+from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from .Filename import Filename
-from .PathRecord import PathRecord
+#from .PathRecord import PathRecord
 from .find_path import find_path
-
+from .path_relationship import path_relationship
 
 class Path(BASE):
     id = Column(Integer, primary_key=True)
 
-    pathrecord_id = Column(Integer, ForeignKey('pathrecord.id'), unique=True, nullable=False, index=True) # fix unique
-    pathrecord = relationship("PathRecord", backref='path', foreign_keys=[pathrecord_id]) #only 1 now that every path (except /) has a base_path
+    parent = relationship('Path',
+                          secondary=path_relationship,
+                          primaryjoin=path_relationship.c.path_id == id,
+                          secondaryjoin=path_relationship.c.path_parent_id == id,
+                          backref="children")
+
+    filename_id = Column(Integer,
+                         ForeignKey("filename.id"),
+                         unique=False,
+                         primary_key=False)
+    filename = relationship("Filename", backref='paths')
+
+    path = column_property(parent.path + b'/' + filename)
 
 
-    #def __init__(self, session, pathrecord):
+    #def __init__(self, session, parent, path):
     #    assert isinstance(path, bytes)
-    #    ##assert not find_path(session=session, path=path) # because get_one_or_create should have already found it
-    #    #for index, filename in enumerate(path.split(b'/')):
-    #    #    previous_position = index - 1
-    #    #    if previous_position == -1:
-    #    #        previous_position = None
-    #    if not base_path:
-    #        assert os.path.dirname(path) == b''
-    #    else:
-    #        assert len(path.split(base_path)[-1].split(b'/')) == 2
-    #    new_pathfilename = PathFilename(base_path=base_path, position=0, previous_position=None)
-    #    new_pathfilename.filename = Filename.construct(session=session, filename=filename)
-    #    self.pathfilenames.append(pathfilename)
-    #    session.add(self)
-    #    session.flush(objects=[self])
+    #    base_path = os.path.dirname(path)
+    #    ceprint("base_path:", base_path)
+    #    filename = path.split(base_path)[1]
+    #    ceprint("filename:", filename)
+    #    filename = get_one_or_create(session=session, Filename, filename=filename)
+    #    if base_path == b'':
+    #        #self.parent = None
+    #        root_path = get_one_or_create(session=session, Path, parent=None, filename=filename)
+    #        return root_path
+
 
     @classmethod
     def construct(cls, *, session, path, **kwargs):
-        '''
-        prevents creation of duplicate paths
-        '''
         assert path
+        ceprint("constructing path:", path)
         if isinstance(path, str):
             path = bytes(path, encoding='UTF8')  # handle command line input
-
-        ceprint("constructing path:", path)
-        existing_path = find_path(session=session, path=path)
-        if existing_path:
-            ceprint("found existing_path:", existing_path)
-            ceprint("checking if it's a base path")
-            if existing_path.path != os.path.dirname(path):
-                ceprint("returning existing_path:", existing_path)
-                return existing_path
-            # at this point existing path has gotta be a base path
-            base_path = existing_path
+        base_path = os.path.dirname(path)
+        ceprint("base_path:", base_path)
+        filename = path.split(base_path)[1]
+        ceprint("filename:", filename)
+        filename = get_one_or_create(session=session, Filename, filename=b'')
+        if filename.filename == b'':
+            ceprint("special case, empty filename for /")
+            new_path = get_one_or_create(session=session, Path, parent=None, filename=filename)
+            return new_path
         else:
-            base_path = None
+            parent = get_one_or_create(session=session, Path, create_method='construct', path=base_path)
+            #parent = cls.construct(session=session, path=base_path)
 
-        end_filename = Filename.construct(session=session, filename=filename
-        new_pathrecord = PathRecord(base_path=base_path, filename=end_filename)
-
-
-        #ceprint("new_path:", path)
-        #new_path = cls(pathrecord=pathrecord, session=session)
-        new_path = cls(pathrecord=pathrecord)
+        new_path = get_one_or_create(session=session, Path, parent=parent, filename=filename)
+        #new_path = cls(parent=parent, filename=filename)
         return new_path
 
-    @property
-    def path(self):  # appears to always return the same result as path_with_checks()
-        path = b'/'.join([pathrecord.path, pathrecord.filename])
-        ceprint("path:", path)
-        return path
+        #path_split = path.split(b'/')
+        #for index, element in reversed(path_split)
+        #if path == b'/':
+        #    ceprint("special case: /")
+        #    filename = get_one_or_create(session=session, Filename, filename=b'')
+
+
+        #existing_path = get_one_or_create(session=session, Path, path=path)
+        #if existing_path:
+        #    ceprint("found existing_path:", existing_path)
+        #    return existing_path
+
+        ##    ceprint("checking if it's a base path")
+        ##    if existing_path.path != os.path.dirname(path):
+        ##        ceprint("returning existing_path:", existing_path)
+        ##        return existing_path
+        ##    # at this point existing path has gotta be a base path
+        ##    base_path = existing_path
+        ##else:
+        ##    ceprint("no existing path found, iterating over elements of path to make new base path")
+        ##    path_split = path.split(b'/')
+        ##    for index, filename in enumerate(path_split):
+        ##        if index == 0: assert filename == b''
+
+        ##    base_path = None
+
+        ##end_filename = Filename.construct(session=session, filename=filename)
+        ##new_pathrecord = PathRecord(base_path=base_path, filename=end_filename)
+
+
+        ###ceprint("new_path:", path)
+        ###new_path = cls(pathrecord=pathrecord, session=session)
+        ##new_path = cls(pathrecord=pathrecord)
+        ##return new_path
+
+    #@property
+    #def path(self):  # appears to always return the same result as path_with_checks()
+    #    path = b'/'.join([pathrecord.path, pathrecord.filename])
+    #    ceprint("path:", path)
+    #    return path
 
     #@hybrid_property
     #def filenames(self):
@@ -210,3 +246,19 @@ class Path(BASE):
 ##            quit(1)
 ##        return unsorted_path
 
+    #def __init__(self, session, pathrecord):
+    #    assert isinstance(path, bytes)
+    #    ##assert not find_path(session=session, path=path) # because get_one_or_create should have already found it
+    #    #for index, filename in enumerate(path.split(b'/')):
+    #    #    previous_position = index - 1
+    #    #    if previous_position == -1:
+    #    #        previous_position = None
+    #    if not base_path:
+    #        assert os.path.dirname(path) == b''
+    #    else:
+    #        assert len(path.split(base_path)[-1].split(b'/')) == 2
+    #    new_pathfilename = PathFilename(base_path=base_path, position=0, previous_position=None)
+    #    new_pathfilename.filename = Filename.construct(session=session, filename=filename)
+    #    self.pathfilenames.append(pathfilename)
+    #    session.add(self)
+    #    session.flush(objects=[self])
