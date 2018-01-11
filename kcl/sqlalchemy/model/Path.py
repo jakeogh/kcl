@@ -99,10 +99,11 @@ class Path(BASE):
         else:
             ceprint("recursive construct() call on path:", base_path)
             parent = get_one_or_create(session=session, model=Path, create_method='construct', create_method_kwargs={'path':base_path, 'session':session})
-            ceprint("got parent:", parent)
+            ceprint("got parent:", parent.id)
             #parent = cls.construct(session=session, path=base_path)
 
         new_path = get_one_or_create(session=session, model=Path, parent=parent, filename=filename)
+        ceprint("got new_path:", new_path.id)
         #new_path = cls(parent=parent, filename=filename)
         return new_path
 
