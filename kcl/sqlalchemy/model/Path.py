@@ -86,7 +86,7 @@ class Path(BASE):
         ceprint("base_path:", base_path)
         filename = path.split(base_path)[1]
         ceprint("filename:", filename)
-        filename = get_one_or_create(session=session, model=Filename, filename=b'')
+        filename = get_one_or_create(session=session, model=Filename, filename=filename)
         if filename.filename == b'':
             ceprint("special case, empty filename for /")
             #new_path = get_one_or_create(session=session, model=Path, parent=None, filename=filename)
