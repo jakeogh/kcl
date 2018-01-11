@@ -87,7 +87,7 @@ class Path(BASE):
         path_split = path.split(b'/')
         base_path = b'/'.join(path_split[0:-1])
         ceprint("base_path:", base_path)
-        filename = path.split[-1]
+        filename = path_split[-1]
         ceprint("filename:", filename)
         filename = get_one_or_create(session=session, model=Filename, filename=filename)
         if filename.filename == b'':
