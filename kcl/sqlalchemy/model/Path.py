@@ -43,18 +43,22 @@ from .find_path import find_path
 
 class Path(BASE):
     id = Column(Integer, primary_key=True)
-    pathfilenames = relationship("PathFilename", backref='path', foreign_keys=[path_id]) #only 1 now that every path (except /) has a base_path
+    pathfilename = relationship("PathFilename", backref='path') #only 1 now that every path (except /) has a base_path
 
     def __init__(self, session, path, base_path):
         assert isinstance(path, bytes)
-        #assert not find_path(session=session, path=path) # because get_one_or_create should have already found it
-        for index, filename in enumerate(path.split(b'/')):
-            previous_position = index - 1
-            if previous_position == -1:
-                previous_position = None
-            pathfilename = PathFilename(base_path=base_path, position=index, previous_position=previous_position)
-            pathfilename.filename = Filename.construct(session=session, filename=filename)
-            self.pathfilenames.append(pathfilename)
+        ##assert not find_path(session=session, path=path) # because get_one_or_create should have already found it
+        #for index, filename in enumerate(path.split(b'/')):
+        #    previous_position = index - 1
+        #    if previous_position == -1:
+        #        previous_position = None
+        if not base_path:
+            assert os.path.dirname(path) == b''
+        else:
+            assert len(path.split(base_path)[-1].split(b'/')) == 2
+        new_pathfilename = PathFilename(base_path=base_path, position=0, previous_position=None)
+        new_pathfilename.filename = Filename.construct(session=session, filename=filename)
+        self.pathfilenames.append(pathfilename)
         session.add(self)
         session.flush(objects=[self])
 
