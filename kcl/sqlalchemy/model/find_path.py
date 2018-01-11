@@ -4,7 +4,7 @@
 
 from sqlalchemy.orm.exc import NoResultFound
 from .Filename import Filename
-from .PathFilename import PathFilename
+from .PathRecord import PathRecord
 from kcl.printops import ceprint
 from kcl.printops import eprint
 
@@ -38,7 +38,7 @@ def find_path(session, path):
             #ceprint("filename:", filename)
 
             pathfilenames_with_filename_in_correct_position = \
-                session.query(PathFilename).filter_by(filename=filename, position=index).all()
+                session.query(PathRecord).filter_by(filename=filename, position=index).all()
             #ceprint("pathfilenames_with_filename_in_correct_position:")
             #for pf in pathfilenames_with_filename_in_correct_position: print('\t', pf)
 
