@@ -84,9 +84,10 @@ class Path(BASE):
         ceprint("constructing path:", path)
         if isinstance(path, str):
             path = bytes(path, encoding='UTF8')  # handle command line input
-        base_path = os.path.dirname(path)
+        path_split = path.split(b'/')
+        base_path = b'/'.join(path_split[0:-1])
         ceprint("base_path:", base_path)
-        filename = path.split(base_path)[1]
+        filename = path.split[-1]
         ceprint("filename:", filename)
         filename = get_one_or_create(session=session, model=Filename, filename=filename)
         if filename.filename == b'':
