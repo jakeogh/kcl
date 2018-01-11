@@ -29,7 +29,7 @@ class PathRecord(BASE):
     Does not appear to be a big deal because it's not exp and most paths have 0 spaces
 
     '''
-    #__table_args__ = (UniqueConstraint('path_id', 'filename_id'),)
+    __table_args__ = (UniqueConstraint('path_id', 'filename_id'),)
     id = Column(Integer, primary_key=True)
 
     path_id = Column(Integer,
