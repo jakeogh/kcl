@@ -89,19 +89,19 @@ class Path(BASE):
         new_path = cls(path=path, session=session)
         return new_path
 
-    @property
-    def path(self):  # appears to always return the same result as path_with_checks()
-        path = b'/'.join([filename.filename for filename in self.filenames])
-        return path
+    #@property
+    #def path(self):  # appears to always return the same result as path_with_checks()
+    #    path = b'/'.join([filename.filename for filename in self.filenames])
+    #    return path
 
-    @hybrid_property
-    def filenames(self):
-        filename_list = []
-        for pathfilename in self.pathfilenames:  # only one now
-            # path_filename = getattr(filename, self.pathfilename)
-            filename_list.append(pathfilename.path)
-            filename_list.append(pathfilename.filename)
-        return filename_list  # cant be a set because "a a" -> "a"
+    #@hybrid_property
+    #def filenames(self):
+    #    filename_list = []
+    #    for pathfilename in self.pathfilenames:  # only one now
+    #        # path_filename = getattr(filename, self.pathfilename)
+    #        filename_list.append(pathfilename.path)
+    #        filename_list.append(pathfilename.filename)
+    #    return filename_list  # cant be a set because "a a" -> "a"
 
 
     def __repr__(self):
