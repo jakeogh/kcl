@@ -36,13 +36,13 @@ class PathRecord(BASE):
                      ForeignKey("path.id"),
                      unique=False,
                      primary_key=True)
-    path = relationship("Path", backref='pathrecord')
+    path = relationship("Path", backref='basepath')
 
     filename_id = Column(Integer,
                          ForeignKey("filename.id"),
                          unique=False,
                          primary_key=True)
-    filename = relationship("Filename", backref='pathrecord')
+    filename = relationship("Filename", backref='pathrecords')
 
     ## Must be signed int because -1 has special meaning
     ##position_constraint = 'position<100' # limit filenames/path to 100
