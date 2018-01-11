@@ -65,8 +65,9 @@ class Path(BASE):
     #path = column_property(filename)
 
 
-    def __init__(self, session, parent, filename):
-        ceprint("parent:", parent, "filename:", filename)
+    def __init__(self, *args, **kwargs):
+        ceprint("args:", args)
+        ceprint("kwargs:", kwargs)
     #    assert isinstance(path, bytes)
     #    base_path = os.path.dirname(path)
     #    ceprint("base_path:", base_path)
