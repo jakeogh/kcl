@@ -30,6 +30,7 @@ class PathRecord(BASE):
 
     '''
     __table_args__ = (UniqueConstraint('path_id', 'filename_id'),)
+    id = Column(Integer, primary_key=True)
     path_id = Column(Integer,
                      ForeignKey("path.id"),
                      unique=False,
