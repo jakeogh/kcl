@@ -105,7 +105,7 @@ class Path(BASE):
 
         ceprint("getting new_path: parent:", parent.id, "filename:", filename)
         new_path = get_one_or_create(session=session, model=Path, parent=parent, filename=filename)
-        ceprint("got new_path:", new_path.id)
+        ceprint("got new_path:", new_path.id, "new_path.filename.id:", new_path.filename.id)
         #new_path = cls(parent=parent, filename=filename)
         return new_path
 
