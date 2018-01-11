@@ -30,8 +30,10 @@ Each PathFilename instance maps a Filename to a position.
 So, actually, Path.filenames is a list of PathFilename instances, not Filename instances.
 '''
 
+import os
 from sqlalchemy import Column
 from sqlalchemy import Integer
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 from kcl.printops import ceprint
