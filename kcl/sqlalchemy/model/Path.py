@@ -96,7 +96,7 @@ class Path(BASE):
             ceprint("returning root_path:", root_path.id)
             return root_path
         else:
-            parent = get_one_or_create(session=session, model=Path, create_method='construct', path=base_path)
+            parent = get_one_or_create(session=session, model=Path, create_method='construct', create_method_kwargs={'path':base_path})
             #parent = cls.construct(session=session, path=base_path)
 
         new_path = get_one_or_create(session=session, model=Path, parent=parent, filename=filename)
