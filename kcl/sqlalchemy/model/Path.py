@@ -61,7 +61,7 @@ class Path(BASE):
     filename = relationship("Filename", backref='paths')
 
     #path = column_property(parent.filename + b'/' + filename)
-    path = column_property(b'/' + filename.filename)
+    path = column_property(b'/' + filename[0].filename)
 
 
     #def __init__(self, session, parent, path):
