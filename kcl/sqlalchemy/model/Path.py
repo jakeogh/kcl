@@ -39,7 +39,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from kcl.printops import ceprint
 from kcl.sqlalchemy.BaseMixin import BASE
 from .Filename import Filename
-from .PathFilename import PathFilename
+from .PathRecord import PathRecord
 from .find_path import find_path
 
 
