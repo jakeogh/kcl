@@ -36,7 +36,7 @@ class PathRecord(BASE):
                      ForeignKey("path.id"),
                      unique=False,
                      primary_key=False)
-    path = relationship("Path", backref='basepath')
+    #path = relationship("Path", backref='basepath')
 
     filename_id = Column(Integer,
                          ForeignKey("filename.id"),
