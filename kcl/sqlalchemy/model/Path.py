@@ -57,7 +57,8 @@ class Path(BASE):
     filename_id = Column(Integer,
                          ForeignKey("filename.id"),
                          unique=False,
-                         primary_key=False)
+                         primary_key=False,
+                         nullable=False)
     filename = relationship("Filename", backref='paths')
 
     #path = column_property(parent.filename + b'/' + filename)
