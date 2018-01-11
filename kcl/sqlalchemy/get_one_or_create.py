@@ -11,10 +11,13 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
     assert session
     for key in kwargs.keys():
         if issubclass(kwargs[key].__class__, model):
+            ceprint("returning early")
             return kwargs[key]
     try:
+        ceprint("session.query filter_by:", kwargs)
         result = session.query(model).filter_by(**kwargs).one()
     except NoResultFound as e:
+        ceprint("NoResultFound")
         #import pdb; pdb.set_trace()
         kwargs.update(create_method_kwargs or {})
         created = getattr(model, create_method, model)(*args, **kwargs)
