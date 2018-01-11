@@ -43,24 +43,27 @@ from .find_path import find_path
 
 class Path(BASE):
     id = Column(Integer, primary_key=True)
-    pathfilename = relationship("PathFilename", backref='path') #only 1 now that every path (except /) has a base_path
 
-    def __init__(self, session, path, base_path):
-        assert isinstance(path, bytes)
-        ##assert not find_path(session=session, path=path) # because get_one_or_create should have already found it
-        #for index, filename in enumerate(path.split(b'/')):
-        #    previous_position = index - 1
-        #    if previous_position == -1:
-        #        previous_position = None
-        if not base_path:
-            assert os.path.dirname(path) == b''
-        else:
-            assert len(path.split(base_path)[-1].split(b'/')) == 2
-        new_pathfilename = PathFilename(base_path=base_path, position=0, previous_position=None)
-        new_pathfilename.filename = Filename.construct(session=session, filename=filename)
-        self.pathfilenames.append(pathfilename)
-        session.add(self)
-        session.flush(objects=[self])
+    pathrecord_id = Column(Integer, ForeignKey('pathrecord.id'), unique=True, nullable=False, index=True)
+    pathrecord = relationship("PathRecord", backref='path') #only 1 now that every path (except /) has a base_path
+
+
+    #def __init__(self, session, pathrecord):
+    #    assert isinstance(path, bytes)
+    #    ##assert not find_path(session=session, path=path) # because get_one_or_create should have already found it
+    #    #for index, filename in enumerate(path.split(b'/')):
+    #    #    previous_position = index - 1
+    #    #    if previous_position == -1:
+    #    #        previous_position = None
+    #    if not base_path:
+    #        assert os.path.dirname(path) == b''
+    #    else:
+    #        assert len(path.split(base_path)[-1].split(b'/')) == 2
+    #    new_pathfilename = PathFilename(base_path=base_path, position=0, previous_position=None)
+    #    new_pathfilename.filename = Filename.construct(session=session, filename=filename)
+    #    self.pathfilenames.append(pathfilename)
+    #    session.add(self)
+    #    session.flush(objects=[self])
 
     @classmethod
     def construct(cls, *, session, path, **kwargs):
@@ -72,19 +75,16 @@ class Path(BASE):
         if isinstance(path, str):
             path = bytes(path, encoding='UTF8')  # handle command line input
 
-        #ceprint("constructing path:", path)
-        base_path = None
+        ceprint("constructing path:", path)
         existing_path = find_path(session=session, path=path)
         if existing_path:
             ceprint("found existing_path:", existing_path)
             ceprint("checking if it's a base path")
             if existing_path.path != os.path.dirname(path):
                 return existing_path
-            else:
-                base_path = existing_path
 
         #ceprint("new_path:", path)
-        new_path = cls(base_path=base_path, path=path, session=session)
+        new_path = cls(path=path, session=session)
         return new_path
 
     @property
@@ -97,7 +97,7 @@ class Path(BASE):
         filename_list = []
         for pathfilename in self.pathfilenames:  # only one now
             # path_filename = getattr(filename, self.pathfilename)
-            filename_list.append(pathfilename.base_path)
+            filename_list.append(pathfilename.path)
             filename_list.append(pathfilename.filename)
         return filename_list  # cant be a set because "a a" -> "a"
 

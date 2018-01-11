@@ -10,18 +10,15 @@ from sqlalchemy import Integer
 from sqlalchemy.orm import relationship
 from kcl.sqlalchemy.BaseMixin import BASE
 
-class PathFilename(BASE):
+class PathRecord(BASE):
     '''
-    Pathfilenames are to Paths as AliasFilenames are to Aliases
+    Path instances are composed of a PathRecord instance.
 
-
-    Path instances are composed of a list of PathFilename instances.
-    Paths with spaces are composed of multiple PathFilename instances.
-    Each PathFilename maps a Filename to a position and a specific Path.
-    position is always 0 unless the path is composed of multiple PathFilename instances
+    Each PathRecord maps a Filename to a position and a specific Path.
+    position is always 0 unless the path is composed of multiple PathRecord instances
     The Slide/Bullett example:
         http://docs.sqlalchemy.org/en/latest/orm/extensions/orderinglist.html
-        seems to confirm that PathFilenames are necessary because in this instance
+        seems to confirm that PathRecords are necessary because in this instance
         many Slides(Paths) can have the same Bullet(Filename), and in the example
         a Bullet can only exist on one Slide.
 
@@ -41,27 +38,31 @@ class PathFilename(BASE):
                          ForeignKey("filename.id"),
                          unique=False,
                          primary_key=True)
-    # Must be signed int because -1 has special meaning
-    #position_constraint = 'position<100' # limit filenames/path to 100
-    #position = Column(Integer, CheckConstraint(position_constraint), unique=False, primary_key=True)
-    position = Column(Integer, unique=False, primary_key=True)
-    previous_position_constraint = \
-        '(previous_position IS NULL AND position = 0) ' + \
-        'OR ((previous_position = position - 1) IS TRUE)'
+    ## Must be signed int because -1 has special meaning
+    ##position_constraint = 'position<100' # limit filenames/path to 100
+    ##position = Column(Integer, CheckConstraint(position_constraint), unique=False, primary_key=True)
+    #position = Column(Integer, unique=False, primary_key=True)
+    #previous_position_constraint = \
+    #    '(previous_position IS NULL AND position = 0) ' + \
+    #    'OR ((previous_position = position - 1) IS TRUE)'
 
-    # primary_key=False because it can be Null
-    previous_position = Column(Integer,
-                               CheckConstraint(previous_position_constraint),
-                               primary_key=False,
-                               nullable=True)
+    ## primary_key=False because it can be Null
+    #previous_position = Column(Integer,
+    #                           CheckConstraint(previous_position_constraint),
+    #                           primary_key=False,
+    #                           nullable=True)
     # collection_class=set?
     filename = relationship("Filename", backref='pathfilenames')
 
     def __repr__(self):
-        return 'PathFilename<' + \
+        return 'PathRecord<' + \
             'filename: ' + str(self.filename) + \
             ', path_id: ' + str(self.path_id) + \
-            ', filename_id: ' + str(self.filename_id) + \
-            ', position: ' + str(self.position) + \
-            ', previous_position: ' + str(self.previous_position) + '>'
+            ', filename_id: ' + str(self.filename_id) + '>'
+        #return 'PathRecord<' + \
+        #    'filename: ' + str(self.filename) + \
+        #    ', path_id: ' + str(self.path_id) + \
+        #    ', filename_id: ' + str(self.filename_id) + \
+        #    ', position: ' + str(self.position) + \
+        #    ', previous_position: ' + str(self.previous_position) + '>'
 
