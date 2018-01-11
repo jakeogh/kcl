@@ -29,16 +29,20 @@ class PathRecord(BASE):
     Does not appear to be a big deal because it's not exp and most paths have 0 spaces
 
     '''
-    __table_args__ = (UniqueConstraint('path_id', 'filename_id'),)
+    #__table_args__ = (UniqueConstraint('path_id', 'filename_id'),)
     id = Column(Integer, primary_key=True)
     path_id = Column(Integer,
                      ForeignKey("path.id"),
                      unique=False,
                      primary_key=True)
+    path = relationship("Path", backref='pathrecord')
+
     filename_id = Column(Integer,
                          ForeignKey("filename.id"),
                          unique=False,
                          primary_key=True)
+    filename = relationship("Filename", backref='pathrecord')
+
     ## Must be signed int because -1 has special meaning
     ##position_constraint = 'position<100' # limit filenames/path to 100
     ##position = Column(Integer, CheckConstraint(position_constraint), unique=False, primary_key=True)
@@ -53,7 +57,6 @@ class PathRecord(BASE):
     #                           primary_key=False,
     #                           nullable=True)
     # collection_class=set?
-    filename = relationship("Filename", backref='pathfilenames')
 
     def __repr__(self):
         return 'PathRecord<' + \
