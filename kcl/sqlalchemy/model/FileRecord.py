@@ -139,7 +139,7 @@ class FileRecord(BASE):
     def __repr__(self):
         #return "<FileRecord(id=%s path=%s filename=%s byteshash=%s)>" % (str(self.id), str(self.path), str(self.filename), str(self.byteshash))
         #return "<FileRecord(id=%s path=%s filename=%s)>" % (str(self.id), str(self.path), str(self.filename))
-        return "<FileRecord(path=%s)>" % (str(self.path))
+        return "<FileRecord(path=%s)>" % (str(self.path.id))
 
     #@hybrid_property
     #def file(self):
