@@ -42,8 +42,8 @@ class FileRecord(BASE):
     symlink_target_path_id = Column(Integer, ForeignKey('path.id'), unique=False, nullable=True, index=True)
     symlink_target_path = relationship('Path', foreign_keys=[symlink_target_path_id], backref='targets')
 
-    filename_id = Column(Integer, ForeignKey('filename.id'), unique=False, nullable=False, index=True)
-    filename = relationship('Filename', backref='filerecords')
+    #filename_id = Column(Integer, ForeignKey('filename.id'), unique=False, nullable=False, index=True)
+    #filename = relationship('Filename', backref='filerecords')
 
     byteshash_id = Column(Integer, ForeignKey('byteshash.id'), unique=False, nullable=True, index=True)
     byteshash = relationship('BytesHash', backref='filerecords')
@@ -81,11 +81,12 @@ class FileRecord(BASE):
             path = bytes(path, encoding='UTF8') # allow command line args
         abspath = os.path.abspath(path)
         assert abspath.startswith(b'/')
-        path, filename = os.path.split(abspath)
+        #path, filename = os.path.split(abspath)
+        path = abspath
         stat = os.stat(abspath, follow_symlinks=False)
 
         path = Path.construct(session=session, path=path)
-        filename = Filename.construct(session=session, filename=filename)
+        #filename = Filename.construct(session=session, filename=filename)
 
         if calc_hash and is_regular_file(abspath): #this stuff should be in BytesHash.construct
             if stat.st_size == 0:
@@ -112,7 +113,6 @@ class FileRecord(BASE):
         #import IPython; IPython.embed()
         # pointless to use get_one_or_create due to using a timestamp
         result = get_one_or_create(session, FileRecord, path=path,
-                                   filename=filename,
                                    symlink_target_path=symlink_target_path,
                                    byteshash=byteshash,
                                    stat_st_mode=stat.st_mode,
@@ -130,7 +130,8 @@ class FileRecord(BASE):
 
     def __bytes__(self):
         #import IPython; IPython.embed()
-        outfile = b'/'.join([bytes(self.path), bytes(self.filename)])
+        #outfile = b'/'.join([bytes(self.path), bytes(self.filename)])
+        outfile = bytes(self.path)
         if self.symlink_target_path:
             outfile = b' -> '.join([outfile, bytes(self.symlink_target_path)])
         return outfile
@@ -140,9 +141,9 @@ class FileRecord(BASE):
         #return "<FileRecord(id=%s path=%s filename=%s)>" % (str(self.id), str(self.path), str(self.filename))
         return "<FileRecord(file=%s)>" % (str(self.file))
 
-    @hybrid_property
-    def file(self):
-        return b'/'.join([bytes(self.path), bytes(self.filename)])
+    #@hybrid_property
+    #def file(self):
+    #    return b'/'.join([bytes(self.path), bytes(self.filename)])
 
     #@hybrid_property
     #def tags(self):
