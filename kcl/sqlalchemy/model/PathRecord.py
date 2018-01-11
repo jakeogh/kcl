@@ -35,13 +35,13 @@ class PathRecord(BASE):
     path_id = Column(Integer,
                      ForeignKey("path.id"),
                      unique=False,
-                     primary_key=True)
+                     primary_key=False)
     path = relationship("Path", backref='basepath')
 
     filename_id = Column(Integer,
                          ForeignKey("filename.id"),
                          unique=False,
-                         primary_key=True)
+                         primary_key=False)
     filename = relationship("Filename", backref='pathrecords')
 
     ## Must be signed int because -1 has special meaning
