@@ -21,7 +21,7 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
         try:
             session.add(created)
             session.flush(objects=[created])
-            print("returning created:", created)
+            ceprint("returning created:", created)
             return created
         except IntegrityError as e:
             print("IntegrityError:", e, model)
