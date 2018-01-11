@@ -25,9 +25,9 @@ All Filenames for the Path list above:
 
 Filenames are unique.
 
-Paths are composed of Filenames in a specific order, that order is defined by class PathFilename
-Each PathFilename instance maps a Filename to a position.
-So, actually, Path.filenames is a list of PathFilename instances, not Filename instances.
+Paths are composed of Filenames in a specific order, that order is defined by class PathRecord
+Each PathRecord instance maps a Filename to a position.
+So, actually, Path.filenames is a list of PathRecord instances, not Filename instances.
 '''
 
 import os
@@ -71,7 +71,6 @@ class Path(BASE):
     def construct(cls, *, session, path, **kwargs):
         '''
         prevents creation of duplicate paths
-        prevents creation of a path that conflicts with an existing alias
         '''
         assert path
         if isinstance(path, str):
@@ -83,16 +82,27 @@ class Path(BASE):
             ceprint("found existing_path:", existing_path)
             ceprint("checking if it's a base path")
             if existing_path.path != os.path.dirname(path):
+                ceprint("returning existing_path:", existing_path)
                 return existing_path
+            # at this point existing path has gotta be a base path
+            base_path = existing_path
+        else:
+            base_path = None
+
+        end_filename = Filename.construct(session=session, filename=filename
+        new_pathrecord = PathRecord(base_path=base_path, filename=end_filename)
+
 
         #ceprint("new_path:", path)
-        new_path = cls(path=path, session=session)
+        #new_path = cls(pathrecord=pathrecord, session=session)
+        new_path = cls(pathrecord=pathrecord)
         return new_path
 
-    #@property
-    #def path(self):  # appears to always return the same result as path_with_checks()
-    #    path = b'/'.join([filename.filename for filename in self.filenames])
-    #    return path
+    @property
+    def path(self):  # appears to always return the same result as path_with_checks()
+        path = b'/'.join([pathrecord.path, pathrecord.filename])
+        ceprint("path:", path)
+        return path
 
     #@hybrid_property
     #def filenames(self):
