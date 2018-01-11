@@ -62,7 +62,7 @@ class Path(BASE):
 
     #path = column_property(parent.filename + b'/' + filename)
     #path = column_property(b'/' + filename.filename)
-    path = column_property(filename)
+    #path = column_property(filename)
 
 
     #def __init__(self, session, parent, path):
