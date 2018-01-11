@@ -80,7 +80,7 @@ class Path(BASE):
 
     @classmethod
     def construct(cls, *, session, path, **kwargs):
-        assert path
+        #assert path
         ceprint("constructing path:", path)
         if isinstance(path, str):
             path = bytes(path, encoding='UTF8')  # handle command line input
