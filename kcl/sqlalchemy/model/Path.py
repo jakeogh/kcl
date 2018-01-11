@@ -47,7 +47,7 @@ class Path(BASE):
     id = Column(Integer, primary_key=True)
 
     pathrecord_id = Column(Integer, ForeignKey('pathrecord.id'), unique=True, nullable=False, index=True) # fix unique
-    pathrecord = relationship("PathRecord", backref='path') #only 1 now that every path (except /) has a base_path
+    pathrecord = relationship("PathRecord", backref='path', foreign_keys=[pathrecord_id]) #only 1 now that every path (except /) has a base_path
 
 
     #def __init__(self, session, pathrecord):
