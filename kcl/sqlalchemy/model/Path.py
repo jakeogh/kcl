@@ -152,11 +152,11 @@ class Path(BASE):
     #    return filename_list  # cant be a set because "a a" -> "a"
 
 
-    def __repr__(self):
-        return "<Path(id=%s path=%s)>" % (str(self.id), str(self.path))
+    #def __repr__(self):
+    #    return "<Path(id=%s path=%s)>" % (str(self.id), str(self.path))
 
-    def __bytes__(self):
-        return self.path
+    #def __bytes__(self):
+    #    return self.path
 
 
 
