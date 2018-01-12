@@ -6,6 +6,7 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
 from kcl.sqlalchemy.BaseMixin import BASE
+from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from .Filename import Filename
 
 
@@ -38,12 +39,21 @@ class Path(BASE):
     filename_id = Column(Integer, ForeignKey("filename.id"), unique=False, nullable=False)
     filename = relationship("Filename", backref='paths')
 
-    def __init__(self, **kwargs):
-        if 'path' in kwargs.keys():
-            path_split = kwargs['path']
-            parent_path = b'/'.join(path_split[0:-1])
-            parent = get_one_or_create(self.) #hmph, need session
+    @classmethod
+    def construct(cls, *, session, path):
+        assert isinstance(path, bytes)
+        path_split = path.split(b'/')
+        parent_path = b'/'.join(path_split[0:-1])
+        filename = path_split[-1]
+        filename = get_one_or_create(session, Filename, filename=filename)
+        parent = get_one_or_create(session=session,
+                                   model=Path,
+                                   path=parent_path,  # searching the hybrid_property
+                                   create_method='construct',
+                                   create_method_kwargs={'path':parent_path, 'session':session})
 
+        new_path = get_one_or_create(session, Path, parent=parent, filename=filename)
+        return new_path
 
     @hybrid_property
     def path(self):
