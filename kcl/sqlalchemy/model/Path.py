@@ -59,7 +59,7 @@ class Path(BASE):
     def path(self):
         if self.parent:
             return '/'.join([self.parent.path, self.filename])
-        return str(self.filename)
+        return bytes(self.filename)
 
     def __init__(self, filename, parent=None):
         self.filename = filename
