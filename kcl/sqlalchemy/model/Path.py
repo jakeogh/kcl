@@ -60,8 +60,8 @@ class Path(BASE):
 
     @path.expression
     def path(cls):
-        if cls.parent:
-            return cls.parent.path + b'/' + cls.filename.filename
+        #if cls.parent:
+        #    return cls.parent.path + b'/' + cls.filename.filename
         return cls.filename.filename
 
     @classmethod
