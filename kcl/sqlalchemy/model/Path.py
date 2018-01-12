@@ -13,6 +13,7 @@ from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 
 class Filename(BASE):
+    __tablename__ = 'filename'
     '''
     UNIX filenames can be anything but NULL and / therefore a binary type is required.
     max file name length is 255 on all UNIX-like filesystems
