@@ -7,12 +7,10 @@ from sqlalchemy.orm import Session, relationship, backref, joinedload_all
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.dialects.postgresql import BYTEA
+#from sqlalchemy.dialects.postgresql import BYTEA
+from sqlalchemy.types import BINARY
 from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
-
-
-
 
 class Filename(BASE):
     '''
@@ -28,7 +26,7 @@ class Filename(BASE):
     id = Column(Integer, primary_key=True)
 
     filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
-    filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
+    filename = Column(BINARY(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
 
     #@classmethod
     #def construct(cls, *, session, filename):
