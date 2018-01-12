@@ -40,6 +40,30 @@ class Path(BASE):
     filename_id = Column(Integer, ForeignKey("filename.id"), unique=False, nullable=False)
     filename = relationship("Filename", backref='paths')
 
+    def __init__(self, filename, parent=None):
+        self.filename = filename
+        self.parent = parent
+
+    def __repr__(self):
+        return "Path(filename=%r, id=%r, parent_id=%r, path=%r)" % (
+            self.filename,
+            self.id,
+            self.parent_id,
+            self.path
+        )
+
+    @hybrid_property
+    def path(self):
+        if self.parent:
+            return b'/'.join([self.parent.path, bytes(self.filename)])
+        return bytes(self.filename)
+
+    @path.expression
+    def path(cls):
+        if cls.parent:
+            return cls.parent.path + b'/' + cls.filename.filename
+        return cls.filename.filename
+
     @classmethod
     def construct(cls, *, session, path):
         assert isinstance(path, bytes)
@@ -55,30 +79,6 @@ class Path(BASE):
 
         new_path = get_one_or_create(session, Path, parent=parent, filename=filename)
         return new_path
-
-    @hybrid_property
-    def path(self):
-        if self.parent:
-            return b'/'.join([self.parent.path, bytes(self.filename)])
-        return bytes(self.filename)
-
-    @path.expression
-    def path(cls):
-        if cls.parent:
-            return cls.parent.path + b'/' + cls.filename.filename
-        return cls.filename.filename
-
-    def __init__(self, filename, parent=None):
-        self.filename = filename
-        self.parent = parent
-
-    def __repr__(self):
-        return "Path(filename=%r, id=%r, parent_id=%r, path=%r)" % (
-            self.filename,
-            self.id,
-            self.parent_id,
-            self.path
-        )
 
     def dump(self, _indent=0):
         return "   " * _indent + repr(self) + \
