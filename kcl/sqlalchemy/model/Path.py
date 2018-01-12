@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session, relationship, backref, joinedload_all
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
-Base = declarative_base()
+from kcl.sqlalchemy.BaseMixin import BASE
 
-class Path(Base):
+class Path(BASE):
     '''
         adjacency list example modified to model a filesystem
         https://github.com/zzzeek/sqlalchemy/blob/master/examples/adjacency_list/adjacency_list.py
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     msg("Creating Path Table:")
 
-    Base.metadata.create_all(engine)
+    BASE.metadata.create_all(engine)
 
     session = Session(engine)
 
