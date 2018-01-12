@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
+from sqlalchemy import func
 from sqlalchemy.orm import Session, relationship, backref, joinedload_all
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.ext.declarative import declarative_base
@@ -60,6 +61,12 @@ class Path(BASE):
         if self.parent:
             return b'/'.join([self.parent.path, bytes(self.filename)])
         return bytes(self.filename)
+
+    @path.expression
+    def path(cls):
+        if cls.parent:
+            return cls.parent.path + b'/' + cls.filename
+        return cls.filename.filename
 
     def __init__(self, filename, parent=None):
         self.filename = filename
