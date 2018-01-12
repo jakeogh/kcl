@@ -6,6 +6,8 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
 from kcl.sqlalchemy.BaseMixin import BASE
+from .Filename import Filename
+
 
 class Path(BASE):
     '''
@@ -16,7 +18,7 @@ class Path(BASE):
     __tablename__ = 'path'
     id = Column(Integer, primary_key=True)
     parent_id = Column(Integer, ForeignKey(id))
-    filename = Column(String(50), nullable=True, unique=True)
+    #filename = Column(String(50), nullable=True, unique=True)
 
     children = relationship(
         "Path",
@@ -32,6 +34,10 @@ class Path(BASE):
         # on the "filename" attribute.
         collection_class=attribute_mapped_collection('filename'),
     )
+
+    filename_id = Column(Integer, ForeignKey("filename.id"), unique=False, nullable=False)
+    filename = relationship("Filename", backref='paths')
+
 
     @hybrid_property
     def path(self):
