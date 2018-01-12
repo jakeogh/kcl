@@ -127,7 +127,7 @@ class Path(BASE):
 
     @path.expression
     def path(cls):
-        if cls.parent:
+        if cls.parent: # heka wrong, its a RelationshipProperty instance
             return cls.parent.path + b'/' + cls.filename.filename
         return cls.filename.filename
 
