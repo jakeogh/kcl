@@ -38,6 +38,12 @@ class Path(BASE):
     filename_id = Column(Integer, ForeignKey("filename.id"), unique=False, nullable=False)
     filename = relationship("Filename", backref='paths')
 
+    def __init__(self, **kwargs):
+        if 'path' in kwargs.keys():
+            path_split = kwargs['path']
+            parent_path = b'/'.join(path_split[0:-1])
+            parent = get_one_or_create(self.) #hmph, need session
+
 
     @hybrid_property
     def path(self):
