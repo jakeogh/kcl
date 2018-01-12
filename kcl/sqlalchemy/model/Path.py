@@ -43,22 +43,14 @@ from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from .Filename import Filename
 #from .PathRecord import PathRecord
 from .find_path import find_path
-from .path_relationship import path_relationship
+#from .path_relationship import path_relationship
 
 class Path(BASE):
     id = Column(Integer, primary_key=True)
+    parent_id = Column(Integer, ForeignKey('path.id'))
+    parent = relationship("Path", remote_side=[id])
 
-    parent = relationship('Path',
-                          secondary=path_relationship,
-                          primaryjoin=path_relationship.c.path_id == id,
-                          secondaryjoin=path_relationship.c.path_parent_id == id,
-                          backref="children")
-
-    filename_id = Column(Integer,
-                         ForeignKey("filename.id"),
-                         unique=False,
-                         primary_key=False,
-                         nullable=False)
+    filename_id = Column(Integer, ForeignKey("filename.id"), unique=False, nullable=False)
     filename = relationship("Filename", backref='paths')
 
     #path = column_property(parent.filename + b'/' + filename)
@@ -100,7 +92,7 @@ class Path(BASE):
             return root_path
         else:
             ceprint("calling get_one_or_create with recursive construct() call on path:", base_path)
-            parent = get_one_or_create(session=session, model=Path, path=base_path, create_method='construct', create_method_kwargs={'path':base_path, 'session':session})
+            parent = get_one_or_create(session=session, model=Path, parent=base_path, create_method='construct', create_method_kwargs={'path':base_path, 'session':session})
             ceprint("got parent:", parent.id)
             #parent = cls.construct(session=session, path=base_path)
 
