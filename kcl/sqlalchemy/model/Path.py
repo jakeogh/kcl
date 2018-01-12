@@ -1,14 +1,48 @@
 #!/usr/bin/env python3
 
-from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
+from sqlalchemy import Column, ForeignKey, Integer, create_engine
 from sqlalchemy import func
+from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import Session, relationship, backref, joinedload_all
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.dialects.postgresql import BYTEA
 from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
-from .Filename import Filename
+
+
+
+
+class Filename(BASE):
+    '''
+    UNIX filenames can be anything but NULL and / therefore a binary type is required.
+    max file name length is 255 on all UNIX-like filesystems
+    this does not store the path to the filename, so / is not allowed
+
+    Most filesystems do not _have_ a byte encoding, all bytes but NULL are valid in a path.
+    The user enviroment might interperit the names with a encoding like UTF8, but this has
+    no effect on what bytes are possible to store in filenames.
+
+    '''
+    id = Column(Integer, primary_key=True)
+
+    filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
+    filename = Column(BYTEA(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
+
+    #@classmethod
+    #def construct(cls, *, session, filename):
+    #    if isinstance(filename, str):
+    #        filename = bytes(filename, encoding='UTF8')  # handle command line input
+    #    result = get_one_or_create(session, Filename, filename=filename)
+    #    return result
+
+    def __repr__(self):
+        return "<Filename(id=%s filename=%s)>" % (str(self.id), str(self.filename))
+
+    def __bytes__(self):
+        return self.filename
+
 
 
 class Path(BASE):
@@ -60,8 +94,8 @@ class Path(BASE):
 
     @path.expression
     def path(cls):
-        #if cls.parent:
-        #    return cls.parent.path + b'/' + cls.filename.filename
+        if cls.parent:
+            return cls.parent.path + b'/' + cls.filename.filename
         return cls.filename.filename
 
     @classmethod
