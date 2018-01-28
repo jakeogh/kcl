@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 
-import sys
-import os
-from urllib.parse import urlparse
-import urllib.request
+#import sys
+#import os
+#from urllib.parse import urlparse
+#import urllib.request
 import lxml.html
 from lxml.etree import ParserError
 import re
 from bs4 import BeautifulSoup
-from kcl.fileops import read_file_bytes_or_exit
+#from kcl.fileops import read_file_bytes_or_exit
 from kcl.printops import eprint
-from kcl.logops import set_verbose
+#from kcl.logops import set_verbose
 from kcl.command import run_command
-import click
-import shutil
+#import click
+#import shutil
 
 ## https://github.com/mitsuhiko/click/issues/441
 #CONTEXT_SETTINGS = \
@@ -135,8 +135,7 @@ def extract_iris_from_text_file(infile):   #todo, buggy, already had to add the 
     return url_set
 
 def extract_iris_from_html_file(infile):   #todo, buggy, already had to add the ~ below
-    text = run_command(' '.join(['/home/cfg/html/html2text', infile]), verbose=True)
-
+    text = run_command(' '.join(['/home/cfg/html/html2text', infile]), verbose=False)
     url_set = extract_iris_from_text(text)
     return url_set
 
