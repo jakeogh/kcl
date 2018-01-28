@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 
-import hashlib
 import os
+import sys
+import hashlib
 import tempfile
+import subprocess
 from requests.models import Response
+from threading import Thread
+from queue import Queue
+from .printops import ceprint
 from .printops import eprint
 
 
@@ -47,8 +52,8 @@ def generate_hash(data, verbose=False):
         return_dict['temp_file'] = temp_file
         return return_dict
     if len(data) == 0:
-        empty_hash = hashlib.sha1(data).hexdigest()
-        #eprint("Error: you are attempting to hash a empty string.")
+        #empty_hash = hashlib.sha1(data).hexdigest()
+        ceprint("Error: you are attempting to hash a empty string.")
         raise FileNotFoundError
     if type(data) is str:
         return_dict['hash'] = hashlib.sha1(data.encode('utf-8')).hexdigest()
@@ -70,12 +75,6 @@ def sha1_hash_file(path, block_size=256*128*2):
 # http://unix.stackexchange.com/questions/163747/simultaneously-calculate-multiple-digests-md5-sha256
 # https://git.lekensteyn.nl/scripts/tree/digest.py
 
-import hashlib
-import sys
-from threading import Thread
-import subprocess
-from queue import Queue
-from kcl.printops import eprint
 
 def get_openssl_hash_algs_real():
     blacklist = set(['SHA', 'MD4', 'ecdsa-with-SHA1', 'DSA', 'DSA-SHA', 'MDC2'])
