@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# use from sqlalchemy_utils.functions import create_database instead
+
 from sqlalchemy import create_engine
 from kcl.printops import eprint
 
-def create_database(database):
+def create_databas_old(database):
     dbpath = 'postgresql://postgres@localhost/'
     pg_dbpath = dbpath + 'postgres'
     assert dbpath in database
