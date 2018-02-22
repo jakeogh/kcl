@@ -13,7 +13,8 @@ from kcl.printops import eprint
 
 # https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
 @contextlib.contextmanager
-def self_contained_session(db_url, echo=False, engine=False):
+def self_contained_session(db_url, echo=False, engine=False, verbose=False):
+    if verbose: print(db_url)
     if not database_exists(db_url):
         print("creating empty database:", db_url)
         create_database(db_url)
