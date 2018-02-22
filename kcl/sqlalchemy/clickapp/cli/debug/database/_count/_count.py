@@ -3,7 +3,6 @@
 import click
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.sqlalchemy.table_list import table_list as sqla_list_tables
-#from kcl.sqlalchemy.BaseMixin import BASE
 from kcl.click.CONTEXT_SETTINGS import CONTEXT_SETTINGS
 CONTEXT_SETTINGS['ignore_unknown_options'] = True
 CONTEXT_SETTINGS['allow_extra_args'] = True
