@@ -8,7 +8,7 @@ from sqlalchemy import CheckConstraint
 from sqlalchemy import BigInteger
 from sqlalchemy.dialects.postgresql import BYTEA
 from sqlalchemy.schema import Sequence
-from kcl.sqlalchemy.BaseMixin import BASE
+from kcl.sqlalchemy.model.BaseMixin import BASE
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.hashops import bytes_dict_file
 from kcl.hashops import bytes_dict_bytes
