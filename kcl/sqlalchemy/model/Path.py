@@ -1,31 +1,26 @@
 #!/usr/bin/env python3
 
 from sqlalchemy import Column, ForeignKey, Integer
-from sqlalchemy import func
-from sqlalchemy import CheckConstraint
-from sqlalchemy.orm import Session, relationship, backref, joinedload_all
+#from sqlalchemy import func
+#from sqlalchemy import CheckConstraint
+#from sqlalchemy.orm import Session
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm import backref
+#from sqlalchemy.orm import joinedload_all
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 #from sqlalchemy.types import BINARY
 #from sqlalchemy.dialects.postgresql import BYTEA
-from sqlalchemy.types import LargeBinary as BINARY
-from sqlalchemy.types import Unicode
+#from sqlalchemy.types import LargeBinary as BINARY
+#from sqlalchemy.types import Unicode
 from sqlalchemy.sql import select
 from kcl.printops import ceprint
 from kcl.sqlalchemy.model.BaseMixin import BASE
 from kcl.sqlalchemy.model.Filename import Filename
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
-
-
-def msg(msg, *args):
-    msg = msg % args
-    print("\n\n\n" + "-" * len(msg.split("\n")[0]))
-    print(msg)
-    print("-" * len(msg.split("\n")[0]))
-
 
 '''
     storage of filesystem paths via an adjencency list
@@ -38,6 +33,13 @@ def msg(msg, *args):
     #print str(q.statement.compile(dialect=postgresql.dialect()))
 
 '''
+
+
+def msg(msg, *args):
+    msg = msg % args
+    print("\n\n\n" + "-" * len(msg.split("\n")[0]))
+    print(msg)
+    print("-" * len(msg.split("\n")[0]))
 
 
 class Path(BASE):
@@ -128,7 +130,7 @@ class Path(BASE):
 
 if __name__ == '__main__':
     import time
-    database = 'postgresql://postgres@localhost/path_adj_test_' + str(int(time.time()))
+    database = 'postgresql://postgres@localhost/path_test_' + str(int(time.time()))
 
     with self_contained_session(db_url=database, echo=False) as session:
         msg("Creating Tables:")
@@ -162,4 +164,3 @@ if __name__ == '__main__':
 
         #from IPython import embed; embed()
         msg("root_path:\n%s", root_path.dump())
-

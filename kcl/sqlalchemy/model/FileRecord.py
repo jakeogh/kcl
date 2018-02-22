@@ -8,8 +8,8 @@ from sqlalchemy import Integer
 from sqlalchemy import BigInteger
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Sequence
-from kcl.sqlalchemy.BaseMixin import BASE
-from kcl.sqlalchemy.model.Path import Filename
+from kcl.sqlalchemy.model.BaseMixin import BASE
+from kcl.sqlalchemy.model.Filename import Filename
 from kcl.sqlalchemy.model.Path import Path
 from kcl.sqlalchemy.model.BytesHash import BytesHash
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
@@ -43,7 +43,7 @@ class FileRecord(BASE):
     symlink_target_path = relationship('Path', foreign_keys=[symlink_target_path_id], backref='targets')
 
     #filename_id = Column(Integer, ForeignKey('filename.id'), unique=False, nullable=False, index=True)
-    #filename = relationship('Filename', backref='filerecords')
+    filename = relationship('Filename', backref='filerecords')
 
     byteshash_id = Column(Integer, ForeignKey('byteshash.id'), unique=False, nullable=True, index=True)
     byteshash = relationship('BytesHash', backref='filerecords')
