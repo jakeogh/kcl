@@ -7,6 +7,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.declarative import declared_attr
 
+
 class BaseMixin(object):
     '''Base Mixin class to automate table naming.'''
     @declared_attr
@@ -16,5 +17,5 @@ class BaseMixin(object):
     def query(cls, session):
         return session.query_property()
 
-BASE = declarative_base(cls=BaseMixin)
 
+BASE = declarative_base(cls=BaseMixin)

@@ -23,22 +23,8 @@ from sqlalchemy.types import Unicode
 from sqlalchemy.sql import select
 import inspect
 import os
-
-def ceprint(*args, **kwargs):
-    '''Simple debugging replacement for print()'''
-    caller = sys._getframe(1).f_code.co_name
-    stack = inspect.stack()
-    frm = stack[1]
-    depth = len(stack)
-    mod = str(inspect.getmodule(frm[0]))
-    source_file = mod.split()[-1].split('>')[0].split("'")[1].split('/')[-1]
-    head = ' '.join([str(depth).zfill(3), str("%.5f" % time.time()), str(os.getpid()), source_file, caller+'()'])
-    print('{0: <49}'.format(head),
-          *args,
-          file=sys.stderr,
-          **kwargs)
-
-BASE = declarative_base()
+from kcl.printops import ceprint
+from kcl.sqlalchemy.model.BaseMixin import BASE
 
 def msg(msg, *args):
     msg = msg % args
