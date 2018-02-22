@@ -140,7 +140,7 @@ class FileRecord(BASE):
     def __repr__(self):
         return "FileRecord(id=%r, path=%r)" % (
             self.id,
-            self.path
+            self.path.path
             )
 
 #    def __repr__(self):
