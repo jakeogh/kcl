@@ -19,7 +19,6 @@ from kcl.sqlalchemy.BaseMixin import BASE
 
 
 class Filename(BASE):
-    __tablename__ = 'filename'
     '''
     UNIX filenames can be anything but NULL and / therefore a binary type is
     required.

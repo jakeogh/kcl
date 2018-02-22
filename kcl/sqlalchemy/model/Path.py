@@ -15,6 +15,7 @@ from sqlalchemy.types import Unicode
 from sqlalchemy.sql import select
 from kcl.printops import ceprint
 from kcl.sqlalchemy.model.BaseMixin import BASE
+from kcl.sqlalchemy.model.Filename import Filename
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 
@@ -37,41 +38,6 @@ def msg(msg, *args):
     #print str(q.statement.compile(dialect=postgresql.dialect()))
 
 '''
-
-
-class Filename(BASE):
-    __tablename__ = 'filename'
-    '''
-    UNIX filenames can be anything but NULL and / therefore a binary type is
-    required.
-    Max file name length is 255 on all UNIX-like filesystems.
-    This does not store the path to the filename, so / is not allowed
-
-    Most filesystems do not _have_ a byte encoding, all bytes but NULL are
-    valid in a path.
-    The user enviroment might interperit the names with a encoding like UTF8,
-    but this has no effect on what bytes are possible to store in filenames.
-
-    '''
-    id = Column(Integer, primary_key=True)
-
-    filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
-    filename = Column(BINARY(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
-    #filename = Column(BINARY(255), unique=True, nullable=False, index=True) # sqlite didnt like the constraint
-    # Unicode for debugging
-    #filename = Column(Unicode(255), unique=True, nullable=False, index=True) # sqlite didnt like the constraint
-
-    #def __repr__(self):
-    #    return "<Filename(id=%s filename=%s)>" % (str(self.id), str(self.filename))
-
-    def __repr__(self):
-        return "Filename(id=%r, filename=%r)" % (
-            self.id,
-            self.filename
-        )
-
-    def __bytes__(self):
-        return self.filename
 
 
 class Path(BASE):
