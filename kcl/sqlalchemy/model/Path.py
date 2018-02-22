@@ -21,8 +21,6 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.types import LargeBinary as BINARY
 from sqlalchemy.types import Unicode
 from sqlalchemy.sql import select
-import inspect
-import os
 from kcl.printops import ceprint
 from kcl.sqlalchemy.model.BaseMixin import BASE
 
