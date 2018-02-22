@@ -16,7 +16,7 @@ from kcl.sqlalchemy.model.BaseMixin import BASE
 #from sqlalchemy.ext.hybrid import Comparator
 #from sqlalchemy.orm import column_property
 #from sqlalchemy import select, func
-
+from sqlalchemy.types import LargeBinary as BINARY
 
 class Filename(BASE):
     '''
