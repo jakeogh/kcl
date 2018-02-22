@@ -12,7 +12,7 @@ from sqlalchemy import Integer
 #from sqlalchemy.dialects.postgresql import BYTEA
 #from sqlalchemy.ext.hybrid import hybrid_property
 #from kcl.sqlalchemy.get_one_or_create import get_one_or_create
-from kcl.sqlalchemy.BaseMixin import BASE
+from kcl.sqlalchemy.model.BaseMixin import BASE
 #from sqlalchemy.ext.hybrid import Comparator
 #from sqlalchemy.orm import column_property
 #from sqlalchemy import select, func
