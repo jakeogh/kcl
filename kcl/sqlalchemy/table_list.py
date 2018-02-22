@@ -2,7 +2,7 @@
 
 from pprint import pprint
 from sqlalchemy.exc import ProgrammingError
-from kcl.sqlalchemy.BaseMixin import BASE
+from kcl.sqlalchemy.model.BaseMixin import BASE
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 
 def table_list(database, verbose=False, contents=False, table=False):
