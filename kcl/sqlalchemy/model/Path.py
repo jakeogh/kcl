@@ -309,6 +309,6 @@ if __name__ == '__main__':
 
         root_path = Path.construct(session=session, path='/')
 
-        from IPython import embed; embed()
-        #msg("root_path:\n%s", root_path.dump())
+        #from IPython import embed; embed()
+        msg("root_path:\n%s", root_path.dump())
 
