@@ -12,7 +12,7 @@ def test(package, keep_databases, count, test_class=None, test_match=None):
         test_path = resource_filename(package, 'test/tests')
     if keep_databases:
         os.putenv("keep_test_databases", "True")
-        print(os.getenv("keep_test_databases"))
+        #print(os.getenv("keep_test_databases"))
     eprint("test_path:", test_path)
     index = 0
     for test_file in all_files(test_path):
