@@ -55,11 +55,11 @@ class Filename(BASE):
     '''
     id = Column(Integer, primary_key=True)
 
-    #filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
-    #filename = Column(BINARY(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
+    filename_constraint = "position('\\x00' in filename) = 0 and position('\\x2f' in filename) = 0" #todo test
+    filename = Column(BINARY(255), CheckConstraint(filename_constraint), unique=True, nullable=False, index=True)
     #filename = Column(BINARY(255), unique=True, nullable=False, index=True) # sqlite didnt like the constraint
     # Unicode for debugging
-    filename = Column(Unicode(255), unique=True, nullable=False, index=True) # sqlite didnt like the constraint
+    #filename = Column(Unicode(255), unique=True, nullable=False, index=True) # sqlite didnt like the constraint
 
     #def __repr__(self):
     #    return "<Filename(id=%s filename=%s)>" % (str(self.id), str(self.filename))
@@ -70,8 +70,8 @@ class Filename(BASE):
             self.filename
         )
 
-    #def __bytes__(self):
-    #    return self.filename
+    def __bytes__(self):
+        return self.filename
 
 
 class Path(BASE):
@@ -116,7 +116,7 @@ class Path(BASE):
     @hybrid_property
     def path(self):
         if self.parent:
-            path = '/'.join([self.parent.path, self.filename.filename])
+            path = b'/'.join([self.parent.path, self.filename.filename])
         else:
             path = self.filename.filename
         return path
@@ -129,12 +129,12 @@ class Path(BASE):
     @classmethod
     def construct(cls, *, session, path):
         #ceprint("path:", path)
-        #assert isinstance(path, bytes)
-        path_split = path.split('/')
-        parent_path = '/'.join(path_split[0:-1])
+        assert isinstance(path, bytes)
+        path_split = path.split(b'/')
+        parent_path = b'/'.join(path_split[0:-1])
         filename = path_split[-1]
         filename = get_one_or_create(session, Filename, filename=filename)
-        if filename.filename != '':
+        if filename.filename != b'':
             #ceprint("looking for parent_path:", parent_path)
             parent = get_one_or_create(session=session,
                                        model=Path,
@@ -169,30 +169,30 @@ if __name__ == '__main__':
         BASE.metadata.create_all(session.bind)
 
         print("attempting construct()")
-        new_path = Path.construct(session=session, path='/a')
+        new_path = Path.construct(session=session, path=b'/a')
         session.add(new_path)
         session.commit()
-        assert new_path.path == '/a'
+        assert new_path.path == b'/a'
 
         print("attempting construct()")
-        new_path = Path.construct(session=session, path='/b')
+        new_path = Path.construct(session=session, path=b'/b')
         session.add(new_path)
         session.commit()
-        assert new_path.path == '/b'
+        assert new_path.path == b'/b'
 
         print("attempting construct()")
-        new_path = Path.construct(session=session, path='/a/c/d/e/f/g')
+        new_path = Path.construct(session=session, path=b'/a/c/d/e/f/g')
         session.add(new_path)
         session.commit()
-        assert new_path.path == '/a/c/d/e/f/g'
+        assert new_path.path == b'/a/c/d/e/f/g'
 
         print("attempting construct()")
-        new_path = Path.construct(session=session, path='/a/c')
+        new_path = Path.construct(session=session, path=b'/a/c')
         session.add(new_path)
         session.commit()
-        assert new_path.path == '/a/c'
+        assert new_path.path == b'/a/c'
 
-        root_path = Path.construct(session=session, path='/')
+        root_path = Path.construct(session=session, path=b'/')
 
         #from IPython import embed; embed()
         msg("root_path:\n%s", root_path.dump())
