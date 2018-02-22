@@ -131,7 +131,8 @@ class FileRecord(BASE):
     def __bytes__(self):
         #import IPython; IPython.embed()
         #outfile = b'/'.join([bytes(self.path), bytes(self.filename)])
-        outfile = bytes(self.path)
+        #outfile = bytes(self.path)
+        outfile = self.path.path
         if self.symlink_target_path:
             outfile = b' -> '.join([outfile, bytes(self.symlink_target_path)])
         return outfile
