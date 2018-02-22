@@ -2,18 +2,17 @@
 from kcl.dirops import all_files
 from kcl.printops import eprint
 import os
-import pkg_resources
-#import sys
+from pkg_resources import resource_filename
 
 
 def test(package, keep_databases, count, test_class=None, test_match=None):
     if test_class:
-        test_path = pkg_resources.resource_filename(package, 'test/tests/' + test_class)
+        test_path = resource_filename(package, 'test/tests/' + test_class)
     else:
-        test_path = pkg_resources.resource_filename(package, 'test/tests')
+        test_path = resource_filename(package, 'test/tests')
     if keep_databases:
-        os.putenv("iridb_keep_test_databases", "True")
-        print(os.getenv("iridb_keep_test_databases"))
+        os.putenv("keep_test_databases", "True")
+        print(os.getenv("keep_test_databases"))
     eprint("test_path:", test_path)
     index = 0
     for test_file in all_files(test_path):
