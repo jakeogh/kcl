@@ -75,7 +75,7 @@ class Path(BASE):
 
     def __repr__(self):
         return "Path(filename=%r, id=%r, parent_id=%r, path=%r)" % (
-            self.filename,
+            #self.filename,
             self.id,
             self.parent_id,
             self.path
