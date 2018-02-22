@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import click
-from kcl.sqlalchemy.BaseMixin import BASE
+from kcl.sqlalchemy.model.BaseMixin import BASE
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 
 @click.command()
