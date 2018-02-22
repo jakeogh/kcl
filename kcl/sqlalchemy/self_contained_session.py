@@ -11,16 +11,18 @@ from sqlalchemy_utils.functions import database_exists
 from kcl.printops import eprint
 
 
-@contextlib.contextmanager # https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
-def self_contained_session(db_url, echo=False):
+# https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
+@contextlib.contextmanager
+def self_contained_session(db_url, echo=False, engine=False):
     if not database_exists(db_url):
-        eprint("creating empty database:", db_url)
+        print("creating empty database:", db_url)
         create_database(db_url)
-    engine = create_engine(db_url, poolclass=NullPool, echo=echo)
+    if not engine:
+        engine = create_engine(db_url, poolclass=NullPool, echo=echo)
     connection = engine.connect()
     db_session = scoped_session(sessionmaker(autocommit=False, autoflush=True, bind=engine))
     yield db_session
-    #db_session.close() # pylint says: Instance of 'scoped_session' has no 'close' member (no-member)
+    # db_session.close() # pylint says: Instance of 'scoped_session' has no 'close' member (no-member)
     # further reading the docs, since db_session is a scoped_session:
     # http://docs.sqlalchemy.org/en/latest/orm/contextual.html
     # The scoped_session.remove() method first calls Session.close() on the current Session,

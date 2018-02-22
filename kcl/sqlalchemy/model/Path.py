@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
-import contextlib
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.pool import NullPool
-from sqlalchemy_utils.functions import create_database
-from sqlalchemy_utils.functions import database_exists
+#from sqlalchemy.orm import scoped_session
+#from sqlalchemy.orm import sessionmaker
+#from sqlalchemy.ext.declarative import declarative_base
+#from sqlalchemy.pool import NullPool
+#from sqlalchemy_utils.functions import create_database
+#from sqlalchemy_utils.functions import database_exists
 from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy import func
 from sqlalchemy import CheckConstraint
@@ -23,44 +22,14 @@ from sqlalchemy.types import Unicode
 from sqlalchemy.sql import select
 from kcl.printops import ceprint
 from kcl.sqlalchemy.model.BaseMixin import BASE
+from kcl.sqlalchemy.self_contained_session import self_contained_session
+
 
 def msg(msg, *args):
     msg = msg % args
     print("\n\n\n" + "-" * len(msg.split("\n")[0]))
     print(msg)
     print("-" * len(msg.split("\n")[0]))
-
-def get_engine(database, echo=False, poolclass=NullPool):
-    assert isinstance(database, str)
-    engine = create_engine(database, echo=echo, poolclass=poolclass)
-    return engine
-
-
-# https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
-@contextlib.contextmanager
-def self_contained_session(db_url, echo=False, engine=False):
-    if not database_exists(db_url):
-        print("creating empty database:", db_url)
-        create_database(db_url)
-    if not engine:
-        engine = create_engine(db_url, poolclass=NullPool, echo=echo)
-    connection = engine.connect()
-    db_session = scoped_session(sessionmaker(autocommit=False, autoflush=True, bind=engine))
-    yield db_session
-    # db_session.close() # pylint says: Instance of 'scoped_session' has no 'close' member (no-member)
-    # further reading the docs, since db_session is a scoped_session:
-    # http://docs.sqlalchemy.org/en/latest/orm/contextual.html
-    # The scoped_session.remove() method first calls Session.close() on the current Session,
-    # which has the effect of releasing any connection/transactional resources owned by the
-    # Session first, then discarding the Session itself. “Releasing” here means that
-    # connections are returned to their connection pool and any transactional state is rolled
-    # back, ultimately using the rollback() method of the underlying DBAPI connection.
-    #
-    # so in short, even though its not throwing a runtime error, dont db_session.close()
-    # instead call db_session.remove() if using scoped_session
-    db_session.remove() # should call Session.close() on its own
-    connection.close()
-    engine.dispose() # not sure how necessary this is
 
 
 '''
@@ -244,34 +213,11 @@ class Path(BASE):
 
 if __name__ == '__main__':
     import time
-    import sys
-    try:
-        if sys.argv[1] == 'sqlite':
-            database = 'sqlite://'
-            engine = create_engine(database, echo=True)
-        else:
-            print("unknown database engine, exiting")
-            quit(1)
-    except IndexError:
-        database = 'postgresql://postgres@localhost/path_adj_test_' + str(int(time.time()))
-        engine = get_engine(database=database, echo=False)
+    database = 'postgresql://postgres@localhost/path_adj_test_' + str(int(time.time()))
 
-
-    with self_contained_session(db_url=database, echo=False, engine=engine) as session:
+    with self_contained_session(db_url=database, echo=False) as session:
         msg("Creating Tables:")
-        BASE.metadata.create_all(engine)
-
-        #msg("Removing all items from the session, selecting path on root, "
-        #    "using eager loading to join four levels deep.")
-        ## http://docs.sqlalchemy.org/en/latest/orm/session_state_management.html#expunging
-        #session.expunge_all()
-        ## http://docs.sqlalchemy.org/en/latest/orm/loading_relationships.html
-        #tree_from_root = session.query(Path).\
-        #    options(joinedload_all("children", "children",
-        #                           "children", "children")).\
-        #    filter(Path.filename == root_filename).\
-        #    first()
-        #msg("tree_from_root:\n%s", tree_from_root.dump())
+        BASE.metadata.create_all(session.bind)
 
         print("attempting construct()")
         new_path = Path.construct(session=session, path='/a')
@@ -284,6 +230,12 @@ if __name__ == '__main__':
         session.add(new_path)
         session.commit()
         assert new_path.path == '/b'
+
+        print("attempting construct()")
+        new_path = Path.construct(session=session, path='/a/c/d/e/f/g')
+        session.add(new_path)
+        session.commit()
+        assert new_path.path == '/a/c/d/e/f/g'
 
         print("attempting construct()")
         new_path = Path.construct(session=session, path='/a/c')
