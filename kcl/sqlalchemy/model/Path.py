@@ -82,7 +82,7 @@ class Path(BASE):
 
     @hybrid_property
     def path(self):
-        ceprint('')
+        ceprint(' ')
         if self.parent:
             path = b'/'.join([self.parent.path, self.filename.filename])
         else:
@@ -91,6 +91,7 @@ class Path(BASE):
 
     @path.expression
     def path(cls):
+        ceprint(' ')
         path = select([Path.id]).where(Path.id==cls.parent_id)
         return path
 
