@@ -94,8 +94,9 @@ class Path(BASE):
         return path
 
     @classmethod
-    def construct(cls, *, session, path):
-        #ceprint("path:", path)
+    def construct(cls, *, session, path, verbose=False):
+        if verbose:
+            ceprint(path)
         assert isinstance(path, bytes)
         path_split = path.split(b'/')
         parent_path = b'/'.join(path_split[0:-1])
