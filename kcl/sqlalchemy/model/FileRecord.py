@@ -20,6 +20,8 @@ from sqlalchemy.types import DateTime
 from sqlalchemy.sql import func
 #from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.hybrid import Comparator
+from pycallgraph import PyCallGraph
+from pycallgraph.output import GraphvizOutput
 
 
 class CaseInsensitiveComparator(Comparator):
