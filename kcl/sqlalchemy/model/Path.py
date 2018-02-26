@@ -82,6 +82,7 @@ class Path(BASE):
 
     @hybrid_property
     def path(self):
+        ceprint('')
         if self.parent:
             path = b'/'.join([self.parent.path, self.filename.filename])
         else:
