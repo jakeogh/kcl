@@ -91,8 +91,8 @@ class Path(BASE):
 
     @path.expression
     def path(cls):
-        ceprint(' ')
         path = select([Path.id]).where(Path.id==cls.parent_id)
+        ceprint(path)
         return path
 
     @classmethod
