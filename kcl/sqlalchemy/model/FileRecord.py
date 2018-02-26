@@ -14,6 +14,7 @@ from kcl.sqlalchemy.model.Path import Path
 from kcl.sqlalchemy.model.BytesHash import BytesHash
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.printops import eprint
+from kcl.printops import ceprint
 from kcl.fileops import is_regular_file
 from kcl.symlinkops import is_symlink
 from sqlalchemy.types import DateTime
@@ -76,12 +77,17 @@ class FileRecord(BASE):
     def construct(cls, session, path, calc_hash=False, verbose=False):
         with PyCallGraph(output=GraphvizOutput()):
             if verbose:
-                eprint("FileRecord.construct():", path)
+                ceprint(path)
             if isinstance(path, str):
                 path = bytes(path, encoding='UTF8') # allow command line args
             path = os.path.abspath(path)
             assert path.startswith(b'/')
             stat = os.stat(path, follow_symlinks=False)
+            if is_symlink(path):
+                symlink_target = os.readlink(path)
+                symlink_target_path = Path.construct(session=session, path=symlink_target)
+            else:
+                symlink_target_path = None
             path = Path.construct(session=session, path=path)
 
             if calc_hash and is_regular_file(path): #this stuff should be in BytesHash.construct
@@ -100,11 +106,6 @@ class FileRecord(BASE):
             else:
                 byteshash = None
 
-            if is_symlink(path):
-                symlink_target = os.readlink(path)
-                symlink_target_path = Path.construct(session=session, path=symlink_target)
-            else:
-                symlink_target_path = None
 
             #import IPython; IPython.embed()
             # pointless to use get_one_or_create due to using a timestamp
