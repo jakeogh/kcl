@@ -85,10 +85,10 @@ class FileRecord(BASE):
         stat = os.stat(path, follow_symlinks=False)
         if is_symlink(path):
             symlink_target = os.readlink(path)
-            symlink_target_path = Path.construct(session=session, path=symlink_target)
+            symlink_target_path = Path.construct(session=session, path=symlink_target, verbose=verbose)
         else:
             symlink_target_path = None
-        path = Path.construct(session=session, path=path)
+        path = Path.construct(session=session, path=path, verbose=verbose)
 
         if calc_hash and is_regular_file(path): #this stuff should be in BytesHash.construct
             if stat.st_size == 0:
@@ -100,9 +100,9 @@ class FileRecord(BASE):
                         print("skipping file >=1TB:", path)
                         #skipped_file_list.append(path)
                     else:
-                        byteshash = BytesHash.construct(session, bytes_like_object=path)
+                        byteshash = BytesHash.construct(session, bytes_like_object=path, verbose=verbose)
                 else: #not a big file
-                    byteshash = BytesHash.construct(session, bytes_like_object=path)
+                    byteshash = BytesHash.construct(session, bytes_like_object=path, verbose=verbose)
         else:
             byteshash = None
 
