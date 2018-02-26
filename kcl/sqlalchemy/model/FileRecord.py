@@ -75,56 +75,56 @@ class FileRecord(BASE):
 
     @classmethod
     def construct(cls, session, path, calc_hash=False, verbose=False):
-        with PyCallGraph(output=GraphvizOutput()):
-            if verbose:
-                ceprint(path)
-            if isinstance(path, str):
-                path = bytes(path, encoding='UTF8') # allow command line args
-            path = os.path.abspath(path)
-            assert path.startswith(b'/')
-            stat = os.stat(path, follow_symlinks=False)
-            if is_symlink(path):
-                symlink_target = os.readlink(path)
-                symlink_target_path = Path.construct(session=session, path=symlink_target)
-            else:
-                symlink_target_path = None
-            path = Path.construct(session=session, path=path)
+        #with PyCallGraph(output=GraphvizOutput()):
+        if verbose:
+            ceprint(path)
+        if isinstance(path, str):
+            path = bytes(path, encoding='UTF8') # allow command line args
+        path = os.path.abspath(path)
+        assert path.startswith(b'/')
+        stat = os.stat(path, follow_symlinks=False)
+        if is_symlink(path):
+            symlink_target = os.readlink(path)
+            symlink_target_path = Path.construct(session=session, path=symlink_target)
+        else:
+            symlink_target_path = None
+        path = Path.construct(session=session, path=path)
 
-            if calc_hash and is_regular_file(path): #this stuff should be in BytesHash.construct
-                if stat.st_size == 0:
-                    byteshash = None
-                else:
-                    if stat.st_size >= 1024*1024*1024: #1GB
-                        print("hashing file >1GB:", path, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
-                        if stat.st_size >= 1024*1024*1024*1024: #1TB
-                            print("skipping file >=1TB:", path)
-                            #skipped_file_list.append(path)
-                        else:
-                            byteshash = BytesHash.construct(session, bytes_like_object=path)
-                    else: #not a big file
-                        byteshash = BytesHash.construct(session, bytes_like_object=path)
-            else:
+        if calc_hash and is_regular_file(path): #this stuff should be in BytesHash.construct
+            if stat.st_size == 0:
                 byteshash = None
+            else:
+                if stat.st_size >= 1024*1024*1024: #1GB
+                    print("hashing file >1GB:", path, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
+                    if stat.st_size >= 1024*1024*1024*1024: #1TB
+                        print("skipping file >=1TB:", path)
+                        #skipped_file_list.append(path)
+                    else:
+                        byteshash = BytesHash.construct(session, bytes_like_object=path)
+                else: #not a big file
+                    byteshash = BytesHash.construct(session, bytes_like_object=path)
+        else:
+            byteshash = None
 
 
-            #import IPython; IPython.embed()
-            # pointless to use get_one_or_create due to using a timestamp
-            result = get_one_or_create(session, FileRecord,
-                                       path=path,
-                                       symlink_target_path=symlink_target_path,
-                                       byteshash=byteshash,
-                                       stat_st_mode=stat.st_mode,
-                                       stat_st_inode=stat.st_ino,
-                                       stat_st_dev=stat.st_dev,
-                                       stat_st_nlink=stat.st_nlink,
-                                       stat_st_uid=stat.st_uid,
-                                       stat_st_gid=stat.st_gid,
-                                       stat_st_size=stat.st_size,
-                                       stat_st_atime=stat.st_atime,
-                                       stat_st_mtime=stat.st_mtime,
-                                       stat_st_ctime=stat.st_ctime)
+        #import IPython; IPython.embed()
+        # pointless to use get_one_or_create due to using a timestamp
+        result = get_one_or_create(session, FileRecord,
+                                   path=path,
+                                   symlink_target_path=symlink_target_path,
+                                   byteshash=byteshash,
+                                   stat_st_mode=stat.st_mode,
+                                   stat_st_inode=stat.st_ino,
+                                   stat_st_dev=stat.st_dev,
+                                   stat_st_nlink=stat.st_nlink,
+                                   stat_st_uid=stat.st_uid,
+                                   stat_st_gid=stat.st_gid,
+                                   stat_st_size=stat.st_size,
+                                   stat_st_atime=stat.st_atime,
+                                   stat_st_mtime=stat.st_mtime,
+                                   stat_st_ctime=stat.st_ctime)
 
-            return result
+        return result
 
     def __bytes__(self):
         #import IPython; IPython.embed()
