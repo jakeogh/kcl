@@ -42,9 +42,6 @@ class FileRecord(BASE):
     symlink_target_path_id = Column(Integer, ForeignKey('path.id'), unique=False, nullable=True, index=True)
     symlink_target_path = relationship('Path', foreign_keys=[symlink_target_path_id], backref='targets')
 
-    #filename_id = Column(Integer, ForeignKey('filename.id'), unique=False, nullable=False, index=True)
-    #filename = relationship('Filename', backref='filerecords')
-
     byteshash_id = Column(Integer, ForeignKey('byteshash.id'), unique=False, nullable=True, index=True)
     byteshash = relationship('BytesHash', backref='filerecords')
 
@@ -79,40 +76,37 @@ class FileRecord(BASE):
             eprint("FileRecord.construct():", path)
         if isinstance(path, str):
             path = bytes(path, encoding='UTF8') # allow command line args
-        abspath = os.path.abspath(path)
-        assert abspath.startswith(b'/')
-        #path, filename = os.path.split(abspath)
-        path = abspath
-        stat = os.stat(abspath, follow_symlinks=False)
-
+        path = os.path.abspath(path)
+        assert path.startswith(b'/')
+        stat = os.stat(path, follow_symlinks=False)
         path = Path.construct(session=session, path=path)
-        #filename = Filename.construct(session=session, filename=filename)
 
-        if calc_hash and is_regular_file(abspath): #this stuff should be in BytesHash.construct
+        if calc_hash and is_regular_file(path): #this stuff should be in BytesHash.construct
             if stat.st_size == 0:
                 byteshash = None
             else:
                 if stat.st_size >= 1024*1024*1024: #1GB
-                    print("hashing file >1GB:", abspath, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
+                    print("hashing file >1GB:", path, str(stat.st_size/1024.0/1024.0/1024.0)+'GB')
                     if stat.st_size >= 1024*1024*1024*1024: #1TB
-                        print("skipping file >=1TB:", abspath)
+                        print("skipping file >=1TB:", path)
                         #skipped_file_list.append(path)
                     else:
-                        byteshash = BytesHash.construct(session, bytes_like_object=abspath)
+                        byteshash = BytesHash.construct(session, bytes_like_object=path)
                 else: #not a big file
-                    byteshash = BytesHash.construct(session, bytes_like_object=abspath)
+                    byteshash = BytesHash.construct(session, bytes_like_object=path)
         else:
             byteshash = None
 
-        if is_symlink(abspath):
-            symlink_target = os.readlink(abspath)
+        if is_symlink(path):
+            symlink_target = os.readlink(path)
             symlink_target_path = Path.construct(session=session, path=symlink_target)
         else:
             symlink_target_path = None
 
         #import IPython; IPython.embed()
         # pointless to use get_one_or_create due to using a timestamp
-        result = get_one_or_create(session, FileRecord, path=path,
+        result = get_one_or_create(session, FileRecord,
+                                   path=path,
                                    symlink_target_path=symlink_target_path,
                                    byteshash=byteshash,
                                    stat_st_mode=stat.st_mode,
