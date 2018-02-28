@@ -4,10 +4,6 @@ from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import backref
 from sqlalchemy.orm.collections import attribute_mapped_collection
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.sql import select
 from kcl.printops import ceprint
 from kcl.sqlalchemy.model.BaseMixin import BASE
 from kcl.sqlalchemy.model.Filename import Filename
@@ -72,20 +68,25 @@ class Path(BASE):
             self.path
         )
 
-    @hybrid_property
-    def path(self):
-        ceprint('@hybrid_property')
-        if self.parent:
-            path = b'/'.join([self.parent.path, self.filename.filename])
-        else:
-            path = self.filename.filename
-        return path
+    ##@hybrid_property
+    #@property
+    #def path(self):
+    #    ceprint('@hybrid_property')
+    #    #return self.path
+    #    if self.parent:
+    #        path = b'/'.join([self.parent.path, self.filename.filename])
+    #    else:
+    #        path = self.filename.filename
+    #    return path
 
-    @path.expression
+    #@path.expression
+    @property
     def path(cls):
         ceprint('@path.expression')
         #path = select([Path.id]).where(Path.id==cls.parent_id)
-        path = "WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 7 UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename      , '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;"
+        path = "WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = path.id UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename      , '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;"
+        print(path)
+        #path = "WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 7 UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename      , '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;"
         return path
 
         # r = session.execute("WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 7 UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename, '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;").scalar(); bytes(r)

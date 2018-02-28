@@ -5,14 +5,12 @@
 '''
  Timestamp with timezone
 '''
-import os
-import decimal
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy.types import DateTime
 from sqlalchemy.sql import func
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
-from kcl.sqlalchemy.BaseMixin import BASE
+from kcl.sqlalchemy.model.BaseMixin import BASE
 
 # https://sqlalchemy-utils.readthedocs.io/en/latest/_modules/sqlalchemy_utils/models.html#Timestamp
 

@@ -9,7 +9,6 @@ from sqlalchemy import BigInteger
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Sequence
 from kcl.sqlalchemy.model.BaseMixin import BASE
-#from kcl.sqlalchemy.model.Filename import Filename
 from kcl.sqlalchemy.model.Path import Path
 from kcl.sqlalchemy.model.BytesHash import BytesHash
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
@@ -19,7 +18,6 @@ from kcl.fileops import is_regular_file
 from kcl.symlinkops import is_symlink
 from sqlalchemy.types import DateTime
 from sqlalchemy.sql import func
-#from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.hybrid import Comparator
 from pycallgraph import PyCallGraph
 from pycallgraph.output import GraphvizOutput

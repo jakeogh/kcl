@@ -8,14 +8,7 @@ Filename class
 from sqlalchemy import Column
 from sqlalchemy import CheckConstraint
 from sqlalchemy import Integer
-#from sqlalchemy import Unicode
-#from sqlalchemy.dialects.postgresql import BYTEA
-#from sqlalchemy.ext.hybrid import hybrid_property
-#from kcl.sqlalchemy.get_one_or_create import get_one_or_create
 from kcl.sqlalchemy.model.BaseMixin import BASE
-#from sqlalchemy.ext.hybrid import Comparator
-#from sqlalchemy.orm import column_property
-#from sqlalchemy import select, func
 from sqlalchemy.types import LargeBinary as BINARY
 
 class Filename(BASE):
@@ -50,17 +43,6 @@ class Filename(BASE):
 
     def __bytes__(self):
         return self.filename
-
-
-
-
-
-
-
-
-
-
-
 
 
 
