@@ -1,20 +1,12 @@
 #!/usr/bin/env python3
 
 from sqlalchemy import Column, ForeignKey, Integer
-#from sqlalchemy import func
-#from sqlalchemy import CheckConstraint
-#from sqlalchemy.orm import Session
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import backref
-#from sqlalchemy.orm import joinedload_all
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
-#from sqlalchemy.types import BINARY
-#from sqlalchemy.dialects.postgresql import BYTEA
-#from sqlalchemy.types import LargeBinary as BINARY
-#from sqlalchemy.types import Unicode
 from sqlalchemy.sql import select
 from kcl.printops import ceprint
 from kcl.sqlalchemy.model.BaseMixin import BASE
@@ -82,7 +74,7 @@ class Path(BASE):
 
     @hybrid_property
     def path(self):
-        ceprint(' ')
+        ceprint('@hybrid_property')
         if self.parent:
             path = b'/'.join([self.parent.path, self.filename.filename])
         else:
@@ -91,9 +83,13 @@ class Path(BASE):
 
     @path.expression
     def path(cls):
-        path = select([Path.id]).where(Path.id==cls.parent_id)
-        ceprint(path)
+        ceprint('@path.expression')
+        #path = select([Path.id]).where(Path.id==cls.parent_id)
+        path = "WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 7 UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename      , '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;"
         return path
+
+        # r = session.execute("WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 7 UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename, '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;").scalar(); bytes(r)
+
 
     @classmethod
     def construct(cls, *, session, path, verbose=False):
@@ -138,31 +134,40 @@ if __name__ == '__main__':
         msg("Creating Tables:")
         BASE.metadata.create_all(session.bind)
 
-        print("attempting construct()")
-        new_path = Path.construct(session=session, path=b'/a')
-        session.add(new_path)
-        session.commit()
-        assert new_path.path == b'/a'
-
-        print("attempting construct()")
-        new_path = Path.construct(session=session, path=b'/b')
-        session.add(new_path)
-        session.commit()
-        assert new_path.path == b'/b'
+#        print("attempting construct()")
+#        new_path = Path.construct(session=session, path=b'/a')
+#        session.add(new_path)
+#        session.commit()
+#        assert new_path.path == b'/a'
+#
+#        print("attempting construct()")
+#        new_path = Path.construct(session=session, path=b'/b')
+#        session.add(new_path)
+#        session.commit()
+#        assert new_path.path == b'/b'
 
         print("attempting construct()")
         new_path = Path.construct(session=session, path=b'/a/c/d/e/f/g')
         session.add(new_path)
         session.commit()
         assert new_path.path == b'/a/c/d/e/f/g'
+        print(new_path)
 
-        print("attempting construct()")
-        new_path = Path.construct(session=session, path=b'/a/c')
-        session.add(new_path)
-        session.commit()
-        assert new_path.path == b'/a/c'
+#        print("attempting construct()")
+#        new_path = Path.construct(session=session, path=b'/a/c')
+#        session.add(new_path)
+#        session.commit()
+#        assert new_path.path == b'/a/c'
+#
+#        root_path = Path.construct(session=session, path=b'/')
+#
+#        #from IPython import embed; embed()
+#        msg("root_path:\n%s", root_path.dump())
 
-        root_path = Path.construct(session=session, path=b'/')
+    # r = session.execute('WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 7 UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT * FROM parents JOIN filename ON filename.id = parents.filename_id ORDER BY CASE WHEN parent_id IS NULL THEN 0 ELSE 1 END, parent_id;').fetchall(); ans = b'/'.join([ bytes(item[-1]) for item in r ])
 
-        #from IPython import embed; embed()
-        msg("root_path:\n%s", root_path.dump())
+
+    # decendents:
+    # session.execute('WITH RECURSIVE decendents AS ( SELECT id, parent_id, filename_id FROM path WHERE id = 12 UNION SELECT e.id, e.parent_id, e.filename_id FROM path e INNER JOIN decendents s ON s.id = e.parent_id) SELECT * FROM decendents;').fetchall()
+
+    # session.execute('WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 12 UNION SELECT e.id, e.parent_id, e.filename_id FROM path e INNER JOIN parents s ON s.parent_id = e.id) SELECT * FROM parents;').fetchall()
