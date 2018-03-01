@@ -108,7 +108,7 @@ class Path(BASE):
                                        path=parent_path,  # searching the hybrid_property
                                        create_method='construct',
                                        create_method_kwargs={'path':parent_path, 'session':session})
-            session.commit()
+            #session.commit()
             assert parent
         else:
             parent = None
