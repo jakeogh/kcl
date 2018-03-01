@@ -6,7 +6,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 from kcl.printops import ceprint
 
-def get_one_or_create(session, model, *args, create_method='', create_method_kwargs=None, **kwargs):
+def get_one_or_create(session, model, *args, verbose=False, create_method='', create_method_kwargs=None, **kwargs):
     '''
         Find and return existing ORM object or create and return a new one. Adapted from examples.
     '''
@@ -22,15 +22,19 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
     try:
         #ceprint("session.query filter_by:", kwargs)
         result = session.query(model).filter_by(**kwargs).one()
+        if verbose:
+            ceprint("result:", result)
     except NoResultFound as e:
-        #ceprint("NoResultFound")
+        if verbose:
+            ceprint("NoResultFound")
         #import pdb; pdb.set_trace()
         kwargs.update(create_method_kwargs or {})
         created = getattr(model, create_method, model)(*args, **kwargs)
         try:
             session.add(created)
             session.flush(objects=[created])
-            #ceprint("created.id:", created.id, "type(created):", type(created), "created:", created)
+            if verbose:
+                ceprint("created.id:", created.id, "type(created):", type(created), "created:", created)
             return created
         except IntegrityError as e:
             #ceprint("IntegrityError:", e, model)
@@ -44,8 +48,11 @@ def get_one_or_create(session, model, *args, create_method='', create_method_kwa
             try:
                 result = session.query(model).filter_by(**kwargs).one()
             except NoResultFound:
-                #ceprint("re-raising IntegrityError")
+                if verbose:
+                    ceprint("NoResultFound: re-raising IntegrityError")
                 #import pdb; pdb.set_trace()
                 raise e
+            if verbose:
+                ceprint("result after IntegrityError:", result)
             return result
     return result
