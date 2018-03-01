@@ -104,6 +104,7 @@ class Path(BASE):
         if filename.filename != b'':
             #ceprint("looking for parent_path:", parent_path)
             parent = get_one_or_create(session=session,
+                                       verbose=verbose,
                                        model=Path,
                                        path=parent_path,  # searching the hybrid_property
                                        create_method='construct',

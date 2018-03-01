@@ -108,6 +108,7 @@ class FileRecord(BASE):
         #import IPython; IPython.embed()
         # pointless to use get_one_or_create due to using a timestamp
         result = get_one_or_create(session, FileRecord,
+                                   verbose=verbose,
                                    path=path,
                                    symlink_target_path=symlink_target_path,
                                    byteshash=byteshash,
