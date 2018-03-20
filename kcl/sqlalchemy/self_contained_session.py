@@ -15,12 +15,12 @@ from kcl.printops import eprint
 @contextlib.contextmanager
 def self_contained_session(db_url, echo=False, engine=False, verbose=False):
     if verbose: print(db_url)
-    if not database_exists(db_url):
+    if not database_exists(db_url):  # executes SELECT 1 FROM pg_database WHERE datname='path_test_1520320264'
         print("creating empty database:", db_url)
-        create_database(db_url)
+        create_database(db_url)  # executes CREATE DATABASE
     if not engine:
         engine = create_engine(db_url, poolclass=NullPool, echo=echo)
-    connection = engine.connect()
+    connection = engine.connect() # executes query
     db_session = scoped_session(sessionmaker(autocommit=False, autoflush=True, bind=engine))
     yield db_session
     # db_session.close() # pylint says: Instance of 'scoped_session' has no 'close' member (no-member)

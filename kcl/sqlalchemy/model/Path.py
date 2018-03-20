@@ -3,12 +3,16 @@
 from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import backref
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from kcl.printops import ceprint
+from kcl.printops import eprint
 from kcl.sqlalchemy.model.BaseMixin import BASE
 from kcl.sqlalchemy.model.Filename import Filename
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
+import pdb
+from pudb import set_trace#; set_trace(paused=False)
 
 '''
     storage of filesystem paths via an adjencency list
@@ -68,24 +72,27 @@ class Path(BASE):
             self.path
         )
 
-    ##@hybrid_property
     #@property
-    #def path(self):
+    @hybrid_property
+    def path(self):
     #    ceprint('@hybrid_property')
     #    #return self.path
-    #    if self.parent:
-    #        path = b'/'.join([self.parent.path, self.filename.filename])
-    #    else:
-    #        path = self.filename.filename
-    #    return path
+        if self.parent:
+            path = b'/'.join([self.parent.path, self.filename.filename])
+        else:
+            #ceprint("else")
+            path = self.filename.filename
+            if path == b'':
+                path = b'/'
+        return path
 
-    #@path.expression
-    @property
+    #@property
+    @path.expression
     def path(cls):
-        ceprint('@path.expression')
+        #ceprint('@path.expression')
         #path = select([Path.id]).where(Path.id==cls.parent_id)
         path = "WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = path.id UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename      , '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;"
-        print(path)
+        #print(path)
         #path = "WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 7 UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename      , '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;"
         return path
 
@@ -94,6 +101,8 @@ class Path(BASE):
 
     @classmethod
     def construct(cls, *, session, path, verbose=False):
+        set_trace(paused=True)
+        #pdb.set_trace()
         if verbose:
             ceprint(path)
         assert isinstance(path, bytes)
@@ -148,12 +157,14 @@ if __name__ == '__main__':
 #        session.commit()
 #        assert new_path.path == b'/b'
 
+        test = b'/a'
         print("attempting construct()")
-        new_path = Path.construct(session=session, path=b'/a/c/d/e/f/g')
+        new_path = Path.construct(session=session, path=test, verbose=True)
         session.add(new_path)
         session.commit()
-        assert new_path.path == b'/a/c/d/e/f/g'
-        print(new_path)
+        from IPython import embed; embed()
+        #ceprint("new_path:", new_path)
+        #assert new_path.path == test
 
 #        print("attempting construct()")
 #        new_path = Path.construct(session=session, path=b'/a/c')

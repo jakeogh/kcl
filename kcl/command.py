@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import subprocess
-from kcl.printops import eprint
+from kcl.printops import ceprint
 import os
 
 def run_command(command, verbose=False):
     if verbose:
-        eprint("command:", command)
+        ceprint("command:", command)
     try:
         #output = subprocess.getoutput(command)
         output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
@@ -18,7 +18,7 @@ def run_command(command, verbose=False):
         #    eprint("warning in output.lower():", output.lower())
         #    #os._exit(1)
     except subprocess.CalledProcessError as error:
-        eprint("exit code:", error.returncode, error.output)
+        ceprint("exit code:", error.returncode, error.output)
         os._exit(1)
 
     return output
