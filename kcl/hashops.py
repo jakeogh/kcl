@@ -14,7 +14,7 @@ from .printops import eprint
 
 def generate_hash(data, verbose=False):
     sha1 = hashlib.sha1()
-    chunk_size = 128 * sha1.block_size  #8MB
+    chunk_size = 128 * sha1.block_size  # 8MB
     return_dict = {}
     if isinstance(data, tempfile._TemporaryFileWrapper):
         filename = data.name
@@ -24,22 +24,22 @@ def generate_hash(data, verbose=False):
         return_dict['hash'] = sha1.hexdigest()
         return return_dict
     if isinstance(data, Response):
-        #todo make temp_folder configurable, make sure it exists
+        # todo make temp_folder configurable, make sure it exists
         temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
         if verbose:
             #import IPython; IPython.embed()
-            #eprint(data.url)
+            ceprint("data.url:", data.url)
             try:
-                data_size = int(data.headers['Content-Length'])
+                data_size_from_headers = int(data.headers['Content-Length'])
+                ceprint("data_size_from_headers:", data_size_from_headers)
             except KeyError:
-                data_size = False
-            #eprint("data_size:", data_size)
+                data_size_from_headers = False
         for chunk in data.iter_content(chunk_size):
             sha1.update(chunk)
             temp_file.write(chunk)
             current_file_size = int(os.path.getsize(temp_file.name))
-            if data_size:
-                eprint(temp_file.name, str(int((current_file_size/data_size)*100))+'%', current_file_size, data.url, end='\r', flush=True)
+            if data_size_from_headers:
+                eprint(temp_file.name, str(int((current_file_size/data_size_from_headers)*100))+'%', current_file_size, data.url, end='\r', flush=True)
             else:
                 eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
         temp_file.close()
@@ -49,6 +49,7 @@ def generate_hash(data, verbose=False):
             #eprint('content is zero bytes, returning False')        #this happens
             return False
         return_dict['hash'] = sha1.hexdigest()
+        assert return_dict['hash']
         return_dict['temp_file'] = temp_file
         return return_dict
     if len(data) == 0:
