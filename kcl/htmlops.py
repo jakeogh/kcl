@@ -40,7 +40,7 @@ def parse_html_to_dom(html):
     dom_tree = lxml.html.fromstring(html)
     return dom_tree
 
-
+#this one is used for internal links plugin
 def extract_urls_lxml_with_link_text(html, url):
     url_list = []
     try:
@@ -49,7 +49,9 @@ def extract_urls_lxml_with_link_text(html, url):
         return set([])
 
     dom.make_links_absolute(url)
-    links = dom.cssselect('a')
+    links_a = dom.cssselect('a')
+    links_img = dom.cssselect('img')
+    links = links_a + links_img
     for link in links:
         try:
             if link.attrib['href'].startswith("javascript"):
