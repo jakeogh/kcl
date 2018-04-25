@@ -52,6 +52,7 @@ def extract_urls_lxml_with_link_text(html, url):
     dom.make_links_absolute(url)
     links_a = dom.cssselect('a')
     links_img = dom.cssselect('img')
+    ceprint("links_img:", links_img)
     links = links_a + links_img
     for link in links:
         try:
