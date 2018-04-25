@@ -59,7 +59,7 @@ def extract_urls_lxml_with_link_text(html, url):
         url_list.append((link.attrib['src'], link.text))
     ceprint("url_list:", url_list)
     #for url in url_list:
-    import IPython; IPython.embed()
+    #import IPython; IPython.embed()
     #for link in links:
     #    ceprint("link:", link)
     #    if link.attrib['href'].startswith("javascript"):
