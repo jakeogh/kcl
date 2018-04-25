@@ -40,6 +40,7 @@ def parse_html_to_dom(html):
     dom_tree = lxml.html.fromstring(html)
     return dom_tree
 
+
 #this one is used for internal links plugin
 def extract_urls_lxml_with_link_text(html, url):
     url_list = []
