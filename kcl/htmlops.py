@@ -53,10 +53,16 @@ def extract_urls_lxml_with_link_text(html, url):
     dom.make_links_absolute(url)
     links_a = dom.cssselect('a')
     for link in links_a:
-        url_list.append((link.attrib['href'], link.text))
+        try:
+            url_list.append((link.attrib['href'], link.text))
+        except KeyError:
+            pass
     links_img = dom.cssselect('img')
     for link in links_img:
-        url_list.append((link.attrib['src'], link.text))
+        try:
+            url_list.append((link.attrib['src'], link.text))
+        except KeyError:
+            pass
     #ceprint("url_list:", url_list)
     #for url in url_list:
     #import IPython; IPython.embed()
