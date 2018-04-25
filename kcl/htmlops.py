@@ -56,6 +56,7 @@ def extract_urls_lxml_with_link_text(html, url):
     ceprint("links_img:", links_img)
     links = links_a + links_img
     for link in links:
+        ceprint("link:", link)
         try:
             if link.attrib['href'].startswith("javascript"):
                 pass
@@ -71,7 +72,7 @@ def extract_urls_lxml_with_link_text(html, url):
                     current_url = link.attrib['src']
                     if current_url != 'http://' and current_url != 'https://':
                         url_list.append((link.attrib['src'], link.text))
-                        #import IPython; IPython.embed()
+                        import IPython; IPython.embed()
                 except:
                     pass
         except:
