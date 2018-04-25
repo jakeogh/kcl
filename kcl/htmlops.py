@@ -57,7 +57,7 @@ def extract_urls_lxml_with_link_text(html, url):
     links_img = dom.cssselect('img')
     for link in links_img:
         url_list.append((link.attrib['src'], link.text))
-    ceprint("url_list:", url_list)
+    #ceprint("url_list:", url_list)
     #for url in url_list:
     #import IPython; IPython.embed()
     #for link in links:
