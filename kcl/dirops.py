@@ -9,6 +9,7 @@
 
 import os
 from .printops import eprint
+from .printops import ceprint
 
 
 def all_files_iter(p):
@@ -71,12 +72,12 @@ def check_or_create_dir(folder, confirm=True):
     #assert isinstance(folder, bytes)
     if not os.path.isdir(folder):
         if confirm:
-            print("The folder:")
-            print(folder)
-            print("does not exist. Type yes to create it and continue, otherwise exiting:")
+            ceprint("The folder:")
+            ceprint(folder)
+            ceprint("does not exist. Type yes to create it and continue, otherwise exiting:")
             make_folder_answer = input(folder)
             if make_folder_answer.lower() != "yes":
-                eprint("Exiting before mkdir.")
+                ceprint("Exiting before mkdir.")
                 os._exit(1)
         create_dir(folder)
         return True
@@ -88,12 +89,7 @@ def create_dir(folder):
         pass
 
 def mkdir_or_exit(folder):
-    try:
-        os.makedirs(folder)
-    except Exception as e:
-        print("Exception:", e)
-        os._exit(1)
-    return True
+    os.makedirs(folder)
 
 def chdir_or_exit(targetdir):
     try:
