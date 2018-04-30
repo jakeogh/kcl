@@ -84,7 +84,7 @@ def check_or_create_dir(folder, confirm=True):
 
 def create_dir(folder):
     try:
-        os.makedirs(folder)
+        os.makedirs(folder, exist_ok=True)
     except FileExistsError:
         pass
 
