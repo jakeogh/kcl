@@ -75,7 +75,9 @@ def check_or_create_dir(folder, confirm=True):
             ceprint("The folder:")
             ceprint(folder)
             ceprint("does not exist. Type yes to create it and continue, otherwise exiting:")
-            make_folder_answer = input("make dir: " + folder + ": ")
+            ceprint("make dir:")
+            ceprint(folder, end=b" ")
+            make_folder_answer = input(": ")
             if make_folder_answer.lower() != "yes":
                 ceprint("Exiting before mkdir.")
                 os._exit(1)
