@@ -91,7 +91,7 @@ def create_dir(folder):
         pass
 
 def mkdir_or_exit(folder):
-    ceprint("calling os.makedirs on:", folder)
+    #ceprint("calling os.makedirs on:", folder)
     os.makedirs(folder)
 
 def chdir_or_exit(targetdir):
