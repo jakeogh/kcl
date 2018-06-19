@@ -90,9 +90,11 @@ def create_dir(folder):
     except FileExistsError:
         pass
 
-def mkdir_or_exit(folder):
+def mkdir_or_exit(folder, user=None):
     #ceprint("calling os.makedirs on:", folder)
     os.makedirs(folder)
+    if user:
+        shutil.chown(folder, user=user, group=user)
 
 def chdir_or_exit(targetdir):
     try:
