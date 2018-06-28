@@ -46,8 +46,8 @@ def generate_hash(data, verbose=False):
         if verbose: eprint('\n', end='')
         #eprint('finished writing temp_file: %s', temp_file.name)
         if os.path.getsize(temp_file.name) == 0:
-            #eprint('content is zero bytes, returning False')        #this happens
-            return False
+            ceprint('content is zero bytes, raising FileNotFoundError')  # this happens
+            raise FileNotFoundError
         return_dict['hash'] = sha1.hexdigest()
         assert return_dict['hash']
         return_dict['temp_file'] = temp_file
