@@ -120,7 +120,4 @@ def symlink_or_exit(target, link_name, hash_folder=''):
     except Exception as e:
         eprint("Got Exception: %s", e)
         eprint("Unable to symlink link_name: %s to target: %s Exiting.", link_name, target)
-        if len(error_msg) > 0:
-            eprint("PRINTING ERROR MESSAGE...")
-            eprint(error_msg)
         os._exit(1)
