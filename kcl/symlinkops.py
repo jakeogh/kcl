@@ -8,7 +8,7 @@
 # common symlink functions
 __version__ = "0.0.1"
 
-from kcl.printops import eprint
+from kcl.printops import ceprint
 from kcl.fileops import path_exists
 import os
 import subprocess
@@ -57,17 +57,17 @@ def create_relative_symlink(target, link_name):
     target = os.path.abspath(target)
     link_name = os.path.abspath(link_name)
     if not path_exists(target):
-        eprint('target: %s does not exist. Refusing to make broken symlink. Exiting.' % target)
+        ceprint('target: %s does not exist. Refusing to make broken symlink. Exiting.' % target)
         quit(1)
 
     if is_broken_symlink(link_name):
-        eprint('ERROR: %s exists as a broken symlink. ' +
+        ceprint('ERROR: %s exists as a broken symlink. ' +
             'Remove it before trying to make a new symlink. Exiting.' % link_name)
         quit(1)
 
     link_name_folder = '/'.join(link_name.split('/')[:-1])
     if not os.path.isdir(link_name_folder):
-        eprint('link_name_folder: %s does not exist. Exiting.' % link_name_folder)
+        ceprint('link_name_folder: %s does not exist. Exiting.' % link_name_folder)
         quit(1)
 
     relative_target = os.path.relpath(target, link_name_folder)
@@ -93,7 +93,7 @@ def readlinkf(path): # ugly
         readlink_output, errors = p.communicate()
         readlink_output_clean = readlink_output.strip()
         if errors:
-            eprint(errors)
+            ceprint(errors)
         else:
             return readlink_output_clean
 
@@ -118,6 +118,6 @@ def symlink_or_exit(target, link_name, hash_folder=''):
     try:
         os.symlink(target, link_name)
     except Exception as e:
-        eprint("Got Exception: %s", e)
-        eprint("Unable to symlink link_name: %s to target: %s Exiting.", link_name, target)
+        ceprint("Got Exception:", e)
+        ceprint("Unable to symlink link_name:", link_name, "to target:", target, "Exiting.")
         os._exit(1)
