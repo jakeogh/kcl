@@ -56,6 +56,10 @@ def dir_exists(path):
     return path_is_dir(path)
 
 
+def is_directory(path):
+    return path_is_dir(path)
+
+
 def path_is_dir(path):
     if os.path.isdir(path): #could still be a symlink
         if os.path.islink(path):
