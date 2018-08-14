@@ -8,6 +8,7 @@
 # common dir functions
 
 import os
+import shutil
 from .printops import eprint
 from .printops import ceprint
 
@@ -94,9 +95,12 @@ def create_dir(folder):
     except FileExistsError:
         pass
 
-def mkdir_or_exit(folder, user=None):
+def mkdir_or_exit(folder, user=None, exists_ok=False):
     #ceprint("calling os.makedirs on:", folder)
-    os.makedirs(folder)
+    try:
+        os.makedirs(folder)
+    except FileExistsError:
+        assert path_is_dir(folder)
     if user:
         shutil.chown(folder, user=user, group=user)
 
