@@ -10,34 +10,21 @@ from kcl.printops import eprint
 from kcl.printops import ceprint
 from kcl.command import run_command
 
-## https://github.com/mitsuhiko/click/issues/441
-#CONTEXT_SETTINGS = \
-#    dict(help_option_names=['--help'],
-#         terminal_width=shutil.get_terminal_size((80, 20)).columns)
-#
-## pylint: disable=C0326
-## http://pylint-messages.wikidot.com/messages:c0326
-#@click.group(context_settings=CONTEXT_SETTINGS)
-#@click.option('--verbose', is_flag=True, callback=set_verbose, expose_value=False)
-## pylint: enable=C0326
-#@click.pass_context
-#def htmlops(ctx):
-#    '''
-#       various html related functions
-#    '''
-#    pass
 
 def soup(html):
     soup = BeautifulSoup(html, 'lxml')
     return soup
+
 
 def soup_from_file(file_name):
     with open(file_name, 'r') as fh:
         file_soup = soup(fh.read())
     return file_soup
 
+
 def get_title_from_dom_tree(dom_tree):
     return dom_tree.find(".//title").text
+
 
 def parse_html_to_dom(html):
     dom_tree = lxml.html.fromstring(html)
@@ -65,23 +52,12 @@ def extract_urls_lxml_with_link_text(html, url):
             url_list.append((link.attrib['src'], link.text))
         except KeyError:
             pass
-    #ceprint("url_list:", url_list)
-    #for url in url_list:
-    #import IPython; IPython.embed()
-    #for link in links:
-    #    ceprint("link:", link)
-    #    if link.attrib['href'].startswith("javascript"):
-    #        pass
-    #    else:
-    #        current_url = link.attrib['href']
-    #        if current_url != 'http://' and current_url != 'https://':
-    #            url_list.append((link.attrib['href'], link.text))
-    #            #import IPython; IPython.embed()
-    #        current_url = link.attrib['src']
-    #        if current_url != 'http://' and current_url != 'https://':
-    #            url_list.append((link.attrib['src'], link.text))
-    #            import IPython; IPython.embed()
-    return set(url_list)
+    filtered_url_list = []
+    for url in url_list:
+        if url.startswith("javascript:"):
+            pass
+        filtered_url_list.append(url)
+    return set(filtered_url_list)
 
 
 def extract_urls_lxml(html_file, url):
@@ -93,10 +69,11 @@ def extract_urls_lxml(html_file, url):
         url_only_list.append(item[0])
     return set(url_only_list)
 
+
 def extract_urls_lxml_nofollow(html_file, url):
     with open(html_file, 'r') as fh:
         html = fh.read()
-    url_list=[]
+    url_list = []
     dom = lxml.html.fromstring(html)
     dom.make_links_absolute(url)
     links = dom.cssselect('a')
@@ -116,14 +93,13 @@ def extract_urls_lxml_nofollow(html_file, url):
             pass
     return url_list
 
-#@htmlops.command()
-#@click.argument('text', required=False)
-def extract_iris_from_text(text):   #todo, buggy, already had to add the ~ below
+
+def extract_iris_from_text(text):  # todo, buggy, already had to add the ~ below
     if isinstance(text, bytes):
         text = text.decode('utf8', 'ignore')
     text_list = text.split("\n")
     clean_text = filter(None, text_list)
-    url_list=[]
+    url_list = []
     for line in clean_text:
         for word in line.split(' '):
             urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$-_@.&+#]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
