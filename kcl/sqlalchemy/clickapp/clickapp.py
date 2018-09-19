@@ -10,7 +10,7 @@ from sqlalchemy_utils.functions import drop_database
 from kcl.printops import eprint
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.sqlalchemy.model.BaseMixin import BASE
-from kcl.click.CONTEXT_SETTINGS import CONTEXT_SETTINGS
+from kcl.cli.CONTEXT_SETTINGS import CONTEXT_SETTINGS
 
 __version__ = 0.01
 
