@@ -6,7 +6,7 @@ from kcl.cli._htmlops._lxml import _lxml
 
 
 @click.group()
-def _create():
+def _htmlops():
     pass
 
 
