@@ -10,5 +10,5 @@ def _htmlops():
     pass
 
 
-_create.add_command(_lxml, name='lxml')
-#_create.add_command(_text, name='text')
+_htmlops.add_command(_lxml, name='lxml')
+#_htmlops.add_command(_text, name='text')
