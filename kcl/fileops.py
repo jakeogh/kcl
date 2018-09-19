@@ -106,6 +106,7 @@ def write_unique_line_to_file(line, file_to_write):
         with open(file_to_write, 'a') as fh:
             fh.write(line)
 
+
 def backup_file_if_exists(file_to_backup):
     timestamp = str(time.time())
     dest_file = file_to_backup + '.bak.' + timestamp
@@ -116,10 +117,12 @@ def backup_file_if_exists(file_to_backup):
     except FileNotFoundError:
         pass    # skip backup if file does not exist
 
+
 def read_file_bytes(path):
     with open(path, 'rb') as fh:
         file_bytes = fh.read()
     return file_bytes
+
 
 def read_file_bytes_or_exit(infile):
     try:
@@ -132,19 +135,23 @@ def read_file_bytes_or_exit(infile):
         eprint("Got Exception: %s", e)
         eprint("Unable to read file:", infile, "Exiting.")
 
+
 def path_exists(path):
     return os.path.lexists(path) #returns True for broken symlinks
+
 
 def file_exists(infile):
     if os.path.isfile(infile): #unlike os.path.exists(False), os.path.isfile(False) returns False so no need to call path_exists() first.
         return True
     return False
 
+
 def file_exists_nonzero(infile):
     if file_exists(infile):
         if not empty_file(infile):
             return True
     return False
+
 
 def path_is_block_special(path):
     if path_exists(path):
@@ -161,12 +168,14 @@ def get_file_size(filename):
     finally:
         os.close(fd)
 
+
 #def is_zero_length_file(fpath): # prob should be called "empty_file()"
 def empty_file(fpath):
     if os.path.isfile(fpath):
         if os.path.getsize(fpath) == 0:
             return True
     return False
+
 
 def make_file_immutable(infile):
     command = "sudo /usr/bin/chattr +i " + infile
@@ -179,6 +188,7 @@ def make_file_immutable(infile):
     else:
         return True
 
+
 def rename_or_exit(src, dest):
     try:
         os.rename(src, dest)
@@ -186,6 +196,7 @@ def rename_or_exit(src, dest):
         eprint("Got Exception: %s", e)
         eprint("Unable to rename src: %s to dest: %s Exiting.", src, dest)
         os._exit(1)
+
 
 def move_file_only_if_new_or_exit(source, dest):
     try:
@@ -195,12 +206,14 @@ def move_file_only_if_new_or_exit(source, dest):
         eprint("move_file_only_if_new_or_exit(): error. Exiting.")
         os._exit(1)
 
+
 def make_file_only_if_new(infile, data):
     assert len(data) > 0
-    if file_exists(infile):
+    if file_exists(infile):  # race
         raise FileExistsError
     write_file(infile, data)
     return True
+
 
 def make_file_only_if_new_or_exit(infile, data):
     try:
@@ -213,6 +226,7 @@ def make_file_only_if_new_or_exit(infile, data):
         os._exit(1)
     else:
         return False
+
 
 def write_file(infile, data):
     #On Py3 we have one text type, str which holds Unicode data and two byte types; bytes and bytearray.
@@ -232,6 +246,7 @@ def is_regular_file(path):
     if stat.S_ISREG(mode):
         return True
     return False
+
 
 if __name__ == '__main__':
     quit(0)

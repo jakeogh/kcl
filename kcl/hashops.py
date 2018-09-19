@@ -23,7 +23,7 @@ def generate_hash(data, verbose=False):
                 sha1.update(chunk)
         return_dict['hash'] = sha1.hexdigest()
         return return_dict
-    if isinstance(data, Response):
+    elif isinstance(data, Response):
         # todo make temp_folder configurable, make sure it exists
         temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
         if verbose:
@@ -44,7 +44,7 @@ def generate_hash(data, verbose=False):
                 eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
         temp_file.close()
         if verbose: eprint('\n', end='')
-        #eprint('finished writing temp_file: %s', temp_file.name)
+        eprint('finished writing temp_file: %s', temp_file.name)
         if os.path.getsize(temp_file.name) == 0:
             ceprint('content is zero bytes, raising FileNotFoundError')  # this happens
             raise FileNotFoundError
@@ -52,15 +52,16 @@ def generate_hash(data, verbose=False):
         assert return_dict['hash']
         return_dict['temp_file'] = temp_file
         return return_dict
-    if len(data) == 0:
-        #empty_hash = hashlib.sha1(data).hexdigest()
-        ceprint("Error: you are attempting to hash a empty string.")
-        raise FileNotFoundError
-    if type(data) is str:
-        return_dict['hash'] = hashlib.sha1(data.encode('utf-8')).hexdigest()
     else:
-        return_dict['hash'] = hashlib.sha1(data).hexdigest()
-    return return_dict
+        if len(data) == 0:
+            #empty_hash = hashlib.sha1(data).hexdigest()
+            ceprint("Error: you are attempting to hash a empty string.")
+            raise FileNotFoundError
+        if isinstance(data, str):
+            return_dict['hash'] = hashlib.sha1(data.encode('utf-8')).hexdigest()
+        else:
+            return_dict['hash'] = hashlib.sha1(data).hexdigest()
+        return return_dict
 
 def sha1_hash_file(path, block_size=256*128*2):
     sha1 = hashlib.sha1()
