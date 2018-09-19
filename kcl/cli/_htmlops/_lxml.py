@@ -2,7 +2,7 @@
 
 import click
 from kcl.htmlops import extract_urls_lxml
-
+from kcl.printops import ceprint
 
 @click.command()
 @click.argument('path', type=click.Path(exists=True, dir_okay=False, path_type=bytes, allow_dash=False, resolve_path=False), nargs=1, required=True)
@@ -10,6 +10,9 @@ from kcl.htmlops import extract_urls_lxml
 @click.option('--verbose', is_flag=True)
 @click.pass_obj
 def _lxml(config, path, iri, verbose):
+    if verbose:
+        ceprint("path:", path)
+        ceprint("iri:", iri)
     urls = extract_urls_lxml(path, iri)
     for url in urls:
         print(url)
