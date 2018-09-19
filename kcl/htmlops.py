@@ -56,7 +56,7 @@ def extract_urls_lxml_with_link_text(html, url):
     for url in url_list:
         #ceprint(url)
         if url[0].startswith("javascript:"):
-            pass
+            continue
         filtered_url_list.append(url)
     return set(filtered_url_list)
 
