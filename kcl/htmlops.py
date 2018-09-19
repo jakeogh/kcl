@@ -84,14 +84,18 @@ def extract_urls_lxml_with_link_text(html, url):
     return set(url_list)
 
 
-def extract_urls_lxml(html, url):
+def extract_urls_lxml(html_file, url):
+    with open(html_file, 'r') as fh:
+        html = fh.read()
     url_only_list = []
     url_list = extract_urls_lxml_with_link_text(html=html, url=url)
     for item in url_list:
         url_only_list.append(item[0])
     return set(url_only_list)
 
-def extract_urls_lxml_nofollow(html, url):
+def extract_urls_lxml_nofollow(html_file, url):
+    with open(html_file, 'r') as fh:
+        html = fh.read()
     url_list=[]
     dom = lxml.html.fromstring(html)
     dom.make_links_absolute(url)
