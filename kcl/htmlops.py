@@ -62,8 +62,9 @@ def extract_urls_lxml_with_link_text(html, url):
 
 
 def extract_urls_lxml(html_file, url):
-    with open(html_file, 'r') as fh:
-        html = fh.read()
+    with open(html_file, 'rb') as fh:
+        html_bytes = fh.read()
+    html = html_bytes.decode('utf8', 'ignore')
     url_only_list = []
     url_list = extract_urls_lxml_with_link_text(html=html, url=url)
     for item in url_list:
@@ -72,8 +73,9 @@ def extract_urls_lxml(html_file, url):
 
 
 def extract_urls_lxml_nofollow(html_file, url):
-    with open(html_file, 'r') as fh:
-        html = fh.read()
+    with open(html_file, 'rb') as fh:
+        html_bytes = fh.read()
+    html = html_bytes.decode('utf8', 'ignore')
     url_list = []
     dom = lxml.html.fromstring(html)
     dom.make_links_absolute(url)
