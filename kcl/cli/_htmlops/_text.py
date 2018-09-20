@@ -8,7 +8,7 @@ from kcl.printops import ceprint
 @click.argument('path', type=click.Path(exists=True, dir_okay=False, path_type=bytes, allow_dash=False, resolve_path=False), nargs=1, required=True)
 @click.option('--verbose', is_flag=True)
 @click.pass_obj
-def _text(config, path, iri, verbose):
+def _text(config, path, verbose):
     if verbose:
         ceprint("path:", path)
     urls = extract_iris_from_text_file(path)
