@@ -65,11 +65,11 @@ def extract_urls_lxml_with_link_text(html_file, url):
 
 
 def extract_urls_lxml(html_file, url):
-    with open(html_file, 'rb') as fh:
-        html_bytes = fh.read()
-    html = html_bytes.decode('utf8', 'ignore')
+    #with open(html_file, 'rb') as fh:
+    #    html_bytes = fh.read()
+    #html = html_bytes.decode('utf8', 'ignore')
     url_only_list = []
-    url_list = extract_urls_lxml_with_link_text(html=html, url=url)
+    url_list = extract_urls_lxml_with_link_text(html_file=html_file, url=url)
     for item in url_list:
         url_only_list.append(item[0])
     return set(url_only_list)
