@@ -207,12 +207,12 @@ def move_file_only_if_new_or_exit(source, dest):
         os._exit(1)
 
 
-def make_file_only_if_new(infile, data):
-    assert len(data) > 0
-    if file_exists(infile):  # race
-        raise FileExistsError
-    write_file(infile, data)
-    return True
+#def make_file_only_if_new(infile, data):
+#    assert len(data) > 0
+#    if file_exists(infile):  # race
+#        raise FileExistsError
+#    write_file(infile, data)
+#    return True
 
 
 def make_file_only_if_new_or_exit(infile, data):
@@ -229,6 +229,7 @@ def make_file_only_if_new_or_exit(infile, data):
 
 
 def write_file(infile, data):
+    assert len(data) > 0
     #On Py3 we have one text type, str which holds Unicode data and two byte types; bytes and bytearray.
     if isinstance(data, str): #unicode in py3
         with open(infile, "x", encoding='utf-8') as fd:
