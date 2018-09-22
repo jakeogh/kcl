@@ -2,6 +2,7 @@
 
 # /mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/.iridb/database.local/data_index/8/9/6/89689beecc6ebf06cb1859b8085ec9154e7edb1b
 
+import nltk
 import lxml.html
 from lxml.etree import ParserError
 import re
@@ -104,6 +105,7 @@ def extract_urls_lxml_nofollow(html_file, url):
 def extract_iris_from_text(text):  # todo, buggy, already had to add the ~ below
     if isinstance(text, bytes):
         text = text.decode('utf8', 'ignore')
+    assert isinstance(text, str)
     text_list = text.split("\n")
     clean_text = filter(None, text_list)
     url_list = []
@@ -124,8 +126,17 @@ def extract_iris_from_text_file(infile):
     return url_set
 
 
-def extract_iris_from_html_file(infile):
-    text = run_command(b' '.join([b'/home/cfg/html/html2text', infile]), verbose=True)
+def convert_html_file_to_text(html_file):
+    with open(html_file, 'rb') as fh:
+        html_bytes = fh.read()
+    html = html_bytes.decode('utf8', 'ignore')
+    text = nltk.clean_html(html)
+    return text
+
+
+def extract_iris_from_html_file(html_file):
+    #text = run_command(b' '.join([b'/home/cfg/html/html2text', html_file]), verbose=True)
+    text = convert_html_file_to_text(html_file)
     url_set = extract_iris_from_text(text)
     return url_set
 
