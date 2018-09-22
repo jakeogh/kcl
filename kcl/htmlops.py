@@ -136,6 +136,7 @@ def convert_html_file_to_text(html_file):
     text = soup.get_text()
     #text = nltk.clean_html(html)
     ceprint(len(text))
+    ceprint(text)
     return text
 
 
