@@ -2,7 +2,9 @@
 
 # /mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/.iridb/database.local/data_index/8/9/6/89689beecc6ebf06cb1859b8085ec9154e7edb1b
 
-import nltk
+#import nltk
+from bs4 import BeautifulSoup
+
 import lxml.html
 from lxml.etree import ParserError
 import re
@@ -130,7 +132,9 @@ def convert_html_file_to_text(html_file):
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
     html = html_bytes.decode('utf8', 'ignore')
-    text = nltk.clean_html(html)
+    soup = BeautifulSoup(html)
+    text = soup.get_text()
+    #text = nltk.clean_html(html)
     return text
 
 
