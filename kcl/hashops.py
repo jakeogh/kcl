@@ -42,7 +42,16 @@ def generate_hash(data, verbose=False):
                 eprint(temp_file.name, str(int((current_file_size/data_size_from_headers)*100))+'%', current_file_size, data.url, end='\r', flush=True)
             else:
                 eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
+
+
         temp_file.close()
+        current_file_size = int(os.path.getsize(temp_file.name))
+        # update final size
+        if data_size_from_headers:
+            eprint(temp_file.name, str(int((current_file_size/data_size_from_headers)*100))+'%', current_file_size, data.url, end='\r', flush=True)
+        else:
+            eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
+
         if verbose: eprint('\n', end='')
         eprint('finished writing temp_file:', temp_file.name)
         if os.path.getsize(temp_file.name) == 0:
