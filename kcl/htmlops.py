@@ -132,9 +132,10 @@ def convert_html_file_to_text(html_file):
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
     html = html_bytes.decode('utf8', 'ignore')
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html, 'lxml')
     text = soup.get_text()
     #text = nltk.clean_html(html)
+    ceprint(len(text))
     return text
 
 
