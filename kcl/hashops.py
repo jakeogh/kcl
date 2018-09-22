@@ -52,7 +52,7 @@ def generate_hash(data, verbose=False):
             eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
 
         if verbose: eprint('\n', end='')
-        eprint('finished writing temp_file:', temp_file.name)
+        #eprint('finished writing temp_file:', temp_file.name)
         if os.path.getsize(temp_file.name) == 0:
             ceprint('content is zero bytes, raising FileNotFoundError')  # this happens
             raise FileNotFoundError
