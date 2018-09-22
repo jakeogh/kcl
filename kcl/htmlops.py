@@ -128,6 +128,7 @@ def extract_iris_from_text_file(infile):
     return url_set
 
 
+# note this removes all links, produces a text version of a page printout
 def convert_html_file_to_text(html_file):
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
@@ -140,9 +141,9 @@ def convert_html_file_to_text(html_file):
     return text
 
 
-def extract_iris_from_html_file(html_file):
-    #text = run_command(b' '.join([b'/home/cfg/html/html2text', html_file]), verbose=True)
-    text = convert_html_file_to_text(html_file)
-    url_set = extract_iris_from_text(text)
-    return url_set
+#def extract_iris_from_html_file(html_file):
+#    #text = run_command(b' '.join([b'/home/cfg/html/html2text', html_file]), verbose=True)
+#    text = convert_html_file_to_text(html_file)
+#    url_set = extract_iris_from_text(text)
+#    return url_set
 
