@@ -43,7 +43,6 @@ def generate_hash(data, verbose=False):
             else:
                 eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
 
-
         temp_file.close()
         current_file_size = int(os.path.getsize(temp_file.name))
         # update final size
@@ -63,7 +62,7 @@ def generate_hash(data, verbose=False):
         return return_dict
     else:
         if len(data) == 0:
-            #empty_hash = hashlib.sha1(data).hexdigest()
+            # empty_hash = hashlib.sha1(data).hexdigest()
             ceprint("Error: you are attempting to hash a empty string.")
             raise FileNotFoundError
         if isinstance(data, str):
@@ -72,9 +71,10 @@ def generate_hash(data, verbose=False):
             return_dict['hash'] = hashlib.sha1(data).hexdigest()
         return return_dict
 
+
 def sha1_hash_file(path, block_size=256*128*2):
     sha1 = hashlib.sha1()
-    with open(path,'rb') as f:
+    with open(path, 'rb') as f:
         for chunk in iter(lambda: f.read(block_size), b''):
             sha1.update(chunk)
 
@@ -101,8 +101,10 @@ def get_openssl_hash_algs_real():
             results.append(line)
     return set(results) - blacklist
 
+
 def get_openssl_hash_algs():
     return set(['SHA1', 'MD5', 'RIPEMD160', 'SHA256', 'SHA384', 'SHA512', 'whirlpool', 'SHA224'])
+
 
 def read_blocks(filename):
     if filename == '-':
@@ -121,6 +123,7 @@ def read_blocks(filename):
             yield data
     finally:
         f.close()
+
 
 class Hasher(object):
     '''Calculate multiple hash digests for a piece of data.'''
@@ -146,6 +149,7 @@ class Hasher(object):
         for algo in self.algos:
             digest = self._hashes[algo].digest()
             yield algo.lower(), digest
+
 
 class MtHasher(Hasher):
     # Queue size. Memory usage is this times block size (1M)
@@ -196,12 +200,14 @@ class MtHasher(Hasher):
             assert q.empty()
         return super(MtHasher, self).digests()
 
+
 def hash_file(file):
     hasher = MtHasher()
     '''Read the file and update the hash states.'''
     for data in read_blocks(file):
         hasher.update(data)
     return hasher
+
 
 def hash_bytes(byte_string):
     if isinstance(byte_string, str):
@@ -211,6 +217,7 @@ def hash_bytes(byte_string):
     hasher.update(byte_string)
     return hasher
 
+
 def bytes_dict_file(file):
     bytes_dict = {}
     hasher = hash_file(file)
@@ -218,12 +225,14 @@ def bytes_dict_file(file):
         bytes_dict[algo] = digest
     return bytes_dict
 
+
 def bytes_dict_bytes(byte_string):
     bytes_dict = {}
     hasher = hash_bytes(byte_string)
     for algo, digest in hasher.digests():
         bytes_dict[algo] = digest
     return bytes_dict
+
 
 def hex_dict_file(file):
     bytes_dict = {}
@@ -233,14 +242,14 @@ def hex_dict_file(file):
     return bytes_dict
 
 
-if __name__ == '__main__':
-    filename = sys.argv[1]
-
-    hasher = hash_file(filename)
-    for algo, digest in hasher.hexdigests():
-        eprint('{0} {1}'.format(algo, digest))
-
-#    bytes_dict = get_bytes_dict(filename)
-#    print(bytes_dict)
+#if __name__ == '__main__':
+#    filename = sys.argv[1]
+#
+#    hasher = hash_file(filename)
+#    for algo, digest in hasher.hexdigests():
+#        eprint('{0} {1}'.format(algo, digest))
+#
+##    bytes_dict = get_bytes_dict(filename)
+##    print(bytes_dict)
 
     sys.exit(0)
