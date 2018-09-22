@@ -3,7 +3,7 @@
 import click
 from kcl.cli._htmlops._lxml import _lxml
 from kcl.cli._htmlops._text import _text
-from kcl.cli._htmlops._text import _html
+from kcl.cli._htmlops._html import _html
 
 
 @click.group()
