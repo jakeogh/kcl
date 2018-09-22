@@ -117,30 +117,15 @@ def extract_iris_from_text(text):  # todo, buggy, already had to add the ~ below
     return url_set
 
 
-#def extract_iris_from_html(html):
-#    text = run_command(['/home/cfg/html/html2text', infile])
-#    url_set = extract_iris_from_text(text)
-
-def extract_iris_from_text_file(infile):   #todo, buggy, already had to add the ~ below
+def extract_iris_from_text_file(infile):
     with open(infile, 'r') as fh:
         text = fh.read()
     url_set = extract_iris_from_text(text)
     return url_set
 
-def extract_iris_from_html_file(infile):   #todo, buggy, already had to add the ~ below
-    text = run_command(' '.join(['/home/cfg/html/html2text', infile]), verbose=True)
+
+def extract_iris_from_html_file(infile):
+    text = run_command(b' '.join([b'/home/cfg/html/html2text', infile]), verbose=True)
     url_set = extract_iris_from_text(text)
     return url_set
-
-#if __name__ == '__main__':
-#    htmlops()
-    #try:
-    #    domain = sys.argv[1]
-    #except:
-    #    print("a domain is reqired. exiting.")
-    #    os._exit(1)
-    #with open('/dev/stdin', 'r') as f:
-    #    html = f.read()
-    #for url in  extract_urls_lxml(html, domain):
-    #    eprint(url)
 
