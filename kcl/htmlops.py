@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup
 import lxml.html
 from lxml.etree import ParserError
 import re
-from bs4 import BeautifulSoup
 from kcl.printops import eprint
 from kcl.printops import ceprint
 from kcl.command import run_command
@@ -40,8 +39,10 @@ def extract_urls_lxml_with_link_text(html_file, url):
         html_bytes = fh.read()
     html = html_bytes.decode('utf8', 'ignore')
     url_list = []
-    #try:
-    dom = lxml.html.fromstring(html)
+    try:
+        dom = lxml.html.fromstring(html)
+    except ValueError:
+        dom = lxml.html.fromstring(html_bytes)
     #except ParserError:
     #    return set([])
 
