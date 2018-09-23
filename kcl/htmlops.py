@@ -44,8 +44,8 @@ def extract_urls_lxml_with_link_text(html_file, url):
     # https://m.facebook.com/profile.php?id=100003113454222 ValueError: Unicode strings with encoding declaration are not supported. Please use bytes input or XML fragments without declaration.
     except ValueError:
         dom = lxml.html.fromstring(html_bytes)
-    #except ParserError:
-    #    return set([])
+    except ParserError: # images etc
+        return set([])
 
     dom.make_links_absolute(url)
     links_a = dom.cssselect('a')
