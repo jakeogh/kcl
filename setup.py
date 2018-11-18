@@ -8,7 +8,7 @@ if not sys.version_info[0] == 3:
 
 import re
 from setuptools import find_packages, setup
-dependencies = ['requests', 'psutil', 'sqlalchemy', 'sqlalchemy-utils', 'sadisplay', 'pydot', 'nltk']
+dependencies = ['requests', 'psutil', 'sqlalchemy', 'sqlalchemy-utils', 'sadisplay', 'pydot']
 version = 0.01
 
 setup(
