@@ -124,16 +124,16 @@ def read_file_bytes(path):
     return file_bytes
 
 
-def read_file_bytes_or_exit(infile):
-    try:
-        with open(infile, 'rb') as string_fh:
-            string = string_fh.read()
-            if len(string) == 0:
-                eprint("Error, read empty file: " + infile)
-            return string
-    except Exception as e:
-        eprint("Got Exception: %s", e)
-        eprint("Unable to read file:", infile, "Exiting.")
+#def read_file_bytes_or_exit(infile):
+#    try:
+#        with open(infile, 'rb') as string_fh:
+#            string = string_fh.read()
+#            if len(string) == 0:
+#                eprint("Error, read empty file: " + infile)
+#            return string
+#    except Exception as e:
+#        eprint("Got Exception: %s", e)
+#        eprint("Unable to read file:", infile, "Exiting.")
 
 
 def path_exists(path):
