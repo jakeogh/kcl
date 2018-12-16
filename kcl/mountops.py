@@ -7,7 +7,7 @@
 #
 # common mount functions
 
-import subprocess
+#import subprocess
 from .fileops import path_is_block_special
 from psutil import disk_partitions
 
@@ -18,13 +18,9 @@ def block_special_path_is_mounted(path):
             return True
     return False
 
+
 def path_is_mounted(path):
     for mount in disk_partitions():
         if mount.mountpoint == path:
             return True
     return False
-
-
-if __name__ == '__main__':
-    quit(0)
-

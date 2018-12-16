@@ -240,16 +240,3 @@ def hex_dict_file(file):
     for algo, digest in hasher.hexdigests():
         bytes_dict[algo] = digest
     return bytes_dict
-
-
-#if __name__ == '__main__':
-#    filename = sys.argv[1]
-#
-#    hasher = hash_file(filename)
-#    for algo, digest in hasher.hexdigests():
-#        eprint('{0} {1}'.format(algo, digest))
-#
-##    bytes_dict = get_bytes_dict(filename)
-##    print(bytes_dict)
-
-    sys.exit(0)

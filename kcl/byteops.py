@@ -11,6 +11,7 @@ import requests
 from kcl.logops import leprint
 from kcl.logops import LOG
 
+
 def get_random_bytes(count, exclude=[]):
     accepted_bytes = bytearray()
 
@@ -48,6 +49,7 @@ def remove_comments_from_bytes(line): #todo check for (assert <=1 line break) mu
             break
     return uncommented_line
 
+
 def read_url_bytes(url):
     leprint("GET: %s", url, level=LOG['DEBUG'])
     user_agent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:24.0) Gecko/20100101 Firefox/24.0'
@@ -58,6 +60,7 @@ def read_url_bytes(url):
         leprint(e, level=LOG['WARNING'])
         return False
     return raw_url_bytes
+
 
 def read_url_bytes_and_cache(url, cache=True):
     raw_url_bytes = read_url_bytes(url)
@@ -74,7 +77,3 @@ def read_url_bytes_and_cache(url, cache=True):
         return raw_url_bytes
     else:
         return False
-
-
-if __name__ == '__main__':
-    quit(0)

@@ -18,14 +18,6 @@ def is_symlink(infile):
         return True
     return False
 
-def symlink_or_exit(target, link_name):
-    try:
-        os.symlink(target, link_name)
-    except Exception as e:
-        print("Got Exception: %s", e)
-        print("Unable to symlink link_name: %s to target: %s Exiting." % (link_name, target))
-        os._exit(1)
-
 def is_symlink_to_dir(link):
     if os.path.islink(link):
         return os.path.isdir(link)
@@ -74,7 +66,7 @@ def create_relative_symlink(target, link_name):
     os.symlink(relative_target, link_name)
 
 def symlink_destination(link): #broken for multi level symlinks
-    ceprint(link)
+    #ceprint(link)
     """
     Return absolute path for the destination of a symlink. This prob should be split into "first dest" and "final dest"
     """
@@ -113,12 +105,20 @@ def get_symlink_target_final(path): #broken for bytes
         #print("target_file:", target_file)
         return target_file
 
-def symlink_or_exit(target, link_name, hash_folder=''):
-    if hash_folder != '':
-        os.chdir(hash_folder)
+def symlink_or_exit(target, link_name):
     try:
         os.symlink(target, link_name)
     except Exception as e:
-        ceprint("Got Exception:", e)
-        ceprint("Unable to symlink link_name:", link_name, "to target:", target, "Exiting.")
+        print("Got Exception: %s", e)
+        print("Unable to symlink link_name: %s to target: %s Exiting." % (link_name, target))
         os._exit(1)
+
+#def symlink_or_exit(target, link_name, hash_folder=''):
+#    if hash_folder != '':
+#        os.chdir(hash_folder)
+#    try:
+#        os.symlink(target, link_name)
+#    except Exception as e:
+#        ceprint("Got Exception:", e)
+#        ceprint("Unable to symlink link_name:", link_name, "to target:", target, "Exiting.")
+#        os._exit(1)

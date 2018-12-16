@@ -67,11 +67,13 @@ def path_is_dir(path):
             return False
         return True
 
+
 def path_is_dir_or_symlink_to_dir(path):
     # unlike os.path.exists(False), os.path.isdir(False) returns False
     if os.path.isdir(path): # returns False if it's a symlink to a file
         return True
     return False
+
 
 def check_or_create_dir(folder, confirm=True):
     #assert isinstance(folder, bytes)
@@ -89,11 +91,13 @@ def check_or_create_dir(folder, confirm=True):
         create_dir(folder)
         return True
 
+
 def create_dir(folder):
     try:
         os.makedirs(folder, exist_ok=True)
     except FileExistsError:
         pass
+
 
 def mkdir_or_exit(folder, user=None, exists_ok=False):
     #ceprint("calling os.makedirs on:", folder)
@@ -103,6 +107,7 @@ def mkdir_or_exit(folder, user=None, exists_ok=False):
         assert path_is_dir(folder)
     if user:
         shutil.chown(folder, user=user, group=user)
+
 
 def chdir_or_exit(targetdir):
     try:

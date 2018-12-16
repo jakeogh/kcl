@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
 import logging
-import os
-import sys
-import time
-import inspect
+#import os
+#import sys
+#import time
+#import inspect
+
 
 class logmaker():
     def __init__(self, output_format, name, level):
@@ -34,6 +35,7 @@ def leprint(*args, level=LOG['DEBUG'], **kwargs):
         logger_quiet.logger.info(*args, **kwargs)
     elif level >= LOG['WARNING']:
         logger_quiet.logger.warning(*args, **kwargs)
+
 
 def set_verbose(ctx, param, verbose=False):
     if verbose:

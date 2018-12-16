@@ -14,6 +14,7 @@ import tldextract
 TLDEXTRACT_CACHE = '/var/tmp/tldextract_cache'
 TLD_EXTRACT = tldextract.TLDExtract(cache_file=TLDEXTRACT_CACHE)
 
+
 def group_by_tld(domains):
     leprint('Sorting domains by their subdomain and grouping by TLD.',
         level=LOG['INFO'])
@@ -29,10 +30,12 @@ def group_by_tld(domains):
         sorted_output.append(b'.'.join(rev_domain))
     return sorted_output
 
+
 def extract_psl_domain(domain):
     dom = TLD_EXTRACT(domain.decode('utf-8'))
     dom = dom.domain + '.' + dom.suffix
     return dom.encode('utf-8')
+
 
 def strip_to_psl(domains):
     '''This causes ad-serving domains to be blocked at their root domain.
@@ -47,6 +50,7 @@ def strip_to_psl(domains):
         line = extract_psl_domain(line)
         domains_stripped.add(line)
     return domains_stripped
+
 
 def valid_name(domain):
     # RFC 952: https://tools.ietf.org/html/rfc952
@@ -71,6 +75,7 @@ def valid_name(domain):
     # SHOULD handle host names of up to 255 characters.
     pass
 
+
 def validate_domain_list(domains):
     leprint('Validating %d domains.', len(domains), level=LOG['DEBUG'])
     valid_domains = set([])
@@ -85,9 +90,11 @@ def validate_domain_list(domains):
                 level=LOG['WARNING'])
     return valid_domains
 
+
 def extract_domain_from_iri(iri):
     iri_urlparsed  = requests.utils.urlparse(iri)   # https://hg.python.org/cpython/file/tip/Lib/urllib/parse.py
     return iri_urlparsed.netloc
+
 
 def extract_domain_set_from_dnsgate_format_file(dnsgate_file):
     domains = set([])
@@ -102,6 +109,7 @@ def extract_domain_set_from_dnsgate_format_file(dnsgate_file):
         if len(line) > 0:
             domains.add(line)
     return set(domains)
+
 
 def extract_domain_set_from_hosts_format_bytes(hosts_format_bytes):
     assert isinstance(hosts_format_bytes, bytes)
@@ -122,11 +130,13 @@ def extract_domain_set_from_hosts_format_bytes(hosts_format_bytes):
             domains.add(line)
     return domains
 
+
 def extract_domain_set_from_hosts_format_url(url, cache=True):
     url_bytes = read_url_bytes_and_cache(url, cache)
     domains = extract_domain_set_from_hosts_format_bytes(url_bytes)
     leprint("Domains in %s:%s", url, len(domains), level=LOG['DEBUG'])
     return domains
+
 
 def prune_redundant_rules(domains):
     domains_orig = copy.deepcopy(domains) # need to iterate through _orig later
@@ -138,5 +148,3 @@ def prune_redundant_rules(domains):
                 leprint("removing: %s because it's parent domain: %s is already blocked",
                     domain, domain_to_check, level=LOG['DEBUG'])
                 domains.remove(domain)
-
-

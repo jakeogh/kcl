@@ -14,6 +14,7 @@ from shutil import copyfileobj
 import stat
 from .printops import eprint
 
+
 def comment_out_line_in_file(file_path, line_to_match):
     '''
     add a # to the beginning of all instances of line_to_match
@@ -53,6 +54,7 @@ def comment_out_line_in_file(file_path, line_to_match):
     elif commented:
         return True
     return False
+
 
 def uncomment_line_in_file(file_path, line_to_match):
     '''
@@ -94,6 +96,7 @@ def uncomment_line_in_file(file_path, line_to_match):
         return True
     return False
 
+
 def write_unique_line_to_file(line, file_to_write):
     '''
     Write line to file_to_write iff line not in file_to_write.
@@ -122,18 +125,6 @@ def read_file_bytes(path):
     with open(path, 'rb') as fh:
         file_bytes = fh.read()
     return file_bytes
-
-
-#def read_file_bytes_or_exit(infile):
-#    try:
-#        with open(infile, 'rb') as string_fh:
-#            string = string_fh.read()
-#            if len(string) == 0:
-#                eprint("Error, read empty file: " + infile)
-#            return string
-#    except Exception as e:
-#        eprint("Got Exception: %s", e)
-#        eprint("Unable to read file:", infile, "Exiting.")
 
 
 def path_exists(path):
@@ -213,19 +204,19 @@ def move_file_only_if_new_or_exit(source, dest):
 #        raise FileExistsError
 #    write_file(infile, data)
 #    return True
-
-
-def make_file_only_if_new_or_exit(infile, data):
-    try:
-        make_file_only_if_new(infile, data)
-        return True
-    except Exception as e:
-        #print_traceback()
-        eprint("Got Exception: %s", e)
-        eprint("Problem writing file: %s Exiting.", infile)
-        os._exit(1)
-    else:
-        return False
+#
+#
+#def make_file_only_if_new_or_exit(infile, data):
+#    try:
+#        make_file_only_if_new(infile, data)
+#        return True
+#    except Exception as e:
+#        #print_traceback()
+#        eprint("Got Exception: %s", e)
+#        eprint("Problem writing file: %s Exiting.", infile)
+#        os._exit(1)
+#    else:
+#        return False
 
 
 def write_file(infile, data):
