@@ -74,6 +74,7 @@ def create_relative_symlink(target, link_name):
     os.symlink(relative_target, link_name)
 
 def symlink_destination(link): #broken for multi level symlinks
+    ceprint(link)
     """
     Return absolute path for the destination of a symlink. This prob should be split into "first dest" and "final dest"
     """
