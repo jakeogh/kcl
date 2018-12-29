@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
 from kcl.printops import ceprint
-import os
+#import os
 
 def run_command(command, verbose=False):
     if verbose:
