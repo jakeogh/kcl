@@ -8,7 +8,7 @@ def run_command(command, verbose=False):
         ceprint("command:", command)
     try:
         #output = subprocess.getoutput(command)
-        output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+        output = subprocess.check_output('"'+command+'"', stderr=subprocess.STDOUT, shell=True)
         #if verbose:
         #    eprint("output:", output)
         #if b'error' in output.lower():
