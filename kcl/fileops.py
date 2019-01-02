@@ -13,7 +13,7 @@ import shutil
 from shutil import copyfileobj
 import stat
 from .printops import eprint
-import magic
+#import magic
 
 def comment_out_line_in_file(file_path, line_to_match):
     '''
@@ -240,14 +240,14 @@ def is_regular_file(path):
     return False
 
 
-def get_file_type(path):
-    path = path.strip()
-    if path:
-        try:
-            line_id = magic.from_file(path)
-            print(path, line_id)
-        except FileNotFoundError:
-            pass
+#def get_file_type(path):
+#    path = path.strip()
+#    if path:
+#        try:
+#            line_id = magic.from_file(path)
+#            print(path, line_id)
+#        except FileNotFoundError:
+#            pass
 
 
 # todo
