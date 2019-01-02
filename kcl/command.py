@@ -18,8 +18,8 @@ def run_command(command, verbose=False):
         #    eprint("warning in output.lower():", output.lower())
         #    #os._exit(1)
     except subprocess.CalledProcessError as error:
+        ceprint("command:", command)
         ceprint("exit code:", error.returncode, error.output)
-        output = False
-        #os._exit(1)
+        raise error
 
     return output
