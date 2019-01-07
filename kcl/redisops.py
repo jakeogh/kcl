@@ -19,3 +19,7 @@ def check_for_value_in_set(key, value, timestamp=False):
     if r.zscore(key, value):
         return True
     return False
+
+def get_keys(pattern=''):
+    return r.keys(pattern)
+
