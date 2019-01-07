@@ -6,8 +6,8 @@ from .printops import ceprint
 r = redis.StrictRedis(host='127.0.0.1')
 
 
-def redis_add_iri_to_visited_ordered_set(key, iri, timestamp):
-    r.zadd(key, timestamp, iri)
+def add_to_ordered_set(key, value, timestamp):
+    r.zadd(key, timestamp, value)
 
 
 def check_for_value_in_set(key, value, timestamp=False):
