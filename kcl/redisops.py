@@ -21,5 +21,6 @@ def check_for_value_in_set(key, value, timestamp=False):
     return False
 
 def get_keys(pattern=False):
-    return r.keys(pattern)
+    #return r.keys(pattern)
+    return r.keys()
 
