@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
 import logging
-#import os
-#import sys
-#import time
-#import inspect
 
 
 class logmaker():
@@ -15,6 +11,7 @@ class logmaker():
         self.logger_ch.setFormatter(self.formatter)
         self.logger.addHandler(self.logger_ch)
         self.logger.setLevel(level)
+
 
 LOG = {
     'CRITICAL': logging.CRITICAL, # 50
