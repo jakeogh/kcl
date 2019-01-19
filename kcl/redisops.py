@@ -12,6 +12,12 @@ def add_to_set(key, value, p=None):
     return r.sadd(key, value)
 
 
+def get_set(key, p=None):
+    global r
+    if p: r = p
+    return r.smembers(key)
+
+
 def add_to_ordered_set(key, value, timestamp, p=None):
     global r
     if p: r = p
