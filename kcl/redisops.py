@@ -6,21 +6,25 @@ from .printops import ceprint
 r = redis.StrictRedis(host='127.0.0.1')
 
 
-def add_to_ordered_set(key, value, timestamp):
+def add_to_ordered_set(key, value, timestamp, p=None):
+    if p: r = p
     return r.zadd(key, timestamp, value)
 
 
-def get_ordered_set(key, start=0, stop=-1, withscores=False):
+def get_ordered_set(key, start=0, stop=-1, withscores=False, p=None):
+    if p: r = p
     return r.zrange(key, start, stop, withscores)
 
 
-def check_for_value_in_set(key, value, timestamp=False):
+def check_for_value_in_set(key, value, timestamp=False, p=None):
+    if p: r = p
     #ceprint("key:", key, "value:", value)
     if r.zscore(key, value):
         return True
     return False
 
-def get_keys(pattern=False):
+def get_keys(pattern=False, p=None):
+    if p: r = p
     if pattern:
         return r.keys(pattern)
     return r.keys()
