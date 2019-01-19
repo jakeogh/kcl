@@ -5,6 +5,13 @@ from .printops import ceprint
 
 r = redis.StrictRedis(host='127.0.0.1')
 
+
+def add_to_set(key, value, p=None):
+    global r
+    if p: r = p
+    return r.sdd(key, value)
+
+
 def add_to_ordered_set(key, value, timestamp, p=None):
     global r
     if p: r = p
