@@ -109,9 +109,13 @@ def write_unique_line_to_file(line, file_to_write):
         with open(file_to_write, 'r+') as fh:
             if line not in fh:
                 fh.write(line)
+                return True
+            return False
     except FileNotFoundError:
         with open(file_to_write, 'a') as fh:
             fh.write(line)
+            return True
+
 
 
 def backup_file_if_exists(file_to_backup):
