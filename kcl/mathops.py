@@ -109,9 +109,9 @@ def get_random_hex_digits(count):
     assert isinstance(count, int)
     bytes_needed = count
     if count % 2 != 0:
-        bytes_needed = (count + 1) / 2
+        bytes_needed = int((count + 1) / 2)
     else:
-        bytes_needed = count / 2
+        bytes_needed = int(count / 2)
     ans = get_random_hex_bytes(bytes_needed)[0:count]
     assert len(ans) == count
     return ans
