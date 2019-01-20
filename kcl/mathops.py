@@ -114,7 +114,7 @@ def get_random_hex_digits(count):
         bytes_needed = int(count / 2)
     ans = get_random_hex_bytes(bytes_needed)[0:count]
     assert len(ans) == count
-    return ans
+    return ans.decode('UTF8')
 
 
 
