@@ -15,6 +15,7 @@ import stat
 from .printops import eprint
 #import magic
 
+
 def comment_out_line_in_file(file_path, line_to_match):
     '''
     add a # to the beginning of all instances of line_to_match
@@ -98,6 +99,7 @@ def uncomment_line_in_file(file_path, line_to_match):
 
 
 def write_unique_line_to_file(line, file_to_write):
+    assert line.endswith('\n')
     '''
     Write line to file_to_write iff line not in file_to_write.
     '''
