@@ -99,6 +99,8 @@ def uncomment_line_in_file(file_path, line_to_match):
 
 
 def write_unique_line_to_file(line, file_to_write):
+    assert isinstance(line, str)
+    assert line.count('\n') == 1
     assert line.endswith('\n')
     '''
     Write line to file_to_write iff line not in file_to_write.
