@@ -52,9 +52,15 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
     return False
 
 def calculate_relative_symlink_dest(target, link_name):
-    assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
+    if isinstance(target, str):
+        target = bytes(target)
+    if isinstance(link_name, str):
+        target = bytes(link_name)
+    assert isinstance(target, bytes)
+    assert isinstance(link_name, bytes)
+    assert b'/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
     #ceprint("target:", target)
-    assert not target.startswith('../')
+    assert not target.startswith(b'../')
     # got relative target, that's hard to deal with
     # pass in a fully qualified path, if it's also
     # an existing stmlink, detect that here and dont call realpath()
@@ -65,9 +71,9 @@ def calculate_relative_symlink_dest(target, link_name):
         target_realpath = os.path.abspath(target)
         # still a problem, since this was not fully resolved, it may still have symlinks embedded in it
         # get the folder, resolve that since it's guranteed not to be a symlink
-        target_realpath_folder = '/'.join(target_realpath.split('/')[:-1])
+        target_realpath_folder = b'/'.join(target_realpath.split(b'/')[:-1])
         #ceprint("target_realpath_folder:", target_realpath_folder)
-        target_realpath_file = target_realpath.split('/')[-1]
+        target_realpath_file = target_realpath.split(b'/')[-1]
         #ceprint("target_realpath_file:", target_realpath_file)
         target_realpath_folder_realpath = os.path.realpath(target_realpath_folder)
         target_realpath = os.path.join(target_realpath_folder_realpath, target_realpath_file)
@@ -106,27 +112,27 @@ def calculate_relative_symlink_dest(target, link_name):
         assert False
 
     if not path_exists(target_realpath):
-        ceprint('target_realpath:', target_realpath, 'does not exist. Refusing to make broken symlink. Exiting.')
+        ceprint(b'target_realpath:', target_realpath, b'does not exist. Refusing to make broken symlink. Exiting.')
         quit(1)
 
 
     if is_broken_symlink(link_name_realpath):
-        ceprint('link_name_realpath:', link_name_realpath, 'exists as a broken symlink. ' +
-            'Remove it before trying to make a new symlink. Exiting.')
+        ceprint(b'link_name_realpath:', link_name_realpath, b'exists as a broken symlink. ' +
+            b'Remove it before trying to make a new symlink. Exiting.')
         quit(1)
 
-    link_name_realpath_folder = '/'.join(link_name_realpath.split('/')[:-1])
+    link_name_realpath_folder = b'/'.join(link_name_realpath.split(b'/')[:-1])
     #ceprint("link_name_realpath_folder:", link_name_realpath_folder)
     link_name_realpath_folder_realpath = os.path.realpath(link_name_realpath_folder)
     #ceprint("link_name_realpath_folder_realpath:", link_name_realpath_folder_realpath)
     if not os.path.isdir(link_name_realpath_folder_realpath):
-        ceprint('link_name_realpath_folder_realpath:', link_name_realpath_folder_realpath, 'does not exist. Exiting.')
+        ceprint(b'link_name_realpath_folder_realpath:', link_name_realpath_folder_realpath, b'does not exist. Exiting.')
         quit(1)
 
     relative_target = os.path.relpath(target_realpath, link_name_realpath_folder_realpath) # relpath does not access the filesystem
     #ceprint("relative_target:", relative_target)
-    assert '/home/user/.iridb/database.local/' not in relative_target
-    assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in relative_target
+    assert b'/home/user/.iridb/database.local/' not in relative_target
+    assert b'/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in relative_target
     return relative_target
 
 
