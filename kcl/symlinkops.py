@@ -53,7 +53,7 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
 
 
 def create_relative_symlink(target, link_name):
-    assert '/home/user/.iridb/database.local/' not in target
+    #assert '/home/user/.iridb/database.local/' not in target
     target = os.path.abspath(target)
     link_name = os.path.abspath(link_name)
     ceprint("target:", target)
