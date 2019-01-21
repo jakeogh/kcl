@@ -55,6 +55,8 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
 def create_relative_symlink(target, link_name):
     target = os.path.abspath(target)
     link_name = os.path.abspath(link_name)
+    ceprint("target:", target)
+    ceprint("link_name:", link_name)
     if not path_exists(target):
         ceprint('target:', target, 'does not exist. Refusing to make broken symlink. Exiting.')
         quit(1)
