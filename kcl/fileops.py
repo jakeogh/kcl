@@ -131,8 +131,8 @@ def backup_file_if_exists(file_to_backup):
     timestamp = str(time.time())
     dest_file = file_to_backup + '.bak.' + timestamp
     try:
-        with open(file_to_backup, 'r') as sf:
-            with open(dest_file, 'x') as df:
+        with open(file_to_backup, 'rb') as sf:
+            with open(dest_file, 'xb') as df:
                 copyfileobj(sf, df)
     except FileNotFoundError:
         pass    # skip backup if file does not exist
@@ -177,7 +177,6 @@ def get_file_size(filename):
         os.close(fd)
 
 
-#def is_zero_length_file(fpath): # prob should be called "empty_file()"
 def empty_file(fpath):
     if os.path.isfile(fpath):
         if os.path.getsize(fpath) == 0:
@@ -215,27 +214,6 @@ def move_file_only_if_new_or_exit(source, dest):
         os._exit(1)
 
 
-#def make_file_only_if_new(infile, data):
-#    assert len(data) > 0
-#    if file_exists(infile):  # race
-#        raise FileExistsError
-#    write_file(infile, data)
-#    return True
-#
-#
-#def make_file_only_if_new_or_exit(infile, data):
-#    try:
-#        make_file_only_if_new(infile, data)
-#        return True
-#    except Exception as e:
-#        #print_traceback()
-#        eprint("Got Exception: %s", e)
-#        eprint("Problem writing file: %s Exiting.", infile)
-#        os._exit(1)
-#    else:
-#        return False
-
-
 def write_file(infile, data):
     assert len(data) > 0
     #On Py3 we have one text type, str which holds Unicode data and two byte types; bytes and bytearray.
@@ -243,7 +221,7 @@ def write_file(infile, data):
         with open(infile, "x", encoding='utf-8') as fd:
             fd.write(data)
     elif isinstance(data, bytes):
-        with open(infile, "bx") as fd:
+        with open(infile, "xb") as fd:
             fd.write(data)
     else:
         eprint("Unknown type for data: %s. Could not create python file descriptor: %s Exiting.", type(data), infile)

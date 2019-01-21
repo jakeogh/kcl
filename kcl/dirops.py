@@ -11,9 +11,13 @@ import os
 import shutil
 from .printops import eprint
 from .printops import ceprint
+from pathlib import Path
 
 
 def all_files_iter(p):
+    if isinstance(p, str) or isinstance(p, bytes):
+        p = Path(p)
+    assert isinstance(p, Path)
     yield p
     for sub in p.iterdir():
         # eprint("sub:", sub)  # todo: read by terminal, so bell etc happens.... eprint bug?
