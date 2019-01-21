@@ -95,7 +95,7 @@ def create_relative_symlink(target, link_name):
         ceprint('link_name_abspath_folder:', link_name_abspath_folder, 'does not exist. Exiting.')
         quit(1)
 
-    relative_target = os.path.relpath(target_realpath, link_name_abspath_folder) # relpath does not access the filesystem
+    relative_target = os.path.relpath(target_realpath, link_name_realpath_folder) # relpath does not access the filesystem
     ceprint("relative_target:", relative_target)
     assert '/home/user/.iridb/database.local/' not in relative_target
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in relative_target
