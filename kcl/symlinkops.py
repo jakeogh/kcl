@@ -55,7 +55,7 @@ def calculate_relative_symlink_dest(target, link_name):
     if isinstance(target, str):
         target = bytes(target, encoding='UTF8')
     if isinstance(link_name, str):
-        target = bytes(link_name, encofing='UTF8')
+        target = bytes(link_name, encoding='UTF8')
     assert isinstance(target, bytes)
     assert isinstance(link_name, bytes)
     assert b'/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
