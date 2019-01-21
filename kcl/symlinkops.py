@@ -63,6 +63,10 @@ def calculate_relative_symlink_dest(target, link_name):
     if is_broken_symlink(link_name):
         link_name_realpath = os.path.realpath(link_name)
         ceprint("link_name_realpath:", link_name_realpath)
+    elif not path_exists(link_name):
+        link_name_realpath = os.path.realpath(link_name)
+        ceprint("link_name_realpath:", link_name_realpath)
+
     elif is_unbroken_symlink(link_name):
         link_name_realpath = os.path.abspath(link_name)
         ceprint("link_name_realpath: (abspath)", link_name_realpath)
@@ -72,6 +76,8 @@ def calculate_relative_symlink_dest(target, link_name):
         # might not reflect that.
         # the solution is to call realpath() on link_name_realpath_folder
         # since its not a symlink, this will work as expected
+    else:
+        assert False
 
     if not path_exists(target_realpath):
         ceprint('target_realpath:', target_realpath, 'does not exist. Refusing to make broken symlink. Exiting.')
