@@ -19,15 +19,15 @@ def all_files_iter(p):
         p = Path(p)
     assert isinstance(p, Path)
     print("yeilding p.absolute():", p.absolute())
-    yield p.absolute()
+    yield bytes(p.absolute())
     for sub in p.iterdir():
         # eprint("sub:", sub)  # todo: read by terminal, so bell etc happens.... eprint bug?
         if sub.is_symlink():  # must be before is_dir()
-            yield sub.absolute()
+            yield bytes(sub.absolute())
         elif sub.is_dir():
             yield from all_files_iter(sub)
         else:
-            yield sub.absolute()
+            yield bytes(sub.absolute())
 
 
 def all_files(folder, files_only=False): # todo add flags for recursive, follow symlinks etc, return a generator
