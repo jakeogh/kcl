@@ -148,6 +148,21 @@ def readlinkf(path): # ugly
             return readlink_output_clean
 
 
+def get_abs_path_of_first_symlink_target(path):
+    ceprint("path:", path)
+    link_target = os.readlink(path)
+    ceprint("link_target:", link_target)
+    #assert link_target
+    link_dir = os.path.dirname(path)
+    link_first_target_abs = os.path.join(link_dir, link_target)
+    ceprint(link_first_target_abs)
+    link_first_target_abs_normpath = os.path.normpath(link_first_target_abs)
+    #ceprint(link_first_target_abs_normpath)
+    link_first_target_abs_normpath_abspath = os.path.abspath(link_first_target_abs_normpath)
+    ceprint(link_first_target_abs_normpath_abspath)
+    return link_first_target_abs_normpath_abspath
+
+
 def get_symlink_target_next(path):
         assert os.path.islink(path)
         target = os.readlink(path)
