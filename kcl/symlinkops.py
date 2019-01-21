@@ -66,8 +66,13 @@ def create_relative_symlink(target, link_name):
     ceprint("link_name:", link_name)
     #assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
 
+    #redunt check left in after switching from abspath to realpath on the target
     if not path_exists(target_abspath):
         ceprint('target_abspath:', target_abspath, 'does not exist. Refusing to make broken symlink. Exiting.')
+        quit(1)
+
+    if not path_exists(target_realpath):
+        ceprint('target_realpath:', target_realpath, 'does not exist. Refusing to make broken symlink. Exiting.')
         quit(1)
 
     if is_broken_symlink(link_name):
@@ -80,9 +85,10 @@ def create_relative_symlink(target, link_name):
         ceprint('link_name_folder:', link_name_folder, 'does not exist. Exiting.')
         quit(1)
 
-    relative_target = os.path.relpath(target_abspath, link_name_folder) # relpath does not access the filesystem
+    relative_target = os.path.relpath(target_realpath, link_name_folder) # relpath does not access the filesystem
     ceprint("relative_target:", relative_target)
     assert '/home/user/.iridb/database.local/' not in relative_target
+    raw_input("Press Enter to continue ...")
     os.symlink(relative_target, link_name)
 
 
