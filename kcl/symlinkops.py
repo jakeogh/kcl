@@ -51,8 +51,7 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
             return True
     return False
 
-
-def create_relative_symlink(target, link_name):
+def calculate_relative_symlink_dest(target, link_name):
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
     #ceprint("target:", target)
     #ceprint("link_name:", link_name)
@@ -100,7 +99,12 @@ def create_relative_symlink(target, link_name):
     #ceprint("relative_target:", relative_target)
     assert '/home/user/.iridb/database.local/' not in relative_target
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in relative_target
-    #input("Press Enter to continue ...")
+    return relative_target
+
+
+def create_relative_symlink(target, link_name):
+    relative_target = calculate_relative_symlink_dest(target, link_name)
+    link_name_realpath = os.path.realpath(link_name)
     os.symlink(relative_target, link_name_realpath)
 
 
