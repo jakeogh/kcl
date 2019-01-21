@@ -57,8 +57,15 @@ def calculate_relative_symlink_dest(target, link_name):
     target_realpath = os.path.realpath(target) # realpath() does not require the file to exist will still resolve symlinks
     ceprint("target_realpath:", target_realpath)
     ceprint("link_name:", link_name)
-    link_name_realpath = os.path.realpath(link_name)
-    ceprint("link_name_realpath:", link_name_realpath)
+
+    # if its a unbroken symlink, and this is being used to see if its the shortest dest
+    # os.path.realpath() cant be called, because it resolves the existing link to the target
+    if is_broken_symlink(link_name):
+        link_name_realpath = os.path.realpath(link_name)
+        ceprint("link_name_realpath:", link_name_realpath)
+    elif is_unbroken_symlink(link_name):
+        link_name_realpath = os.path.abspath(link_name)
+        ceprint("link_name_realpath: (abspath)", link_name_realpath)
 
     if not path_exists(target_realpath):
         ceprint('target_realpath:', target_realpath, 'does not exist. Refusing to make broken symlink. Exiting.')
