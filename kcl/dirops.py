@@ -18,7 +18,7 @@ def all_files_iter(p):
     if isinstance(p, str) or isinstance(p, bytes):
         p = Path(p)
     assert isinstance(p, Path)
-    yield p
+    #yield p
     for sub in p.iterdir():
         # eprint("sub:", sub)  # todo: read by terminal, so bell etc happens.... eprint bug?
         if sub.is_symlink():  # must be before is_dir()
