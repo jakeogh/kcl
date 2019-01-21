@@ -63,6 +63,15 @@ def calculate_relative_symlink_dest(target, link_name):
     if is_unbroken_symlink(target):
         # the targt is also a symlink, dont resolve it, just get it's abspath
         target_realpath = os.path.abspath(target)
+        # still a problem, since this was not fully resolved, it may still have symlinks embedded in it
+        # get the folder, resolve that since it's guranteed not to be a symlink
+        target_realpath_folder = '/'.join(target_realpath.split('/')[:-1])
+        ceprint("target_realpath_folder:", target_realpath_folder)
+        target_realpath_file = target_realpath.split('/')[-1]
+        ceprint("target_realpath_file:", target_realpath_file)
+        target_realpath_folder_realpath = os.path.realpath(target_realpath_folder)
+        target_realpath = os.path.join(target_realpath_folder_realpath, target_realpath_file)
+        # uug. ok now.
     elif path_exists(target):
         #target is prob a file or dir, could still be a broken symlink
         target_realpath = os.path.realpath(target)
