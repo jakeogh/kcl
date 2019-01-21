@@ -55,22 +55,22 @@ def calculate_relative_symlink_dest(target, link_name):
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
     ceprint("target:", target)
     ceprint("link_name:", link_name)
-    target_abspath = os.path.abspath(target)
+    #target_abspath = os.path.abspath(target)
     target_realpath = os.path.realpath(target) # realpath() does not require the file to exist
                                                # it will still resolve any symlinks
-    ceprint("target_abspath:", target_abspath)
+    #ceprint("target_abspath:", target_abspath)
     ceprint("target_realpath:", target_realpath)
 
     #link_name_abspath = os.path.abspath(link_name) # by expectation, this does not exist yet
+    #ceprint("link_name_abspath:", link_name_abspath)
                                                    # it depends on cwd if its a relative path
     link_name_realpath = os.path.realpath(link_name)
-    #ceprint("link_name_abspath:", link_name_abspath)
-    #ceprint("link_name_realpath:", link_name_realpath)
+    ceprint("link_name_realpath:", link_name_realpath)
 
-    #redunt check left in after switching from abspath to realpath on the target
-    if not path_exists(target_abspath):
-        ceprint('target_abspath:', target_abspath, 'does not exist. Refusing to make broken symlink. Exiting.')
-        quit(1)
+    ##redunt check left in after switching from abspath to realpath on the target
+    #if not path_exists(target_abspath):
+    #    ceprint('target_abspath:', target_abspath, 'does not exist. Refusing to make broken symlink. Exiting.')
+    #    quit(1)
 
     if not path_exists(target_realpath):
         ceprint('target_realpath:', target_realpath, 'does not exist. Refusing to make broken symlink. Exiting.')
