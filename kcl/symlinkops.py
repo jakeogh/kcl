@@ -179,7 +179,7 @@ def get_abs_path_of_first_symlink_target(path):
     link_first_target_abs_normpath = os.path.normpath(link_first_target_abs)
     #ceprint(link_first_target_abs_normpath)
     link_first_target_abs_normpath_abspath = os.path.abspath(link_first_target_abs_normpath)
-    ceprint(link_first_target_abs_normpath_abspath)
+    ceprint("link_first_target_abs_normpath_abspath:", link_first_target_abs_normpath_abspath)
     return link_first_target_abs_normpath_abspath
 
 
