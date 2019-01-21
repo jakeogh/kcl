@@ -66,6 +66,12 @@ def calculate_relative_symlink_dest(target, link_name):
     elif is_unbroken_symlink(link_name):
         link_name_realpath = os.path.abspath(link_name)
         ceprint("link_name_realpath: (abspath)", link_name_realpath)
+        # at this point, all is still not well.
+        # link_name_realpath was actually constructed by abspath()
+        # so if its really on a different filesystem, the link
+        # might not reflect that.
+        # the solution is to call realpath() on link_name_realpath_folder
+        # since its not a symlink, this will work as expected
 
     if not path_exists(target_realpath):
         ceprint('target_realpath:', target_realpath, 'does not exist. Refusing to make broken symlink. Exiting.')
@@ -82,11 +88,13 @@ def calculate_relative_symlink_dest(target, link_name):
 
     link_name_realpath_folder = '/'.join(link_name_realpath.split('/')[:-1])
     ceprint("link_name_realpath_folder:", link_name_realpath_folder)
-    if not os.path.isdir(link_name_realpath_folder):
-        ceprint('link_name_realpath_folder:', link_name_realpath_folder, 'does not exist. Exiting.')
+    link_name_realpath_folder_realpath = os.path.realpath(link_name_realpath_folder)
+    ceprint("link_name_realpath_folder_realpath:", link_name_realpath_folder_realpath)
+    if not os.path.isdir(link_name_realpath_folder_realpath):
+        ceprint('link_name_realpath_folder_realpath:', link_name_realpath_folder_realpath, 'does not exist. Exiting.')
         quit(1)
 
-    relative_target = os.path.relpath(target_realpath, link_name_realpath_folder) # relpath does not access the filesystem
+    relative_target = os.path.relpath(target_realpath, link_name_realpath_folder_realpath) # relpath does not access the filesystem
     ceprint("relative_target:", relative_target)
     assert '/home/user/.iridb/database.local/' not in relative_target
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in relative_target
