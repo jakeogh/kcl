@@ -18,7 +18,7 @@ def all_files_iter(p):
     if isinstance(p, str) or isinstance(p, bytes):
         p = Path(p)
     assert isinstance(p, Path)
-    print("yeilding p:", p)
+    print("yeilding p.absolute():", p.absolute())
     yield p.absolute()
     for sub in p.iterdir():
         # eprint("sub:", sub)  # todo: read by terminal, so bell etc happens.... eprint bug?
