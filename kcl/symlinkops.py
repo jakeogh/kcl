@@ -53,9 +53,9 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
 
 def calculate_relative_symlink_dest(target, link_name):
     if isinstance(target, str):
-        target = bytes(target)
+        target = bytes(target, encoding='UTF8')
     if isinstance(link_name, str):
-        target = bytes(link_name)
+        target = bytes(link_name, encofing='UTF8')
     assert isinstance(target, bytes)
     assert isinstance(link_name, bytes)
     assert b'/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
