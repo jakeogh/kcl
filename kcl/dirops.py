@@ -47,8 +47,8 @@ def count_files(folder):
 def list_files(folder):
     all_files = []
     for root, dirs, files in os.walk(folder):
-        for file in files:
-            relative_file_path = root + b'/' + file
+        for ifile in files:
+            relative_file_path = root + b'/' + ifile
             all_files.append(relative_file_path)
     return set(all_files)
 

@@ -117,6 +117,15 @@ def write_unique_line_to_file(line, file_to_write):
             return True
 
 
+def line_exists_in_file(line, file_to_check):
+    assert isinstance(line, str)
+    assert line.count('\n') == 1
+    assert line.endswith('\n')
+    with open(file_to_check, 'r') as fh:
+        if line in fh:
+            return True
+        return False
+
 
 def backup_file_if_exists(file_to_backup):
     timestamp = str(time.time())
