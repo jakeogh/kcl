@@ -72,6 +72,8 @@ def create_relative_symlink(target, link_name):
         quit(1)
 
     relative_target = os.path.relpath(target, link_name_folder)
+    ceprint("relative_target:", relative_target)
+    assert '/home/user/.iridb/database.local/' not in relative_target
     os.symlink(relative_target, link_name)
 
 
