@@ -114,20 +114,22 @@ def create_relative_symlink(target, link_name):
 
 
 def symlink_destination(link): #broken for multi level symlinks
+    return os.path.realpath(link)
+    #ceprint("this function is unreliable. fix it. it can loop forever.")
     #ceprint(link)
-    """
-    Return absolute path for the destination of a symlink. This prob should be split into "first dest" and "final dest"
-    """
-    #assert (os.path.islink(link))
-    p = link
-    while os.path.islink(p):
-        p = os.path.normpath(os.readlink(link))  # huah?
-        if os.path.isabs(p):
-            return p
-        else:
-            p = os.path.join(os.path.dirname(link), p)
-    dest = os.path.realpath(p)
-    return dest
+    #"""
+    #Return absolute path for the destination of a symlink. This prob should be split into "first dest" and "final dest"
+    #"""
+    ##assert (os.path.islink(link))
+    #p = link
+    #while os.path.islink(p):
+    #    p = os.path.normpath(os.readlink(link))  # huah?
+    #    if os.path.isabs(p):
+    #        return p
+    #    else:
+    #        p = os.path.join(os.path.dirname(link), p)
+    #dest = os.path.realpath(p)
+    #return dest
 
 
 def readlinkf(path): # ugly
