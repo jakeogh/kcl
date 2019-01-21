@@ -25,7 +25,7 @@ def all_files_iter(p):
         if sub.is_symlink():  # must be before is_dir()
             yield sub.absolute()
         elif sub.is_dir():
-            yield from all_files_iter(sub)
+            yield from all_files_iter(sub).absolute()
         else:
             yield sub.absolute()
 
