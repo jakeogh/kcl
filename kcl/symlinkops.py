@@ -56,17 +56,17 @@ def create_relative_symlink(target, link_name):
     target = os.path.abspath(target)
     link_name = os.path.abspath(link_name)
     if not path_exists(target):
-        ceprint('target: %s does not exist. Refusing to make broken symlink. Exiting.' % target)
+        ceprint('target:', target, 'does not exist. Refusing to make broken symlink. Exiting.')
         quit(1)
 
     if is_broken_symlink(link_name):
-        ceprint('ERROR: %s exists as a broken symlink. ' +
-            'Remove it before trying to make a new symlink. Exiting.', link_name)
+        ceprint('ERROR:', link_name, 'exists as a broken symlink. ' +
+            'Remove it before trying to make a new symlink. Exiting.')
         quit(1)
 
     link_name_folder = '/'.join(link_name.split('/')[:-1])
     if not os.path.isdir(link_name_folder):
-        ceprint('link_name_folder: %s does not exist. Exiting.' % link_name_folder)
+        ceprint('link_name_folder:', link_name_folder, 'does not exist. Exiting.')
         quit(1)
 
     relative_target = os.path.relpath(target, link_name_folder)
