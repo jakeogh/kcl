@@ -62,6 +62,7 @@ def create_relative_symlink(target, link_name):
     link_name = os.path.abspath(link_name) # by expectation, this does not exist yet
                                            # it depends on cwd if its a relative path
     ceprint("target_abspath:", target_abspath)
+    ceprint("target_realpath:", target_realpath)
     ceprint("link_name:", link_name)
 
 
@@ -82,7 +83,7 @@ def create_relative_symlink(target, link_name):
         ceprint('link_name_folder:', link_name_folder, 'does not exist. Exiting.')
         quit(1)
 
-    relative_target = os.path.relpath(target_abspath, link_name_folder)
+    relative_target = os.path.relpath(target_abspath, link_name_folder) # relpath does not access the filesystem
     ceprint("relative_target:", relative_target)
     assert '/home/user/.iridb/database.local/' not in relative_target
     os.symlink(relative_target, link_name)
