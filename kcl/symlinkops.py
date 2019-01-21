@@ -99,7 +99,7 @@ def create_relative_symlink(target, link_name):
     ceprint("relative_target:", relative_target)
     assert '/home/user/.iridb/database.local/' not in relative_target
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in relative_target
-    input("Press Enter to continue ...")
+    #input("Press Enter to continue ...")
     os.symlink(relative_target, link_name_abspath)
 
 
