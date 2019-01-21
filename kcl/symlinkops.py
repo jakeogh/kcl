@@ -54,6 +54,8 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
 
 def create_relative_symlink(target, link_name):
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
+    ceprint("(b4 abspath) target:", target)
+    ceprint("(b4 abspath) link_name:", link_name)
     target = os.path.abspath(target)
     link_name = os.path.abspath(link_name)
     ceprint("target:", target)
