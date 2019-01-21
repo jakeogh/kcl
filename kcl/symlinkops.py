@@ -64,10 +64,7 @@ def create_relative_symlink(target, link_name):
     ceprint("target_abspath:", target_abspath)
     ceprint("target_realpath:", target_realpath)
     ceprint("link_name:", link_name)
-
-
-    assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
-
+    #assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
 
     if not path_exists(target_abspath):
         ceprint('target_abspath:', target_abspath, 'does not exist. Refusing to make broken symlink. Exiting.')
