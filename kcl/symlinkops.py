@@ -53,7 +53,7 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
 
 def calculate_relative_symlink_dest(target, link_name):
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
-    ceprint("target:", target)
+    #ceprint("target:", target)
     assert not target.startswith('../')
     # got relative target, that's hard to deal with
     # pass in a fully qualified path, if it's also
@@ -66,9 +66,9 @@ def calculate_relative_symlink_dest(target, link_name):
         # still a problem, since this was not fully resolved, it may still have symlinks embedded in it
         # get the folder, resolve that since it's guranteed not to be a symlink
         target_realpath_folder = '/'.join(target_realpath.split('/')[:-1])
-        ceprint("target_realpath_folder:", target_realpath_folder)
+        #ceprint("target_realpath_folder:", target_realpath_folder)
         target_realpath_file = target_realpath.split('/')[-1]
-        ceprint("target_realpath_file:", target_realpath_file)
+        #ceprint("target_realpath_file:", target_realpath_file)
         target_realpath_folder_realpath = os.path.realpath(target_realpath_folder)
         target_realpath = os.path.join(target_realpath_folder_realpath, target_realpath_file)
         # uug. ok now.
@@ -81,21 +81,21 @@ def calculate_relative_symlink_dest(target, link_name):
         assert False
 
     #target_realpath = os.path.realpath(target) # realpath() does not require the file to exist will still resolve symlinks
-    ceprint("target_realpath:", target_realpath)
-    ceprint("link_name:", link_name)
+    #ceprint("target_realpath:", target_realpath)
+    #ceprint("link_name:", link_name)
 
     # if its a unbroken symlink, and this is being used to see if its the shortest dest
     # os.path.realpath() cant be called, because it resolves the existing link to the target
     if is_broken_symlink(link_name):
         link_name_realpath = os.path.realpath(link_name)
-        ceprint("link_name_realpath:", link_name_realpath)
+        #ceprint("link_name_realpath:", link_name_realpath)
     elif not path_exists(link_name):
         link_name_realpath = os.path.realpath(link_name)
-        ceprint("link_name_realpath:", link_name_realpath)
+        #ceprint("link_name_realpath:", link_name_realpath)
 
     elif is_unbroken_symlink(link_name):
         link_name_realpath = os.path.abspath(link_name)
-        ceprint("link_name_realpath: (abspath)", link_name_realpath)
+        #ceprint("link_name_realpath: (abspath)", link_name_realpath)
         # at this point, all is still not well.
         # link_name_realpath was actually constructed by abspath()
         # so if its really on a different filesystem, the link
@@ -115,19 +115,16 @@ def calculate_relative_symlink_dest(target, link_name):
             'Remove it before trying to make a new symlink. Exiting.')
         quit(1)
 
-    #link_name_abspath_folder = '/'.join(link_name_abspath.split('/')[:-1])
-    #ceprint("link_name_abspath_folder:", link_name_abspath_folder)
-
     link_name_realpath_folder = '/'.join(link_name_realpath.split('/')[:-1])
-    ceprint("link_name_realpath_folder:", link_name_realpath_folder)
+    #ceprint("link_name_realpath_folder:", link_name_realpath_folder)
     link_name_realpath_folder_realpath = os.path.realpath(link_name_realpath_folder)
-    ceprint("link_name_realpath_folder_realpath:", link_name_realpath_folder_realpath)
+    #ceprint("link_name_realpath_folder_realpath:", link_name_realpath_folder_realpath)
     if not os.path.isdir(link_name_realpath_folder_realpath):
         ceprint('link_name_realpath_folder_realpath:', link_name_realpath_folder_realpath, 'does not exist. Exiting.')
         quit(1)
 
     relative_target = os.path.relpath(target_realpath, link_name_realpath_folder_realpath) # relpath does not access the filesystem
-    ceprint("relative_target:", relative_target)
+    #ceprint("relative_target:", relative_target)
     assert '/home/user/.iridb/database.local/' not in relative_target
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in relative_target
     return relative_target
