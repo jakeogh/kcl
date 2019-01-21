@@ -53,7 +53,7 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
 
 
 def create_relative_symlink(target, link_name):
-    #assert '/home/user/.iridb/database.local/' not in target
+    assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
     target = os.path.abspath(target)
     link_name = os.path.abspath(link_name)
     ceprint("target:", target)
