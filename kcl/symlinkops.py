@@ -54,6 +54,12 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
 def calculate_relative_symlink_dest(target, link_name):
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
     ceprint("target:", target)
+    assert not target.startswith('../')
+    # got relative target, that's hard to deal with
+    # pass in a fully qualified path, if it's also
+    # an existing stmlink, detect that here and dont call realpath()
+    # call something that gets the realpath but does not follow any links
+
     target_realpath = os.path.realpath(target) # realpath() does not require the file to exist will still resolve symlinks
     ceprint("target_realpath:", target_realpath)
     ceprint("link_name:", link_name)
