@@ -19,15 +19,15 @@ def all_files_iter(p):
         p = Path(p)
     assert isinstance(p, Path)
     print("yeilding p:", p)
-    yield p
+    yield p.abspath()
     for sub in p.iterdir():
         # eprint("sub:", sub)  # todo: read by terminal, so bell etc happens.... eprint bug?
         if sub.is_symlink():  # must be before is_dir()
-            yield sub
+            yield sub.abspath()
         elif sub.is_dir():
             yield from all_files_iter(sub)
         else:
-            yield sub
+            yield sub.abspath()
 
 
 def all_files(folder, files_only=False): # todo add flags for recursive, follow symlinks etc, return a generator
