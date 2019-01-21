@@ -60,7 +60,18 @@ def calculate_relative_symlink_dest(target, link_name):
     # an existing stmlink, detect that here and dont call realpath()
     # call something that gets the realpath but does not follow any links
 
-    target_realpath = os.path.realpath(target) # realpath() does not require the file to exist will still resolve symlinks
+    if is_unbroken_symlink(target):
+        # the targt is also a symlink, dont resolve it, just get it's abspath
+        target_realpath = os.path.abspath(target)
+    elif path_exists(target):
+        #target is prob a file or dir, could still be a broken symlink
+        target_realpath = os.path.realpath(target)
+    elif is_broken_symlink(link_name):
+        assert False
+    else:
+        assert False
+
+    #target_realpath = os.path.realpath(target) # realpath() does not require the file to exist will still resolve symlinks
     ceprint("target_realpath:", target_realpath)
     ceprint("link_name:", link_name)
 
@@ -155,7 +166,7 @@ def get_abs_path_of_first_symlink_target(path):
     #assert link_target
     link_dir = os.path.dirname(path)
     link_first_target_abs = os.path.join(link_dir, link_target)
-    ceprint(link_first_target_abs)
+    #ceprint(link_first_target_abs)
     link_first_target_abs_normpath = os.path.normpath(link_first_target_abs)
     #ceprint(link_first_target_abs_normpath)
     link_first_target_abs_normpath_abspath = os.path.abspath(link_first_target_abs_normpath)
