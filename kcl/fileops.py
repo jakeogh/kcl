@@ -118,10 +118,12 @@ def write_unique_line_to_file(line, file_to_write):
 
 
 def line_exists_in_file(line, file_to_check):
-    assert isinstance(line, str)
-    assert line.count('\n') == 1
-    assert line.endswith('\n')
-    with open(file_to_check, 'r') as fh:
+    if isinstance(line, str):
+        line = line.encode('UTF8')
+    assert isinstance(line, bytes)
+    assert line.count(b'\n') == 1
+    assert line.endswith(b'\n')
+    with open(file_to_check, 'rb') as fh:
         if line in fh:
             return True
         return False
