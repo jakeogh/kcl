@@ -57,18 +57,19 @@ def create_relative_symlink(target, link_name):
     ceprint("(b4 abspath) target:", target)
     ceprint("os.path.realpath(target):", os.path.realpath(target))
     ceprint("(b4 abspath) link_name:", link_name)
-    target = os.path.abspath(target)
+    target_abspath = os.path.abspath(target)
+    target_realpath = os.path.realpath(target)
     link_name = os.path.abspath(link_name) # by expectation, this does not exist yet
                                            # it depends on cwd if its a relative path
-    ceprint("target:", target)
+    ceprint("target_abspath:", target_abspath)
     ceprint("link_name:", link_name)
 
 
     assert '/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
 
 
-    if not path_exists(target):
-        ceprint('target:', target, 'does not exist. Refusing to make broken symlink. Exiting.')
+    if not path_exists(target_abspath):
+        ceprint('target_abspath:', target_abspath, 'does not exist. Refusing to make broken symlink. Exiting.')
         quit(1)
 
     if is_broken_symlink(link_name):
@@ -81,7 +82,7 @@ def create_relative_symlink(target, link_name):
         ceprint('link_name_folder:', link_name_folder, 'does not exist. Exiting.')
         quit(1)
 
-    relative_target = os.path.relpath(target, link_name_folder)
+    relative_target = os.path.relpath(target_abspath, link_name_folder)
     ceprint("relative_target:", relative_target)
     assert '/home/user/.iridb/database.local/' not in relative_target
     os.symlink(relative_target, link_name)
