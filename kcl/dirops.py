@@ -15,8 +15,10 @@ from pathlib import Path
 
 
 def all_files_iter(p):
-    if isinstance(p, str) or isinstance(p, bytes):
+    if isinstance(p, str):
         p = Path(p)
+    elif isinstance(p, bytes):
+        p = Path(p.decode())
     assert isinstance(p, Path)
     #print("yeilding p.absolute():", p.absolute())
     yield bytes(p.absolute())
