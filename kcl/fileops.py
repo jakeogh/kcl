@@ -99,20 +99,22 @@ def uncomment_line_in_file(file_path, line_to_match):
 
 
 def write_unique_line_to_file(line, file_to_write):
-    assert isinstance(line, str)
-    assert line.count('\n') == 1
-    assert line.endswith('\n')
+    if isinstance(line, str):
+        line = line.encode('UTF8')
+    assert isinstance(line, bytes)
+    assert line.count(b'\n') == 1
+    assert line.endswith(b'\n')
     '''
     Write line to file_to_write iff line not in file_to_write.
     '''
     try:
-        with open(file_to_write, 'r+') as fh:
+        with open(file_to_write, 'rb+') as fh:
             if line not in fh:
                 fh.write(line)
                 return True
             return False
     except FileNotFoundError:
-        with open(file_to_write, 'a') as fh:
+        with open(file_to_write, 'xb') as fh:
             fh.write(line)
             return True
 
