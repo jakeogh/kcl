@@ -2,15 +2,11 @@
 
 # /mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/.iridb/database.local/data_index/8/9/6/89689beecc6ebf06cb1859b8085ec9154e7edb1b
 
-#import nltk
 from bs4 import BeautifulSoup
-
 import lxml.html
 from lxml.etree import ParserError
 import re
-from kcl.printops import eprint
 from kcl.printops import ceprint
-from kcl.command import run_command
 
 
 def soup(html):
