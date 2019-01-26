@@ -14,6 +14,7 @@ from psutil import disk_partitions
 
 def block_special_path_is_mounted(path):
     for mount in disk_partitions():
+        print(mount)
         if mount.device == path:
             return True
     return False
