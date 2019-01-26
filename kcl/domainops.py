@@ -32,7 +32,9 @@ def group_by_tld(domains):
 
 
 def extract_psl_domain(domain):
-    dom = TLD_EXTRACT(domain.decode('utf-8'))
+    if isinstance(domain, bytes):
+        domain = domain.decode('utf-8')
+    dom = TLD_EXTRACT(domain)
     dom = dom.domain + '.' + dom.suffix
     return dom.encode('utf-8')
 
