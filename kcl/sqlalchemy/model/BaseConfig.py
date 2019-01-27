@@ -4,7 +4,7 @@ import os
 import time
 import attr
 
-@attr.s
+#@attr.s
 class BaseConfig():
     '''Simple configuration class.'''
     def __init__(self):
