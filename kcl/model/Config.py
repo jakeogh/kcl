@@ -6,10 +6,12 @@
 '''
 from kcl.sqlalchemy.model.BaseConfig import BaseConfig
 
+import attr
+
+@attr.s(auto_attribs=True)
 class Config(BaseConfig):
-    '''Simple configuration class.'''
-    def __init__(self):
+    appname: str = "kcl"
+    def __attrs_post_init__(self):
         BaseConfig.__init__(self)
-        self.appname = 'kcl'
 
 CONFIG = Config()
