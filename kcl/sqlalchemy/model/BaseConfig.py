@@ -8,11 +8,11 @@ import attr
 @attr.s
 class BaseConfig():
     '''Simple configuration class.'''
-        db_uri = 'postgresql://postgres@localhost/'
-        dbpath_postgres = db_uri + 'postgres'
-        dbname_timestamp = 'test_' + str(time.time()).replace('.', '_')
-        database_timestamp = db_uri + dbname_timestamp
-        database_echo = False
+    db_uri = 'postgresql://postgres@localhost/'
+    dbpath_postgres = db_uri + 'postgres'
+    dbname_timestamp = 'test_' + str(time.time()).replace('.', '_')
+    database_timestamp = db_uri + dbname_timestamp
+    database_echo = False
 
 #    def __init__(self):
 #        self.db_uri = 'postgresql://postgres@localhost/'
