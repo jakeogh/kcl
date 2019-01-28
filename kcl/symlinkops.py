@@ -112,8 +112,8 @@ def calculate_relative_symlink_dest(target, link_name):
         assert False
 
     if not path_exists(target_realpath):
-        ceprint(b'target_realpath:', target_realpath, b'does not exist. Refusing to make broken symlink. Exiting.')
-        quit(1)
+        ceprint(b'target_realpath:', target_realpath, b'does not exist. Refusing to make broken symlink.')
+        raise FileNotFoundError
 
 
     if is_broken_symlink(link_name_realpath):
@@ -126,8 +126,8 @@ def calculate_relative_symlink_dest(target, link_name):
     link_name_realpath_folder_realpath = os.path.realpath(link_name_realpath_folder)
     #ceprint("link_name_realpath_folder_realpath:", link_name_realpath_folder_realpath)
     if not os.path.isdir(link_name_realpath_folder_realpath):
-        ceprint(b'link_name_realpath_folder_realpath:', link_name_realpath_folder_realpath, b'does not exist. Exiting.')
-        quit(1)
+        ceprint(b'link_name_realpath_folder_realpath:', link_name_realpath_folder_realpath, b'does not exist.')
+        raise FileNotFoundError
 
     relative_target = os.path.relpath(target_realpath, link_name_realpath_folder_realpath) # relpath does not access the filesystem
     #ceprint("relative_target:", relative_target)
