@@ -43,7 +43,10 @@ def extract_urls_lxml_with_link_text(html_file, url):
     except ParserError: # images etc
         return set([])
 
-    dom.make_links_absolute(url)
+    try:
+        dom.make_links_absolute(url)
+    except ValueError:  # ValueError: Invalid IPv6 URL
+        return set([])
     links_a = dom.cssselect('a')
     for link in links_a:
         try:
