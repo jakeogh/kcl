@@ -183,7 +183,8 @@ def get_file_size(filename):
 
 def empty_file(fpath):
     if not path_exists(fpath):
-        raise FileNotFoundError
+        return True #hm
+        #raise FileNotFoundError
     if os.path.isfile(fpath):
         if os.path.getsize(fpath) == 0:
             return True
