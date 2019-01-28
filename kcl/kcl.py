@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
 import builtins
-from .model.Config import CONFIG
+from kcl.model.Config import CONFIG
 builtins.config = CONFIG
 
-from .sqlalchemy.clickapp.clickapp import clickapp as kcl
+from kcl.sqlalchemy.clickapp.clickapp import clickapp as kcl
 kcl.help = CONFIG.appname + " interface"
 CONFIG.appobject = kcl
 
-from .sqlalchemy.clickapp.default import *
+from kcl.sqlalchemy.clickapp.default import *
 
 from .cli._htmlops._htmlops import _htmlops
 
