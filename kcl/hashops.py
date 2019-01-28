@@ -64,9 +64,9 @@ def generate_hash(data, verbose=False):
     else:
         try:
             if len(data) == 0:
-            # empty_hash = hashlib.sha1(data).hexdigest()
-            ceprint("Error: you are attempting to hash a empty string.")
-            raise FileNotFoundError
+                # empty_hash = hashlib.sha1(data).hexdigest()
+                ceprint("Error: you are attempting to hash a empty string.")
+                raise FileNotFoundError
         except TypeError:
             raise FileNotFoundError
 
