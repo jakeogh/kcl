@@ -181,10 +181,20 @@ def get_file_size(filename):
         os.close(fd)
 
 
+def points_to_data(fpath):
+    try:
+        size = os.path.getsize(fpath)
+    except FileNotFoundError:
+        return False
+    if size > 0:
+        return True
+    return False
+
+
 def empty_file(fpath):
     if not path_exists(fpath):
-        return True #hm
-        #raise FileNotFoundError
+        #return True #hm
+        raise FileNotFoundError
     if os.path.isfile(fpath):
         if os.path.getsize(fpath) == 0:
             return True
