@@ -13,6 +13,7 @@ from .printops import eprint
 
 
 def generate_hash(data, verbose=False):
+    assert data
     sha1 = hashlib.sha1()
     chunk_size = 128 * sha1.block_size  # 8MB
     return_dict = {}
@@ -61,10 +62,14 @@ def generate_hash(data, verbose=False):
         return_dict['temp_file'] = temp_file
         return return_dict
     else:
-        if len(data) == 0:
+        try:
+            if len(data) == 0:
             # empty_hash = hashlib.sha1(data).hexdigest()
             ceprint("Error: you are attempting to hash a empty string.")
             raise FileNotFoundError
+        except TypeError:
+            raise FileNotFoundError
+
         if isinstance(data, str):
             return_dict['hash'] = hashlib.sha1(data.encode('utf-8')).hexdigest()
         else:
