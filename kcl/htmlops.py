@@ -62,6 +62,8 @@ def extract_urls_lxml(html_file, url, link_text=False):
             pass
 
     if link_text:
+        for thing in url_list:
+            ceprint(thing)
         return set(url_list)
     else:
         url_only_list = []
