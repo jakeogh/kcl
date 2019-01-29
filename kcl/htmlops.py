@@ -37,7 +37,6 @@ def extract_urls_lxml(html_file, url):
     url_list = []
     try:
         dom = lxml.html.fromstring(html)
-    # https://m.facebook.com/profile.php?id=100003113454222 ValueError: Unicode strings with encoding declaration are not supported. Please use bytes input or XML fragments without declaration.
     except ValueError:
         dom = lxml.html.fromstring(html_bytes)
     except ParserError: # images etc
@@ -60,13 +59,7 @@ def extract_urls_lxml(html_file, url):
             url_list.append((link.attrib['src'], link.text))
         except KeyError:
             pass
-
-    for thing in url_list:
-        ceprint(thing)
     return set(url_list)
-
-
-
 
 
 def extract_urls_lxml_nofollow(html_file, url):
