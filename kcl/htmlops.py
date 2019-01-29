@@ -30,7 +30,7 @@ def parse_html_to_dom(html):
 
 
 #this one is used for internal links plugin
-def extract_urls_lxml(html_file, url, link_text=False):
+def extract_urls_lxml(html_file, url):
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
     html = html_bytes.decode('utf8', 'ignore')
@@ -61,15 +61,9 @@ def extract_urls_lxml(html_file, url, link_text=False):
         except KeyError:
             pass
 
-    if link_text:
-        for thing in url_list:
-            ceprint(thing)
-        return set(url_list)
-    else:
-        url_only_list = []
-        for item in url_list:
-            url_only_list.append(item[0])
-        return set(url_only_list)
+    for thing in url_list:
+        ceprint(thing)
+    return set(url_list)
 
 
 
