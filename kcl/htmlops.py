@@ -30,7 +30,7 @@ def parse_html_to_dom(html):
 
 
 #this one is used for internal links plugin
-def extract_urls_lxml_with_link_text(html_file, url):
+def extract_urls_lxml(html_file, url, link_text=False):
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
     html = html_bytes.decode('utf8', 'ignore')
@@ -47,6 +47,7 @@ def extract_urls_lxml_with_link_text(html_file, url):
         dom.make_links_absolute(url)
     except ValueError:  # ValueError: Invalid IPv6 URL
         return set([])
+
     links_a = dom.cssselect('a')
     for link in links_a:
         try:
@@ -59,24 +60,17 @@ def extract_urls_lxml_with_link_text(html_file, url):
             url_list.append((link.attrib['src'], link.text))
         except KeyError:
             pass
-    filtered_url_list = []
-    for url in url_list:
-        #ceprint(url)
-        if url[0].startswith("javascript:"):
-            continue
-        filtered_url_list.append(url)
-    return set(filtered_url_list)
+
+    if link_text:
+        return set(url_list)
+    else:
+        url_only_list = []
+        for item in url_list:
+            url_only_list.append(item[0])
+        return set(url_only_list)
 
 
-def extract_urls_lxml(html_file, url):
-    #with open(html_file, 'rb') as fh:
-    #    html_bytes = fh.read()
-    #html = html_bytes.decode('utf8', 'ignore')
-    url_only_list = []
-    url_list = extract_urls_lxml_with_link_text(html_file=html_file, url=url)
-    for item in url_list:
-        url_only_list.append(item[0])
-    return set(url_only_list)
+
 
 
 def extract_urls_lxml_nofollow(html_file, url):
