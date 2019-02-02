@@ -12,12 +12,12 @@ dependencies = ['requests', 'psutil', 'sqlalchemy', 'sqlalchemy-utils', 'sadispl
 version = 0.01
 
 setup(
-    name = "kcl",
-    version = version,
-    url = "https://github.com/jakeogh/kcl",
+    name="kcl",
+    version=version,
+    url="https://github.com/jakeogh/kcl",
     license='PUBLIC DOMAIN',
-    author = "jakeogh",
-    author_email = "github.com@v6y.net",
+    author="jakeogh",
+    author_email="github.com@v6y.net",
     description='common functions',
     long_description=__doc__,
     packages=find_packages(exclude=['tests']),
