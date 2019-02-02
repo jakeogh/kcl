@@ -176,3 +176,48 @@ def compare_byte_range(device, backup_file, start, end):
     vbindiff_command = "vbindiff " + current_copy + ' ' + backup_file
     eprint(vbindiff_command)
     os.system(vbindiff_command)
+
+
+@click.command()
+@click.option('--device', is_flag=False, required=True)
+@click.option('--force', is_flag=True, required=False)
+@click.option('--no-wipe', is_flag=True, required=False)
+@click.option('--no-backup', is_flag=True, required=False)
+def write_gpt(device, force, no_wipe, no_backup):
+    eprint("writing GPT to:", device)
+    assert not device[-1].isdigit()
+    assert path_is_block_special(device)
+    assert not block_special_path_is_mounted(device)
+    if not force:
+        warn((device,))
+    if not no_wipe:
+        destroy_block_device_head_and_tail(device=device, force=force, no_backup=no_backup)
+        #run_command("sgdisk --zap-all " + boot_device)
+    else:
+        eprint("skipping wipe")
+
+    run_command("parted " + device + " --script -- mklabel gpt")
+    #run_command("sgdisk --clear " + device) #alt way to greate gpt label
+
+
+@click.command()
+@click.option('--device',     is_flag=False, required=True)
+#@click.option('--device-partition-table', is_flag=False, required=True, type=click.Choice(['gpt']))
+@click.option('--force',      is_flag=True, required=False)
+@click.option('--no-wipe',    is_flag=True, required=False)
+@click.option('--no-backup',  is_flag=True, required=False)
+def write_mbr(device, force, no_wipe, no_backup):
+    eprint("writing MBR to:", device)
+    assert not device[-1].isdigit()
+    assert path_is_block_special(device)
+    assert not block_special_path_is_mounted(device)
+    if not force:
+        warn((device,))
+    if not no_wipe:
+        destroy_block_device_head_and_tail(device=device, force=force, no_backup=no_backup)
+        #run_command("sgdisk --zap-all " + boot_device)
+
+    run_command("parted " + device + " --script -- mklabel msdos")
+    #run_command("parted " + device + " --script -- mklabel gpt")
+    #run_command("sgdisk --clear " + device) #alt way to greate gpt label
+
