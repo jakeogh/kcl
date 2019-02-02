@@ -3,7 +3,7 @@ import subprocess
 from kcl.printops import ceprint
 #import os
 
-def run_command(command, verbose=False, shell=True):
+def run_command(command, verbose=False, shell=True, expected_exit_code=0):
     output = ''
     if verbose:
         ceprint("command:", '`'+command+'`')
@@ -13,6 +13,8 @@ def run_command(command, verbose=False, shell=True):
         if verbose:
             ceprint("output:", output)
     except subprocess.CalledProcessError as error:
+        if error.returncode == expected_exit_code:
+            return output
         ceprint("command:", command)
         ceprint("exit code:", error.returncode, error.output)
         raise error
