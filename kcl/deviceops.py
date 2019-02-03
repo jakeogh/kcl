@@ -102,7 +102,7 @@ def destroy_block_device_head_and_tail(device, size, note, force, no_backup):
     if not force:
         warn((device,))
     if not note:
-        note = time.time() + '_' + device.replace('/', '_')
+        note = str(time.time()) + '_' + device.replace('/', '_')
         eprint("note:", note)
 
     destroy_block_device_head(device=device, size=size, note=note, no_backup=no_backup)
