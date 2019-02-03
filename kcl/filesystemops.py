@@ -9,8 +9,8 @@ from kcl.warnops import warn
 
 
 @click.command()
-@click.option('--device', is_flag=False, required=True)
-@click.option('--filesystem', "filesystem", is_flag=False, required=True, type=click.Choice(['fat16', 'fat32']))
+@click.argument('device', required=True, nargs=1, type=str)
+@click.option('--filesystem', "filesystem", is_flag=False, required=True, type=click.Choice(['fat16', 'fat32', 'ext4']))
 @click.option('--force', is_flag=True, required=False)
 def create_filesystem(device, filesystem, force):
     eprint("creating", filesystem, "filesystem on:", device)
@@ -27,5 +27,7 @@ def create_filesystem(device, filesystem, force):
         run_command("mkfs.fat -F16 -s2 " + device)
     elif filesystem == 'fat32':
         run_command("mkfs.fat -F32 -s2 " + device)
+    elif filesystem == 'ext4':
+        run_command("mkfs.ext4 " + device)
     else:
         assert False
