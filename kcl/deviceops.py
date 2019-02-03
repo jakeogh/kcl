@@ -41,7 +41,7 @@ def destroy_block_device_head(device, size, no_backup, note):
     #eprint("no_backup:", no_backup)
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
-    zero_byte_range(device, 0, size, no_backup, note)
+    zero_byte_range(device=device, start=0, end=size, no_backup=no_backup, note=note)
 
 
 def destroy_block_device_tail(device, size, no_backup, note):
@@ -61,7 +61,7 @@ def destroy_block_device_tail(device, size, no_backup, note):
     assert start > 0
     #eprint("bytes to zero:", size)
     end = start + size
-    zero_byte_range(device, start, end, no_backup, note)
+    zero_byte_range(device=device, start=start, end=end, no_backup=no_backup, note=note)
 
 
 def zero_byte_range(device, start, end, no_backup, note):
@@ -79,7 +79,7 @@ def zero_byte_range(device, start, end, no_backup, note):
     assert end > 0
     assert start < end
     if not no_backup:
-        backup_byte_range(device, start, end, note)
+        backup_byte_range(device=device, start=start, end=end, note=note)
     with open(device, 'wb') as dfh:
         bytes_to_zero = end - start
         assert bytes_to_zero > 0
@@ -175,7 +175,7 @@ def compare_byte_range(device, backup_file, start, end):
         end = int(backup_file.split('end_')[1].split('_')[0].split('.')[0])
     assert isinstance(start, int)
     assert isinstance(end, int)
-    current_copy = backup_byte_range(device, start, end, note='current')
+    current_copy = backup_byte_range(device=device, start=ster, end=end, note='current')
     vbindiff_command = "vbindiff " + current_copy + ' ' + backup_file
     eprint(vbindiff_command)
     os.system(vbindiff_command)
