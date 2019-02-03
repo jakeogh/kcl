@@ -32,6 +32,10 @@ def destroy_block_device(device, force, source):
 
 
 def destroy_block_device_head(device, size, no_backup, note):
+    assert isinstance(device, str)
+    assert isinstance(size, int)
+    assert isinstance(no_backup, bool)
+    assert isinstance(note, str)
     #eprint("destroy_black_device_head()")
     #eprint("no_backup:", no_backup)
     assert path_is_block_special(device)
@@ -40,6 +44,10 @@ def destroy_block_device_head(device, size, no_backup, note):
 
 
 def destroy_block_device_tail(device, size, no_backup, note):
+    assert isinstance(device, str)
+    assert isinstance(size, int)
+    assert isinstance(no_backup, bool)
+    assert isinstance(note, str)
     #eprint("destroy_block_device_tail()")
     #eprint("no_backup:", no_backup)
     assert size > 0
@@ -55,6 +63,11 @@ def destroy_block_device_tail(device, size, no_backup, note):
 
 
 def zero_byte_range(device, start, end, no_backup, note):
+    assert isinstance(device, str)
+    assert isinstance(start, int)
+    assert isinstance(end, int)
+    assert isinstance(no_backup, bool)
+    assert isinstance(note, str)
     #eprint("zero_byte_range()")
     #eprint("start:", start)
     #eprint("end:", end)
@@ -74,7 +87,7 @@ def zero_byte_range(device, start, end, no_backup, note):
 @click.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--size', is_flag=False, required=False, type=int, default=(512))
-@click.option('--note', is_flag=False, required=False)
+@click.option('--note', is_flag=False, required=False, type=str)
 @click.option('--force', is_flag=True, required=False)
 @click.option('--no-backup', is_flag=True, required=False)
 def destroy_block_device_head_and_tail(device, size, note, force, no_backup):
@@ -111,7 +124,7 @@ def destroy_block_devices_head_and_tail(devices, size, note, force, no_backup):
         warn(devices)
 
     for device in devices:
-        destroy_block_device_head_and_tail(device, size, note, force, no_backup)
+        destroy_block_device_head_and_tail(device=device, size=size, note=note, force=force, no_backup=no_backup)
 
 
 @click.command()
