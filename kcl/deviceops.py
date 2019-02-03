@@ -28,6 +28,7 @@ def luksformat(ctx, device, force):
     passphrase_v = input("verify LUKS passphrase: ")
     assert passphrase == passphrase_v
     passphrase = passphrase.encode('ascii')
+    assert passphrase
     read, write = os.pipe()
     os.write(write, passphrase)
     os.close(write)
