@@ -101,6 +101,9 @@ def destroy_block_device_head_and_tail(device, size, note, force, no_backup):
     assert not block_special_path_is_mounted(device)
     if not force:
         warn((device,))
+    if not note:
+        note = time.time() + '_' + device.replace('/', '_')
+        eprint("note:", note)
 
     destroy_block_device_head(device=device, size=size, note=note, no_backup=no_backup)
     destroy_block_device_tail(device=device, size=size, note=note, no_backup=no_backup)
@@ -109,7 +112,7 @@ def destroy_block_device_head_and_tail(device, size, note, force, no_backup):
 @click.command()
 @click.argument('devices', required=True, nargs=-1)
 @click.option('--size', is_flag=False, required=False, type=int, default=(1024*1024*128))
-@click.option('--note', is_flag=False, required=False)
+@click.option('--note', is_flag=False, required=False, type=str)
 @click.option('--force', is_flag=True, required=False)
 @click.option('--no-backup', is_flag=True, required=False)
 def destroy_block_devices_head_and_tail(devices, size, note, force, no_backup):
