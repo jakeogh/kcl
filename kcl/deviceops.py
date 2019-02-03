@@ -36,6 +36,7 @@ def destroy_block_device_head(device, size, no_backup, note):
     assert isinstance(size, int)
     assert isinstance(no_backup, bool)
     assert isinstance(note, str)
+    assert note
     #eprint("destroy_black_device_head()")
     #eprint("no_backup:", no_backup)
     assert path_is_block_special(device)
@@ -48,6 +49,7 @@ def destroy_block_device_tail(device, size, no_backup, note):
     assert isinstance(size, int)
     assert isinstance(no_backup, bool)
     assert isinstance(note, str)
+    assert note
     #eprint("destroy_block_device_tail()")
     #eprint("no_backup:", no_backup)
     assert size > 0
@@ -68,6 +70,7 @@ def zero_byte_range(device, start, end, no_backup, note):
     assert isinstance(end, int)
     assert isinstance(no_backup, bool)
     assert isinstance(note, str)
+    assert note
     #eprint("zero_byte_range()")
     #eprint("start:", start)
     #eprint("end:", end)
@@ -166,18 +169,13 @@ def backup_byte_range(device, start, end, note):
 @click.option('--start', is_flag=False, required=False, type=int)
 @click.option('--end', is_flag=False, required=False, type=int)
 def compare_byte_range(device, backup_file, start, end):
-    #eprint("backup_byte_range()")
     if not start:
         start = int(backup_file.split('start_')[1].split('_')[0])
-    #eprint("start:", start)
     if not end:
         end = int(backup_file.split('end_')[1].split('_')[0].split('.')[0])
-    #eprint("end:", end)
     assert isinstance(start, int)
     assert isinstance(end, int)
     current_copy = backup_byte_range(device, start, end, note='current')
-    #eprint("current_copy:", current_copy)
-    #eprint("bakckup_file:", backup_file)
     vbindiff_command = "vbindiff " + current_copy + ' ' + backup_file
     eprint(vbindiff_command)
     os.system(vbindiff_command)
