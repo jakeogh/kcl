@@ -12,7 +12,7 @@ def warn(devices):
         assert path_is_block_special(device)
         assert not block_special_path_is_mounted(device)
     eprint("THIS WILL DESTROY ALL DATA ON", ' '.join(devices), "_REMOVE_ ANY HARD DRIVES (and removable storage like USB sticks) WHICH YOU DO NOT WANT TO ACCIDENTLY DELETE THE DATA ON")
-    answer = input("Do you want to proceed with deleting all of your data? (type YES to proceed)")
+    answer = input("Do you want to delete all of your data? (type YES to proceed): ")
     if answer != 'YES':
         quit(1)
     eprint("Sleeping 5 seconds")
