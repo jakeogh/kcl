@@ -27,9 +27,12 @@ def luksformat(ctx, device, force):
     passphrase   = input("enter LUKS passphrase : ")
     passphrase_v = input("verify LUKS passphrase: ")
     assert passphrase == passphrase_v
+    read, write = os.pipe()
+    os.write(write, passphrase)
+    os.close(write)
     ctx.invoke(destroy_block_device, device=device, source='zero', force=True) # change to urandom
     luks_command = "cryptsetup -q --debug --verbose --cipher twofish-xts-essiv:sha256 --key-size 512 --hash sha512 --use-random --iter-time 10000 --timeout 24000 --key-file - luksFormat " + device
-    run_command(luks_command, verbose=True, expected_exit_code=0, stdin=passphrase)
+    run_command(luks_command, verbose=True, expected_exit_code=0, stdin=read)
 
 
 @deviceops.command()
