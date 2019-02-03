@@ -15,7 +15,8 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
     except subprocess.CalledProcessError as error:
         if error.returncode == expected_exit_code:
             return output
-        ceprint("command:", command)
+        #ceprint("command:", command)
+        ceprint("command:", command.decode('UTF8'))
         ceprint("exit code:", error.returncode, error.output)
         raise error
 
