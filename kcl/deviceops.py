@@ -17,7 +17,7 @@ deviceops = click.Group()
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--force', is_flag=True, required=False)
-@click.option('--source', is_flag=False, required=False, type=click.Choice(['urandom', 'zero']), default="urandom")
+@click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
 def destroy_block_device(device, force, source):
     assert isinstance(force, bool)
     assert source in ['urandom', 'zero']
@@ -35,10 +35,11 @@ def destroy_block_device(device, force, source):
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--size', is_flag=False, required=True, type=int)
+@click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
 @click.option('--no-backup', is_flag=True, required=False)
 @click.option('--note', is_flag=False, required=False, type=str)
 @click.pass_context
-def destroy_block_device_head(ctx, device, size, no_backup, note):
+def destroy_block_device_head(ctx, device, size, source, no_backup, note):
     assert isinstance(device, str)
     assert isinstance(size, int)
     assert isinstance(no_backup, bool)
@@ -48,16 +49,17 @@ def destroy_block_device_head(ctx, device, size, no_backup, note):
     #eprint("no_backup:", no_backup)
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
-    ctx.invoke(zero_byte_range, device=device, start=0, end=size, no_backup=no_backup, note=note)
+    ctx.invoke(destroy_byte_range, device=device, start=0, end=size, source=source, no_backup=no_backup, note=note)
 
 
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--size', is_flag=False, required=True, type=int)
+@click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
 @click.option('--no-backup', is_flag=True, required=False)
 @click.option('--note', is_flag=False, required=False, type=str)
 @click.pass_context
-def destroy_block_device_tail(ctx, device, size, no_backup, note):
+def destroy_block_device_tail(ctx, device, size, source, no_backup, note):
     assert isinstance(device, str)
     assert isinstance(size, int)
     assert isinstance(no_backup, bool)
@@ -74,37 +76,39 @@ def destroy_block_device_tail(ctx, device, size, no_backup, note):
     assert start > 0
     #eprint("bytes to zero:", size)
     end = start + size
-    ctx.invoke(zero_byte_range, device=device, start=start, end=end, no_backup=no_backup, note=note)
+    ctx.invoke(destroy_byte_range, device=device, start=start, end=end, source=source, no_backup=no_backup, note=note)
 
 
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--start', is_flag=False, required=True, type=int)
 @click.option('--end', is_flag=False, required=True, type=int)
+@click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
 @click.option('--no-backup', is_flag=True, required=False)
 @click.option('--note', is_flag=False, required=False, type=str)
 @click.pass_context
-def zero_byte_range(ctx, device, start, end, no_backup, note):
+def destroy_byte_range(ctx, device, start, end, source, no_backup, note):
     assert isinstance(device, str)
     assert isinstance(start, int)
     assert isinstance(end, int)
     assert isinstance(no_backup, bool)
     assert isinstance(note, str)
     assert note
-    #eprint("zero_byte_range()")
-    #eprint("start:", start)
-    #eprint("end:", end)
-    #eprint("no_backup:", no_backup)
     assert start >= 0
     assert end > 0
     assert start < end
     if not no_backup:
         ctx.invoke(backup_byte_range, device=device, start=start, end=end, note=note)
+    bytes_to_zero = end - start
+    assert bytes_to_zero > 0
     with open(device, 'wb') as dfh:
-        bytes_to_zero = end - start
-        assert bytes_to_zero > 0
         dfh.seek(start)
-        dfh.write(bytearray(bytes_to_zero))
+        if source == 'zero':
+            dfh.write(bytearray(bytes_to_zero))
+        if source == 'urandom':
+            urandom_bytes = os.urandom(bytes_to_zero)
+            assert len(urandom_bytes) == bytes_to_zero
+            dfh.write(urandom_bytes)
 
 
 @deviceops.command()
