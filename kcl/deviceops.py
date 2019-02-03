@@ -251,3 +251,40 @@ def write_efi(device, start, end, partition_number, force):
     create_filesystem(device=fat16_partition_device, partition_type='fat16', force=True)
 
     # 127488 /mnt/sdb2/EFI/BOOT/BOOTX64.EFI
+
+
+
+@click.command()
+@click.option('--device', is_flag=False, required=True)
+@click.option('--start', is_flag=False, required=True, type=str)
+@click.option('--end', is_flag=False, required=True, type=str)
+@click.option('--partition_number', is_flag=False, required=True, type=str)
+@click.option('--force', is_flag=True, required=False)
+def write_grub_bios_partition(device, start, end, force, partition_number):
+    eprint("creating grub_bios partition on device:", device, "partition_number:", partition_number, "start:", start, "end:", end)
+    assert not device[-1].isdigit()
+    assert path_is_block_special(device)
+    assert not block_special_path_is_mounted(device)
+
+    if not force:
+        warn((device,))
+
+    #run_command("parted " + device + " --align optimal --script -- mkpart primary " + start + ' ' + end)
+    run_command("parted " + device + " --align minimal --script -- mkpart primary " + start + ' ' + end)
+    run_command("parted " + device + " --script -- name " + partition_number + " BIOSGRUB")
+    run_command("parted " + device + " --script -- set " + partition_number + " bios_grub on")
+
+#    parted size prefixes
+#    "s" (sectors)
+#    "B" (bytes)
+#    "kB"
+#    "MB"
+#    "MiB"
+#    "GB"
+#    "GiB"
+#    "TB"
+#    "TiB"
+#    "%" (percentage of device size)
+#    "cyl" (cylinders)
+
+    # sgdisk -a1 -n2:48:2047 -t2:EF02 -c2:"BIOS boot partition " + device # numbers in 512B sectors
