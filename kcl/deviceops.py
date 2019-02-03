@@ -72,7 +72,7 @@ def zero_byte_range(device, start, end, no_backup, note):
 
 
 @click.command()
-@click.option('--device', is_flag=False, required=True)
+@click.argument('device', required=True, nargs=1)
 @click.option('--size', is_flag=False, required=False, type=int, default=(512))
 @click.option('--note', is_flag=False, required=False)
 @click.option('--force', is_flag=True, required=False)
