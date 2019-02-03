@@ -24,10 +24,10 @@ def luksformat(ctx, device, force):
     if not force:
         warn((device,))
 
-    passphrase   = input("enter LUKS passphrase : ")
-    passphrase_v = input("verify LUKS passphrase: ")
+    passphrase   = input(b"enter LUKS passphrase : ")
+    passphrase_v = input(b"verify LUKS passphrase: ")
     assert passphrase == passphrase_v
-    assert passphrase.encode('ascii')
+    assert passphrase.decode('ascii')
     read, write = os.pipe()
     os.write(write, passphrase)
     os.close(write)
