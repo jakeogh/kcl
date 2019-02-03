@@ -14,6 +14,7 @@ def warn(devices):
         assert not block_special_path_is_mounted(device)
     eprint("THIS WILL DESTROY ALL DATA ON", ' '.join(devices), "_REMOVE_ ANY HARD DRIVES (and removable storage like USB sticks) WHICH YOU DO NOT WANT TO ACCIDENTLY DELETE THE DATA ON")
     os.system("fdisk --list " + device)
+    print("")
     answer = input("Do you want to delete all of your data? (type YES to proceed): ")
     if answer != 'YES':
         quit(1)
