@@ -35,6 +35,7 @@ def luksformat(ctx, device, force):
     ctx.invoke(destroy_block_device, device=device, source='urandom', force=True)
     luks_command = "cryptsetup -q --debug --verbose --cipher twofish-xts-essiv:sha256 --key-size 512 --hash sha512 --use-random --iter-time 11000 --timeout 24000 --key-file - luksFormat " + device
     run_command(luks_command, verbose=True, expected_exit_code=0, stdin=read)
+    # xts with essiv is redundant, but there is no downside to using it
 
 
 @deviceops.command()
