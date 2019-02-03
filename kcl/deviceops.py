@@ -12,8 +12,9 @@ from kcl.fileops import get_file_size
 from kcl.filesystemops import create_filesystem
 from kcl.warnops import warn
 
+deviceops = click.Group()
 
-@click.command()
+@deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--force', is_flag=True, required=False)
 @click.option('--source', is_flag=False, required=False, type=click.Choice(['urandom', 'zero']), default="urandom")
@@ -31,7 +32,13 @@ def destroy_block_device(device, force, source):
     run_command(wipe_command, verbose=True, expected_exit_code=1)  # dd returns 1 when it hits the end of the device
 
 
-def destroy_block_device_head(device, size, no_backup, note):
+@deviceops.command()
+@click.argument('device', required=True, nargs=1)
+@click.option('--size', is_flag=False, required=True, type=int)
+@click.option('--no-backup', is_flag=True, required=False)
+@click.option('--note', is_flag=False, required=False, type=str)
+@click.pass_context
+def destroy_block_device_head(ctx, device, size, no_backup, note):
     assert isinstance(device, str)
     assert isinstance(size, int)
     assert isinstance(no_backup, bool)
@@ -41,10 +48,16 @@ def destroy_block_device_head(device, size, no_backup, note):
     #eprint("no_backup:", no_backup)
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
-    zero_byte_range(device=device, start=0, end=size, no_backup=no_backup, note=note)
+    ctx.invoke(zero_byte_range, device=device, start=0, end=size, no_backup=no_backup, note=note)
 
 
-def destroy_block_device_tail(device, size, no_backup, note):
+@deviceops.command()
+@click.argument('device', required=True, nargs=1)
+@click.option('--size', is_flag=False, required=True, type=int)
+@click.option('--no-backup', is_flag=True, required=False)
+@click.option('--note', is_flag=False, required=False, type=str)
+@click.pass_context
+def destroy_block_device_tail(ctx, device, size, no_backup, note):
     assert isinstance(device, str)
     assert isinstance(size, int)
     assert isinstance(no_backup, bool)
@@ -61,10 +74,17 @@ def destroy_block_device_tail(device, size, no_backup, note):
     assert start > 0
     #eprint("bytes to zero:", size)
     end = start + size
-    zero_byte_range(device=device, start=start, end=end, no_backup=no_backup, note=note)
+    ctx.invoke(zero_byte_range, device=device, start=start, end=end, no_backup=no_backup, note=note)
 
 
-def zero_byte_range(device, start, end, no_backup, note):
+@deviceops.command()
+@click.argument('device', required=True, nargs=1)
+@click.option('--start', is_flag=False, required=True, type=int)
+@click.option('--end', is_flag=False, required=True, type=int)
+@click.option('--no-backup', is_flag=True, required=False)
+@click.option('--note', is_flag=False, required=False, type=str)
+@click.pass_context
+def zero_byte_range(ctx, device, start, end, no_backup, note):
     assert isinstance(device, str)
     assert isinstance(start, int)
     assert isinstance(end, int)
@@ -79,7 +99,7 @@ def zero_byte_range(device, start, end, no_backup, note):
     assert end > 0
     assert start < end
     if not no_backup:
-        backup_byte_range(device, start=start, end=end, note=note)
+        ctx.invoke(backup_byte_range, device, start=start, end=end, note=note)
     with open(device, 'wb') as dfh:
         bytes_to_zero = end - start
         assert bytes_to_zero > 0
@@ -87,13 +107,14 @@ def zero_byte_range(device, start, end, no_backup, note):
         dfh.write(bytearray(bytes_to_zero))
 
 
-@click.command()
+@deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--size', is_flag=False, required=False, type=int, default=(512))
 @click.option('--note', is_flag=False, required=False, type=str)
 @click.option('--force', is_flag=True, required=False)
 @click.option('--no-backup', is_flag=True, required=False)
-def destroy_block_device_head_and_tail(device, size, note, force, no_backup):
+@click.pass_context
+def destroy_block_device_head_and_tail(ctx, device, size, note, force, no_backup):
     #run_command("sgdisk --zap-all " + device) #alt method
     #eprint("destroy_block_device_head_and_tail()")
     #eprint("no_backup:", no_backup)
@@ -108,17 +129,18 @@ def destroy_block_device_head_and_tail(device, size, note, force, no_backup):
         note = str(time.time()) + '_' + device.replace('/', '_')
         eprint("note:", note)
 
-    destroy_block_device_head(device=device, size=size, note=note, no_backup=no_backup)
-    destroy_block_device_tail(device=device, size=size, note=note, no_backup=no_backup)
+    ctx.invoke(destroy_block_device_head, device=device, size=size, note=note, no_backup=no_backup)
+    ctx.invoke(destroy_block_device_tail, device=device, size=size, note=note, no_backup=no_backup)
 
 
-@click.command()
+@deviceops.command()
 @click.argument('devices', required=True, nargs=-1)
 @click.option('--size', is_flag=False, required=False, type=int, default=(1024*1024*128))
 @click.option('--note', is_flag=False, required=False, type=str)
 @click.option('--force', is_flag=True, required=False)
 @click.option('--no-backup', is_flag=True, required=False)
-def destroy_block_devices_head_and_tail(devices, size, note, force, no_backup):
+@click.pass_context
+def destroy_block_devices_head_and_tail(ctx, devices, size, note, force, no_backup):
     for device in devices:
         assert isinstance(no_backup, bool)
         assert not device[-1].isdigit()
@@ -130,10 +152,10 @@ def destroy_block_devices_head_and_tail(devices, size, note, force, no_backup):
         warn(devices)
 
     for device in devices:
-        destroy_block_device_head_and_tail(device=device, size=size, note=note, force=force, no_backup=no_backup)
+        ctx,invoke(destroy_block_device_head_and_tail, device=device, size=size, note=note, force=force, no_backup=no_backup)
 
 
-@click.command()
+@deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--start', is_flag=False, required=True, type=int)
 @click.option('--end', is_flag=False, required=True, type=int)
@@ -163,7 +185,7 @@ def backup_byte_range(device, start, end, note):
     print(backup_file)
 
 
-@click.command()
+@deviceops.command()
 @click.option('--device', is_flag=False, required=True)
 @click.option('--backup-file', is_flag=False, required=True)
 @click.option('--start', is_flag=False, required=False, type=int)
@@ -181,12 +203,13 @@ def compare_byte_range(device, backup_file, start, end):
     os.system(vbindiff_command)
 
 
-@click.command()
+@deviceops.command()
 @click.option('--device', is_flag=False, required=True)
 @click.option('--force', is_flag=True, required=False)
 @click.option('--no-wipe', is_flag=True, required=False)
 @click.option('--no-backup', is_flag=True, required=False)
-def write_gpt(device, force, no_wipe, no_backup):
+@click.pass_context
+def write_gpt(ctx, device, force, no_wipe, no_backup):
     eprint("writing GPT to:", device)
     assert not device[-1].isdigit()
     assert path_is_block_special(device)
@@ -194,7 +217,7 @@ def write_gpt(device, force, no_wipe, no_backup):
     if not force:
         warn((device,))
     if not no_wipe:
-        destroy_block_device_head_and_tail(device=device, force=force, no_backup=no_backup)
+        ctx.invoke(destroy_block_device_head_and_tail, device=device, force=force, no_backup=no_backup)
         #run_command("sgdisk --zap-all " + boot_device)
     else:
         eprint("skipping wipe")
@@ -203,13 +226,14 @@ def write_gpt(device, force, no_wipe, no_backup):
     #run_command("sgdisk --clear " + device) #alt way to greate gpt label
 
 
-@click.command()
+@deviceops.command()
 @click.option('--device',     is_flag=False, required=True)
 #@click.option('--device-partition-table', is_flag=False, required=True, type=click.Choice(['gpt']))
 @click.option('--force',      is_flag=True, required=False)
 @click.option('--no-wipe',    is_flag=True, required=False)
 @click.option('--no-backup',  is_flag=True, required=False)
-def write_mbr(device, force, no_wipe, no_backup):
+@click.pass_context
+def write_mbr(ctx, device, force, no_wipe, no_backup):
     eprint("writing MBR to:", device)
     assert not device[-1].isdigit()
     assert path_is_block_special(device)
@@ -217,7 +241,7 @@ def write_mbr(device, force, no_wipe, no_backup):
     if not force:
         warn((device,))
     if not no_wipe:
-        destroy_block_device_head_and_tail(device=device, force=force, no_backup=no_backup)
+        ctx.invoke(destroy_block_device_head_and_tail, device=device, force=force, no_backup=no_backup)
         #run_command("sgdisk --zap-all " + boot_device)
 
     run_command("parted " + device + " --script -- mklabel msdos")
@@ -225,13 +249,14 @@ def write_mbr(device, force, no_wipe, no_backup):
     #run_command("sgdisk --clear " + device) #alt way to greate gpt label
 
 
-@click.command()
+@deviceops.command()
 @click.option('--device', is_flag=False, required=True)
 @click.option('--start',  is_flag=False, required=True, type=str)
 @click.option('--end',    is_flag=False, required=True, type=str)
 @click.option('--partition-number',    is_flag=False, required=True, type=str)
 @click.option('--force',  is_flag=True,  required=False)
-def write_efi(device, start, end, partition_number, force):
+@click.pass_context
+def write_efi(ctx, device, start, end, partition_number, force):
     eprint("creating efi partition on device:", device, "partition_number:", partition_number, "start:", start, "end:", end)
     assert not device[-1].isdigit()
     assert path_is_block_special(device)
@@ -250,13 +275,13 @@ def write_efi(device, start, end, partition_number, force):
         eprint("fat16_partition_device", fat16_partition_device, "is not block special yet, waiting a second.")
         time.sleep(1)
 
-    create_filesystem(device=fat16_partition_device, partition_type='fat16', force=True)
+    ctx.invoke(create_filesystem, device=fat16_partition_device, partition_type='fat16', force=True)
 
     # 127488 /mnt/sdb2/EFI/BOOT/BOOTX64.EFI
 
 
 
-@click.command()
+@deviceops.command()
 @click.option('--device', is_flag=False, required=True)
 @click.option('--start', is_flag=False, required=True, type=str)
 @click.option('--end', is_flag=False, required=True, type=str)
