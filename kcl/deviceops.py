@@ -115,7 +115,7 @@ def destroy_block_devices_head_and_tail(devices, size, note, force, no_backup):
 
 
 @click.command()
-@click.option('--device', is_flag=False, required=True)
+@click.argument('device', required=True, nargs=1)
 @click.option('--start', is_flag=False, required=True, type=int)
 @click.option('--end', is_flag=False, required=True, type=int)
 @click.option('--note', is_flag=False, required=False, type=str)
