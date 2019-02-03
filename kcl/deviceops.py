@@ -17,6 +17,21 @@ deviceops = click.Group()
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--force', is_flag=True, required=False)
+@click.pass_context
+def luksformat_device(ctx, device, force):
+    assert path_is_block_special(device)
+    assert not block_special_path_is_mounted(device)
+    if not force:
+        warn((device,))
+
+    ctx.invoke(destroy_block_device, device=device, source='zero', force=True) # change to urandom
+    luks_command = "cryptsetup -q --debug --verbose --cipher twofish-xts-essiv:sha256 --key-size 512 --hash sha512 --use-random --verify-passphrase --iter-time 10000 --timeout 24000 luksFormat " + device
+    run_command(luks_command, verbose=True, expected_exit_code=0)
+
+
+@deviceops.command()
+@click.argument('device', required=True, nargs=1)
+@click.option('--force', is_flag=True, required=False)
 @click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
 def destroy_block_device(device, force, source):
     assert isinstance(force, bool)
@@ -33,54 +48,37 @@ def destroy_block_device(device, force, source):
 
 
 @deviceops.command()
-@click.argument('device', required=True, nargs=1)
+@click.argument('device', required=True, nargs=1, type=str)
 @click.option('--size', is_flag=False, required=True, type=int)
 @click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
 @click.option('--no-backup', is_flag=True, required=False)
 @click.option('--note', is_flag=False, required=False, type=str)
 @click.pass_context
 def destroy_block_device_head(ctx, device, size, source, no_backup, note):
-    assert isinstance(device, str)
-    assert isinstance(size, int)
-    assert isinstance(no_backup, bool)
-    assert isinstance(note, str)
-    assert note
-    #eprint("destroy_black_device_head()")
-    #eprint("no_backup:", no_backup)
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
     ctx.invoke(destroy_byte_range, device=device, start=0, end=size, source=source, no_backup=no_backup, note=note)
 
 
 @deviceops.command()
-@click.argument('device', required=True, nargs=1)
+@click.argument('device', required=True, nargs=1, type=str)
 @click.option('--size', is_flag=False, required=True, type=int)
 @click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
 @click.option('--no-backup', is_flag=True, required=False)
 @click.option('--note', is_flag=False, required=False, type=str)
 @click.pass_context
 def destroy_block_device_tail(ctx, device, size, source, no_backup, note):
-    assert isinstance(device, str)
-    assert isinstance(size, int)
-    assert isinstance(no_backup, bool)
-    assert isinstance(note, str)
-    assert note
-    #eprint("destroy_block_device_tail()")
-    #eprint("no_backup:", no_backup)
     assert size > 0
     device_size = get_file_size(device)
-    #eprint("device_size:", device_size)
     assert size <= device_size
     start = device_size - size
-    #eprint("start:       ", start)
     assert start > 0
-    #eprint("bytes to zero:", size)
     end = start + size
     ctx.invoke(destroy_byte_range, device=device, start=start, end=end, source=source, no_backup=no_backup, note=note)
 
 
 @deviceops.command()
-@click.argument('device', required=True, nargs=1)
+@click.argument('device', required=True, nargs=1, type=str)
 @click.option('--start', is_flag=False, required=True, type=int)
 @click.option('--end', is_flag=False, required=True, type=int)
 @click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
@@ -88,12 +86,6 @@ def destroy_block_device_tail(ctx, device, size, source, no_backup, note):
 @click.option('--note', is_flag=False, required=False, type=str)
 @click.pass_context
 def destroy_byte_range(ctx, device, start, end, source, no_backup, note):
-    assert isinstance(device, str)
-    assert isinstance(start, int)
-    assert isinstance(end, int)
-    assert isinstance(no_backup, bool)
-    assert isinstance(note, str)
-    assert note
     assert start >= 0
     assert end > 0
     assert start < end
@@ -122,9 +114,6 @@ def destroy_byte_range(ctx, device, start, end, source, no_backup, note):
 @click.pass_context
 def destroy_block_device_head_and_tail(ctx, device, size, source, note, force, no_backup):
     #run_command("sgdisk --zap-all " + device) #alt method
-    #eprint("destroy_block_device_head_and_tail()")
-    #eprint("no_backup:", no_backup)
-    assert isinstance(no_backup, bool)
     assert not device[-1].isdigit()
     eprint("destroying device:", device)
     assert path_is_block_special(device)
@@ -148,7 +137,6 @@ def destroy_block_device_head_and_tail(ctx, device, size, source, note, force, n
 @click.pass_context
 def destroy_block_devices_head_and_tail(ctx, devices, size, note, force, no_backup):
     for device in devices:
-        assert isinstance(no_backup, bool)
         assert not device[-1].isdigit()
         eprint("destroying device:", device)
         assert path_is_block_special(device)
@@ -284,7 +272,6 @@ def write_efi(ctx, device, start, end, partition_number, force):
     ctx.invoke(create_filesystem, device=fat16_partition_device, partition_type='fat16', force=True)
 
     # 127488 /mnt/sdb2/EFI/BOOT/BOOTX64.EFI
-
 
 
 @deviceops.command()
