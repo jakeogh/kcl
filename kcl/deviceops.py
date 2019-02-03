@@ -99,7 +99,7 @@ def zero_byte_range(ctx, device, start, end, no_backup, note):
     assert end > 0
     assert start < end
     if not no_backup:
-        ctx.invoke(backup_byte_range, device, start=start, end=end, note=note)
+        ctx.invoke(backup_byte_range, device=device, start=start, end=end, note=note)
     with open(device, 'wb') as dfh:
         bytes_to_zero = end - start
         assert bytes_to_zero > 0
