@@ -79,7 +79,7 @@ def zero_byte_range(device, start, end, no_backup, note):
     assert end > 0
     assert start < end
     if not no_backup:
-        backup_byte_range(device=device, start=start, end=end, note=note)
+        backup_byte_range(device, start=start, end=end, note=note)
     with open(device, 'wb') as dfh:
         bytes_to_zero = end - start
         assert bytes_to_zero > 0
@@ -175,7 +175,7 @@ def compare_byte_range(device, backup_file, start, end):
         end = int(backup_file.split('end_')[1].split('_')[0].split('.')[0])
     assert isinstance(start, int)
     assert isinstance(end, int)
-    current_copy = backup_byte_range(device=device, start=ster, end=end, note='current')
+    current_copy = backup_byte_range(device, start=start, end=end, note='current')
     vbindiff_command = "vbindiff " + current_copy + ' ' + backup_file
     eprint(vbindiff_command)
     os.system(vbindiff_command)
