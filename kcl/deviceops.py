@@ -18,7 +18,7 @@ deviceops = click.Group()
 @click.argument('device', required=True, nargs=1)
 @click.option('--force', is_flag=True, required=False)
 @click.pass_context
-def luksformat_device(ctx, device, force):
+def luksformat(ctx, device, force):
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
     if not force:
