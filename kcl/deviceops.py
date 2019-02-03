@@ -97,6 +97,7 @@ def destroy_byte_range(ctx, device, start, end, source, no_backup, note):
     assert start >= 0
     assert end > 0
     assert start < end
+    eprint("source:", source)
     if not no_backup:
         ctx.invoke(backup_byte_range, device=device, start=start, end=end, note=note)
     bytes_to_zero = end - start
@@ -114,11 +115,12 @@ def destroy_byte_range(ctx, device, start, end, source, no_backup, note):
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--size', is_flag=False, required=False, type=int, default=(512))
+@click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
 @click.option('--note', is_flag=False, required=False, type=str)
 @click.option('--force', is_flag=True, required=False)
 @click.option('--no-backup', is_flag=True, required=False)
 @click.pass_context
-def destroy_block_device_head_and_tail(ctx, device, size, note, force, no_backup):
+def destroy_block_device_head_and_tail(ctx, device, size, source, note, force, no_backup):
     #run_command("sgdisk --zap-all " + device) #alt method
     #eprint("destroy_block_device_head_and_tail()")
     #eprint("no_backup:", no_backup)
@@ -133,8 +135,8 @@ def destroy_block_device_head_and_tail(ctx, device, size, note, force, no_backup
         note = str(time.time()) + '_' + device.replace('/', '_')
         eprint("note:", note)
 
-    ctx.invoke(destroy_block_device_head, device=device, size=size, note=note, no_backup=no_backup)
-    ctx.invoke(destroy_block_device_tail, device=device, size=size, note=note, no_backup=no_backup)
+    ctx.invoke(destroy_block_device_head, device=device, size=size, source=source, note=note, no_backup=no_backup)
+    ctx.invoke(destroy_block_device_tail, device=device, size=size, source=source, note=note, no_backup=no_backup)
 
 
 @deviceops.command()
@@ -156,7 +158,7 @@ def destroy_block_devices_head_and_tail(ctx, devices, size, note, force, no_back
         warn(devices)
 
     for device in devices:
-        ctx,invoke(destroy_block_device_head_and_tail, device=device, size=size, note=note, force=force, no_backup=no_backup)
+        ctx.invoke(destroy_block_device_head_and_tail, device=device, size=size, note=note, force=force, no_backup=no_backup)
 
 
 @deviceops.command()
