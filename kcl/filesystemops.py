@@ -31,3 +31,4 @@ def create_filesystem(device, filesystem, force):
         run_command("mkfs.ext4 " + device)
     else:
         assert False
+
