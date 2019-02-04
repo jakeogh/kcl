@@ -47,5 +47,5 @@ def get_keys(pattern=False, p=None):
 def add_to_hash(key, mapping, p=None):
     global r
     if p: r = p
-    return r.hmset(key=key, mapping=valuedict)
+    return r.hmset(key=key, mapping=mapping)
 
