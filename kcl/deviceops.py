@@ -17,8 +17,9 @@ deviceops = click.Group()
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--force', is_flag=True, required=False)
+@click.option('--skipdestroy', is_flag=True, required=False)
 @click.pass_context
-def luksformat(ctx, device, force):
+def luksformat(ctx, device, force, skipdestroy):
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
     if not force:
@@ -32,7 +33,8 @@ def luksformat(ctx, device, force):
     read, write = os.pipe()
     os.write(write, passphrase)
     os.close(write)
-    ctx.invoke(destroy_block_device, device=device, source='urandom', force=True)
+    if not skipdestroy:
+        ctx.invoke(destroy_block_device, device=device, source='urandom', force=True)
     luks_command = "cryptsetup -q --debug --verbose --cipher twofish-xts-essiv:sha256 --key-size 512 --hash sha512 --use-random --iter-time 11000 --timeout 24000 --key-file - luksFormat " + device
     run_command(luks_command, verbose=True, expected_exit_code=0, stdin=read)
     # xts with essiv is redundant, but there is no downside to using it
