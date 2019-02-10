@@ -7,7 +7,7 @@
 #
 # common mount functions
 
-#import subprocess
+import os
 from .fileops import path_is_block_special
 from psutil import disk_partitions
 from .printops import ceprint
@@ -23,9 +23,11 @@ def block_special_path_is_mounted(path):
 def path_is_mounted(path, verbose=False):  # todo test with angryfiles
     path = path.strip()
     assert path
-
+    assert isinstance(path, str)  # fixme
     for mount in disk_partitions():
         if verbose: ceprint("mount:", mount)
         if mount.mountpoint == path:
             return True
+    if os.path.ismount(path):
+        return True
     return False
