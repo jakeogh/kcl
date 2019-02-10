@@ -10,7 +10,7 @@
 #import subprocess
 from .fileops import path_is_block_special
 from psutil import disk_partitions
-
+from .printops import ceprint
 
 def block_special_path_is_mounted(path):
     for mount in disk_partitions():
