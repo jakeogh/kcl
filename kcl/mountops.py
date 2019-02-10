@@ -20,8 +20,12 @@ def block_special_path_is_mounted(path):
     return False
 
 
-def path_is_mounted(path):
+def path_is_mounted(path, verbose=False):  # todo test with angryfiles
+    path = path.strip()
+    assert path
+
     for mount in disk_partitions():
+        if verbose: ceprint("mount:", mount)
         if mount.mountpoint == path:
             return True
     return False
