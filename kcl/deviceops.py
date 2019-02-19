@@ -280,7 +280,7 @@ def write_efi_partition(ctx, device, start, end, partition_number, force):
         eprint("fat16_partition_device", fat16_partition_device, "is not block special yet, waiting a second.")
         time.sleep(1)
 
-    ctx.invoke(create_filesystem, device=fat16_partition_device, partition_type='fat16', force=True)
+    ctx.invoke(create_filesystem, device=fat16_partition_device, filesystem='fat16', force=True)
 
     # 127488 /mnt/sdb2/EFI/BOOT/BOOTX64.EFI
 
