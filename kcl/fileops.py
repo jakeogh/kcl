@@ -98,7 +98,7 @@ def uncomment_line_in_file(file_path, line_to_match):
     return False
 
 
-def write_unique_line_to_file(line, file_to_write):
+def write_unique_line_to_file(line, file_to_write, make_new=True):
     if isinstance(line, str):
         line = line.encode('UTF8')
     assert isinstance(line, bytes)
@@ -113,10 +113,13 @@ def write_unique_line_to_file(line, file_to_write):
                 fh.write(line)
                 return True
             return False
-    except FileNotFoundError:
-        with open(file_to_write, 'xb') as fh:
-            fh.write(line)
-            return True
+    except FileNotFoundError as e:
+        if make_new:
+            with open(file_to_write, 'xb') as fh:
+                fh.write(line)
+                return True
+        else:
+            raise e
 
 
 def line_exists_in_file(line, file_to_check):
