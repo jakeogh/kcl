@@ -261,7 +261,7 @@ def write_mbr(ctx, device, force, no_wipe, no_backup):
 @click.option('--partition-number',    is_flag=False, required=True, type=str)
 @click.option('--force',  is_flag=True,  required=False)
 @click.pass_context
-def write_efi(ctx, device, start, end, partition_number, force):
+def write_efi_partition(ctx, device, start, end, partition_number, force):
     eprint("creating efi partition on device:", device, "partition_number:", partition_number, "start:", start, "end:", end)
     assert not device[-1].isdigit()
     assert path_is_block_special(device)
