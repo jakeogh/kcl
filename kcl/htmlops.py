@@ -87,7 +87,7 @@ def extract_urls_from_file(html_file, url, verbose=False):
         except KeyError:
             pass
 
-    return set(inks)
+    return set(links)
 
 
 
