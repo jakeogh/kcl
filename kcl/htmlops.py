@@ -45,6 +45,8 @@ def extract_urls_lxml(html_file, url, verbose=False):
         if verbose: ceprint("ParseError")
         return set([])
 
+    if verbose: ceprint("len(dom):", len(dom))
+
     try:
         dom.make_links_absolute(url)
     except ValueError:  # ValueError: Invalid IPv6 URL
@@ -52,6 +54,7 @@ def extract_urls_lxml(html_file, url, verbose=False):
         return set([])
 
     links_a = dom.cssselect('a')
+    if verbose: ceprint("len(links_a):", len(links_a))
     for link in links_a:
         try:
             url_list.append((link.attrib['href'], link.text))
