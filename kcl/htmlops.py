@@ -95,7 +95,7 @@ def extract_urls_from_file(html_file, url, verbose=False):
             pass
 
     for link in extract_iris_from_text(page_html):
-        if link not in tag_cache:
+        if link not in link_cache:
             links.add((link, None))
 
     return set(links)
