@@ -33,10 +33,10 @@ def parse_html_to_dom(html):
 #this one is used for internal links plugin
 def extract_urls_lxml(html_file, url, verbose=False):
     parser = etree.HTMLParser(recover=True)
-    #with open(html_file, 'rb') as fh:
-    #    html_bytes = fh.read()
-    #html = html_bytes.decode('utf8', 'ignore')
-    #if verbose: ceprint("len(html):", len(html))
+    with open(html_file, 'rb') as fh:
+        html_bytes = fh.read()
+    html = html_bytes.decode('utf8', 'ignore')
+    if verbose: ceprint("len(html):", len(html))
     url_list = []
     try:
         dom = lxml.html.fromstring(html, base_url=url, parser=parser)
