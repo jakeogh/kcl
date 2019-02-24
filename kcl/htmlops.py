@@ -8,7 +8,12 @@ from lxml.etree import ParserError
 from lxml import etree
 import re
 from kcl.printops import ceprint
-from pprint import pprint
+
+from lxml import html
+from lxml.etree import tostring
+from lxml.etree import HTMLParser
+#import html5_parser
+
 
 def soup(html):
     soup = BeautifulSoup(html, 'lxml')
@@ -31,54 +36,108 @@ def parse_html_to_dom(html):
 
 
 #this one is used for internal links plugin
-def extract_urls_lxml(html_file, url, verbose=False):
-    parser = etree.HTMLParser(recover=True)
+def extract_urls_from_file(html_file, url, verbose=False):
+    links = []
+    parser = HTMLParser(recover=True)
+    #page_html = requests.get(url).text
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
-    html = html_bytes.decode('utf8', 'ignore')
-    if verbose: ceprint("len(html):", len(html))
-    url_list = []
-    try:
-        #dom = lxml.html.fromstring(html, base_url=url, parser=parser)
-        #dom = lxml.html.fromstring(html)
-        #e_tree = etree.parse(html_file, base_url=url, parser=parser)
-        #dom = etree.parse(html_file, base_url=url, parser=parser).getroot()
-        dom = etree.parse(html_file, base_url=url).getroot()
-        #dom = lxml.html.parse(html_file, base_url=url, parser=parser)
-    #except ValueError:
-    #    if verbose: ceprint("ValueError")
-    #    dom = lxml.html.fromstring(html_bytes, recover=True)
-    except ParserError: # images etc
-        if verbose: ceprint("ParseError")
-        return set([])
+    page_html = html_bytes.decode('utf8', 'ignore')
+    if verbose: ceprint("len(page_html):", len(page_html))
 
-    if verbose: ceprint("len(dom):", len(dom))
-    
+    # METHOD 0: UNTRIED, might be faster
+    #root = html5_parser.parse(page)
+    #print(type(root))  # <class 'lxml.etree._Element'>
+    #print(tostring(root))
 
-    #if verbose: ceprint("type(e_tree):", type(e_tree))
-    #if verbose: pprint(e_tree)
+    # METHOD 1: returns a 'lxml.html.HtmlElement' with .make_links_absolute(), but fails on malformed html
+    # fails on 'https://www.noao.edu/noao/staff/plymate/fts/labguide.html'
+    #dom = html.fromstring(page)  # <class 'lxml.html.HtmlElement'>
+    ##print(type(dom))  # <class 'lxml.html.HtmlElement'>
+    #print(len(dom))  # > 0 if it worked
+    #dom.make_links_absolute(url)  # this needs lxml.html.HtmlElement
+    #dom.cssselect()
 
+    # METHOD 2, works but the # lxml.etree._Element has no .make_links_absolute()
+    #domroot = html.fromstring(page, parser=parser, base_url=url)  # lxml.etree._Element
+    #print(type(domroot))  # <class 'lxml.etree._Element'>
+    ##if 'lab' in url: import IPython; IPython.embed()
+    #dom = domroot.getroottree()
+    #dom = dom.getroot()  # lxml.etree._Element
+    #dom.cssselect()
 
-    try:
+    dom = html.fromstring(page_html)
+    if len(dom) > 0:
         dom.make_links_absolute(url)
-    except ValueError:  # ValueError: Invalid IPv6 URL
-        if verbose: ceprint("ValueError while trying dom.make_links_absolute(url)")
-        return set([])
+    else:
+        print("len(dom) == 0, parsing malformed html")
+        root = html.fromstring(page_html, parser=parser, base_url=url).getroottree()  # lxml.etree._Element
+        clean_html = tostring(root)
+        dom = html.fromstring(clean_html)
+        dom.make_links_absolute(url)
 
-    links_a = dom.cssselect('a')
-    if verbose: ceprint("len(links_a):", len(links_a))
-    for link in links_a:
+    for link in dom.cssselect('a'):
         try:
-            url_list.append((link.attrib['href'], link.text))
+            links.append((link.attrib['href'], link.text))
         except KeyError:
             pass
-    links_img = dom.cssselect('img')
-    for link in links_img:
+    for link in dom.cssselect('img'):
         try:
-            url_list.append((link.attrib['src'], link.text))
+            links.append((link.attrib['src'], link.text))
         except KeyError:
             pass
-    return set(url_list)
+
+    return set(inks)
+
+
+
+    #parser = etree.HTMLParser(recover=True)
+    #with open(html_file, 'rb') as fh:
+    #    html_bytes = fh.read()
+    #html = html_bytes.decode('utf8', 'ignore')
+    #if verbose: ceprint("len(html):", len(html))
+    #url_list = []
+    #try:
+    #    #dom = lxml.html.fromstring(html, base_url=url, parser=parser)
+    #    #dom = lxml.html.fromstring(html)
+    #    #e_tree = etree.parse(html_file, base_url=url, parser=parser)
+    #    #dom = etree.parse(html_file, base_url=url, parser=parser).getroot()
+    #    dom = etree.parse(html_file, base_url=url).getroot()
+    #    #dom = lxml.html.parse(html_file, base_url=url, parser=parser)
+    ##except ValueError:
+    ##    if verbose: ceprint("ValueError")
+    ##    dom = lxml.html.fromstring(html_bytes, recover=True)
+    #except ParserError: # images etc
+    #    if verbose: ceprint("ParseError")
+    #    return set([])
+
+    #if verbose: ceprint("len(dom):", len(dom))
+
+
+    ##if verbose: ceprint("type(e_tree):", type(e_tree))
+    ##if verbose: pprint(e_tree)
+
+
+    #try:
+    #    dom.make_links_absolute(url)
+    #except ValueError:  # ValueError: Invalid IPv6 URL
+    #    if verbose: ceprint("ValueError while trying dom.make_links_absolute(url)")
+    #    return set([])
+
+    #links_a = dom.cssselect('a')
+    #if verbose: ceprint("len(links_a):", len(links_a))
+    #for link in links_a:
+    #    try:
+    #        url_list.append((link.attrib['href'], link.text))
+    #    except KeyError:
+    #        pass
+    #links_img = dom.cssselect('img')
+    #for link in links_img:
+    #    try:
+    #        url_list.append((link.attrib['src'], link.text))
+    #    except KeyError:
+    #        pass
+    #return set(url_list)
 
 
 def extract_urls_lxml_nofollow(html_file, url):
