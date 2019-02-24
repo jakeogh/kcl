@@ -94,7 +94,7 @@ def extract_urls_from_file(html_file, url, verbose=False):
         except KeyError:
             pass
 
-    for link in extract_iris_from_text(text):
+    for link in extract_iris_from_text(page_html):
         if link not in tag_cache:
             links.add((link, None))
 
