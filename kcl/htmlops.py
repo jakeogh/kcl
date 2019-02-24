@@ -37,10 +37,10 @@ def extract_urls_lxml(html_file, url, verbose=False):
     if verbose: ceprint("len(html):", len(html))
     url_list = []
     try:
-        dom = lxml.html.fromstring(html)
+        dom = lxml.html.fromstring(html, recover=True)
     except ValueError:
         if verbose: ceprint("ValueError")
-        dom = lxml.html.fromstring(html_bytes)
+        dom = lxml.html.fromstring(html_bytes, recover=True)
     except ParserError: # images etc
         if verbose: ceprint("ParseError")
         return set([])
