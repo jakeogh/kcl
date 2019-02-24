@@ -16,8 +16,8 @@ def _lxml(config, path, iri, link_text, verbose):
         ceprint("iri:", iri)
     urls = extract_urls_from_file(html_file=path, url=iri, verbose=verbose)
     if verbose: ceprint(len(urls))
-    #for url in urls:
-    #    if link_text:
-    #        print(url[0], url[1])
-    #    else:
-    #        print(url)
+    for url in urls:
+        if link_text:
+            print(url[0], url[1])
+        else:
+            print(url)
