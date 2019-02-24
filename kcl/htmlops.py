@@ -68,31 +68,36 @@ def extract_urls_from_file(html_file, url, verbose=False):
     link_cache = set([])
     links = set([])
 
-    dom = html.fromstring(page_html)
-    if len(dom) > 0:
-        dom.make_links_absolute(url)
+    try:
+        dom = html.fromstring(page_html)
+    except ParserError:
+        ceprint("ParserError")
+
     else:
-        print("len(dom) == 0, parsing malformed html")
-        root = html.fromstring(page_html, parser=parser, base_url=url).getroottree()  # lxml.etree._Element
-        clean_html = tostring(root)
-        dom = html.fromstring(clean_html)
-        dom.make_links_absolute(url)
-
-    for link in dom.cssselect('a'):
-        try:
-            link_url = link.attrib['href']
-            links.add((link_url, link.text))
-            link_cache.add(link_url)
-        except KeyError:
-            pass
-
-    for link in dom.cssselect('img'):
-        try:
-            link_url = link.attrib['src']
-            links.add((link_url, link.text))
-            link_cache.add(link_url)
-        except KeyError:
-            pass
+        if len(dom) > 0:
+            dom.make_links_absolute(url)
+        else:
+            ceprint("len(dom) == 0, parsing malformed html")
+            root = html.fromstring(page_html, parser=parser, base_url=url).getroottree()  # lxml.etree._Element
+            clean_html = tostring(root)
+            dom = html.fromstring(clean_html)
+            dom.make_links_absolute(url)
+    
+        for link in dom.cssselect('a'):
+            try:
+                link_url = link.attrib['href']
+                links.add((link_url, link.text))
+                link_cache.add(link_url)
+            except KeyError:
+                pass
+    
+        for link in dom.cssselect('img'):
+            try:
+                link_url = link.attrib['src']
+                links.add((link_url, link.text))
+                link_cache.add(link_url)
+            except KeyError:
+                pass
 
     for link in extract_iris_from_text(page_html):
         if link not in link_cache:
