@@ -5,6 +5,7 @@
 from bs4 import BeautifulSoup
 import lxml.html
 from lxml.etree import ParserError
+from lxml import etree
 import re
 from kcl.printops import ceprint
 
@@ -31,16 +32,18 @@ def parse_html_to_dom(html):
 
 #this one is used for internal links plugin
 def extract_urls_lxml(html_file, url, verbose=False):
-    with open(html_file, 'rb') as fh:
-        html_bytes = fh.read()
-    html = html_bytes.decode('utf8', 'ignore')
-    if verbose: ceprint("len(html):", len(html))
+    parser = etree.HTMLParser(recover=True)
+    #with open(html_file, 'rb') as fh:
+    #    html_bytes = fh.read()
+    #html = html_bytes.decode('utf8', 'ignore')
+    #if verbose: ceprint("len(html):", len(html))
     url_list = []
     try:
-        dom = lxml.html.fromstring(html, recover=True)
-    except ValueError:
-        if verbose: ceprint("ValueError")
-        dom = lxml.html.fromstring(html_bytes, recover=True)
+        #dom = lxml.html.fromstring(html, recover=True)
+        dom = etree.parse(html_file, parser=parser)
+    #except ValueError:
+    #    if verbose: ceprint("ValueError")
+    #    dom = lxml.html.fromstring(html_bytes, recover=True)
     except ParserError: # images etc
         if verbose: ceprint("ParseError")
         return set([])
