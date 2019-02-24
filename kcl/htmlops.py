@@ -42,7 +42,8 @@ def extract_urls_lxml(html_file, url, verbose=False):
         #dom = lxml.html.fromstring(html, base_url=url, parser=parser)
         #dom = lxml.html.fromstring(html)
         #e_tree = etree.parse(html_file, base_url=url, parser=parser)
-        dom = etree.parse(html_file, base_url=url, parser=parser).getroot()
+        #dom = etree.parse(html_file, base_url=url, parser=parser).getroot()
+        dom = etree.parse(html_file, base_url=url).getroot()
         #dom = lxml.html.parse(html_file, base_url=url, parser=parser)
     #except ValueError:
     #    if verbose: ceprint("ValueError")
