@@ -37,7 +37,6 @@ def parse_html_to_dom(html):
 
 #this one is used for internal links plugin
 def extract_urls_from_file(html_file, url, verbose=False):
-    links = []
     parser = HTMLParser(recover=True)
     #page_html = requests.get(url).text
     with open(html_file, 'rb') as fh:
@@ -66,6 +65,9 @@ def extract_urls_from_file(html_file, url, verbose=False):
     #dom = dom.getroot()  # lxml.etree._Element
     #dom.cssselect()
 
+    link_cache = set([])
+    links = set([])
+
     dom = html.fromstring(page_html)
     if len(dom) > 0:
         dom.make_links_absolute(url)
@@ -78,14 +80,23 @@ def extract_urls_from_file(html_file, url, verbose=False):
 
     for link in dom.cssselect('a'):
         try:
-            links.append((link.attrib['href'], link.text))
+            link_url = link.attrib['href']
+            links.add((link_url, link.text))
+            link_cache.add(link_url)
         except KeyError:
             pass
+
     for link in dom.cssselect('img'):
         try:
-            links.append((link.attrib['src'], link.text))
+            link_url = link.attrib['src']
+            links.add((link_url, link.text))
+            link_cache.add(link_url)
         except KeyError:
             pass
+
+    for link in extract_iris_from_text(text):
+        if link not in tag_cache:
+            links.add((link, None))
 
     return set(links)
 
