@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import click
-from kcl.htmlops import extract_urls_lxml
+from kcl.htmlops import extract_urls_from_file
 from kcl.printops import ceprint
 
 @click.command()
@@ -14,7 +14,7 @@ def _lxml(config, path, iri, link_text, verbose):
     if verbose:
         ceprint("path:", path)
         ceprint("iri:", iri)
-    urls = extract_urls_lxml(html_file=path, url=iri, verbose=verbose)
+    urls = extract_urls_from_file(html_file=path, url=iri, verbose=verbose)
     for url in urls:
         if link_text:
             print(url[0], url[1])
