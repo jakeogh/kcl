@@ -30,16 +30,18 @@ def parse_html_to_dom(html):
 
 
 #this one is used for internal links plugin
-def extract_urls_lxml(html_file, url):
+def extract_urls_lxml(html_file, url, verbose=False):
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
     html = html_bytes.decode('utf8', 'ignore')
+    if verbose: ceprint("len(html):", len(html))
     url_list = []
     try:
         dom = lxml.html.fromstring(html)
     except ValueError:
         dom = lxml.html.fromstring(html_bytes)
     except ParserError: # images etc
+        if verbose: ceprint("ParseError")
         return set([])
 
     try:
