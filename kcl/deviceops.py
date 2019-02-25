@@ -117,7 +117,7 @@ def destroy_byte_range(ctx, device, start, end, source, no_backup, note):
 
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
-@click.option('--size', is_flag=False, required=False, type=int, default=(512))
+@click.option('--size', is_flag=False, required=False, type=int, default=(1024))
 @click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
 @click.option('--note', is_flag=False, required=False, type=str)
 @click.option('--force', is_flag=True, required=False)
