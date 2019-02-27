@@ -72,6 +72,8 @@ def extract_urls_from_file(html_file, url, verbose=False):
         dom = html.fromstring(page_html)
     except ParserError:
         ceprint("ParserError")
+    except ValueError:  # /mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/.iridb/database.local/data_index/9/4/b/94b8a89ed85e0abeaf71d416f44ce07c770fb398
+        ceprint("ValueError")  # ValueError: Unicode strings with encoding declaration are not supported. Please use bytes input or XML fragments without declaration.
 
     else:
         if len(dom) > 0:
