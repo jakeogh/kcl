@@ -6,6 +6,23 @@ from .printops import ceprint
 r = redis.StrictRedis(host='127.0.0.1')
 
 
+def get_size_of_key(key, key_type=False, p=None):
+    global r
+    if p: r = p
+    if not key_type:
+        key_type = r.type(key)
+    if key_type == b'zset':
+        return r.zcard(key)
+    elif key_type == b'set':
+        return r.scard(key)
+    elif key_type == b'list':
+        return r.llen(key)
+    elif key_type == b'hash':
+        return r.hlen(key)
+    else:
+        raise FileNotFoundError
+
+
 def add_to_set(key, value, p=None):
     global r
     if p: r = p
@@ -43,6 +60,7 @@ def get_keys(pattern=False, p=None):
     if pattern:
         return r.keys(pattern)
     return r.keys()
+
 
 def add_to_hash(key, mapping, p=None):
     global r
