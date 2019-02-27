@@ -8,11 +8,11 @@ from kcl.printops import ceprint
 
 @click.command()
 @click.argument('pattern', type=str, nargs=1, required=False)
-@click.option('--type', is_flag=True)
+@click.option('--type', 'show_type', is_flag=True)
 @click.option('--size', is_flag=True)
 @click.option('--verbose', is_flag=True)
 @click.pass_obj
-def _keys(config, pattern, iri, link_text, verbose):
+def _keys(config, pattern, show_type, size, verbose):
     if verbose:
         ceprint("pattern:", pattern)
     for key in get_keys(pattern=pattern):
