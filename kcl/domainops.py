@@ -89,6 +89,7 @@ def validate_domain_list(domains):
             hostname = hostname.encode('idna').decode('ascii')
             valid_domains.add(hostname.encode('utf-8'))
         except Exception as e:
+            print(e)
             leprint("WARNING: %s is not a valid domain. Skipping", hostname,
                 level=LOG['WARNING'])
     return valid_domains
