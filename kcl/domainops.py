@@ -83,15 +83,16 @@ def validate_domain_list(domains):
     leprint('Validating %d domains.', len(domains), level=LOG['DEBUG'])
     valid_domains = set([])
     for hostname in domains:
+        if isinstance(hostname, bytes):
+            hostname = hostname.decode('utf-8')
+
         try:
             hostname = hostname.lower()
-            hostname = hostname.decode('utf-8')
             hostname = hostname.encode('idna').decode('ascii')
             valid_domains.add(hostname.encode('utf-8'))
         except Exception as e:
             print(e)
-            leprint("WARNING: %s is not a valid domain. Skipping", hostname,
-                level=LOG['WARNING'])
+            eprint("WARNING: %s is not a valid domain. Skipping.")
     return valid_domains
 
 
