@@ -88,7 +88,7 @@ def extract_urls_from_file(html_file, url, verbose=False):
             clean_html = tostring(root)
             dom = html.fromstring(clean_html)
             dom.make_links_absolute(url)
-    
+
         for link in dom.cssselect('a'):
             try:
                 link_url = link.attrib['href']
@@ -96,7 +96,7 @@ def extract_urls_from_file(html_file, url, verbose=False):
                 link_cache.add(link_url)
             except KeyError:
                 pass
-    
+
         for link in dom.cssselect('img'):
             try:
                 link_url = link.attrib['src']
