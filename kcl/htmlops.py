@@ -77,7 +77,10 @@ def extract_urls_from_file(html_file, url, verbose=False):
 
     else:
         if len(dom) > 0:
-            dom.make_links_absolute(url)
+            try:
+                dom.make_links_absolute(url)
+            except ValueError:  #Invalid IPv6 URL for example
+                pass
         else:
             ceprint("len(dom) == 0, parsing malformed html")
             root = html.fromstring(page_html, parser=parser, base_url=url).getroottree()  # lxml.etree._Element
