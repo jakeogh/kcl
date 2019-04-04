@@ -80,6 +80,7 @@ def extract_urls_from_file(html_file, url, verbose=False):
             try:
                 dom.make_links_absolute(url)
             except ValueError:  #Invalid IPv6 URL for example
+                ceprint("WARNING dom.make_links_absolute(url) failed dueo to ValueError")
                 pass
         else:
             ceprint("len(dom) == 0, parsing malformed html")
