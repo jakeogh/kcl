@@ -233,7 +233,6 @@ def write_gpt(ctx, device, force, no_wipe, no_backup):
 
 @deviceops.command()
 @click.option('--device',     is_flag=False, required=True)
-#@click.option('--device-partition-table', is_flag=False, required=True, type=click.Choice(['gpt']))
 @click.option('--force',      is_flag=True, required=False)
 @click.option('--no-wipe',    is_flag=True, required=False)
 @click.option('--no-backup',  is_flag=True, required=False)
