@@ -27,25 +27,26 @@ def generate_hash(data, verbose=False):
         return return_dict
     elif isinstance(data, Response):
         # todo make temp_folder configurable, make sure it exists
-        temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
-        if verbose:
-            #import IPython; IPython.embed()
-            #ceprint("data.url:", data.url)
+        #temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
+        with tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False) as temp_file:
+            if verbose:
+                #import IPython; IPython.embed()
+                #ceprint("data.url:", data.url)
             try:
                 data_size_from_headers = int(data.headers['Content-Length'])
                 #ceprint("data_size_from_headers:", data_size_from_headers)
             except KeyError:
                 data_size_from_headers = False
-        for chunk in data.iter_content(chunk_size):
-            sha1.update(chunk)
-            temp_file.write(chunk)
-            current_file_size = int(os.path.getsize(temp_file.name))
-            if data_size_from_headers:
-                eprint(temp_file.name, str(int((current_file_size/data_size_from_headers)*100))+'%', current_file_size, data.url, end='\r', flush=True)
-            else:
-                eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
+            for chunk in data.iter_content(chunk_size):
+                sha1.update(chunk)
+                temp_file.write(chunk)
+                current_file_size = int(os.path.getsize(temp_file.name))
+                if data_size_from_headers:
+                    eprint(temp_file.name, str(int((current_file_size/data_size_from_headers)*100))+'%', current_file_size, data.url, end='\r', flush=True)
+                else:
+                    eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
 
-        temp_file.close()
+        #temp_file.close()
         current_file_size = int(os.path.getsize(temp_file.name))
         # update final size
         if data_size_from_headers:
