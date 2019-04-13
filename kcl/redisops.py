@@ -62,6 +62,12 @@ def get_keys(pattern=False, p=None):
     return r.keys()
 
 
+def delete_key(key, p=None):
+    global r
+    if p: r = p
+    return r.delete(key)
+
+
 def add_to_hash(key, mapping, p=None):
     global r
     if p: r = p
