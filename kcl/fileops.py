@@ -177,7 +177,7 @@ def path_is_block_special(path):
 
 
 def get_file_size(filename):
-    size = os.path.getsize(fpath)
+    size = os.path.getsize(filename)
     return size
 
     #fd = os.open(filename, os.O_RDONLY)
