@@ -27,7 +27,6 @@ def generate_hash(data, verbose=False):
         return return_dict
     elif isinstance(data, Response):
         # todo make temp_folder configurable, make sure it exists
-        #temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False)
         with tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False) as temp_file:
             if verbose:
                 #import IPython; IPython.embed()
@@ -46,7 +45,6 @@ def generate_hash(data, verbose=False):
                 else:
                     eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
 
-        #temp_file.close()
         current_file_size = int(os.path.getsize(temp_file.name))
         # update final size
         if data_size_from_headers:
