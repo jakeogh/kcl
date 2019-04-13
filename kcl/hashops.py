@@ -31,7 +31,7 @@ def generate_hash(data, verbose=False):
         with tempfile.NamedTemporaryFile(mode='wb', suffix='.tmp', prefix='tmp-', dir='/var/tmp/iridb', delete=False) as temp_file:
             if verbose:
                 #import IPython; IPython.embed()
-                #ceprint("data.url:", data.url)
+                ceprint("data.url:", data.url)
             try:
                 data_size_from_headers = int(data.headers['Content-Length'])
                 #ceprint("data_size_from_headers:", data_size_from_headers)
