@@ -177,11 +177,9 @@ def path_is_block_special(path):
 
 
 def get_file_size(filename):
-    fd = os.open(filename, os.O_RDONLY)
-    try:
-        return os.lseek(fd, 0, os.SEEK_END)
-    finally:
-        os.close(fd)
+    with os.open(filename, os.O_RDONLY) as fh:
+        size = os.lseek(fd, 0, os.SEEK_END)
+    return size
 
 
 def points_to_data(fpath):
