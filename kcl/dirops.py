@@ -44,7 +44,11 @@ def all_files(folder, files_only=False): # todo add flags for recursive, follow 
     return all_files
 
 
-def count_files(folder):
+def count_entries(folder):  # fast, returns all types of objects in a folder
+    return len(os.listdir(folder))
+
+
+def count_files(folder):  # calls lstat on every entry to see if its a file
     total = 0
     for root, dirs, files in os.walk(folder):
         total += len(files)
