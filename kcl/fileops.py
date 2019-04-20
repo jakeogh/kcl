@@ -191,11 +191,13 @@ def get_file_size(filename):
     #return size
 
 
-def points_to_data(fpath):
+def points_to_data(fpath, empty_ok=False):
     try:
         size = os.path.getsize(fpath)
     except FileNotFoundError:
         return False
+    if empty_ok:
+        return True
     if size > 0:
         return True
     return False

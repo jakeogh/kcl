@@ -64,7 +64,7 @@ def list_files(folder):
     return set(all_files)
 
 
-def dir_exists(path):
+def dir_exists(path):  # todo: dir_like_thing_exists()
     return path_is_dir(path)
 
 
