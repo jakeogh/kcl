@@ -192,8 +192,9 @@ def get_file_size(filename):
 
 
 def points_to_data(fpath, empty_ok=False):
+    assert isinstance(fpath, (str, bytes))
     try:
-        size = os.path.getsize(fpath)
+        size = os.path.getsize(fpath)  # annoyingly, os.stat(False) == os.stat(0) == os.stat('/dev/stdout')
     except FileNotFoundError:
         return False
     if empty_ok:
