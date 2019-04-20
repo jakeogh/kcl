@@ -80,7 +80,7 @@ def extract_urls_from_file(html_file, url, verbose=False):
             try:
                 dom.make_links_absolute(url)
             except ValueError:  #Invalid IPv6 URL for example
-                ceprint("WARNING dom.make_links_absolute(url) failed dueo to ValueError")
+                ceprint("WARNING dom.make_links_absolute(url) failed due to ValueError")
                 pass
         else:
             ceprint("len(dom) == 0, parsing malformed html")
@@ -92,6 +92,8 @@ def extract_urls_from_file(html_file, url, verbose=False):
         for link in dom.cssselect('a'):
             try:
                 link_url = link.attrib['href']
+                if link_url.startswith('javascript:'):
+                    continue
                 links.add((link_url, link.text))
                 link_cache.add(link_url)
             except KeyError:
