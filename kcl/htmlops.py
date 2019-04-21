@@ -97,16 +97,19 @@ def extract_urls_from_file(html_file, url, strip_fragments, verbose=False):
                     link_url, _ = urldefrag(link_url)
                 if link_url.startswith('javascript:'):
                     continue
-                links.add((link_url, link.text))
-                link_cache.add(link_url)
+
+                if link_url not in link_cache:
+                    links.add((link_url, link.text))
+                    link_cache.add(link_url)
             except KeyError:
                 pass
 
         for link in dom.cssselect('img'):
             try:
                 link_url = link.attrib['src']
-                links.add((link_url, link.text))
-                link_cache.add(link_url)
+                if link_url not in link_cache:
+                    links.add((link_url, link.text))
+                    link_cache.add(link_url)
             except KeyError:
                 pass
 
