@@ -38,9 +38,10 @@ def get_set(key, p=None):
 def add_to_ordered_set(key, value, timestamp, p=None):
     global r
     if p: r = p
-    ceprint("r.zadd({0}, {1}, {2})".format(key, timestamp, value))
-    return r.zadd(key, timestamp, value)
-
+    ceprint('r.zadd("{0}", "{1}", "{2}")'.format(key, timestamp, value))
+    result = r.zadd(key, timestamp, value)
+    ceprint("result:", result)
+    return result
 
 def get_ordered_set(key, start=0, stop=-1, withscores=False, p=None):
     global r
