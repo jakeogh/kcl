@@ -7,6 +7,7 @@ import lxml.html
 from lxml.etree import ParserError
 from lxml import etree
 import re
+from urllib.parse import urldefrag
 from kcl.printops import ceprint
 
 from lxml import html
@@ -36,7 +37,7 @@ def parse_html_to_dom(html):
 
 
 #this one is used for internal links plugin
-def extract_urls_from_file(html_file, url, verbose=False):
+def extract_urls_from_file(html_file, url, strip_fragments, verbose=False):
     parser = HTMLParser(recover=True)
     #page_html = requests.get(url).text
     with open(html_file, 'rb') as fh:
@@ -92,6 +93,8 @@ def extract_urls_from_file(html_file, url, verbose=False):
         for link in dom.cssselect('a'):
             try:
                 link_url = link.attrib['href']
+                if strip_fragments:
+                    link_url, _ = urldefrag(link_url)
                 if link_url.startswith('javascript:'):
                     continue
                 links.add((link_url, link.text))
