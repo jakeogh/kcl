@@ -38,6 +38,7 @@ def get_set(key, p=None):
 def add_to_ordered_set(key, value, timestamp, p=None):
     global r
     if p: r = p
+    ceprint("r.zadd({0}, {1}, {2})".format(key, timestamp, value))
     return r.zadd(key, timestamp, value)
 
 
