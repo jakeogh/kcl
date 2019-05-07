@@ -77,12 +77,13 @@ def generate_hash(data, verbose=False):
         return return_dict
 
 
-def sha1_hash_file(path, block_size=256*128*2):
+def sha1_hash_file(path, block_size=256*128*2, binary=False):
     sha1 = hashlib.sha1()
     with open(path, 'rb') as f:
         for chunk in iter(lambda: f.read(block_size), b''):
             sha1.update(chunk)
-
+    if binary:
+        return sha1.digest()
     return sha1.hexdigest()
 
 # Calculate (multiple) digest(s) for file(s)
