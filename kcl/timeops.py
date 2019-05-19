@@ -27,5 +27,5 @@ def timeit(f):
 
 
 def get_mtime(infile):
-    mtime = os.lstat(file).st_mtime #does not follow symlinks
+    mtime = os.lstat(infile).st_mtime #does not follow symlinks
     return mtime
