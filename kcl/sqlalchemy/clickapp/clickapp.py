@@ -8,6 +8,7 @@ from sqlalchemy_utils.functions import database_exists
 from sqlalchemy_utils.functions import create_database
 from sqlalchemy_utils.functions import drop_database
 from kcl.printops import eprint
+from kcl.printops import ceprint
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.sqlalchemy.model.BaseMixin import BASE
 from kcl.cli.CONTEXT_SETTINGS import CONTEXT_SETTINGS
@@ -23,6 +24,7 @@ __version__ = 0.01
 @click.option('--debug', is_flag=True, required=False)
 @click.pass_context
 def clickapp(ctx, verbose, database, temp_database, delete_database, debug):
+    ceprint("entered clickapp()")
     if database:
         if temp_database:
             eprint("Error: --database and --temp-database are mutually exclusive.")
