@@ -63,7 +63,7 @@ def destroy_block_device(ctx, device, force):
     ctx.invoke(destroy_block_device_head, device=device, source='zero', size=4092)
     luks_command = "cryptsetup open --type plain -d /dev/urandom " + device + " " + device_name
     print(luks_command)
-    #run_command(luks_command, verbose=True, expected_exit_code=0)
+    run_command(luks_command, verbose=True, expected_exit_code=0)
     luks_mapper = "/dev/mapper/" + device_name
     print(luks_mapper)
     assert path_is_block_special(luks_mapper)
