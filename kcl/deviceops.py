@@ -69,7 +69,7 @@ def destroy_block_device(ctx, device, force):
     run_command(luks_command, verbose=True, expected_exit_code=0)
     assert path_is_block_special(luks_mapper, follow_symlinks=True)
     assert not block_special_path_is_mounted(luks_mapper)
-    wipe_command = "dd_rescue --abort_we /dev/zero " + luks_mapper
+    wipe_command = "dd_rescue --color=1 --abort_we /dev/zero " + luks_mapper
     #wipe_command = "dd if=/dev/" + source + " of=" + device
     print(wipe_command)
     #run_command(wipe_command, verbose=True, expected_exit_code=0)
