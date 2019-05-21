@@ -4,6 +4,9 @@ import builtins
 CONFIG = builtins.config
 
 from kcl.printops import eprint
+from kcl.printops import ceprint
+
+ceprint("here")
 
 from kcl.sqlalchemy.clickapp.cli.debug.debug import debug
 CONFIG.appobject.add_command(debug)
