@@ -60,7 +60,7 @@ def destroy_block_device(ctx, device, force):
     assert len(device_name) >= 3
     assert '/' not in device_name
     assert device.endswith(device_name)
-    ctx.invoke(destroy_block_device_head, device=device, source='zero')
+    ctx.invoke(destroy_block_device_head, device=device, source='zero', size=4092)
     luks_command = "cryptsetup open --type plain -d /dev/urandom " + device + " " + device_name
     print(luks_command)
     #run_command(luks_command, verbose=True, expected_exit_code=0)
