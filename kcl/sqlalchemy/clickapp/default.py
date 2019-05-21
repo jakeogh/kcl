@@ -13,6 +13,6 @@ CONFIG.appobject.add_command(debug)
 #from kcl.sqlalchemy.clickapp.cli._mcreate._mcreate import _mcreate
 #CONFIG.appobject.add_command(_mcreate)
 
-ceprint("here")
 from kcl.sqlalchemy.clickapp.test import test
 CONFIG.appobject.add_command(test)
+ceprint("here")
