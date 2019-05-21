@@ -67,7 +67,7 @@ def destroy_block_device(ctx, device, force):
     luks_command = "cryptsetup open --type plain -d /dev/urandom " + device + " " + device_name
     print(luks_command)
     run_command(luks_command, verbose=True, expected_exit_code=0)
-    assert path_is_block_special(luks_mapper)
+    assert path_is_block_special(luks_mapper, follow_symlinks=True)
     assert not block_special_path_is_mounted(luks_mapper)
     wipe_command = "dd_rescue --abort_we /dev/zero " + luks_mapper
     #wipe_command = "dd if=/dev/" + source + " of=" + device
