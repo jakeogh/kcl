@@ -72,7 +72,7 @@ def destroy_block_device(ctx, device, force):
     wipe_command = "dd_rescue --abort_we /dev/zero " + luks_mapper
     #wipe_command = "dd if=/dev/" + source + " of=" + device
     print(wipe_command)
-    #run_command(wipe_command, verbose=True, expected_exit_code=0)
+    run_command(wipe_command, verbose=True, expected_exit_code=0)
     #run_command(wipe_command, verbose=True, expected_exit_code=1)  # dd returns 1 when it hits the end of the device
     close_command = "cryptsetup close " + device_name
     print(close_command)
