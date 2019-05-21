@@ -6,7 +6,7 @@ from kcl.printops import ceprint
 def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=None):
     output = ''
     if verbose:
-        ceprint("command:", '`'+command+'`')
+        ceprint("command:", '`' + command + '`')
         ceprint("shell:", shell)
     try:
         output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=shell, stdin=stdin)
