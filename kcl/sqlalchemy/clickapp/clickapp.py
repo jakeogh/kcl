@@ -37,10 +37,12 @@ def clickapp(ctx, verbose, database, temp_database, delete_database, debug, junk
     if delete_database:
         if database_exists(CONFIG.database):
             drop_database(CONFIG.database)
-    if not database_exists(CONFIG.database):
-        create_database(CONFIG.database)
-        with self_contained_session(CONFIG.database) as session:
-            BASE.metadata.create_all(session.bind)
+
+    if False:  # do this stuff when the database is first needed
+        if not database_exists(CONFIG.database):
+            create_database(CONFIG.database)
+            with self_contained_session(CONFIG.database) as session:
+                BASE.metadata.create_all(session.bind)
     if verbose:
         eprint(CONFIG.database)
         CONFIG.database_echo = True
