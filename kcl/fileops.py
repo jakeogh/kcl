@@ -168,9 +168,9 @@ def file_exists_nonzero(infile):
     return False
 
 
-def path_is_block_special(path):
+def path_is_block_special(path, follow_symlinks=False):
     if path_exists(path):
-        mode = os.stat(path, follow_symlinks=False).st_mode
+        mode = os.stat(path, follow_symlinks=follow_symlinks).st_mode
         if stat.S_ISBLK(mode):
             return True
     return False
