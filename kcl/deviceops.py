@@ -74,6 +74,7 @@ def destroy_block_device(ctx, device, force):
     print(wipe_command)
     #run_command(wipe_command, verbose=True, expected_exit_code=0)
     os.system(wipe_command)
+    time.sleep(1) # so "cryptsetup close" doesnt throw an error
     #run_command(wipe_command, verbose=True, expected_exit_code=1)  # dd returns 1 when it hits the end of the device
     close_command = "cryptsetup close " + device_name
     print(close_command)
