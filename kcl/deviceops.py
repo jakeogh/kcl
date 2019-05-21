@@ -34,7 +34,7 @@ def luksformat(ctx, device, force, skipdestroy):
     os.write(write, passphrase)
     os.close(write)
     if not skipdestroy:
-        ctx.invoke(destroy_block_device, device=device, source='urandom', force=True)
+        ctx.invoke(destroy_block_device, device=device, force=True)
     luks_command = "cryptsetup -q --debug --verbose --cipher aes-xts-essiv:sha256 --key-size 512 --hash sha512 --use-random --iter-time 15000 --timeout 24000 --key-file - luksFormat " + device
     run_command(luks_command, verbose=True, expected_exit_code=0, stdin=read)
     # xts with essiv is redundant, but there is no downside to using it
