@@ -23,7 +23,7 @@ __version__ = 0.01
 @click.option('--delete-database', is_flag=True, required=False)
 @click.option('--debug', is_flag=True, required=False)
 @click.pass_context
-def clickapp(ctx, verbose, database, temp_database, delete_database, debug):
+def clickapp(ctx, verbose, database, temp_database, delete_database, debug, junk):
     ceprint("entered clickapp()")
     if database:
         if temp_database:
