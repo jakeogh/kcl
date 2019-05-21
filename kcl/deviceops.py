@@ -61,8 +61,8 @@ def destroy_block_device(ctx, device, force):
     assert '/' not in device_name
     assert device.endswith(device_name)
     luks_mapper = "/dev/mapper/" + device_name
-    assert not path_is_block_special(luks_mapper, follow_symlinks=True)
     print(luks_mapper)
+    assert not path_is_block_special(luks_mapper, follow_symlinks=True)
     ctx.invoke(destroy_block_device_head, device=device, source='zero', size=4092)
     luks_command = "cryptsetup open --type plain -d /dev/urandom " + device + " " + device_name
     print(luks_command)
