@@ -43,10 +43,11 @@ def luksformat(ctx, device, force, skipdestroy):
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
 @click.option('--force', is_flag=True, required=False)
-@click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
-def destroy_block_device(device, force, source):
+#@click.option('--source', is_flag=False, required=True, type=click.Choice(['urandom', 'zero']))
+@click.pass_context
+def destroy_block_device(ctx, device, force):
     assert isinstance(force, bool)
-    assert source in ['urandom', 'zero']
+    #assert source in ['urandom', 'zero']
     assert not device[-1].isdigit()
     assert device.startswith('/dev/')
     assert not device.endswith('/')
@@ -65,8 +66,8 @@ def destroy_block_device(device, force, source):
     #run_command(luks_command, verbose=True, expected_exit_code=0)
     luks_mapper = "/dev/mapper/" + device_name
     assert path_is_block_special(luks_mapper)
-    assert not block_special_path_is_mounted(like_mapper)
-    wipe_command = "dd_rescue -w /dev/zero " + like_mapper
+    assert not block_special_path_is_mounted(luks_mapper)
+    wipe_command = "dd_rescue -w /dev/zero " + luks_mapper
     #wipe_command = "dd if=/dev/" + source + " of=" + device
     print(wipe_command)
     #run_command(wipe_command, verbose=True, expected_exit_code=1)  # dd returns 1 when it hits the end of the device
