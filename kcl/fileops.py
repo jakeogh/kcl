@@ -10,6 +10,7 @@
 import time
 import os
 import shutil
+from pathops import Path
 from shutil import copyfileobj
 import stat
 from .printops import eprint
@@ -192,7 +193,7 @@ def get_file_size(filename):
 
 
 def points_to_data(fpath, empty_ok=False):
-    assert isinstance(fpath, (str, bytes))
+    assert isinstance(fpath, (str, bytes, Path))
     try:
         size = os.path.getsize(fpath)  # annoyingly, os.stat(False) == os.stat(0) == os.stat('/dev/stdout')
     except FileNotFoundError:
