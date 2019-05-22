@@ -8,10 +8,11 @@
 # common symlink functions
 __version__ = "0.0.1"
 
-from kcl.printops import ceprint
-from kcl.fileops import path_exists
+import Path
 import os
 import subprocess
+from kcl.printops import ceprint
+from kcl.fileops import path_exists
 
 
 def is_symlink(infile):
