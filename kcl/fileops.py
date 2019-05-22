@@ -10,7 +10,7 @@
 import time
 import os
 import shutil
-from pathops import Path
+from pathlib import Path
 from shutil import copyfileobj
 import stat
 from .printops import eprint
