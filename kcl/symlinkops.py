@@ -56,7 +56,7 @@ def calculate_relative_symlink_dest(target, link_name):
     if isinstance(target, str):
         target = bytes(target, encoding='UTF8')
     if isinstance(target, Path):
-        link_name = os.fsencode(target)
+        target = os.fsencode(target)
 
     if isinstance(link_name, str):
         link_name = bytes(link_name, encoding='UTF8')
