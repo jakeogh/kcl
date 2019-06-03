@@ -52,6 +52,7 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
             return True
     return False
 
+
 def calculate_relative_symlink_dest(target, link_name):
     if isinstance(target, str):
         target = bytes(target, encoding='UTF8')
@@ -62,18 +63,20 @@ def calculate_relative_symlink_dest(target, link_name):
         link_name = bytes(link_name, encoding='UTF8')
     if isinstance(link_name, Path):
         link_name = os.fsencode(link_name)
+
+    # paths are bytes. this must work for all possible paths
     assert isinstance(target, bytes)
     assert isinstance(link_name, bytes)
-    assert b'/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in link_name
     #ceprint("target:", target)
+
     assert not target.startswith(b'../')
-    # got relative target, that's hard to deal with
-    # pass in a fully qualified path, if it's also
-    # an existing stmlink, detect that here and dont call realpath()
+    # got relative target, that's hard to deal with pass in a fully qualified path
+
+    # if target is also an existing symlink, detect that and dont call realpath()
     # call something that gets the realpath but does not follow any links
 
     if is_unbroken_symlink(target):
-        # the targt is also a symlink, dont resolve it, just get it's abspath
+        # the target is also a symlink, dont resolve it, just get it's abspath
         target_realpath = os.path.abspath(target)
         # still a problem, since this was not fully resolved, it may still have symlinks embedded in it
         # get the folder, resolve that since it's guranteed not to be a symlink
@@ -84,20 +87,17 @@ def calculate_relative_symlink_dest(target, link_name):
         target_realpath_folder_realpath = os.path.realpath(target_realpath_folder)
         target_realpath = os.path.join(target_realpath_folder_realpath, target_realpath_file)
         # uug. ok now.
+
     elif path_exists(target):
-        #target is prob a file or dir, could still be a broken symlink
+        # target is prob a file or dir, but could still be a broken symlink
         target_realpath = os.path.realpath(target)
+
     elif is_broken_symlink(link_name):
         assert False
-    else:
+
+    else: # idk
         assert False
 
-    #target_realpath = os.path.realpath(target) # realpath() does not require the file to exist will still resolve symlinks
-    #ceprint("target_realpath:", target_realpath)
-    #ceprint("link_name:", link_name)
-
-    # if its a unbroken symlink, and this is being used to see if its the shortest dest
-    # os.path.realpath() cant be called, because it resolves the existing link to the target
     if is_broken_symlink(link_name):
         link_name_realpath = os.path.realpath(link_name)
         #ceprint("link_name_realpath:", link_name_realpath)
@@ -105,6 +105,8 @@ def calculate_relative_symlink_dest(target, link_name):
         link_name_realpath = os.path.realpath(link_name)
         #ceprint("link_name_realpath:", link_name_realpath)
 
+    # if its a unbroken symlink, and this is being used to see if its the shortest dest
+    # os.path.realpath() cant be called, because it resolves the existing link to the target
     elif is_unbroken_symlink(link_name):
         link_name_realpath = os.path.abspath(link_name)
         #ceprint("link_name_realpath: (abspath)", link_name_realpath)
@@ -121,7 +123,6 @@ def calculate_relative_symlink_dest(target, link_name):
         ceprint(b'target_realpath:', target_realpath, b'does not exist. Refusing to make broken symlink.')
         raise FileNotFoundError
 
-
     if is_broken_symlink(link_name_realpath):
         ceprint(b'link_name_realpath:', link_name_realpath, b'exists as a broken symlink. ' +
             b'Remove it before trying to make a new symlink. Exiting.')
@@ -135,10 +136,8 @@ def calculate_relative_symlink_dest(target, link_name):
         ceprint(b'link_name_realpath_folder_realpath:', link_name_realpath_folder_realpath, b'does not exist.')
         raise FileNotFoundError
 
-    relative_target = os.path.relpath(target_realpath, link_name_realpath_folder_realpath) # relpath does not access the filesystem
+    relative_target = os.path.relpath(target_realpath, link_name_realpath_folder_realpath)  # relpath does not access the filesystem
     #ceprint("relative_target:", relative_target)
-    assert b'/home/user/.iridb/database.local/' not in relative_target
-    assert b'/mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/' not in relative_target
     return relative_target
 
 
