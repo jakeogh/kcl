@@ -54,6 +54,7 @@ def is_unbroken_symlink_to_target(target, link):    #bug, should not assume unic
 
 
 def calculate_relative_symlink_dest(target, link_name):
+    # todo eval https://docs.python.org/3/library/os.path.html#os.path.commonpath
     if isinstance(target, str):
         target = bytes(target, encoding='UTF8')
     if isinstance(target, Path):
