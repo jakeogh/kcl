@@ -44,7 +44,7 @@ class Path_Iterator():
         if depth > s.max_depth:
             return
         for sub in s.path.iterdir():                                                                        # 1 openat() 1 fstat() n getdents64() depending on dir size
-            depth = len(sub.parts) - len(s.root.parts)
+            depth = len(sub.parts) - len(s.root.parts)  # bug s.root is always '/'
             if depth > s.max_depth:
                 return
             if sub.is_symlink():  # must be before is_dir() # bug didnt check follow_symlinks
