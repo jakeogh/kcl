@@ -7,7 +7,7 @@ from kcl.printops import eprint
 from getdents import DentGen
 
 @click.command()
-@click.argument('path', type=click.Path(exists=True, dir_okay=True, file_ok=False, path_type=bytes, allow_dash=False, resolve_path=False), nargs=1, required=True)
+@click.argument('path', type=click.Path(exists=True, dir_okay=True, file_okay=False, path_type=bytes, allow_dash=False, resolve_path=False), nargs=1, required=True)
 @click.option('--verbose', is_flag=True)
 @click.pass_obj
 def _iterate(config, path, verbose):
