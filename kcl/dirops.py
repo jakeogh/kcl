@@ -7,11 +7,58 @@
 #
 # common dir functions
 
+from math import inf
 import os
+import attr
 import shutil
 from .printops import eprint
 from .printops import ceprint
 from pathlib import Path
+
+
+@attr.s(auto_attribs=True, kw_only=True)
+class Path_Iterator():
+    path: str = attr.ib(converter=Path)
+    min_depth: int = 1
+    max_depth: object = inf
+    follow_symlinks: bool = False
+    return_dirs: bool = True
+    return_files: bool = True
+    return_symlinks: bool = True
+
+    def __attrs_post_init__(self):
+        self.root = self.path
+        if self.follow_symlinks:
+            assert not self.return_symlinks  # todo broken symlinks
+
+    def go(s):
+        depth = len(s.path.parts) - len(s.root.parts)  # len('/') == 1                                      # no fs syscalls
+        if depth >= s.min_depth:
+            if s.return_dirs and s.path.is_dir():                                                           # single stat()
+                if depth <= s.max_depth:
+                    yield s.path.absolute()                                                                 # no syscalls just looks to see if it starts with /
+            if s.return_files and not s.path.is_dir():  # dir/fifo/file/symlink/socket/reserved/char/block  # single stat()
+                if depth <= s.max_depth:
+                    yield s.path.absolute()
+
+        if depth > s.max_depth:
+            return
+        for sub in s.path.iterdir():                                                                        # 1 openat() 1 fstat() n getdents64() depending on dir size
+            depth = len(sub.parts) - len(s.root.parts)
+            if depth > s.max_depth:
+                return
+            if sub.is_symlink():  # must be before is_dir() # bug didnt check follow_symlinks
+                if s.return_files:
+                    yield sub.absolute()
+            elif sub.is_dir():
+                #print("could yield dir:", sub)
+                s.path = sub
+                yield from s.go()
+            else:
+                if s.return_files:
+                    yield sub.absolute()
+
+
 
 
 def all_files_iter(p):
