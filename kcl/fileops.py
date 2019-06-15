@@ -153,6 +153,7 @@ def read_file_bytes(path):
 
 
 def path_exists(path):
+    #return os.lastat(path)  # faster?
     return os.path.lexists(path) #returns True for broken symlinks
 
 
