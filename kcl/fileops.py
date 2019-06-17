@@ -14,7 +14,7 @@ from pathlib import Path
 from shutil import copyfileobj
 import stat
 from .printops import eprint
-import magic  # sys-apps/file
+#import magic  # sys-apps/file
 
 
 def comment_out_line_in_file(file_path, line_to_match):
@@ -267,9 +267,9 @@ def is_regular_file(path):
     return False
 
 
-def get_file_type(path):
-    line_id = magic.from_file(path)
-    return line_id
+#def get_file_type(path):
+#    line_id = magic.from_file(path)
+#    return line_id
 
 
 
