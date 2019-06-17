@@ -14,7 +14,7 @@ from pathlib import Path
 from shutil import copyfileobj
 import stat
 from .printops import eprint
-#import magic  # sys-apps/file
+#import magic  # sys-apps/file  #PIA
 
 
 def comment_out_line_in_file(file_path, line_to_match):
