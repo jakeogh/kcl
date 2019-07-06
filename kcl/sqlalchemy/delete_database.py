@@ -6,7 +6,7 @@ from sqlalchemy.pool import NullPool
 from kcl.printops import eprint
 
 def delete_database(database):
-    eprint("dbpath:", dbpath)
+    eprint("database:", database)
     dbpath = 'postgresql://postgres@localhost/'
     pg_dbpath = dbpath + 'postgres'
     assert dbpath in database
