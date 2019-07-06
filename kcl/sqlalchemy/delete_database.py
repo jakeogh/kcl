@@ -7,9 +7,9 @@ from kcl.printops import eprint
 
 def delete_database(database):
     eprint("database:", database)
-    #dbpath = 'postgresql://postgres@localhost/'
-    #pg_dbpath = dbpath + 'postgres'
-    #assert dbpath in database
+    dbpath = 'postgres://postgres@localhost/'
+    pg_dbpath = dbpath + 'postgres'
+    assert dbpath in database
     dbname = database.split(dbpath)[-1]
     eprint("DROP DATABASE:", database)
     with create_engine(pg_dbpath, isolation_level='AUTOCOMMIT', echo=False).connect() as connection:
