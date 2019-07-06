@@ -8,13 +8,13 @@ from sqlalchemy.exc import ProgrammingError
 
 
 def delete_and_recreate_database(database):
-    delete_database(database)
-    create_database(database)
+    #delete_database(database)
+    #create_database(database)
 
-    #try:
-    #    delete_database(database)
-    #except ProgrammingError:
-    #        pass  # db didnt exist
-    #finally:
-    #    create_database(database)
+    try:
+        delete_database(database)
+    except ProgrammingError:
+            pass  # db didnt exist
+    finally:
+        create_database(database)
 
