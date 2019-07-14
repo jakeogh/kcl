@@ -211,14 +211,15 @@ def extract_iris_from_text(text):  # todo, buggy, already had to add the ~ below
     for line in clean_text:
         for word in line.split(' '):
            #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$-_@.&+#]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
-            urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
-            for url in urls:
-                url_list.append(url)
-    for line in clean_text:
-        for word in line.split("'"):
+           #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             for url in urls:
                 url_list.append(url)
+    #for line in clean_text:
+    #    for word in line.split("'"):
+    #        urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
+    #        for url in urls:
+    #            url_list.append(url)
 
     url_set = set(url_list)
     return url_set
