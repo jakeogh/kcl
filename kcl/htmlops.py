@@ -205,6 +205,7 @@ def extract_iris_from_text(text):  # todo, buggy, already had to add the ~ below
     if isinstance(text, bytes):
         text = text.decode('utf8', 'ignore')
     assert isinstance(text, str)
+    text = text.replace("<em>//</em>", "//")
     text_list = text.split("\n")
     clean_text = filter(None, text_list)
     url_list = []
@@ -215,6 +216,10 @@ def extract_iris_from_text(text):  # todo, buggy, already had to add the ~ below
             urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             for url in urls:
                 url_list.append(url)
+
+
+
+
     #for line in clean_text:
     #    for word in line.split("'"):
     #        urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
