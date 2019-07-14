@@ -7,6 +7,8 @@
 #
 # common mount functions
 
+# TODO: https://docs.python.org/3.7/library/pathlib.html#pathlib.Path.is_mount
+
 import os
 from .fileops import path_is_block_special
 from psutil import disk_partitions

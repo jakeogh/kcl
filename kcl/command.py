@@ -11,7 +11,7 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
     try:
         output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=shell, stdin=stdin)
         if verbose:
-            ceprint("output:", output.decode('utf8'))
+            ceprint("output:", output.decode('utf8'))  # bug
     except subprocess.CalledProcessError as error:
         if error.returncode == expected_exit_code:
             return output
