@@ -115,8 +115,8 @@ def extract_urls_from_file(html_file, url, strip_fragments, verbose=False):
             except KeyError:
                 pass
 
-        for link in dom.cssselect('div'):
-            import IPython; IPython.embed()
+        #for link in dom.cssselect('div'):
+        #    import IPython; IPython.embed()
 
     for link in extract_iris_from_text(page_html):
         if link not in link_cache:
