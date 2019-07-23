@@ -39,7 +39,12 @@ def eeprint(*args, start='', **kwargs):
         source_file,
         caller + '()'
         ])
-    print(start + '{0: <49}'.format(head), *args, file=sys.stderr, **kwargs)
+    head_format = '{0: <49}'
+    if start != '':
+        head_format = start + head_format
+        kwargs.pop("start")
+    print(head_format.format(head), *args, file=sys.stderr, **kwargs)
+    #print('{0: <49}'.format(head), *args, file=sys.stderr, **kwargs)
 
 
 def eprint(*args, **kwargs):
