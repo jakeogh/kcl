@@ -26,7 +26,7 @@ def ceprint(*args, **kwargs):
     print('{0: <49}'.format(head), *args, file=sys.stderr, **kwargs)
 
 
-def eeprint(*args, start='', **kwargs):
+def eeprint(*args, **kwargs):
     '''Simple debugging replacement for print()'''
     caller = sys._getframe(1).f_code.co_name
     stack = inspect.stack()
@@ -40,8 +40,8 @@ def eeprint(*args, start='', **kwargs):
         caller + '()'
         ])
     head_format = '{0: <49}'
-    if start != '':
-        head_format = start + head_format
+    if "start" in kwargs.keys():
+        head_format = kwargs["start"] + head_format
         kwargs.pop("start")
     print(head_format.format(head), *args, file=sys.stderr, **kwargs)
     #print('{0: <49}'.format(head), *args, file=sys.stderr, **kwargs)
