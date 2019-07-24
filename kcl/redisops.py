@@ -49,7 +49,7 @@ def get_ordered_set(key, start=0, stop=-1, withscores=False, p=None):
     return r.zrange(key, start, stop, withscores)
 
 
-def check_for_value_in_set(key, value, p=None):
+def check_for_value_in_ordered_set(key, value, p=None):
     global r
     if p: r = p
     #ceprint("key:", key, "value:", value)
