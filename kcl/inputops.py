@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import dmenu
+from .printops import ceprint
 
 
 def dmenu_tag(tag_cache_file):
@@ -10,3 +11,14 @@ def dmenu_tag(tag_cache_file):
     #answer = dmenu.show(tag_list, font="-misc-fixed-*-*-*-*-50-*-*-*-*-*-*-*", case_insensitive=True)
     answer = dmenu.show(tag_list, font=font, case_insensitive=True)
     return answer
+
+
+def get_tag_dmenu(tag_cache_file):
+    try:
+        tag = dmenu_tag(tag_cache_file)
+        return tag
+    except Exception as e:
+        ceprint(e)
+        tag = input("enter a tag: ")
+        return tag
+
