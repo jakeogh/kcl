@@ -206,6 +206,8 @@ def extract_iris_from_text(text):  # todo, buggy, already had to add the ~ below
         text = text.decode('utf8', 'ignore')
     assert isinstance(text, str)
     text = text.replace("<em>//</em>", "//")
+    text = text.replace("<wbr>", "")
+
     text_list = text.split("\n")
     clean_text = filter(None, text_list)
     url_list = []
