@@ -6,9 +6,9 @@ import time
 from kcl.timeops import timestamp
 from kcl.mountops import block_special_path_is_mounted
 from kcl.fileops import path_is_block_special
+from kcl.fileops import get_block_device_size
 from kcl.printops import eprint
 from kcl.command import run_command
-from kcl.fileops import get_file_size
 from kcl.filesystemops import create_filesystem
 from kcl.warnops import warn
 
@@ -103,7 +103,7 @@ def destroy_block_device_head(ctx, device, size, source, no_backup, note):
 @click.pass_context
 def destroy_block_device_tail(ctx, device, size, source, no_backup, note):
     assert size > 0
-    device_size = get_file_size(device)
+    device_size = get_block_device_size(device)
     assert size <= device_size
     start = device_size - size
     assert start > 0

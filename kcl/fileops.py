@@ -178,19 +178,20 @@ def path_is_block_special(path, follow_symlinks=False):
     return False
 
 
+def get_block_device_size(device):
+    assert Path(device).is_block_device()
+    fd = os.open(filename, os.O_RDONLY)
+    try:
+        return os.lseek(fd, 0, os.SEEK_END)
+    finally:
+        os.close(fd)
+
+
 def get_file_size(filename):
-    size = os.path.getsize(filename)
+    filename = Path(filename)
+    size = filename.lstat().st_size
+    #size = os.path.getsize(filename)
     return size
-
-    #fd = os.open(filename, os.O_RDONLY)
-    #try:
-    #    return os.lseek(fd, 0, os.SEEK_END)
-    #finally:
-    #    os.close(fd)
-
-    #with os.open(filename, os.O_RDONLY) as fh:  AttributeError: __enter__
-    #    size = os.lseek(fd, 0, os.SEEK_END)
-    #return size
 
 
 def points_to_data(fpath, empty_ok=False):
