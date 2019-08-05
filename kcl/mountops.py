@@ -17,7 +17,7 @@ from .printops import ceprint
 
 def block_special_path_is_mounted(path):
     assert path
-    path = Path(os.fsencode(path))
+    path = Path(path)
     assert isinstance(path, Path)
     for mount in disk_partitions():
         #print(mount)
@@ -28,7 +28,7 @@ def block_special_path_is_mounted(path):
 
 def path_is_mounted(path, verbose=False):  # todo test with angryfiles
     assert path
-    path = Path(os.fsencode(path))
+    path = Path(path)
     assert isinstance(path, Path)
     for mount in disk_partitions():
         if verbose: ceprint("mount:", mount)
