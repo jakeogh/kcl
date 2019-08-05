@@ -180,7 +180,7 @@ def path_is_block_special(path, follow_symlinks=False):
 
 def get_block_device_size(device):
     assert Path(device).is_block_device()
-    fd = os.open(filename, os.O_RDONLY)
+    fd = os.open(device, os.O_RDONLY)
     try:
         return os.lseek(fd, 0, os.SEEK_END)
     finally:
