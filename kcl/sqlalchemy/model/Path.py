@@ -11,8 +11,8 @@ from kcl.sqlalchemy.model.BaseMixin import BASE
 from kcl.sqlalchemy.model.Filename import Filename
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
-import pdb
-from pudb import set_trace#; set_trace(paused=False)
+#import pdb
+#from pudb import set_trace#; set_trace(paused=False)
 
 '''
     storage of filesystem paths via an adjencency list
@@ -101,7 +101,7 @@ class Path(BASE):
 
     @classmethod
     def construct(cls, *, session, path, verbose=False):
-        set_trace(paused=True)
+        #set_trace(paused=True)
         #pdb.set_trace()
         if verbose:
             ceprint(path)
