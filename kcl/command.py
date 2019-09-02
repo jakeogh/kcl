@@ -3,13 +3,14 @@ import subprocess
 from kcl.printops import ceprint
 #import os
 
-def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=None):
+
+def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=None, stderr=subprocess.STDOUT):
     output = ''
     if verbose:
         ceprint("command:", '`' + command + '`')
         ceprint("shell:", shell)
     try:
-        output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=shell, stdin=stdin)
+        output = subprocess.check_output(command, stderr=stderr, shell=shell, stdin=stdin)
         if verbose:
             ceprint("output:", output.decode('utf8'))  # bug
     except subprocess.CalledProcessError as error:
