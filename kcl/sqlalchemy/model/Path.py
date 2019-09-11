@@ -5,12 +5,12 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm import backref
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm.collections import attribute_mapped_collection
-from kcl.printops import ceprint
-from kcl.printops import eprint
+from icecream import ic
 from kcl.sqlalchemy.model.BaseMixin import BASE
 from kcl.sqlalchemy.model.Filename import Filename
 from kcl.sqlalchemy.self_contained_session import self_contained_session
 from kcl.sqlalchemy.get_one_or_create import get_one_or_create
+
 #import pdb
 #from pudb import set_trace#; set_trace(paused=False)
 
@@ -25,13 +25,6 @@ from kcl.sqlalchemy.get_one_or_create import get_one_or_create
     #print str(q.statement.compile(dialect=postgresql.dialect()))
 
 '''
-
-
-def msg(msg, *args):
-    msg = msg % args
-    print("\n\n\n" + "-" * len(msg.split("\n")[0]))
-    print(msg)
-    print("-" * len(msg.split("\n")[0]))
 
 
 class Path(BASE):
@@ -72,31 +65,22 @@ class Path(BASE):
             self.path
         )
 
-    #@property
+
     @hybrid_property
     def path(self):
-    #    ceprint('@hybrid_property')
-    #    #return self.path
         if self.parent:
             path = b'/'.join([self.parent.path, self.filename.filename])
         else:
-            #ceprint("else")
             path = self.filename.filename
             if path == b'':
                 path = b'/'
         return path
 
-    #@property
+
     @path.expression
     def path(cls):
-        #ceprint('@path.expression')
-        #path = select([Path.id]).where(Path.id==cls.parent_id)
         path = "WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = path.id UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename      , '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;"
-        #print(path)
-        #path = "WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 7 UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename      , '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;"
         return path
-
-        # r = session.execute("WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 7 UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT string_agg(filename, '/' ORDER BY parent_id NULLS FIRST) FROM parents JOIN filename ON filename.id = parents.filename_id;").scalar(); bytes(r)
 
 
     @classmethod
@@ -104,21 +88,19 @@ class Path(BASE):
         #set_trace(paused=True)
         #pdb.set_trace()
         if verbose:
-            ceprint(path)
+            ic(path)
         assert isinstance(path, bytes)
         path_split = path.split(b'/')
         parent_path = b'/'.join(path_split[0:-1])
         filename = path_split[-1]
         filename = get_one_or_create(session, Filename, filename=filename)
         if filename.filename != b'':
-            #ceprint("looking for parent_path:", parent_path)
             parent = get_one_or_create(session=session,
                                        verbose=verbose,
                                        model=Path,
                                        path=parent_path,  # searching the hybrid_property
                                        create_method='construct',
                                        create_method_kwargs={'path':parent_path, 'session':session})
-            #session.commit()
             assert parent
         else:
             parent = None
@@ -127,6 +109,7 @@ class Path(BASE):
         new_path = get_one_or_create(session, Path, parent=parent, filename=filename)
         session.commit()
         return new_path
+
 
     def dump(self, _indent=0):
         return "   " * _indent + repr(self) + \
@@ -142,45 +125,11 @@ if __name__ == '__main__':
     database = 'postgresql://postgres@localhost/path_test_' + str(int(time.time()))
 
     with self_contained_session(db_url=database, echo=False) as session:
-        msg("Creating Tables:")
+        ic("Creating Tables:")
         BASE.metadata.create_all(session.bind)
-
-#        print("attempting construct()")
-#        new_path = Path.construct(session=session, path=b'/a')
-#        session.add(new_path)
-#        session.commit()
-#        assert new_path.path == b'/a'
-#
-#        print("attempting construct()")
-#        new_path = Path.construct(session=session, path=b'/b')
-#        session.add(new_path)
-#        session.commit()
-#        assert new_path.path == b'/b'
-
         test = b'/a'
-        print("attempting construct()")
+        ic("attempting construct()")
         new_path = Path.construct(session=session, path=test, verbose=True)
         session.add(new_path)
         session.commit()
         from IPython import embed; embed()
-        #ceprint("new_path:", new_path)
-        #assert new_path.path == test
-
-#        print("attempting construct()")
-#        new_path = Path.construct(session=session, path=b'/a/c')
-#        session.add(new_path)
-#        session.commit()
-#        assert new_path.path == b'/a/c'
-#
-#        root_path = Path.construct(session=session, path=b'/')
-#
-#        #from IPython import embed; embed()
-#        msg("root_path:\n%s", root_path.dump())
-
-    # r = session.execute('WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 7 UNION SELECT path.id, path.parent_id, path.filename_id FROM path INNER JOIN parents ON parents.parent_id = path.id) SELECT * FROM parents JOIN filename ON filename.id = parents.filename_id ORDER BY CASE WHEN parent_id IS NULL THEN 0 ELSE 1 END, parent_id;').fetchall(); ans = b'/'.join([ bytes(item[-1]) for item in r ])
-
-
-    # decendents:
-    # session.execute('WITH RECURSIVE decendents AS ( SELECT id, parent_id, filename_id FROM path WHERE id = 12 UNION SELECT e.id, e.parent_id, e.filename_id FROM path e INNER JOIN decendents s ON s.id = e.parent_id) SELECT * FROM decendents;').fetchall()
-
-    # session.execute('WITH RECURSIVE parents AS (SELECT id, parent_id, filename_id FROM path WHERE id = 12 UNION SELECT e.id, e.parent_id, e.filename_id FROM path e INNER JOIN parents s ON s.parent_id = e.id) SELECT * FROM parents;').fetchall()
