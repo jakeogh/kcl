@@ -35,7 +35,7 @@ class Path(BASE):
 
     __tablename__ = 'path'
     id = Column(Integer, primary_key=True)
-    parent_id = Column(Integer, ForeignKey(id))
+    parent_id = Column(Integer, ForeignKey(id), index=True)
     children = relationship(
         "Path",
         # cascade deletions
