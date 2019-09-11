@@ -7,106 +7,106 @@
 #
 # common dir functions
 
-from math import inf
+#from math import inf
 import os
-import attr
+#import attr
 import shutil
 from .printops import eprint
-from .printops import ceprint
-from pathlib import Path
+#from .printops import ceprint
+#from pathlib import Path
 
 
-@attr.s(auto_attribs=True, kw_only=True)
-class Path_Iterator():
-    path: str = attr.ib(converter=Path)
-    min_depth: int = 1
-    max_depth: object = inf
-    follow_symlinks: bool = False
-    return_dirs: bool = True
-    return_files: bool = True
-    return_symlinks: bool = True
-
-    def __attrs_post_init__(self):
-        self.root = self.path
-        if self.follow_symlinks:
-            assert not self.return_symlinks  # todo broken symlinks
-
-    def go(s):
-        depth = len(s.path.parts) - len(s.root.parts)  # len('/') == 1                                      # no fs syscalls
-        if depth >= s.min_depth:
-            if s.return_dirs and s.path.is_dir():                                                           # single stat()
-                if depth <= s.max_depth:
-                    yield s.path.absolute()                                                                 # no syscalls just looks to see if it starts with /
-            if s.return_files and not s.path.is_dir():  # dir/fifo/file/symlink/socket/reserved/char/block  # single stat()
-                if depth <= s.max_depth:
-                    yield s.path.absolute()
-
-        if depth > s.max_depth:
-            return
-        for sub in s.path.iterdir():                                                                        # 1 openat() 1 fstat() n getdents64() depending on dir size
-            depth = len(sub.parts) - len(s.root.parts)  # bug s.root is always '/'
-            if depth > s.max_depth:
-                return
-            if sub.is_symlink():  # must be before is_dir() # bug didnt check follow_symlinks
-                if s.return_files:
-                    yield sub.absolute()
-            elif sub.is_dir():
-                #print("could yield dir:", sub)
-                s.path = sub
-                yield from s.go()
-            else:
-                if s.return_files:
-                    yield sub.absolute()
-
-
-def all_files_iter(p):
-    if isinstance(p, str):
-        p = Path(p)
-    elif isinstance(p, bytes):
-        p = Path(p.decode())
-    assert isinstance(p, Path)
-    #print("yeilding p.absolute():", p.absolute())
-    yield bytes(p.absolute())
-    for sub in p.iterdir():
-        # eprint("sub:", sub)  # todo: read by terminal, so bell etc happens.... eprint bug?
-        if sub.is_symlink():  # must be before is_dir()
-            yield bytes(sub.absolute())
-        elif sub.is_dir():
-            yield from all_files_iter(sub)
-        else:
-            yield bytes(sub.absolute())
-
-
-def all_files(folder, files_only=False): # todo add flags for recursive, follow symlinks etc, return a generator
-    assert path_is_dir(folder)
-    all_files = []
-    for path, dirs, files in os.walk(folder):
-        for filename in files:
-            all_files.append(os.path.join(path, filename))
-        if not files_only:
-            for d in dirs:
-                all_files.append(os.path.join(path, d))
-    return all_files
-
-
-def count_entries(folder):  # fast, returns all types of objects in a folder
-    return len(os.listdir(folder))
-
-
-def count_files(folder):  # calls lstat on every entry to see if its a file
-    total = 0
-    for root, dirs, files in os.walk(folder):
-        total += len(files)
-    return total
-
-
-def list_files(folder):
-    all_files = []
-    for root, dirs, files in os.walk(folder):
-        for ifile in files:
-            relative_file_path = root + b'/' + ifile
-            all_files.append(relative_file_path)
-    return set(all_files)
+#@attr.s(auto_attribs=True, kw_only=True)
+#class Path_Iterator_Old():  # todo port features to python-getdents
+#    path: str = attr.ib(converter=Path)
+#    min_depth: int = 1
+#    max_depth: object = inf
+#    follow_symlinks: bool = False
+#    return_dirs: bool = True
+#    return_files: bool = True
+#    return_symlinks: bool = True
+#
+#    def __attrs_post_init__(self):
+#        self.root = self.path
+#        if self.follow_symlinks:
+#            assert not self.return_symlinks  # todo broken symlinks
+#
+#    def go(s):
+#        depth = len(s.path.parts) - len(s.root.parts)  # len('/') == 1                                      # no fs syscalls
+#        if depth >= s.min_depth:
+#            if s.return_dirs and s.path.is_dir():                                                           # single stat()
+#                if depth <= s.max_depth:
+#                    yield s.path.absolute()                                                                 # no syscalls just looks to see if it starts with /
+#            if s.return_files and not s.path.is_dir():  # dir/fifo/file/symlink/socket/reserved/char/block  # single stat()
+#                if depth <= s.max_depth:
+#                    yield s.path.absolute()
+#
+#        if depth > s.max_depth:
+#            return
+#        for sub in s.path.iterdir():                                                                        # 1 openat() 1 fstat() n getdents64() depending on dir size
+#            depth = len(sub.parts) - len(s.root.parts)  # bug s.root is always '/'
+#            if depth > s.max_depth:
+#                return
+#            if sub.is_symlink():  # must be before is_dir() # bug didnt check follow_symlinks
+#                if s.return_files:
+#                    yield sub.absolute()
+#            elif sub.is_dir():
+#                #print("could yield dir:", sub)
+#                s.path = sub
+#                yield from s.go()
+#            else:
+#                if s.return_files:
+#                    yield sub.absolute()
+#
+#
+#def all_files_iter(p):
+#    if isinstance(p, str):
+#        p = Path(p)
+#    elif isinstance(p, bytes):
+#        p = Path(p.decode())
+#    assert isinstance(p, Path)
+#    #print("yeilding p.absolute():", p.absolute())
+#    yield bytes(p.absolute())
+#    for sub in p.iterdir():
+#        # eprint("sub:", sub)  # todo: read by terminal, so bell etc happens.... eprint bug?
+#        if sub.is_symlink():  # must be before is_dir()
+#            yield bytes(sub.absolute())
+#        elif sub.is_dir():
+#            yield from all_files_iter(sub)
+#        else:
+#            yield bytes(sub.absolute())
+#
+#
+#def all_files(folder, files_only=False): # todo add flags for recursive, follow symlinks etc, return a generator
+#    assert path_is_dir(folder)
+#    all_files = []
+#    for path, dirs, files in os.walk(folder):
+#        for filename in files:
+#            all_files.append(os.path.join(path, filename))
+#        if not files_only:
+#            for d in dirs:
+#                all_files.append(os.path.join(path, d))
+#    return all_files
+#
+#
+#def count_entries(folder):  # fast, returns all types of objects in a folder
+#    return len(os.listdir(folder))
+#
+#
+#def count_files(folder):  # calls lstat on every entry to see if its a file
+#    total = 0
+#    for root, dirs, files in os.walk(folder):
+#        total += len(files)
+#    return total
+#
+#
+#def list_files(folder):
+#    all_files = []
+#    for root, dirs, files in os.walk(folder):
+#        for ifile in files:
+#            relative_file_path = root + b'/' + ifile
+#            all_files.append(relative_file_path)
+#    return set(all_files)
 
 
 def path_is_dir(path):
@@ -127,14 +127,14 @@ def check_or_create_dir(folder, confirm=True):
     #assert isinstance(folder, bytes)
     if not os.path.isdir(folder):
         if confirm:
-            ceprint("The folder:")
-            ceprint(folder)
-            ceprint("does not exist. Type yes to create it and continue, otherwise exiting:")
-            ceprint("make dir:")
-            ceprint(folder, end=None)
+            eprint("The folder:")
+            eprint(folder)
+            eprint("does not exist. Type yes to create it and continue, otherwise exiting:")
+            eprint("make dir:")
+            eprint(folder, end=None)
             make_folder_answer = input(": ")
             if make_folder_answer.lower() != "yes":
-                ceprint("Exiting before mkdir.")
+                eprint("Exiting before mkdir.")
                 os._exit(1)
         create_dir(folder)
         return True
@@ -161,8 +161,8 @@ def chdir_or_exit(targetdir):
     try:
         os.chdir(targetdir)
     except Exception as e:
-        print("Exception:", e)
-        print("Unable to os.chdir(%s). Exiting.", targetdir)
+        eprint("Exception:", e)
+        eprint("Unable to os.chdir(%s). Exiting.", targetdir)
         os._exit(1)
     return True
 
