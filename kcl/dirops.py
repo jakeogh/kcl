@@ -59,8 +59,6 @@ class Path_Iterator():
                     yield sub.absolute()
 
 
-
-
 def all_files_iter(p):
     if isinstance(p, str):
         p = Path(p)
@@ -109,14 +107,6 @@ def list_files(folder):
             relative_file_path = root + b'/' + ifile
             all_files.append(relative_file_path)
     return set(all_files)
-
-
-#def dir_exists(path):
-#    return path_is_dir(path)
-#
-#
-#def is_directory(path):
-#    return path_is_dir(path)
 
 
 def path_is_dir(path):
