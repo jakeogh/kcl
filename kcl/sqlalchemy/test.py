@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from kcl.dirops import all_files
+from getdents import files
 from kcl.printops import eprint
 import os
 from pkg_resources import resource_filename
@@ -15,7 +15,7 @@ def test(package, keep_databases, count, test_class=None, test_match=None):
         #print(os.getenv("keep_test_databases"))
     eprint("test_path:", test_path)
     index = 0
-    for test_file in all_files(test_path):
+    for test_file in files(test_path):
         if test_match:
             if test_match not in test_file:
                 continue
