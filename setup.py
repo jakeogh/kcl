@@ -2,6 +2,7 @@
 """
 kcl - Keogh Common Library
 """
+import fastentrypoints
 import sys
 if not sys.version_info[0] == 3:
     sys.exit("Sorry, Python 3 is required. Use: \'python3 setup.py install\'")
