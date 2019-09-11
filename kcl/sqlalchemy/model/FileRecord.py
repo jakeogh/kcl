@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+from icecream import ic
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
@@ -75,7 +76,8 @@ class FileRecord(BASE):
     def construct(cls, session, path, calc_hash=False, verbose=False):
         #with PyCallGraph(output=GraphvizOutput()):
         if verbose:
-            ceprint(path)
+            ic(path)
+            ic(calc_hash)
         if isinstance(path, str):
             path = bytes(path, encoding='UTF8') # allow command line args
         path = os.path.abspath(path)
@@ -86,7 +88,12 @@ class FileRecord(BASE):
             symlink_target_path = Path.construct(session=session, path=symlink_target, verbose=verbose)
         else:
             symlink_target_path = None
+
+        start = time.time()
         path = Path.construct(session=session, path=path, verbose=verbose)
+        end = time.time()
+        if verbose:
+            ic("Path.construct():", end-start)
 
         if calc_hash and is_regular_file(path): #this stuff should be in BytesHash.construct
             if stat.st_size == 0:
@@ -107,6 +114,7 @@ class FileRecord(BASE):
 
         #import IPython; IPython.embed()
         # pointless to use get_one_or_create due to using a timestamp
+        start = time.time()
         result = get_one_or_create(session, FileRecord,
                                    verbose=verbose,
                                    path=path,
@@ -122,7 +130,9 @@ class FileRecord(BASE):
                                    stat_st_atime=stat.st_atime,
                                    stat_st_mtime=stat.st_mtime,
                                    stat_st_ctime=stat.st_ctime)
-
+        end = time.time()
+        if verbose:
+            ic("get_one_or_create():", end-start)
         return result
 
     def __bytes__(self):
