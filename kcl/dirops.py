@@ -162,8 +162,27 @@ def chdir_or_exit(targetdir):
         os.chdir(targetdir)
     except Exception as e:
         eprint("Exception:", e)
-        eprint("Unable to os.chdir(%s). Exiting.", targetdir)
+        eprint("Unable to os.chdir(%s). Enxiting.", targetdir)
         os._exit(1)
     return True
 
+
+def remove_empty_folders(path, remove_root=True):
+    if not os.path.isdir(path):
+        return
+
+    # remove empty subfolders
+    files = os.listdir(path)
+    if len(files):
+        for f in files:
+            fullpath = os.path.join(path, f)
+            if os.path.isdir(fullpath):
+                if not os.path.islink(fullpath):
+                    remove_empty_folders(fullpath)
+
+    # if folder empty, delete it
+    files = os.listdir(path)
+    if len(files) == 0 and remove_root:
+        eprint("Removing empty folder:", path)
+        os.rmdir(path)
 
