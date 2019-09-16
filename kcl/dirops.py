@@ -93,11 +93,11 @@ from .printops import eprint
 #    return len(os.listdir(folder))
 #
 #
-#def count_files(folder):  # calls lstat on every entry to see if its a file
-#    total = 0
-#    for root, dirs, files in os.walk(folder):
-#        total += len(files)
-#    return total
+def count_files(folder):  # calls lstat on every entry to see if its a file
+    total = 0
+    for root, dirs, files in os.walk(folder):
+        total += len(files)
+    return total
 #
 #
 #def list_files(folder):
