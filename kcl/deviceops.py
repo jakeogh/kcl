@@ -7,12 +7,32 @@ from kcl.timeops import timestamp
 from kcl.mountops import block_special_path_is_mounted
 from kcl.fileops import path_is_block_special
 from kcl.fileops import get_block_device_size
+from kcl.fileops import path_exists
 from kcl.printops import eprint
 from kcl.commandops import run_command
 from kcl.filesystemops import create_filesystem
 from kcl.warnops import warn
 
 deviceops = click.Group()
+
+
+def wait_for_block_special_device_to_exist(path, timeout=5):
+    start = time.time()
+    if path_exists(path):
+        assert path_is_block_special(path)
+        return True
+
+    #if path_is_block_special(path):
+    #    return True
+    eprint("waiting for block special path: {} to exist".format(path))
+    while not path_exists(path):
+        time.sleep(0.1)
+        if time.time() - start > timeout:
+            raise TimeoutError("timeout waiting for block special path: {} to exist".format(path))
+
+    assert path_is_block_special(path)
+    return True
+
 
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
@@ -286,8 +306,10 @@ def write_mbr(ctx, device, force, no_wipe, no_backup):
 def write_efi_partition(ctx, device, start, end, partition_number, force):
     eprint("creating efi partition on device:", device, "partition_number:", partition_number, "start:", start, "end:", end)
     assert not device[-1].isdigit()
+    assert not device.endswith('/')
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
+    assert int(partition_number)
 
     if not force:
         warn((device,))
@@ -298,9 +320,10 @@ def write_efi_partition(ctx, device, start, end, partition_number, force):
     run_command("parted " + device + " --script -- set " + partition_number + " boot on")
 
     fat16_partition_device = device + partition_number
-    while not path_is_block_special(fat16_partition_device):
-        eprint("fat16_partition_device", fat16_partition_device, "is not block special yet, waiting a second.")
-        time.sleep(1)
+    wait_for_block_special_device_to_exist(fat16_partition_device)
+    #while not path_is_block_special(fat16_partition_device):
+    #    eprint("fat16_partition_device", fat16_partition_device, "is not block special yet, waiting a second.")
+    #    time.sleep(1)
 
     ctx.invoke(create_filesystem, device=fat16_partition_device, filesystem='fat16', force=True)
 
@@ -318,6 +341,7 @@ def write_grub_bios_partition(device, start, end, force, partition_number):
     assert not device[-1].isdigit()
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
+    assert int(partition_number)
 
     if not force:
         warn((device,))
@@ -326,6 +350,8 @@ def write_grub_bios_partition(device, start, end, force, partition_number):
     run_command("parted " + device + " --align minimal --script -- mkpart primary " + start + ' ' + end)
     run_command("parted " + device + " --script -- name " + partition_number + " BIOSGRUB")
     run_command("parted " + device + " --script -- set " + partition_number + " bios_grub on")
+    grub_bios_partition_device = device + partition_number
+    wait_for_block_special_device_to_exist(grub_bios_partition_device)
 
 #    parted size prefixes
 #    "s" (sectors)
