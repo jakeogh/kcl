@@ -17,14 +17,12 @@ deviceops = click.Group()
 
 
 def wait_for_block_special_device_to_exist(path, timeout=5):
+    eprint("waiting for block special path: {} to exist".format(path))
     start = time.time()
     if path_exists(path):
         assert path_is_block_special(path)
         return True
 
-    #if path_is_block_special(path):
-    #    return True
-    eprint("waiting for block special path: {} to exist".format(path))
     while not path_exists(path):
         time.sleep(0.1)
         if time.time() - start > timeout:
