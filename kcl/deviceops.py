@@ -27,8 +27,9 @@ def wait_for_block_special_device_to_exist(path, timeout=5):
         time.sleep(0.1)
         if time.time() - start > timeout:
             raise TimeoutError("timeout waiting for block special path: {} to exist".format(path))
+        if path_is_block_special(path):
+            break
 
-    assert path_is_block_special(path)
     return True
 
 
