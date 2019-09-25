@@ -11,9 +11,20 @@
 import os
 #import attr
 import shutil
+from psutil import disk_usage
 from .printops import eprint
 #from .printops import ceprint
 #from pathlib import Path
+
+
+def target_generator(target_list, min_free_space):
+    for target in target_list:
+        assert path_is_dir(target)
+        if disk_usage(target) >= min_free_space:
+            yield target
+
+
+
 
 
 #@attr.s(auto_attribs=True, kw_only=True)
