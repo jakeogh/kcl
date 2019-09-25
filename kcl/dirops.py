@@ -24,7 +24,7 @@ def target_generator(target_list, min_free_space, verbose=True):
         if verbose: ic(target)
         if path_exists(target):
             assert path_is_dir(target)
-            if disk_usage(target) >= min_free_space:
+            if disk_usage(target).free >= min_free_space:
                 yield target
 
 
