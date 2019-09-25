@@ -51,7 +51,10 @@ def eeprint(*args, **kwargs):
 
 def eprint(*args, **kwargs):
     print(Fore.GREEN, file=sys.stderr, end='')
-    print(*args, file=sys.stderr, **kwargs, end='')
+    if 'end' in kwargs.keys():
+        print(*args, file=sys.stderr, **kwargs)
+    else:
+        print(*args, file=sys.stderr, **kwargs, end='')
     print(Style.RESET_ALL, file=sys.stderr)
 
 
