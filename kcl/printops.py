@@ -50,7 +50,7 @@ def eeprint(*args, **kwargs):
 
 
 def eprint(*args, **kwargs):
-    print(Fore.RED, file=sys.stderr, end='')
+    print(Fore.GREEN, file=sys.stderr, end='')
     print(*args, file=sys.stderr, **kwargs, end='')
     print(Style.RESET_ALL, file=sys.stderr)
 
