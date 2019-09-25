@@ -4,6 +4,8 @@ import os
 import sys
 import time
 import inspect
+from colorama import Fore
+from colorama import Style
 from pprint import pprint
 
 
@@ -48,7 +50,9 @@ def eeprint(*args, **kwargs):
 
 
 def eprint(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)
+    print(Fore.RED, file=sys.stderr, end='')
+    print(*args, file=sys.stderr, **kwargs, end='')
+    print(Style.RESET_ALL, file=sys.stderr)
 
 
 def epprint(*args, **kwargs):

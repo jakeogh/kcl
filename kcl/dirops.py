@@ -104,6 +104,8 @@ def target_generator(target_list, min_free_space):
 #    return len(os.listdir(folder))
 #
 #
+
+
 def count_files(folder):  # calls lstat on every entry to see if its a file
     total = 0
     for root, dirs, files in os.walk(folder):
