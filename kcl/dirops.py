@@ -20,15 +20,18 @@ from .fileops import path_exists
 
 
 def target_generator(target_list, min_free_space, verbose=True):
+    if verbose: ic(min_free_space)
     for target in target_list:
         if verbose: ic(target)
         if path_exists(target):
             assert path_is_dir(target)
+            free_space = disk_usage(target).free
+            ic(free_space)
             if disk_usage(target).free >= min_free_space:
                 yield target
             else:
                 eprint("skipped:", target, "<", min_free_space)
-
+    raise FileNotFoundError
 
 
 #@attr.s(auto_attribs=True, kw_only=True)
