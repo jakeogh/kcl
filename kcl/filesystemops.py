@@ -6,6 +6,7 @@ from kcl.mountops import block_special_path_is_mounted
 from kcl.commandops import run_command
 from kcl.printops import eprint
 from kcl.warnops import warn
+from kcl.deviceops import wait_for_block_special_device_to_exist
 
 
 @click.command()
@@ -24,6 +25,8 @@ def create_filesystem(device, filesystem, force, raw_device):
 
     if not force:
         warn((device,))
+
+    wait_for_block_special_device_to_exist(path=device)
 
     if filesystem == 'fat16':
         run_command("mkfs.fat -F16 -s2 " + device)
