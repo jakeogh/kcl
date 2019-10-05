@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import requests
+from icecream import ic
 from kcl.assertops import verify
 from kcl.printops import eprint
 
@@ -22,6 +23,7 @@ def download_file(url, destination_dir=None, force=False, proxy=None):
         proxy_dict["http"] = proxy
         proxy_dict["https"] = proxy
 
+    ic(proxy_dict)
     r = requests.get(url, stream=True, proxies=proxy_dict)
     if local_filename:
         try:
