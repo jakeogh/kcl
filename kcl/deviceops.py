@@ -388,13 +388,13 @@ def create_filesystem(device, filesystem, force, raw_device):
         assert device[-1].isdigit()
     # oddly, this failed on '/dev/sda2', maybe the kernel was not done
     # digesting the previous table change? (using fat16)
+    wait_for_block_special_device_to_exist(path=device)
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
 
     if not force:
         warn((device,))
 
-    wait_for_block_special_device_to_exist(path=device)
 
     if filesystem == 'fat16':
         run_command("mkfs.fat -F16 -s2 " + device)
