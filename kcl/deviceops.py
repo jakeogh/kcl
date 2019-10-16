@@ -37,8 +37,9 @@ def wait_for_block_special_device_to_exist(path, timeout=5):
 @click.argument('device', required=True, nargs=1)
 @click.option('--force', is_flag=True, required=False)
 @click.option('--skipdestroy', is_flag=True, required=False)
+@click.option('--simulate', is_flag=True, required=False)
 @click.pass_context
-def luksformat(ctx, device, force, skipdestroy):
+def luksformat(ctx, device, force, skipdestroy, simulate):
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
     if not force:
@@ -55,7 +56,10 @@ def luksformat(ctx, device, force, skipdestroy):
     if not skipdestroy:
         ctx.invoke(destroy_block_device, device=device, force=True)
     luks_command = "cryptsetup -q --debug --verbose --cipher aes-xts-essiv:sha256 --key-size 512 --hash sha512 --use-random --iter-time 15000 --timeout 24000 --key-file - luksFormat " + device
-    run_command(luks_command, verbose=True, expected_exit_code=0, stdin=read)
+    if simulate:
+        eprint(luks_command)
+    else:
+        run_command(luks_command, verbose=True, expected_exit_code=0, stdin=read)
     # xts with essiv is redundant, but there is no downside to using it
 
 
