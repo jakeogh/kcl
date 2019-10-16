@@ -43,7 +43,8 @@ def luksformat(ctx, device, force, skipdestroy, simulate):
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
     if not force:
-        warn((device,))
+        if not simulate:
+            warn((device,))
 
     passphrase   = input("enter LUKS passphrase : ")
     passphrase_v = input("verify LUKS passphrase: ")
@@ -54,7 +55,8 @@ def luksformat(ctx, device, force, skipdestroy, simulate):
     os.write(write, passphrase)
     os.close(write)
     if not skipdestroy:
-        ctx.invoke(destroy_block_device, device=device, force=True)
+        if not simulate:
+            ctx.invoke(destroy_block_device, device=device, force=True)
     luks_command = "cryptsetup -q --debug --verbose --cipher aes-xts-essiv:sha256 --key-size 512 --hash sha512 --use-random --iter-time 15000 --timeout 24000 --key-file - luksFormat " + device
     if simulate:
         eprint(luks_command)
