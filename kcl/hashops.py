@@ -86,6 +86,17 @@ def sha1_hash_file(path, block_size=256*128*2, binary=False):
         return sha1.digest()
     return sha1.hexdigest()
 
+
+def sha3_256_hash_file(path, block_size=256*128*2, binary=False):
+    sha3 = hashlib.sha3_256()
+    with open(path, 'rb') as f:
+        for chunk in iter(lambda: f.read(block_size), b''):
+            sha3.update(chunk)
+    if binary:
+        return sha3.digest()
+    return sha3.hexdigest()
+
+
 # Calculate (multiple) digest(s) for file(s)
 # Author: Peter Wu <peter@lekensteyn.nl>
 # Licensed under the MIT license <http://opensource.org/licenses/MIT>
