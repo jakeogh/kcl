@@ -1,4 +1,5 @@
 import subprocess
+import os
 from kcl.htmlops import extract_iris_from_text
 #from kcl.printops import ceprint
 
@@ -9,6 +10,23 @@ def get_clipboard():
     string = \
         subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).stdout.read()
     return string.decode("utf-8")
+
+
+def prompt_tag_slmenu(file="/home/user/.iridb/.dmenu_tag_cache"):
+    #with open(file, 'r') as fh:
+    #    tags = fh.readlines()
+
+    command = "/usr/bin/slmenu -i <" + file
+    text = os.popen(command).read()
+
+    #tag_completer = WordCompleter(tags, ignore_case=True)
+    #text = prompt('Tag: ', completer=tag_completer,
+    #              complete_style=CompleteStyle.READLINE_LIKE, complete_while_typing=True)
+
+
+    return text
+
+
 
 
 def get_clipboard_iri():
