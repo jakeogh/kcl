@@ -1,9 +1,11 @@
 import os
+from icecream import ic
 
-
-def prompt_tag_dmenu(file="/home/user/.iridb/.dmenu_tag_cache"):
+def prompt_tag_dmenu(file="/home/user/.iridb/.dmenu_tag_cache", verbose=False):
     command = '''dmenu -fn "-misc-fixed-*-*-*-*-20-*-*-*-*-*-*-*" -f -nb "#000000" -i <''' + file
     text = os.popen(command).read()
+    if verbose:
+        ic(text)
     return text
 
 
