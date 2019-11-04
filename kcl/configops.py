@@ -18,8 +18,9 @@ def click_read_config(click_instance, app_name, verbose=False):
     parser.read([cfg])
     rv = {}
     for section in parser.sections():
+        rv[section] = {}
         for key, value in parser.items(section):
-            rv['%s.%s' % (section, key)] = value
+            rv[section][key] = value
     ic(rv)
     return rv
 
