@@ -2,15 +2,15 @@
 
 import os
 import configparser
+#import ConfigParser
 from kcl.fileops import empty_file
 
-import click
-import ConfigParser
+#import click
 
 
-def read_config(app_name):
-    cfg = os.path.join(click.get_app_dir(app_name), 'config.ini')
-    parser = ConfigParser.RawConfigParser()
+def click_read_config(click_instance, app_name):
+    cfg = os.path.join(click_instance.get_app_dir(app_name), 'config.ini')
+    parser = configparser.ConfigParser.RawConfigParser()
     parser.read([cfg])
     rv = {}
     for section in parser.sections():
