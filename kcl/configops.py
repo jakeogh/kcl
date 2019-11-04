@@ -10,7 +10,7 @@ from kcl.fileops import empty_file
 
 def click_read_config(click_instance, app_name):
     cfg = os.path.join(click_instance.get_app_dir(app_name), 'config.ini')
-    parser = configparser.ConfigParser.RawConfigParser()
+    parser = configparser.RawConfigParser()
     parser.read([cfg])
     rv = {}
     for section in parser.sections():
