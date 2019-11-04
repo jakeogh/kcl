@@ -4,6 +4,20 @@ import os
 import configparser
 from kcl.fileops import empty_file
 
+import click
+import ConfigParser
+
+
+def read_config(app_name):
+    cfg = os.path.join(click.get_app_dir(app_name), 'config.ini')
+    parser = ConfigParser.RawConfigParser()
+    parser.read([cfg])
+    rv = {}
+    for section in parser.sections():
+        for key, value in parser.items(section):
+            rv['%s.%s' % (section, key)] = value
+    return rv
+
 
 def read_config_file(config_file):
     # race condition, CONFIG.read throws no error when it trys to read empty or non existing config file
