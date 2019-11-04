@@ -13,14 +13,14 @@ def click_read_config(click_instance, app_name, verbose=False):
     if verbose:
         ic.enable()
     cfg = os.path.join(click_instance.get_app_dir(app_name), 'config.ini')
+    ic(cfg)
     parser = configparser.RawConfigParser()
     parser.read([cfg])
     rv = {}
     for section in parser.sections():
         for key, value in parser.items(section):
             rv['%s.%s' % (section, key)] = value
-    if verbose:
-        ic(rv)
+    ic(rv)
     return rv
 
 
