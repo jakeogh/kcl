@@ -4,11 +4,14 @@ import os
 import configparser
 #import ConfigParser
 from kcl.fileops import empty_file
+from icecream import ic
 
 #import click
 
 
-def click_read_config(click_instance, app_name):
+def click_read_config(click_instance, app_name, verbose=False):
+    if verbose:
+        ic.enable()
     cfg = os.path.join(click_instance.get_app_dir(app_name), 'config.ini')
     parser = configparser.RawConfigParser()
     parser.read([cfg])
@@ -16,6 +19,8 @@ def click_read_config(click_instance, app_name):
     for section in parser.sections():
         for key, value in parser.items(section):
             rv['%s.%s' % (section, key)] = value
+    if verbose:
+        ic(rv)
     return rv
 
 
