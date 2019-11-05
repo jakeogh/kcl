@@ -10,10 +10,8 @@ from icecream import ic
 
 
 def click_read_config(click_instance, app_name, verbose=False):
-    if verbose:
-        ic.enable()
     cfg = os.path.join(click_instance.get_app_dir(app_name), 'config.ini')
-    ic(cfg)
+    #ic(cfg)
     parser = configparser.RawConfigParser()
     parser.read([cfg])
     rv = {}
@@ -21,7 +19,9 @@ def click_read_config(click_instance, app_name, verbose=False):
         rv[section] = {}
         for key, value in parser.items(section):
             rv[section][key] = value
-    ic(rv)
+    if verbose:
+        ic.enable()
+        ic(rv)
     return rv
 
 
