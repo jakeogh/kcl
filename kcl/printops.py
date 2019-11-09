@@ -41,7 +41,7 @@ def eeprint(*args, **kwargs):
         source_file,
         caller + '()'
         ])
-    head_format = '{0: <46}'
+    head_format = '{0: <40}'
     if "start" in kwargs.keys():
         head_format = kwargs["start"] + head_format
         kwargs.pop("start")
