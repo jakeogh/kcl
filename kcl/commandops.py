@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import subprocess
 from kcl.printops import ceprint
-#import os
 
 
 def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=None, stderr=subprocess.STDOUT):
@@ -9,16 +8,16 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
         command = b' '.join(command)
     output = ''
     if verbose:
-        ceprint("command:", '`' + command + '`')
+        ceprint(b"command: `{}`".format(command))
         ceprint("shell:", shell)
     try:
         output = subprocess.check_output(command, stderr=stderr, shell=shell, stdin=stdin)
         if verbose:
-            ceprint("output:", output.decode('utf8'))  # bug
+            ceprint(b"output:", output)  # bug
     except subprocess.CalledProcessError as error:
         if error.returncode == expected_exit_code:
             return output
-        ceprint("command:", command)
+        ceprint(b"command: `{}`".format(command))
         ceprint("exit code:", error.returncode, error.output)
         raise error
 
