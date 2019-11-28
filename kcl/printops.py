@@ -16,7 +16,10 @@ def ceprint(*args, **kwargs):
     frm = stack[1]
     depth = len(stack)
     mod = str(inspect.getmodule(frm[0]))
-    source_file = mod.split()[-1].split('>')[0].split("'")[1].split('/')[-1]
+    try:
+        source_file = mod.split()[-1].split('>')[0].split("'")[1].split('/')[-1]
+    except IndexError:
+        source_file = "(none)"
     head = ' '.join([
         depth * ' ',
         str(depth).zfill(3),
@@ -28,7 +31,7 @@ def ceprint(*args, **kwargs):
     print('{0: <49}'.format(head), *args, file=sys.stderr, **kwargs)
 
 
-def eeprint(*args, **kwargs):
+def eeprint(*args, **kwargs): # todo merge with ceprint
     '''Simple debugging replacement for print()'''
     caller = sys._getframe(1).f_code.co_name
     stack = inspect.stack()
