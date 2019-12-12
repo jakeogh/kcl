@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-import click
 import time
+import click
 from kcl.timeops import timestamp
 from kcl.mountops import block_special_path_is_mounted
 from kcl.fileops import path_is_block_special
@@ -29,7 +29,6 @@ def wait_for_block_special_device_to_exist(path, timeout=5):
             raise TimeoutError("timeout waiting for block special path: {} to exist".format(path))
         if path_is_block_special(path):
             break
-
     return True
 
 
@@ -46,7 +45,7 @@ def luksformat(ctx, device, force, skipdestroy, simulate):
         if not simulate:
             warn((device,))
 
-    passphrase   = input("enter LUKS passphrase : ")
+    passphrase = input("enter LUKS passphrase : ")
     passphrase_v = input("verify LUKS passphrase: ")
     assert passphrase == passphrase_v
     passphrase = passphrase.encode('ascii')
@@ -57,7 +56,7 @@ def luksformat(ctx, device, force, skipdestroy, simulate):
     if not skipdestroy:
         if not simulate:
             ctx.invoke(destroy_block_device, device=device, force=True)
-    luks_command = "cryptsetup -q --debug --verbose --cipher aes-xts-essiv:sha256 --key-size 512 --hash sha512 --use-random --iter-time 15000 --timeout 24000 --key-file - luksFormat " + device
+    luks_command = b"cryptsetup -q --debug --verbose --cipher aes-xts-essiv:sha256 --key-size 512 --hash sha512 --use-random --iter-time 15000 --timeout 24000 --key-file - luksFormat " + os.fsencode(device)
     if simulate:
         eprint(luks_command)
     else:
@@ -305,8 +304,8 @@ def write_mbr(ctx, device, force, no_wipe, no_backup):
 @click.option('--device', is_flag=False, required=True)
 @click.option('--start',  is_flag=False, required=True, type=str)
 @click.option('--end',    is_flag=False, required=True, type=str)
-@click.option('--partition-number',    is_flag=False, required=True, type=str)
-@click.option('--force',  is_flag=True,  required=False)
+@click.option('--partition-number', is_flag=False, required=True, type=str)
+@click.option('--force',  is_flag=True, required=False)
 @click.pass_context
 def write_efi_partition(ctx, device, start, end, partition_number, force):
     eprint("creating efi partition on device:", device, "partition_number:", partition_number, "start:", start, "end:", end)

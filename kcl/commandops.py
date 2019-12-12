@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 import subprocess
+import os
 from kcl.printops import ceprint
 
 
 def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=None, stderr=subprocess.STDOUT):
+    if isinstance(command, str):
+        command = os.fsencode(command)  # hm.
     if isinstance(command, list):
         command = b' '.join(command)
     output = ''
