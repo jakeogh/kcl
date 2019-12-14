@@ -12,6 +12,7 @@ from kcl.printops import eprint
 from kcl.commandops import run_command
 #from kcl.filesystemops import create_filesystem
 from kcl.warnops import warn
+from kcl.inputops import passphrase_prompt
 
 deviceops = click.Group()
 
@@ -45,10 +46,7 @@ def luksformat(ctx, device, force, skipdestroy, simulate):
         if not simulate:
             warn((device,))
 
-    passphrase = input("enter LUKS passphrase : ")
-    passphrase_v = input("verify LUKS passphrase: ")
-    assert passphrase == passphrase_v
-    passphrase = passphrase.encode('ascii')
+    passphrase = passphrase_prompt("LUKS")
     assert passphrase
     read, write = os.pipe()
     os.write(write, passphrase)
@@ -61,7 +59,7 @@ def luksformat(ctx, device, force, skipdestroy, simulate):
         eprint(luks_command)
     else:
         run_command(luks_command, verbose=True, expected_exit_code=0, stdin=read)
-    # xts with essiv is redundant, but there is no downside to using it
+    #  xts with essiv is redundant, but there is no downside to using it
 
 
 @deviceops.command()
@@ -371,15 +369,6 @@ def write_grub_bios_partition(device, start, end, force, partition_number):
 #    "cyl" (cylinders)
 
     # sgdisk -a1 -n2:48:2047 -t2:EF02 -c2:"BIOS boot partition " + device # numbers in 512B sectors
-#!/usr/bin/env python3
-
-#import click
-#from kcl.fileops import path_is_block_special
-#from kcl.mountops import block_special_path_is_mounted
-#from kcl.commandops import run_command
-#from kcl.printops import eprint
-#from kcl.warnops import warn
-#from kcl.deviceops import wait_for_block_special_device_to_exist
 
 
 @click.command()
@@ -399,7 +388,6 @@ def create_filesystem(device, filesystem, force, raw_device):
 
     if not force:
         warn((device,))
-
 
     if filesystem == 'fat16':
         run_command("mkfs.fat -F16 -s2 " + device)

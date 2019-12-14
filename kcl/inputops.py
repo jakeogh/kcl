@@ -4,6 +4,19 @@ import dmenu
 from .printops import ceprint
 
 
+def passphrase_prompt(note):
+    note = note.strip()
+    assert len(note) > 0
+    prompt = "Enter {} passphrase: ".format(note)
+    passphrase = input(prompt)
+    passphrase = passphrase.encode('ascii')
+    passphrase_v = input(prompt)
+    passphrase_v = passphrase_v.encode('ascii')
+    assert passphrase == passphrase_v
+    assert len(passphrase) > 12
+    return passphrase
+
+
 def dmenu_tag(tag_cache_file):
     with open(tag_cache_file, 'r') as fh:
         tag_list = fh.readlines()
