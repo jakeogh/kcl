@@ -34,7 +34,10 @@ def get_title_from_dom_tree(dom_tree):
 def extract_title_from_file(data_file):
     content = read_file_bytes(data_file)
     dom_tree = parse_html_to_dom(content)
-    title = ' '.join(get_title_from_dom_tree(dom_tree).split())
+    try:
+        title = ' '.join(get_title_from_dom_tree(dom_tree).split())
+    except AttributeError:
+        return None
     title = title.replace('\r', ' ').replace('\n', ' ')
     if title == 'YouTube':
         #print(data_file)
