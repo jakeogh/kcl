@@ -9,7 +9,7 @@ from lxml import etree
 import re
 from urllib.parse import urldefrag
 from kcl.printops import ceprint
-
+from kcl.fileops import read_file_bytes
 from lxml import html
 from lxml.etree import tostring
 from lxml.etree import HTMLParser
@@ -29,6 +29,26 @@ def soup_from_file(file_name):
 
 def get_title_from_dom_tree(dom_tree):
     return dom_tree.find(".//title").text
+
+
+def extract_title_from_file(data_file):
+    content = read_file_bytes(data_file)
+    dom_tree = parse_html_to_dom(content)
+    title = ' '.join(get_title_from_dom_tree(dom_tree).split())
+    title = title.replace('\r', ' ').replace('\n', ' ')
+    if title == 'YouTube':
+        #print(data_file)
+        try:
+            split_marker = b'''\\",\\"title\\":\\"'''  # \",\"title\":\"
+            title = content.split(split_marker)[1].split(b'''\\",\\"''')[0]
+        except IndexError:
+            try:
+                split_marker = b'''","title":"'''
+                title = content.split(split_marker)[1].split(b'''","''')[0]
+            except:  # todo
+                pass
+        title = title.decode('utf8')
+    return title
 
 
 def parse_html_to_dom(html):
@@ -267,3 +287,5 @@ def convert_html_file_to_text(html_file):
 #    url_set = extract_iris_from_text(text)
 #    return url_set
 
+#
+#
