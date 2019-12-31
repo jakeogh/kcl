@@ -101,7 +101,11 @@ def extract_urls_from_file(html_file, url, strip_fragments, verbose=False):
                     continue
 
                 if link_url not in link_cache:
-                    links.add((link_url, link.text.strip()))
+                    try:
+                        text = link.text.strip()
+                    except AttributeError:
+                        text = link.text
+                    links.add((link_url, text))
                     link_cache.add(link_url)
             except KeyError:
                 pass
@@ -110,7 +114,11 @@ def extract_urls_from_file(html_file, url, strip_fragments, verbose=False):
             try:
                 link_url = link.attrib['src']
                 if link_url not in link_cache:
-                    links.add((link_url, link.text.strip()))
+                    try:
+                        text = link.text.strip()
+                    except AttributeError:
+                        text = link.text
+                    links.add((link_url, text))
                     link_cache.add(link_url)
             except KeyError:
                 pass
