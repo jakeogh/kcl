@@ -13,6 +13,7 @@ from kcl.fileops import read_file_bytes
 from lxml import html
 from lxml.etree import tostring
 from lxml.etree import HTMLParser
+from lxml.etree import ParserError
 #import html5_parser
 
 
@@ -33,7 +34,10 @@ def get_title_from_dom_tree(dom_tree):
 
 def extract_title_from_file(data_file):
     content = read_file_bytes(data_file)
-    dom_tree = parse_html_to_dom(content)
+    try:
+        dom_tree = parse_html_to_dom(content)
+    except ParserError:
+        return None
     try:
         title = ' '.join(get_title_from_dom_tree(dom_tree).split())
     except AttributeError:
