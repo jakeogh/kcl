@@ -49,13 +49,14 @@ def extract_title_from_file(data_file, verbose=False):
         try:
             split_marker = b'''\\",\\"title\\":\\"'''  # \",\"title\":\"
             title = content.split(split_marker)[1].split(b'''\\",\\"''')[0]
+            title = title.decode('utf8')
         except IndexError:
             try:
                 split_marker = b'''","title":"'''
                 title = content.split(split_marker)[1].split(b'''","''')[0]
+                title = title.decode('utf8')
             except:  # todo
                 pass
-        title = title.decode('utf8')
     return title
 
 
