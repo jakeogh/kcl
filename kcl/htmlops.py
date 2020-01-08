@@ -2,6 +2,7 @@
 
 # /mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/.iridb/database.local/data_index/8/9/6/89689beecc6ebf06cb1859b8085ec9154e7edb1b
 
+from icecream import ic
 from bs4 import BeautifulSoup
 import lxml.html
 from lxml.etree import ParserError
@@ -32,7 +33,7 @@ def get_title_from_dom_tree(dom_tree):
     return dom_tree.find(".//title").text
 
 
-def extract_title_from_file(data_file):
+def extract_title_from_file(data_file, verbose=False):
     content = read_file_bytes(data_file)
     try:
         dom_tree = parse_html_to_dom(content)
@@ -44,7 +45,7 @@ def extract_title_from_file(data_file):
         return None
     title = title.replace('\r', ' ').replace('\n', ' ')
     if title == 'YouTube':
-        #print(data_file)
+        if verbose: ic(data_file)
         try:
             split_marker = b'''\\",\\"title\\":\\"'''  # \",\"title\":\"
             title = content.split(split_marker)[1].split(b'''\\",\\"''')[0]
