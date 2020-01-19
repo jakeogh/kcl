@@ -169,13 +169,13 @@ def symlink_destination(link): #broken for multi level symlinks
 
 
 def readlinkf(path): # ugly
-        p = subprocess.Popen(['readlink', '-f', path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        readlink_output, errors = p.communicate()
-        readlink_output_clean = readlink_output.strip()
-        if errors:
-            ceprint(errors)
-        else:
-            return readlink_output_clean
+    p = subprocess.Popen(['readlink', '-f', path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    readlink_output, errors = p.communicate()
+    readlink_output_clean = readlink_output.strip()
+    if errors:
+        ceprint(errors)
+    else:
+        return readlink_output_clean
 
 
 def get_abs_path_of_first_symlink_target(path):
@@ -194,26 +194,30 @@ def get_abs_path_of_first_symlink_target(path):
 
 
 def get_symlink_target_next(path):
-        assert os.path.islink(path)
-        target = os.readlink(path)
-        return target
+    assert os.path.islink(path)
+    target = os.readlink(path)
+    return target
 
 
 def get_symlink_target_final(path): #broken for bytes
-        if os.path.islink(path):
-            target = os.readlink(path)
-            target_joined = os.path.join(os.path.dirname(path), target)
-            target_file = readlinkf(target_joined).decode('UTF-8')
-        else:
-            target_file = readlinkf(path).decode('UTF-8')
-        #print("target_file:", target_file)
-        return target_file
+    if os.path.islink(path):
+        target = os.readlink(path)
+        target_joined = os.path.join(os.path.dirname(path), target)
+        target_file = readlinkf(target_joined).decode('UTF-8')
+    else:
+        target_file = readlinkf(path).decode('UTF-8')
+    #print("target_file:", target_file)
+    return target_file
 
 
-def symlink_or_exit(target, link_name, verbose=False):
+def symlink_or_exit(target, link_name, confirm=False, verbose=False):
     if verbose:
         ic(target)
         ic(link_name)
+
+    if confirm:
+        input("press enter to os.symlink({}, {})".format(target, link_name))
+
     try:
         os.symlink(target, link_name)
     except Exception as e:
