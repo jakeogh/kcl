@@ -10,6 +10,7 @@ __version__ = "0.0.1"
 
 from pathlib import Path
 import os
+from icecream import ic
 import subprocess
 from kcl.printops import ceprint
 from kcl.fileops import path_exists
@@ -209,7 +210,10 @@ def get_symlink_target_final(path): #broken for bytes
         return target_file
 
 
-def symlink_or_exit(target, link_name):
+def symlink_or_exit(target, link_name, verbose=False):
+    if verbose:
+        ic(target)
+        ic(link_name)
     try:
         os.symlink(target, link_name)
     except Exception as e:
