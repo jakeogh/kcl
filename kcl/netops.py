@@ -4,6 +4,20 @@ import requests
 from icecream import ic
 #from kcl.assertops import verify
 from kcl.printops import eprint
+from kcl.fileops import read_file_bytes
+
+
+def construct_proxy_dict():
+    proxy_config = read_file_bytes('/etc/portage/proxy.conf').decode('utf8').split('\n')
+    proxy_dict = {}
+    for line in proxy_config:
+        line = line.split('=')[-1]
+        line = line.strip('"')
+        scheme = line.split('://')[0]
+        ic(scheme)
+        proxy_dict[scheme] = line
+        #proxy = line.split('://')[-1].split('"')[0]
+    return proxy_dict
 
 
 def download_file(url, destination_dir=None, force=False, proxy_dict=None):
