@@ -2,11 +2,11 @@
 
 import requests
 from icecream import ic
-from kcl.assertops import verify
+#from kcl.assertops import verify
 from kcl.printops import eprint
 
 
-def download_file(url, destination_dir=None, force=False, proxy=None):
+def download_file(url, destination_dir=None, force=False, proxy_dict=None):
     eprint("downloading:", url)
     if destination_dir:
         local_filename = destination_dir + '/' + url.split('/')[-1]
@@ -16,12 +16,12 @@ def download_file(url, destination_dir=None, force=False, proxy=None):
     #if force:
     #    os.unlink(local_filename)
 
-    proxy_dict = {}
-    if proxy:
-        verify(not proxy.startswith('http'))
-        verify(len(proxy.split(":")) == 2)
-        proxy_dict["http"] = proxy
-        proxy_dict["https"] = proxy
+    #proxy_dict = {}
+    #if proxy:
+    #    verify(not proxy.startswith('http'))
+    #    verify(len(proxy.split(":")) == 2)
+    #    proxy_dict["http"] = proxy
+    #    proxy_dict["https"] = proxy
 
     ic(proxy_dict)
     r = requests.get(url, stream=True, proxies=proxy_dict)
