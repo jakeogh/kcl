@@ -360,7 +360,10 @@ def write_grub_bios_partition(device, start, end, force, partition_number):
     run_command("parted " + device + " --align minimal --script -- mkpart primary " + start + ' ' + end)
     run_command("parted " + device + " --script -- name " + partition_number + " BIOSGRUB")
     run_command("parted " + device + " --script -- set " + partition_number + " bios_grub on")
-    grub_bios_partition_device = device + partition_number
+    if Path(device).name.startswith('nvme'):
+        grub_bios_partition_device = device + 'p' + partition_number
+    else
+        grub_bios_partition_device = device + partition_number
     wait_for_block_special_device_to_exist(grub_bios_partition_device)
 
 #    parted size prefixes
