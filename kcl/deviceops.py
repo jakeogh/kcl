@@ -3,6 +3,7 @@
 import os
 import time
 import click
+from pathlib import Path
 from kcl.timeops import timestamp
 from kcl.mountops import block_special_path_is_mounted
 from kcl.fileops import path_is_block_special
@@ -70,7 +71,8 @@ def luksformat(ctx, device, force, skipdestroy, simulate):
 def destroy_block_device(ctx, device, force):
     assert isinstance(force, bool)
     #assert source in ['urandom', 'zero']
-    assert not device[-1].isdigit()
+    if not Path(device).name.startswith('nvme'):
+        assert not device[-1].isdigit()
     assert device.startswith('/dev/')
     assert not device.endswith('/')
     eprint("destroying device:", device)
@@ -170,7 +172,8 @@ def destroy_byte_range(ctx, device, start, end, source, no_backup, note):
 @click.pass_context
 def destroy_block_device_head_and_tail(ctx, device, size, source, note, force, no_backup):
     #run_command("sgdisk --zap-all " + device) #alt method
-    assert not device[-1].isdigit()
+    if not Path(device).name.startswith('nvme'):
+        assert not device[-1].isdigit()
     eprint("destroying device:", device)
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
@@ -193,7 +196,8 @@ def destroy_block_device_head_and_tail(ctx, device, size, source, note, force, n
 @click.pass_context
 def destroy_block_devices_head_and_tail(ctx, devices, size, note, force, no_backup):
     for device in devices:
-        assert not device[-1].isdigit()
+        if not Path(device).name.startswith('nvme'):
+            assert not device[-1].isdigit()
         eprint("destroying device:", device)
         assert path_is_block_special(device)
         assert not block_special_path_is_mounted(device)
@@ -261,7 +265,8 @@ def compare_byte_range(device, backup_file, start, end):
 @click.pass_context
 def write_gpt(ctx, device, force, no_wipe, no_backup):
     eprint("writing GPT to:", device)
-    assert not device[-1].isdigit()
+    if not Path(device).name.startswith('nvme'):
+        assert not device[-1].isdigit()
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
     if not force:
@@ -284,7 +289,8 @@ def write_gpt(ctx, device, force, no_wipe, no_backup):
 @click.pass_context
 def write_mbr(ctx, device, force, no_wipe, no_backup):
     eprint("writing MBR to:", device)
-    assert not device[-1].isdigit()
+    if not Path(device).name.startswith('nvme'):
+        assert not device[-1].isdigit()
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
     if not force:
@@ -307,7 +313,8 @@ def write_mbr(ctx, device, force, no_wipe, no_backup):
 @click.pass_context
 def write_efi_partition(ctx, device, start, end, partition_number, force):
     eprint("creating efi partition on device:", device, "partition_number:", partition_number, "start:", start, "end:", end)
-    assert not device[-1].isdigit()
+    if not Path(device).name.startswith('nvme'):
+        assert not device[-1].isdigit()
     assert not device.endswith('/')
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
@@ -340,7 +347,8 @@ def write_efi_partition(ctx, device, start, end, partition_number, force):
 @click.option('--force', is_flag=True, required=False)
 def write_grub_bios_partition(device, start, end, force, partition_number):
     eprint("creating grub_bios partition on device:", device, "partition_number:", partition_number, "start:", start, "end:", end)
-    assert not device[-1].isdigit()
+    if not Path(device).name.startswith('nvme'):
+        assert not device[-1].isdigit()
     assert path_is_block_special(device)
     assert not block_special_path_is_mounted(device)
     assert int(partition_number)
