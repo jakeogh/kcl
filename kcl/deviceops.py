@@ -33,6 +33,12 @@ def wait_for_block_special_device_to_exist(path, timeout=5):
             break
     return True
 
+def add_partition_number_to_device(device, partition_number, verbose=False):
+    if Path(device).name.startswith('nvme'):
+        devpath = device + 'p' + partition_number
+    else:
+        devpath = device + partition_number
+    return devpath
 
 @deviceops.command()
 @click.argument('device', required=True, nargs=1)
@@ -328,7 +334,7 @@ def write_efi_partition(ctx, device, start, end, partition_number, force):
     run_command("parted " + device + " --script -- name " + partition_number + " EFI")
     run_command("parted " + device + " --script -- set " + partition_number + " boot on")
 
-    fat16_partition_device = device + partition_number
+    fat16_partition_device = add_partition_number_to_device(device=device, partition_number=partition_number)
     wait_for_block_special_device_to_exist(fat16_partition_device)
     #while not path_is_block_special(fat16_partition_device):
     #    eprint("fat16_partition_device", fat16_partition_device, "is not block special yet, waiting a second.")
@@ -360,10 +366,7 @@ def write_grub_bios_partition(device, start, end, force, partition_number):
     run_command("parted " + device + " --align minimal --script -- mkpart primary " + start + ' ' + end)
     run_command("parted " + device + " --script -- name " + partition_number + " BIOSGRUB")
     run_command("parted " + device + " --script -- set " + partition_number + " bios_grub on")
-    if Path(device).name.startswith('nvme'):
-        grub_bios_partition_device = device + 'p' + partition_number
-    else:
-        grub_bios_partition_device = device + partition_number
+    grub_bios_partition_device = add_partition_number_to_device(device=device, partition_number=partition_number)
     wait_for_block_special_device_to_exist(grub_bios_partition_device)
 
 #    parted size prefixes
