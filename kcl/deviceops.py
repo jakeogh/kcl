@@ -362,7 +362,7 @@ def write_grub_bios_partition(device, start, end, force, partition_number):
     run_command("parted " + device + " --script -- set " + partition_number + " bios_grub on")
     if Path(device).name.startswith('nvme'):
         grub_bios_partition_device = device + 'p' + partition_number
-    else
+    else:
         grub_bios_partition_device = device + partition_number
     wait_for_block_special_device_to_exist(grub_bios_partition_device)
 
