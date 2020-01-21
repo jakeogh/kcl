@@ -4,7 +4,7 @@ import os
 from kcl.printops import ceprint
 
 
-def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=None, stderr=subprocess.STDOUT):
+def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=None, stderr=subprocess.STDOUT, popen=False):
     if isinstance(command, str):
         command = os.fsencode(command)  # hm.
     if isinstance(command, list):
@@ -13,15 +13,19 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
     if verbose:
         ceprint(b"command: `" + command + b"`")
         ceprint("shell:", shell)
-    try:
-        output = subprocess.check_output(command, stderr=stderr, shell=shell, stdin=stdin)
-        if verbose:
-            ceprint(b"output:", output)
-    except subprocess.CalledProcessError as error:
-        if error.returncode == expected_exit_code:
-            return output
-        ceprint(b"command: `" + command + b"`")
-        ceprint("exit code:", error.returncode, error.output)
-        raise error
+    if popen:
+        output = os.popen(command).read()
+
+    else:
+        try:
+            output = subprocess.check_output(command, stderr=stderr, shell=shell, stdin=stdin)
+            if verbose:
+                ceprint(b"output:", output)
+        except subprocess.CalledProcessError as error:
+            if error.returncode == expected_exit_code:
+                return output
+            ceprint(b"command: `" + command + b"`")
+            ceprint("exit code:", error.returncode, error.output)
+            raise error
 
     return output
