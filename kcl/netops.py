@@ -9,11 +9,14 @@ from kcl.fileops import read_file_bytes
 
 def construct_proxy_dict():
     proxy_config = read_file_bytes('/etc/portage/proxy.conf').decode('utf8').split('\n')
+    ic(proxy_config)
     proxy_dict = {}
     for line in proxy_config:
+        ic(line)
+        scheme = line.split('=')[0].split('_')[0]
         line = line.split('=')[-1]
         line = line.strip('"')
-        scheme = line.split('://')[0]
+        #scheme = line.split('://')[0]
         ic(scheme)
         proxy_dict[scheme] = line
         #proxy = line.split('://')[-1].split('"')[0]
