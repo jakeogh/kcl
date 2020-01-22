@@ -17,6 +17,8 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
         if isinstance(command, bytes):
             command = command.decode('utf8')
         output = os.popen(command).read()
+        if verbose:
+            ceprint("output:", output)
 
     else:
         try:
