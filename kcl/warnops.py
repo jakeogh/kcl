@@ -16,7 +16,7 @@ def warn(devices):
     os.system("fdisk --list " + device)
     print("")
     answer = input("Do you want to delete all of your data? (type YES to proceed): ")
-    if answer != 'YES':
+    if answer.upper() != 'YES':
         quit(1)
     eprint("Sleeping 5 seconds")
     time.sleep(5)
