@@ -30,7 +30,7 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
         else:
             ic(command)
             ceprint("exit code:", exit_code, output)
-            raise subprocess.CalledProcessError(cmd=popen_instance, returncode=exit_code)
+            raise subprocess.CalledProcessError(cmd=command, returncode=exit_code)
 
     else:
         try:
