@@ -30,6 +30,7 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
         else:
             ic(command)
             ceprint("exit code:", exit_code, output)
+            raise subprocess.CalledProcessError(output)
 
     else:
         try:
