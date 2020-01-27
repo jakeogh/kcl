@@ -20,8 +20,10 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
         #popen_instance = os.popen(command, stderr=stderr)
         popen_instance = subprocess.Popen(command, stderr=stderr, stdin=stdin, shell=shell)
         output = popen_instance.read()
+        output, errors = popen_instance.communicate()
         if verbose:
             ic(output)
+            ic(errors)
         exit_code = popen_instance.returncode
         if exit_code == expected_exit_code:
             return output
