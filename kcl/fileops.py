@@ -157,14 +157,14 @@ def path_exists(path):
     return os.path.lexists(path) #returns True for broken symlinks
 
 
-def file_exists(infile):
+def path_is_file(infile):
     if os.path.isfile(infile): #unlike os.path.exists(False), os.path.isfile(False) returns False so no need to call path_exists() first.
         return True
     return False
 
 
 def file_exists_nonzero(infile):
-    if file_exists(infile):
+    if path_is_file(infile):
         if not empty_file(infile):
             return True
     return False

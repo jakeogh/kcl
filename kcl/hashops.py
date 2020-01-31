@@ -268,3 +268,9 @@ def generate_algorithm_set():
         alg_set.add(alg)
     return list(alg_set)
 
+
+def emptyhash(alg):
+    emptydigest = getattr(hashlib, alg)(b'').digest()
+    emptyhexdigest = emptydigest.hex()
+    return emptyhexdigest
+
