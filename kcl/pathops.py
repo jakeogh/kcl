@@ -40,14 +40,14 @@ def longest_prefix(iter0, iter1):
     return longest_prefix
 
 
-def common_prefix_path(path0, path1):
-    return os.path.join(*longest_prefix(components(path0), components(path1)))
+#def common_prefix_path(path0, path1):
+#    return os.path.join(*longest_prefix(components(path0), components(path1)))
 
 # For Unix:
-assert common_prefix_path('/', '/usr') == '/'
-assert common_prefix_path('/usr/var1/log/', '/usr/var2/log/') == '/usr'
-assert common_prefix_path('/usr/var/log1/', '/usr/var/log2/') == '/usr/var'
-assert common_prefix_path('/usr/var/log', '/usr/var/log2') == '/usr/var'
-assert common_prefix_path('/usr/var/log', '/usr/var/log') == '/usr/var/log'
+#assert common_prefix_path('/', '/usr') == '/'
+#assert common_prefix_path('/usr/var1/log/', '/usr/var2/log/') == '/usr'
+#assert common_prefix_path('/usr/var/log1/', '/usr/var/log2/') == '/usr/var'
+#assert common_prefix_path('/usr/var/log', '/usr/var/log2') == '/usr/var'
+#assert common_prefix_path('/usr/var/log', '/usr/var/log') == '/usr/var/log'
 # Only for Windows:
 # assert common_prefix_path(r'C:\Programs\Me', r'C:\Programs') == r'C:\Programs'
