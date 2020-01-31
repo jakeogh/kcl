@@ -257,3 +257,14 @@ def hex_dict_file(file):
     for algo, digest in hasher.hexdigests():
         bytes_dict[algo] = digest
     return bytes_dict
+
+
+def generate_algorithm_set():
+    alg_set = set()
+    algs = list(hashlib.algorithms_available)
+    for alg in algs:
+        if alg.startswith('sha3'):
+            alg = alg.replace('-', '_')
+        alg_set.add(alg)
+    return list(alg_set)
+
