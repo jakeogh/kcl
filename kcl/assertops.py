@@ -16,6 +16,16 @@ def one(thing):
     #return count == 1
 
 
+def maxone(thing):
+    count = 0
+    for x in thing:
+        if bool(x):
+            count += 1
+    if count <= 1:
+        return True
+    return False
+
+
 def verify(thing):
     if not thing:
         #eeprint("thing:", thing)
