@@ -22,6 +22,7 @@ import sys
 import hashlib
 import tempfile
 import subprocess
+from icecream import ic
 from pathlib import Path
 from requests.models import Response
 from threading import Thread
@@ -339,15 +340,23 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
     depth = 0
     verify(alg == root.name)
 
+    current_path = root
     while width < max_width:
         width += 1
         while depth < max_depth:
             depth += 1
-            items = list(paths(path=root, names_only=True, return_dirs=True, return_files=True, return_symlinks=False, min_depth=1, max_depth=0))
-            eprint(items)
-            if len(items[0]) == empty_hexdigest_length:
-                break
-
+            items = list(paths(path=current_path,
+                               names_only=True,
+                               return_dirs=True,
+                               return_files=True,
+                               return_symlinks=False,
+                               min_depth=1, max_depth=0))
+            ic(width, depth, items)
+            if len(items[0]) != width:
+                if len(items[0]) == empty_hexdigest_length:
+                    return width, depth
+                break   # move to next width
+            current_path = current_path / Path(items[0])
 
 
     #wdgen = WDgen(width=max_width, depth=max_depth).go()
