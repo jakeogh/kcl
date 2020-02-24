@@ -43,7 +43,9 @@ def get_amtime(infile):
 
 
 def update_mtime_if_older(path, mtime, verbose=False):
-    verify(isinstance(mtime, int))
+    verify(isinstance(mtime, tuple))
+    verify(isinstance(mtime[0], int))
+    verify(isinstance(mtime[1], int))
     current_mtime = get_amtime(path)
     if current_mtime[1] > mtime[1]:
         if verbose:
