@@ -10,6 +10,8 @@ from threading import Thread
 from queue import Queue
 from .printops import ceprint
 from .printops import eprint
+from .assertops import verify
+from .fileops import really_is_file
 
 
 def generate_hash(data, verbose=False):
@@ -273,4 +275,26 @@ def emptyhash(alg):
     emptydigest = getattr(hashlib, alg)(b'').digest()
     emptyhexdigest = emptydigest.hex()
     return emptyhexdigest
+
+
+def detect_hash_tree_width_and_depth(alg, verbose):
+    wdgen = WDgen(width=self.max_width, depth=self.max_depth).go()
+    emptyhexdigest_path = None
+    while not emptyhexdigest_path:
+        try:
+            width, depth = next(wdgen)
+        except StopIteration:
+            eprint("Unable to autodetect width/depth. Specify --width and --depth to create a new root.")
+            quit(1)
+        path = _hash_path(emptyhexdigest)
+        if really_is_file(path):
+            emptyhexdigest_path = path
+
+        verify(width > 0)
+        verify(depth > 0)  # depth in theory could be zero, but then why use this?
+        verify(width <= max_width)
+        verify(depth <= max_depth)
+        if verbose:
+            eprint("width:", width)
+            eprint("depth:", depth)
 
