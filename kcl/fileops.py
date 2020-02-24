@@ -14,6 +14,7 @@ from pathlib import Path
 from shutil import copyfileobj
 import stat
 from .printops import eprint
+from .assertops import verify
 import magic  # sys-apps/file  #PIA
 
 
@@ -157,8 +158,11 @@ def path_exists(path):
     return os.path.lexists(path) #returns True for broken symlinks
 
 
-def path_is_file(infile):
-    if os.path.isfile(infile): #unlike os.path.exists(False), os.path.isfile(False) returns False so no need to call path_exists() first.
+def path_is_file(path: Path):
+    verify(isinstance(path, Path))
+    if path.is_symlink():
+        return False
+    if os.path.isfile(path): #unlike os.path.exists(False), os.path.isfile(False) returns False so no need to call path_exists() first.
         return True
     return False
 

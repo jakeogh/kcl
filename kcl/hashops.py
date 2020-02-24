@@ -22,13 +22,15 @@ import sys
 import hashlib
 import tempfile
 import subprocess
+from pathlib import Path
 from requests.models import Response
 from threading import Thread
 from queue import Queue
 from .printops import ceprint
 from .printops import eprint
 from .assertops import verify
-from .fileops import really_is_file
+from .fileops import path_is_file
+from .iterops import compact
 
 
 @attr.s(auto_attribs=True)
@@ -314,17 +316,30 @@ def emptyhash(alg):
     return emptyhexdigest
 
 
+def shard(hexdigest, width, depth):
+    return compact([hexdigest[i * width:width * (i + 1)]
+                    for i in range(depth)] + [hexdigest])
+
+
+def hexdigest_str_path(root: Path, hexdigest: str, width: int, depth: int) -> Path:
+    paths = shard(hexdigest, width=width, depth=depth)
+    rel_path = Path(os.path.join(*paths))
+    path = root / rel_path
+    return path
+
+
+
 def detect_hash_tree_width_and_depth(alg, max_width=5, max_depth=5, verbose=False):
     empty_hexdigest = emptyhash(alg)
-    wdgen = WDgen(width=max_width, depth=max_depth).go()
     empty_hexdigest_path = None
+    wdgen = WDgen(width=max_width, depth=max_depth).go()
     while not empty_hexdigest_path:
         try:
             width, depth = next(wdgen)
         except StopIteration:
             eprint("Unable to autodetect width/depth. Specify --width and --depth to create a new root.")
             quit(1)
-        path = _hash_path(empty_hexdigest)
+        path = hexdigest_str_path(empty_hexdigest, width=width, depth=depth)
         if really_is_file(path):
             empty_hexdigest_path = path
 
