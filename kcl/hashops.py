@@ -352,12 +352,15 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
                                return_symlinks=False,
                                min_depth=1, max_depth=0))
             ic(width, depth, items)
+            ic(items[0])
             if len(items[0]) != width:
                 if len(items[0]) == empty_hexdigest_length:
                     return width, depth
                 break   # move to next width
             current_path = current_path / Path(os.fsdecode(items[0]))
 
+    message = "Unable to detect width/depth."
+    raise ValueError(message)
 
     #wdgen = WDgen(width=max_width, depth=max_depth).go()
     #while not empty_hexdigest_path:
