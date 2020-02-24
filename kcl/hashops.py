@@ -335,7 +335,7 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
     verify(isinstance(root, Path))
     empty_hexdigest = emptyhash(alg)
     empty_hexdigest_length = len(empty_hexdigest)
-    empty_hexdigest_path = None
+    #empty_hexdigest_path = None
     width = 0
     depth = 0
     verify(alg == root.name)
@@ -351,14 +351,8 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
                                return_files=True,
                                return_symlinks=False,
                                min_depth=1, max_depth=0))
-            ic(width, depth, items)
-            ic(items[0])
             if len(items[0]) != width:
-                #eprint("len(items[0]) != width")
-                #ic(len(items[0]), empty_hexdigest_length)
-
                 if len(items[0]) == empty_hexdigest_length:
-                    eprint("returning:", width, depth)
                     return width, depth - 1
                 break   # move to next width
             current_path = current_path / Path(os.fsdecode(items[0]))
@@ -386,5 +380,5 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
     #        eprint("width:", width)
     #        eprint("depth:", depth)
 
-    return width, depth
+    #return width, depth
 
