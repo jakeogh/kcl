@@ -29,3 +29,19 @@ def timeit(f):
 def get_mtime(infile):
     mtime = os.lstat(infile).st_mtime #does not follow symlinks
     return mtime
+
+
+def get_amtime(infile):
+    try:
+        infile_stat = os.stat(infile)
+    except TypeError:
+        infile_stat = os.stat(infile.fileno())
+    amtime = (infile_stat.st_atime_ns, infile_stat.st_mtime_ns)
+    return amtime
+
+
+def update_mtime_if_older(path, mtime, verbose=False):
+    current_mtime = get_amtime(path)
+    if current_mtime[1] > mtime[1]:
+        os.utime(path, ns=mtime, follow_symlinks=False)
+
