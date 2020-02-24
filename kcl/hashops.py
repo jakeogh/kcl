@@ -335,18 +335,18 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
     empty_hexdigest = emptyhash(alg)
     empty_hexdigest_length = len(empty_hexdigest)
     empty_hexdigest_path = None
-    width = 1
-    depth = 1
+    width = 0
+    depth = 0
     verify(alg == root.name)
 
-    while width <= max_width:
-        while depth <= max_depth:
+    while width < max_width:
+        width += 1
+        while depth < max_depth:
+            depth += 1
             items = list(paths(path=root, names_only=True, return_dirs=True, return_files=True, return_symlinks=False, min_depth=1, max_depth=0))
             eprint(items)
             if len(items[0]) == empty_hexdigest_length:
                 break
-            depth += 1
-        width += 1
 
 
 
