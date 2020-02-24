@@ -1,5 +1,22 @@
 #!/usr/bin/env python3
 
+# pylint: disable=C0111     # docstrings are always outdated and wrong
+# pylint: disable=W0511     # todo
+# pylint: disable=R0902     # too many instance attributes
+# pylint: disable=C0302     # too many lines in module
+# pylint: disable=C0103     # single letter var names
+# pylint: disable=R0911     # too many return statements
+# pylint: disable=R0912     # too many branches
+# pylint: disable=R0915     # too many statements
+# pylint: disable=R0913     # too many arguments
+# pylint: disable=R1702     # too many nested blocks
+# pylint: disable=R0914     # too many local variables
+# pylint: disable=R0903     # too few public methods
+# pylint: disable=E1101     # no uhashfs member for base
+# pylint: disable=W0201     # attribute defined outside __init__
+# pylint: disable=W0703     # catching too general exception
+from itertools import product
+import attr
 import os
 import sys
 import hashlib
@@ -12,6 +29,24 @@ from .printops import ceprint
 from .printops import eprint
 from .assertops import verify
 from .fileops import really_is_file
+
+
+@attr.s(auto_attribs=True)
+class WDgen():
+    width: int
+    depth: int
+
+    def __attrs_post_init__(self):
+        self.gen = product(range(self.width), range(self.depth))
+
+    def go(self):
+        for w, d in self.gen:
+            if w == 0:
+                continue
+            if d == 0:
+                continue
+            else:
+                yield (w, d)
 
 
 def generate_hash(data, verbose=False):
@@ -43,14 +78,16 @@ def generate_hash(data, verbose=False):
                 temp_file.write(chunk)
                 current_file_size = int(os.path.getsize(temp_file.name))
                 if data_size_from_headers:
-                    eprint(temp_file.name, str(int((current_file_size/data_size_from_headers)*100))+'%', current_file_size, data.url, end='\r', flush=True)
+                    eprint(temp_file.name,
+                           str(int((current_file_size / data_size_from_headers) * 100)) + '%', current_file_size, data.url, end='\r', flush=True)
                 else:
                     eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
 
         current_file_size = int(os.path.getsize(temp_file.name))
         # update final size
         if data_size_from_headers:
-            eprint(temp_file.name, str(int((current_file_size/data_size_from_headers)*100))+'%', current_file_size, data.url, end='\r', flush=True)
+            eprint(temp_file.name,
+                   str(int((current_file_size / data_size_from_headers) * 100)) + '%', current_file_size, data.url, end='\r', flush=True)
         else:
             eprint(temp_file.name, current_file_size, data.url, end='\r', flush=True)
 
@@ -99,12 +136,6 @@ def sha3_256_hash_file(path, block_size=256*128*2, binary=False):
     return sha3.hexdigest()
 
 
-# Calculate (multiple) digest(s) for file(s)
-# Author: Peter Wu <peter@lekensteyn.nl>
-# Licensed under the MIT license <http://opensource.org/licenses/MIT>
-# http://unix.stackexchange.com/questions/163747/simultaneously-calculate-multiple-digests-md5-sha256
-# https://git.lekensteyn.nl/scripts/tree/digest.py
-
 
 def get_openssl_hash_algs_real():
     blacklist = set(['SHA', 'MD4', 'ecdsa-with-SHA1', 'DSA', 'DSA-SHA', 'MDC2'])
@@ -143,6 +174,12 @@ def read_blocks(filename):
     finally:
         f.close()
 
+
+# Calculate (multiple) digest(s) for file(s)
+# Author: Peter Wu <peter@lekensteyn.nl>
+# Licensed under the MIT license <http://opensource.org/licenses/MIT>
+# http://unix.stackexchange.com/questions/163747/simultaneously-calculate-multiple-digests-md5-sha256
+# https://git.lekensteyn.nl/scripts/tree/digest.py
 
 class Hasher(object):
     '''Calculate multiple hash digests for a piece of data.'''
@@ -277,18 +314,19 @@ def emptyhash(alg):
     return emptyhexdigest
 
 
-def detect_hash_tree_width_and_depth(alg, verbose):
-    wdgen = WDgen(width=self.max_width, depth=self.max_depth).go()
-    emptyhexdigest_path = None
-    while not emptyhexdigest_path:
+def detect_hash_tree_width_and_depth(alg, max_width=5, max_depth=5, verbose=False):
+    empty_hexdigest = emptyhash(alg)
+    wdgen = WDgen(width=max_width, depth=max_depth).go()
+    empty_hexdigest_path = None
+    while not empty_hexdigest_path:
         try:
             width, depth = next(wdgen)
         except StopIteration:
             eprint("Unable to autodetect width/depth. Specify --width and --depth to create a new root.")
             quit(1)
-        path = _hash_path(emptyhexdigest)
+        path = _hash_path(empty_hexdigest)
         if really_is_file(path):
-            emptyhexdigest_path = path
+            empty_hexdigest_path = path
 
         verify(width > 0)
         verify(depth > 0)  # depth in theory could be zero, but then why use this?
@@ -297,4 +335,6 @@ def detect_hash_tree_width_and_depth(alg, verbose):
         if verbose:
             eprint("width:", width)
             eprint("depth:", depth)
+
+
 
