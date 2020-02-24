@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 
+from icecream import ic
 import os.path
+import os.stat
+import stat
 import itertools
+from pathlib import Path
+from .assertops import verify
+from .hashops import sha3_256_hash_file
 
 
 def components(path):
@@ -38,6 +44,26 @@ def longest_prefix(iter0, iter1):
             break
         longest_prefix.append(elmt0)
     return longest_prefix
+
+
+def paths_are_identical(path1, path2, time=False, perms=False, verbose=False):
+    verify(isinstance(path1, Path))
+    verify(isinstance(path2, Path))
+    if time or perms:
+        raise NotImplementedError
+
+    path1_lstat = os.lstat(path1)
+    path2_lstat = os.lstat(path2)
+
+    path1_type = stat.S_IFMT(path1_lstat.mode)
+    path2_type = stat.S_IFMT(path2_lstat.mode)
+    if verbose:
+        ic(path1_type)
+        ic(path2_type)
+    if path1_type != path2_type:
+        return False
+
+    return False
 
 
 #def common_prefix_path(path0, path1):
