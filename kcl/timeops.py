@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import time
+from icecream import ic
 
 
 def timestamp():
@@ -43,5 +44,7 @@ def get_amtime(infile):
 def update_mtime_if_older(path, mtime, verbose=False):
     current_mtime = get_amtime(path)
     if current_mtime[1] > mtime[1]:
+        if verbose:
+            ic(mtime)
         os.utime(path, ns=mtime, follow_symlinks=False)
 
