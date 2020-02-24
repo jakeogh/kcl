@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
 from icecream import ic
-import os.path
-import os.stat
+import os
 import stat
 import itertools
 from pathlib import Path
