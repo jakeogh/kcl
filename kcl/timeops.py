@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import time
+from .assertops import verify
 from icecream import ic
 
 
@@ -42,6 +43,7 @@ def get_amtime(infile):
 
 
 def update_mtime_if_older(path, mtime, verbose=False):
+    verify(isinstance(mtime, int))
     current_mtime = get_amtime(path)
     if current_mtime[1] > mtime[1]:
         if verbose:
