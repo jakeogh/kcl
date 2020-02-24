@@ -26,6 +26,7 @@ from pathlib import Path
 from requests.models import Response
 from threading import Thread
 from queue import Queue
+from getdents import paths
 from .printops import ceprint
 from .printops import eprint
 from .assertops import verify
@@ -330,27 +331,44 @@ def hexdigest_str_path(root: Path, hexdigest: str, width: int, depth: int) -> Pa
 
 
 def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbose=False):
+    verify(isinstance(root, Path))
     empty_hexdigest = emptyhash(alg)
+    empty_hexdigest_length = len(empty_hexdigest)
     empty_hexdigest_path = None
-    wdgen = WDgen(width=max_width, depth=max_depth).go()
-    while not empty_hexdigest_path:
-        try:
-            width, depth = next(wdgen)
-        except StopIteration:
-            message = "Unable to autodetect width/depth. Specify --width and --depth to create a new root."
-            raise ValueError(message)
+    width = 1
+    depth = 1
+    verify(alg == root.name)
 
-        path = hexdigest_str_path(root, empty_hexdigest, width=width, depth=depth)
-        if path_is_file(path):
-            empty_hexdigest_path = path
+    while width <= max_width:
+        while depth <= max_depth:
+            items = list(paths(names_only=True, return_dirs=True, return_files=True, return_symlinks=False, max_depth=0))
+            eprint(items)
+            if len(items[0]) == empty_hexdigest_length:
+                break
+            depth += 1
+        width += 1
 
-        verify(width > 0)
-        verify(depth > 0)  # depth in theory could be zero, but then why use this?
-        verify(width <= max_width)
-        verify(depth <= max_depth)
-        if verbose:
-            eprint("width:", width)
-            eprint("depth:", depth)
+
+
+    #wdgen = WDgen(width=max_width, depth=max_depth).go()
+    #while not empty_hexdigest_path:
+    #    try:
+    #        width, depth = next(wdgen)
+    #    except StopIteration:
+    #        message = "Unable to autodetect width/depth. Specify --width and --depth to create a new root."
+    #        raise ValueError(message)
+
+    #    path = hexdigest_str_path(root, empty_hexdigest, width=width, depth=depth)
+    #    if path_is_file(path):
+    #        empty_hexdigest_path = path
+
+    #    verify(width > 0)
+    #    verify(depth > 0)  # depth in theory could be zero, but then why use this?
+    #    verify(width <= max_width)
+    #    verify(depth <= max_depth)
+    #    if verbose:
+    #        eprint("width:", width)
+    #        eprint("depth:", depth)
 
     return width, depth
 
