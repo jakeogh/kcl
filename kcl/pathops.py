@@ -59,8 +59,19 @@ def paths_are_identical(path1, path2, time=False, perms=False, verbose=False):
     if verbose:
         ic(path1_type)
         ic(path2_type)
+
     if path1_type != path2_type:
         return False
+
+    path1_hash = sha3_256_hash_file(path1)
+    path2_hash = sha3_256_hash_file(path2)
+    if verbose:
+        ic(path1_hash)
+        ic(path2_hash)
+
+    if path1_hash != path2_hash:
+        return False
+
 
     return False
 
