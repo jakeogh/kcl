@@ -353,6 +353,7 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
                                min_depth=1, max_depth=0))
             ic(width, depth, items)
             ic(items[0])
+            ic(len(items[0]), empty_hexdigest_length)
             if len(items[0]) != width:
                 if len(items[0]) == empty_hexdigest_length:
                     return width, depth
