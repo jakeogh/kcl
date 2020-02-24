@@ -341,7 +341,7 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
 
     while width <= max_width:
         while depth <= max_depth:
-            items = list(paths(path=root, names_only=True, return_dirs=True, return_files=True, return_symlinks=False, max_depth=0))
+            items = list(paths(path=root, names_only=True, return_dirs=True, return_files=True, return_symlinks=False, min_depth=1, max_depth=1))
             eprint(items)
             if len(items[0]) == empty_hexdigest_length:
                 break
