@@ -329,7 +329,7 @@ def hexdigest_str_path(root: Path, hexdigest: str, width: int, depth: int) -> Pa
 
 
 
-def detect_hash_tree_width_and_depth(alg, max_width=5, max_depth=5, verbose=False):
+def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbose=False):
     empty_hexdigest = emptyhash(alg)
     empty_hexdigest_path = None
     wdgen = WDgen(width=max_width, depth=max_depth).go()
@@ -337,10 +337,11 @@ def detect_hash_tree_width_and_depth(alg, max_width=5, max_depth=5, verbose=Fals
         try:
             width, depth = next(wdgen)
         except StopIteration:
-            eprint("Unable to autodetect width/depth. Specify --width and --depth to create a new root.")
-            quit(1)
-        path = hexdigest_str_path(empty_hexdigest, width=width, depth=depth)
-        if really_is_file(path):
+            message = "Unable to autodetect width/depth. Specify --width and --depth to create a new root."
+            raise ValueError(message)
+
+        path = hexdigest_str_path(root, empty_hexdigest, width=width, depth=depth)
+        if path_is_file(path):
             empty_hexdigest_path = path
 
         verify(width > 0)
@@ -351,5 +352,5 @@ def detect_hash_tree_width_and_depth(alg, max_width=5, max_depth=5, verbose=Fals
             eprint("width:", width)
             eprint("depth:", depth)
 
-
+    return width, depth
 
