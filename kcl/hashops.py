@@ -354,12 +354,12 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
             ic(width, depth, items)
             ic(items[0])
             if len(items[0]) != width:
-                eprint("len(items[0]) != width")
-                ic(len(items[0]), empty_hexdigest_length)
+                #eprint("len(items[0]) != width")
+                #ic(len(items[0]), empty_hexdigest_length)
 
                 if len(items[0]) == empty_hexdigest_length:
                     eprint("returning:", width, depth)
-                    return width, depth
+                    return width, depth - 1
                 break   # move to next width
             current_path = current_path / Path(os.fsdecode(items[0]))
 
