@@ -188,7 +188,7 @@ def chdir_or_exit(targetdir):
     return True
 
 
-def remove_empty_folders(path, remove_root=True):
+def remove_empty_folders(path, remove_root=True, verbose=False):
     if not os.path.isdir(path):
         return
 
@@ -204,6 +204,7 @@ def remove_empty_folders(path, remove_root=True):
     # if folder empty, delete it
     files = os.listdir(path)
     if len(files) == 0 and remove_root:
-        eprint("Removing empty folder:", path)
+        if verbose:
+            eprint("removing empty folder:", path)
         os.rmdir(path)
 
