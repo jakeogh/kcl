@@ -129,18 +129,18 @@ def count_files(folder):  # calls lstat on every entry to see if its a file
 #    return set(all_files)
 
 
-def path_is_dir(path):
-    if os.path.isdir(path): #could still be a symlink
-        if os.path.islink(path):
-            return False
-        return True
-
-
-def path_is_dir_or_symlink_to_dir(path):
-    # unlike os.path.exists(False), os.path.isdir(False) returns False
-    if os.path.isdir(path): # returns False if it's a symlink to a file
-        return True
-    return False
+#def path_is_dir(path):
+#    if os.path.isdir(path): #could still be a symlink
+#        if os.path.islink(path):
+#            return False
+#        return True
+#
+#
+#def path_is_dir_or_symlink_to_dir(path):
+#    # unlike os.path.exists(False), os.path.isdir(False) returns False
+#    if os.path.isdir(path): # returns False if it's a symlink to a file
+#        return True
+#    return False
 
 
 def check_or_create_dir(folder, confirm=True):
