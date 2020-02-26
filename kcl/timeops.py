@@ -2,6 +2,7 @@
 import os
 import time
 from .assertops import verify
+from .printops import eprint
 from icecream import ic
 
 
@@ -49,6 +50,6 @@ def update_mtime_if_older(path, mtime, verbose=False):
     current_mtime = get_amtime(path)
     if current_mtime[1] > mtime[1]:
         if verbose:
-            ic(mtime)
+            eprint("old: {} new: {}".format(current_mtime[1], mtime[1]))
         os.utime(path, ns=mtime, follow_symlinks=False)
 
