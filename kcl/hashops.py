@@ -347,30 +347,40 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
         ic(path)
         relative_path = path.relative_to(root)
         ic(relative_path)
-        quit(1)
-
-
-    current_path = root
-    while width < max_width:
-        width += 1
-        while depth < max_depth:
-            #if verbose:
-            ic(current_path)
-            depth += 1
-            items = list(paths(path=current_path,
-                               names_only=True,
-                               return_dirs=True,
-                               return_files=True,
-                               return_symlinks=False,
-                               min_depth=1, max_depth=0))
-            if len(items[0]) != width:
-                if len(items[0]) == empty_hexdigest_length:
-                    return width, depth - 1
-                break   # move to next width
-            current_path = current_path / Path(os.fsdecode(items[0]))
+        relative_path_parts = relative_path.parts
+        width = relative_path_parts[0]
+        for depth, part in enumerate(relative_path_parts):
+            if len(part) != width:
+                if verbose:
+                    ic(width)
+                    ic(depth + 1)
+                return width, depth + 1
 
     message = "Unable to detect width/depth."
     raise ValueError(message)
+
+
+    #current_path = root
+    #while width < max_width:
+    #    width += 1
+    #    while depth < max_depth:
+    #        #if verbose:
+    #        ic(current_path)
+    #        depth += 1
+    #        items = list(paths(path=current_path,
+    #                           names_only=True,
+    #                           return_dirs=True,
+    #                           return_files=True,
+    #                           return_symlinks=False,
+    #                           min_depth=1, max_depth=0))
+    #        if len(items[0]) != width:
+    #            if len(items[0]) == empty_hexdigest_length:
+    #                return width, depth - 1
+    #            break   # move to next width
+    #        current_path = current_path / Path(os.fsdecode(items[0]))
+
+    #message = "Unable to detect width/depth."
+    #raise ValueError(message)
 
     ##wdgen = WDgen(width=max_width, depth=max_depth).go()
     ##while not empty_hexdigest_path:
