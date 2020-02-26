@@ -343,6 +343,7 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
                       return_dirs=False,
                       return_files=True,
                       return_symlinks=True):
+        path = path.pathlib
         ic(path)
         relative_path = path.relative_to(root)
         ic(relative_path)
