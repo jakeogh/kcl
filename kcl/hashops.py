@@ -331,9 +331,8 @@ def hexdigest_str_path(root: Path, hexdigest: str, width: int, depth: int) -> Pa
 
 def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbose=False):
     verify(isinstance(root, Path))
-    empty_hexdigest = emptyhash(alg)
-    empty_hexdigest_length = len(empty_hexdigest)
-    #empty_hexdigest_path = None
+    #empty_hexdigest = emptyhash(alg)
+    #empty_hexdigest_length = len(empty_hexdigest)
     width = 0
     depth = 0
     verify(alg == root.name)
@@ -344,9 +343,9 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
                       return_files=True,
                       return_symlinks=True):
         path = path.pathlib
-        ic(path)
+        #ic(path)
         relative_path = path.relative_to(root)
-        ic(relative_path)
+        #ic(relative_path)
         relative_path_parts = relative_path.parts
         width = len(relative_path_parts[0])
         for depth, part in enumerate(relative_path_parts):
