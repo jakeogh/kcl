@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import builtins
-from kcl.Config import CONFIG
+from .Config import CONFIG
 builtins.config = CONFIG
 
 from kcl.sqlalchemy.clickapp.clickapp import clickapp as kcl
