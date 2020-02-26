@@ -31,7 +31,6 @@ from getdents import paths
 from .printops import ceprint
 from .printops import eprint
 from .assertops import verify
-from .pathops import path_is_file
 from .iterops import compact
 
 
