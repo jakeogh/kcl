@@ -13,6 +13,7 @@ import shutil
 from pathlib import Path
 from shutil import copyfileobj
 import stat
+import fcntl
 from .printops import eprint
 from .assertops import verify
 import magic  # sys-apps/file  #PIA
@@ -276,6 +277,20 @@ def get_file_type(path):
     line_id = magic.from_file(path)
     return line_id
 
+
+def combine_files(source, destination, buffer=65535):
+    verify(is_regular_file(source))
+    verify(is_regular_file(destination))
+    with open(source, "rb") as sfh:
+        fcntl.flock(sfh, fcntl.LOCK_SH)
+        with open(destination, "ab") as dfh:
+            fcntl.flock(dfh, fcntl.LOCK_EX)
+            while True:
+                data = sfh.read(buffer)
+                if data:
+                    dfh.write(data)
+                else:
+                    break
 
 
 # todo
