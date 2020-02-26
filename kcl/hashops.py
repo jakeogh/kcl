@@ -329,8 +329,8 @@ def hexdigest_str_path(root: Path, hexdigest: str, width: int, depth: int) -> Pa
     return path
 
 
-
 def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbose=False):
+    assert verbose
     verify(isinstance(root, Path))
     empty_hexdigest = emptyhash(alg)
     empty_hexdigest_length = len(empty_hexdigest)
