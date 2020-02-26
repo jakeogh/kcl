@@ -111,3 +111,25 @@ def path_is_dir(path):
         if os.path.islink(path):
             return False
         return True
+    return False
+
+
+def path_exists(path):
+    return os.path.lexists(path) #returns True for broken symlinks
+
+
+def path_is_block_special(path, follow_symlinks=False):
+    if path_exists(path):
+        mode = os.stat(path, follow_symlinks=follow_symlinks).st_mode
+        if stat.S_ISBLK(mode):
+            return True
+    return False
+
+
+def path_is_file(path: Path):
+    verify(isinstance(path, Path))
+    if path.is_symlink():
+        return False
+    if os.path.isfile(path): #unlike os.path.exists(False), os.path.isfile(False) returns False so no need to call path_exists() first.
+        return True
+    return False

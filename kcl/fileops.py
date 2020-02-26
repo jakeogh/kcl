@@ -16,6 +16,8 @@ import stat
 import fcntl
 from .printops import eprint
 from .assertops import verify
+from .pathops import path_is_file
+from .pathops import path_exists
 import magic  # sys-apps/file  #PIA
 
 
@@ -154,31 +156,9 @@ def read_file_bytes(path):
     return file_bytes
 
 
-def path_exists(path):
-    #return os.lastat(path)  # faster?
-    return os.path.lexists(path) #returns True for broken symlinks
-
-
-def path_is_file(path: Path):
-    verify(isinstance(path, Path))
-    if path.is_symlink():
-        return False
-    if os.path.isfile(path): #unlike os.path.exists(False), os.path.isfile(False) returns False so no need to call path_exists() first.
-        return True
-    return False
-
-
 def file_exists_nonzero(infile):
     if path_is_file(infile):
         if not empty_file(infile):
-            return True
-    return False
-
-
-def path_is_block_special(path, follow_symlinks=False):
-    if path_exists(path):
-        mode = os.stat(path, follow_symlinks=follow_symlinks).st_mode
-        if stat.S_ISBLK(mode):
             return True
     return False
 
