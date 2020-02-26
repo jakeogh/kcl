@@ -353,8 +353,8 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
             if len(part) != width:
                 if verbose:
                     ic(width)
-                    ic(depth + 1)
-                return width, depth + 1
+                    ic(depth)
+                return width, depth
 
     message = "Unable to detect width/depth."
     raise ValueError(message)
