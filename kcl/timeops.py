@@ -50,6 +50,6 @@ def update_mtime_if_older(path, mtime, verbose=False):
     current_mtime = get_amtime(path)
     if current_mtime[1] > mtime[1]:
         if verbose:
-            eprint("old: {} new: {}".format(current_mtime[1], mtime[1]))
+            eprint("{} old: {} new: {}".format(path, current_mtime[1], mtime[1]))
         os.utime(path, ns=mtime, follow_symlinks=False)
 
