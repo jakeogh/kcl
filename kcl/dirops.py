@@ -15,6 +15,7 @@ from psutil import disk_usage
 from icecream import ic
 from .printops import eprint
 from .fileops import path_exists
+from .pathops import path_is_dir
 #from .printops import ceprint
 #from pathlib import Path
 

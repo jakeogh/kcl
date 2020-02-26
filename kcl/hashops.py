@@ -323,8 +323,8 @@ def shard(hexdigest, width, depth):
 
 
 def hexdigest_str_path(root: Path, hexdigest: str, width: int, depth: int) -> Path:
-    paths = shard(hexdigest, width=width, depth=depth)
-    rel_path = Path(os.path.join(*paths))
+    path_elements = shard(hexdigest, width=width, depth=depth)
+    rel_path = Path(os.path.join(*path_elements))
     path = root / rel_path
     return path
 
@@ -343,6 +343,8 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
     while width < max_width:
         width += 1
         while depth < max_depth:
+            if verbose:
+                ic(current_path)
             depth += 1
             items = list(paths(path=current_path,
                                names_only=True,
