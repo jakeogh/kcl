@@ -97,3 +97,17 @@ def paths_are_identical(path1, path2, time=False, perms=False, verbose=False):
 #assert common_prefix_path('/usr/var/log', '/usr/var/log') == '/usr/var/log'
 # Only for Windows:
 # assert common_prefix_path(r'C:\Programs\Me', r'C:\Programs') == r'C:\Programs'
+
+
+def path_is_dir_or_symlink_to_dir(path):
+    # unlike os.path.exists(False), os.path.isdir(False) returns False
+    if os.path.isdir(path): # returns False if it's a symlink to a file
+        return True
+    return False
+
+
+def path_is_dir(path):
+    if os.path.isdir(path): #could still be a symlink
+        if os.path.islink(path):
+            return False
+        return True
