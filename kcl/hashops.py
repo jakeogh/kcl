@@ -339,6 +339,17 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
     depth = 0
     verify(alg == root.name)
 
+    for path in paths(path=root,
+                      names_only=False,
+                      return_dirs=False,
+                      return_files=True,
+                      return_symlinks=True):
+        ic(path)
+        relative_path = path.relative_to(root)
+        ic(relative_path)
+        quit(1)
+
+
     current_path = root
     while width < max_width:
         width += 1
@@ -361,25 +372,25 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
     message = "Unable to detect width/depth."
     raise ValueError(message)
 
-    #wdgen = WDgen(width=max_width, depth=max_depth).go()
-    #while not empty_hexdigest_path:
-    #    try:
-    #        width, depth = next(wdgen)
-    #    except StopIteration:
-    #        message = "Unable to autodetect width/depth. Specify --width and --depth to create a new root."
-    #        raise ValueError(message)
+    ##wdgen = WDgen(width=max_width, depth=max_depth).go()
+    ##while not empty_hexdigest_path:
+    ##    try:
+    ##        width, depth = next(wdgen)
+    ##    except StopIteration:
+    ##        message = "Unable to autodetect width/depth. Specify --width and --depth to create a new root."
+    ##        raise ValueError(message)
 
-    #    path = hexdigest_str_path(root, empty_hexdigest, width=width, depth=depth)
-    #    if path_is_file(path):
-    #        empty_hexdigest_path = path
+    ##    path = hexdigest_str_path(root, empty_hexdigest, width=width, depth=depth)
+    ##    if path_is_file(path):
+    ##        empty_hexdigest_path = path
 
-    #    verify(width > 0)
-    #    verify(depth > 0)  # depth in theory could be zero, but then why use this?
-    #    verify(width <= max_width)
-    #    verify(depth <= max_depth)
-    #    if verbose:
-    #        eprint("width:", width)
-    #        eprint("depth:", depth)
+    ##    verify(width > 0)
+    ##    verify(depth > 0)  # depth in theory could be zero, but then why use this?
+    ##    verify(width <= max_width)
+    ##    verify(depth <= max_depth)
+    ##    if verbose:
+    ##        eprint("width:", width)
+    ##        eprint("depth:", depth)
 
-    #return width, depth
+    ##return width, depth
 
