@@ -348,7 +348,7 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
         relative_path = path.relative_to(root)
         ic(relative_path)
         relative_path_parts = relative_path.parts
-        width = relative_path_parts[0]
+        width = len(relative_path_parts[0])
         for depth, part in enumerate(relative_path_parts):
             if len(part) != width:
                 if verbose:
