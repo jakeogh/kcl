@@ -343,8 +343,8 @@ def detect_hash_tree_width_and_depth(root, alg, max_width=5, max_depth=5, verbos
     while width < max_width:
         width += 1
         while depth < max_depth:
-            if verbose:
-                ic(current_path)
+            #if verbose:
+            ic(current_path)
             depth += 1
             items = list(paths(path=current_path,
                                names_only=True,
