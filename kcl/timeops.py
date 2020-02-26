@@ -35,9 +35,9 @@ def get_mtime(infile):
 
 def get_amtime(infile):
     try:
-        infile_stat = os.stat(infile)
+        infile_stat = os.lstat(infile)
     except TypeError:
-        infile_stat = os.stat(infile.fileno())
+        infile_stat = os.lstat(infile.fileno())
     amtime = (infile_stat.st_atime_ns, infile_stat.st_mtime_ns)
     return amtime
 
