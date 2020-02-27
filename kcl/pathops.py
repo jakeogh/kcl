@@ -56,9 +56,9 @@ def paths_are_identical(path1, path2, time=False, perms=False, verbose=False):
 
     path1_type = stat.S_IFMT(path1_lstat.st_mode)
     path2_type = stat.S_IFMT(path2_lstat.st_mode)
-    if verbose:
-        ic(path1_type)
-        ic(path2_type)
+    #if verbose:
+    #    ic(path1_type)
+    #    ic(path2_type)
 
     if path1_type != path2_type:
         return False
