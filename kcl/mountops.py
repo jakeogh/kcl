@@ -11,7 +11,7 @@
 
 import os
 from pathlib import Path
-from .fileops import path_is_block_special
+from .pathops import path_is_block_special
 from psutil import disk_partitions
 from .printops import ceprint
 
