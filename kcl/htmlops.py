@@ -66,7 +66,7 @@ def parse_html_to_dom(html):
 
 
 
-def extract_urls_from_file_dom(page_html, url, strip_fragments, verbose=False):
+def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
     # METHOD 0: UNTRIED, might be faster
     #root = html5_parser.parse(page)
     #print(type(root))  # <class 'lxml.etree._Element'>
@@ -159,7 +159,7 @@ def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, d
     if verbose: ceprint("len(page_html):", len(page_html))
 
     if dom_extract:
-        links, link_cache = extract_urls_from_file(page_html, url, strip_fragments, verbose=False)
+        links, link_cache = extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False)
     else:
         links = set([])
         link_cache = set([])
