@@ -153,6 +153,9 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
 
 def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, dom_extract=True, verbose=False):
     #page_html = requests.get(url).text
+    if verbose:
+        ic(text_extract)
+        ic(dom_extract)
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
     page_html = html_bytes.decode('utf8', 'ignore')
@@ -169,7 +172,11 @@ def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, d
             if link not in link_cache:
                 links.add((link, None))
 
-    return set(links)
+    links = set(links)  #pointless...
+    if verbose:
+        ic(len(links))
+
+    return links
 
 
     #parser = etree.HTMLParser(recover=True)
