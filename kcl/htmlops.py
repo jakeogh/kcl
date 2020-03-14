@@ -65,15 +65,8 @@ def parse_html_to_dom(html):
     return dom_tree
 
 
-#this one is used for internal links plugin
-def extract_urls_from_file(html_file, url, strip_fragments, verbose=False):
-    parser = HTMLParser(recover=True)
-    #page_html = requests.get(url).text
-    with open(html_file, 'rb') as fh:
-        html_bytes = fh.read()
-    page_html = html_bytes.decode('utf8', 'ignore')
-    if verbose: ceprint("len(page_html):", len(page_html))
 
+def extract_urls_from_file_dom(page_html, url, strip_fragments, verbose=False):
     # METHOD 0: UNTRIED, might be faster
     #root = html5_parser.parse(page)
     #print(type(root))  # <class 'lxml.etree._Element'>
@@ -97,6 +90,7 @@ def extract_urls_from_file(html_file, url, strip_fragments, verbose=False):
 
     link_cache = set([])
     links = set([])
+    parser = HTMLParser(recover=True)
 
     try:
         dom = html.fromstring(page_html)
@@ -154,13 +148,28 @@ def extract_urls_from_file(html_file, url, strip_fragments, verbose=False):
 
         #for link in dom.cssselect('div'):
         #    import IPython; IPython.embed()
+    return links, link_cache
 
-    for link in extract_iris_from_text(page_html):
-        if link not in link_cache:
-            links.add((link, None))
+
+def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, dom_extract=True, verbose=False):
+    #page_html = requests.get(url).text
+    with open(html_file, 'rb') as fh:
+        html_bytes = fh.read()
+    page_html = html_bytes.decode('utf8', 'ignore')
+    if verbose: ceprint("len(page_html):", len(page_html))
+
+    if dom_extract:
+        links, link_cache = extract_urls_from_file(page_html, url, strip_fragments, verbose=False)
+    else:
+        links = set([])
+        link_cache = set([])
+
+    if text_extract:
+        for link in extract_iris_from_text(page_html):
+            if link not in link_cache:
+                links.add((link, None))
 
     return set(links)
-
 
 
     #parser = etree.HTMLParser(recover=True)
