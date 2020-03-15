@@ -7,6 +7,8 @@ import inspect
 from colorama import Fore
 from colorama import Style
 from pprint import pprint
+import attr
+from icecream import ic
 
 
 def ceprint(*args, **kwargs):
@@ -52,7 +54,26 @@ def eeprint(*args, **kwargs): # todo merge with ceprint
     #print('{0: <49}'.format(head), *args, file=sys.stderr, **kwargs)
 
 
+@attr.s(auto_attribs=True)
+class Eprinter():
+    verbose: bool = False
+
+    def p(self, *args, **kwargs):
+        if 'file' in kwargs.keys():
+            kwargs.pop('file')
+        if self.verbose:
+            ic(*args, **kwargs)
+        else:
+            print(*args, file=sys.stderr, **kwargs)
+
+
 def eprint(*args, **kwargs):
+    if 'file' in kwargs.keys():
+        kwargs.pop('file')
+    print(*args, file=sys.stderr, **kwargs)
+
+
+def eprint_green(*args, **kwargs):
     print(Fore.GREEN, file=sys.stderr, end='')
     if 'end' in kwargs.keys():
         print(*args, file=sys.stderr, **kwargs)
