@@ -54,19 +54,6 @@ def eeprint(*args, **kwargs): # todo merge with ceprint
     #print('{0: <49}'.format(head), *args, file=sys.stderr, **kwargs)
 
 
-@attr.s(auto_attribs=True)
-class Eprinter():
-    verbose: bool = False
-
-    def p(self, *args, **kwargs):
-        if 'file' in kwargs.keys():
-            kwargs.pop('file')
-        if self.verbose:
-            ic(*args, **kwargs)
-        else:
-            print(*args, file=sys.stderr, **kwargs)
-
-
 def eprint(*args, **kwargs):
     if 'file' in kwargs.keys():
         kwargs.pop('file')
