@@ -159,7 +159,9 @@ def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, d
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
     page_html = html_bytes.decode('utf8', 'ignore')
-    if verbose: ceprint("len(page_html):", len(page_html))
+
+    if verbose:
+        ic(len(page_html))
 
     if dom_extract:
         links, link_cache = extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False)
