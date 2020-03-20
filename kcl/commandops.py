@@ -18,7 +18,7 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
         if isinstance(command, bytes):
             command = command.decode('utf8')
         #popen_instance = os.popen(command, stderr=stderr)
-        popen_instance = subprocess.Popen(command, stderr=stderr, stdin=stdin, shell=shell)
+        popen_instance = subprocess.Popen(command, stdout=subprocess.STDOUT, stderr=stderr, stdin=stdin, shell=shell)
         if verbose:
             ic(popen_instance)
         #output = popen_instance.read()
