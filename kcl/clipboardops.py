@@ -45,7 +45,7 @@ def get_clipboard_iris(verbose=False):
     clipboard_contents = get_clipboard(verbose=verbose)
     if verbose:
         ic(clipboard_contents)
-    iri_list = extract_iris_from_text(clipboard_contents)
+    iri_list = extract_iris_from_text(clipboard_contents, verbose=True)
     if verbose:
         ic(iri_list)
     return iri_list
