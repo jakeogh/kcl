@@ -11,7 +11,7 @@ def get_clipboard(verbose=False):
     if verbose:
         ic(command)
 
-    string, = run_command(command, shell=True, verbose=True)
+    string = run_command(command, shell=True, verbose=True)
     #string = \
     #    subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).stdout.read()
     if verbose:
