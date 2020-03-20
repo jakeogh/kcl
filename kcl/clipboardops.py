@@ -38,7 +38,10 @@ def get_clipboard_iri():
 
 
 def get_clipboard_iris(verbose=False):
-    iri_list = extract_iris_from_text(get_clipboard(verbose=verbose))
+    clipboard_contents = get_clipboard(verbose=verbose)
+    if verbose:
+        ic(clipboard_contents)
+    iri_list = extract_iris_from_text(clipboard_contents)
     return iri_list
 
 
