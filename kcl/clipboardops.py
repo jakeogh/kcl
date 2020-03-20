@@ -7,7 +7,7 @@ from icecream import ic
 
 # bug putting snowman http://☃.net in the clipboard results in no iris
 def get_clipboard(verbose=False):
-    command = "xclip -o -selection primary".split()
+    command = [b"xclip", b"-o", b"-selection", b"primary"]
     if verbose:
         ic(command)
 
