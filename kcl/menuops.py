@@ -6,7 +6,7 @@ from .commandops import run_command
 def prompt_tag_dmenu(tag_cache_file="/home/user/.iridb/.dmenu_tag_cache", verbose=False):
     command = '''dmenu -fn "-misc-fixed-*-*-*-*-20-*-*-*-*-*-*-*" -f -nb "#000000" -i <''' + tag_cache_file
     #text = os.popen(command).read()
-    text = run_command(command, popen=True, verbose=verbose)
+    text = run_command(command, popen=True, verbose=verbose, str_output=True)
     text = text.strip()
     if verbose:
         ic(text)
