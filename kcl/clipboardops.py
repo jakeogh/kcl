@@ -6,6 +6,7 @@ from icecream import ic
 
 # bug putting snowman http://☃.net in the clipboard results in no iris
 def get_clipboard(verbose=False):
+    ic()
     command = "xclip -o -selection primary".split()
     string = \
         subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).stdout.read()
