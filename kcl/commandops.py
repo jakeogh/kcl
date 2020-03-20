@@ -27,9 +27,7 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
             ic(output)
             ic(errors)
         exit_code = popen_instance.returncode
-        if exit_code == expected_exit_code:
-            return output
-        else:
+        if exit_code != expected_exit_code:
             ic(command)
             ceprint("exit code:", exit_code, output)
             raise subprocess.CalledProcessError(cmd=command, returncode=exit_code)
@@ -40,12 +38,12 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
             if verbose:
                 ic(output)
         except subprocess.CalledProcessError as error:
-            if error.returncode == expected_exit_code:
-                return output
-            ic(command)
-            ceprint("exit code:", error.returncode, error.output)
-            raise error
+            if error.returncode != expected_exit_code:
+                ic(command)
+                ceprint("exit code:", error.returncode, error.output)
+                raise error
 
     if str_output:
         output = output.decode('utf8')
+
     return output
