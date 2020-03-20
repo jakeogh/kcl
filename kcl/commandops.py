@@ -5,7 +5,7 @@ from icecream import ic
 from kcl.printops import ceprint
 
 
-def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=None, stderr=subprocess.STDOUT, popen=False):
+def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=None, stderr=subprocess.STDOUT, popen=False, str_output=False):
     if isinstance(command, str):
         command = os.fsencode(command)  # hm.
     if isinstance(command, list):
@@ -46,4 +46,6 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
             ceprint("exit code:", error.returncode, error.output)
             raise error
 
+    if str_output:
+        output = output.decode('utf8')
     return output
