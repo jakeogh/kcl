@@ -6,7 +6,7 @@ import click
 from pathlib import Path
 from kcl.timeops import timestamp
 from kcl.mountops import block_special_path_is_mounted
-from kcl.fileops import path_is_block_special
+from kcl.pathops import path_is_block_special
 from kcl.fileops import get_block_device_size
 from kcl.fileops import path_exists
 from kcl.printops import eprint
