@@ -3,7 +3,7 @@
 import time
 import os
 from kcl.mountops import block_special_path_is_mounted
-from kcl.fileops import path_is_block_special
+from kcl.pathops import path_is_block_special
 from kcl.printops import eprint
 
 
