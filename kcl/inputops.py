@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import dmenu
+import pint
+from icecream import ic
 from .printops import ceprint
 
 
@@ -35,3 +37,12 @@ def get_tag_dmenu(tag_cache_file):
         tag = input("enter a tag: ")
         return tag
 
+
+def human_filesize_to_int(size, verbose=False):
+    u = pint.UnitRegistry()
+    i = u.parse_expression(size)
+    result = i.to('bytes').magnitude
+    if verbose:
+        ic(result)
+
+    return result
