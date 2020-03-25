@@ -36,6 +36,8 @@ def extract_psl_domain(domain):
         domain = domain.decode('utf-8')
     dom = TLD_EXTRACT(domain)
     dom = dom.domain + '.' + dom.suffix
+    if dom.endswith('.'):
+        dom = dom[:-1]
     #return dom.encode('utf-8')
     return dom
 
