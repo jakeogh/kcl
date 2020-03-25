@@ -34,6 +34,8 @@ def get_thing_dmenu(cache_file, msg):
         return thing
     except Exception as e:
         ceprint(e)
+        if not msg.endswith(' '):
+            msg += ' '
         thing = input(msg)
         return thing
 
