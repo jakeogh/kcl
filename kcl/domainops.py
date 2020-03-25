@@ -39,7 +39,7 @@ def extract_psl_domain(domain):
     if dom.endswith('.'):
         dom = dom[:-1]
     #return dom.encode('utf-8')
-    return dom
+    return dom.lower()
 
 
 def strip_to_psl(domains):
