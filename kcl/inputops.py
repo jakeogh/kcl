@@ -28,14 +28,14 @@ def dmenu_tag(tag_cache_file):
     return answer
 
 
-def get_tag_dmenu(tag_cache_file):
+def get_thing_dmenu(cache_file, msg):
     try:
-        tag = dmenu_tag(tag_cache_file)
-        return tag
+        thing = dmenu_tag(cache_file)
+        return thing
     except Exception as e:
         ceprint(e)
-        tag = input("enter a tag: ")
-        return tag
+        thing = input(msg)
+        return thing
 
 
 def human_filesize_to_int(size, verbose=False):
