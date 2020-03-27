@@ -41,7 +41,7 @@ def extract_title_from_file(data_file, verbose=False):
         return None
     try:
         title = ' '.join(get_title_from_dom_tree(dom_tree).split())
-    except AttributeError:
+    except (UnicodeDecodeError, AttributeError):
         return None
     title = title.replace('\r', ' ').replace('\n', ' ')
     if title == 'YouTube':
