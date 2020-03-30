@@ -61,26 +61,32 @@ def paths_are_identical(path1, path2, time=False, perms=False, verbose=False):
     #    ic(path2_type)
 
     if path1_type != path2_type:
+        ic(path1, path1_type)
+        ic(path2, path2_type)
         return False
 
     if path1_type in [32768, 24576]:  # file or device
         path1_hash = sha3_256_hash_file(path1)
         path2_hash = sha3_256_hash_file(path2)
         if verbose:
-           ic(path1_hash)
-           ic(path2_hash)
+            ic(path1_hash)
+            ic(path2_hash)
 
         if path1_hash != path2_hash:
+            ic(path1, path1_hash)
+            ic(path2, path2_hash)
             return False
 
     if path1_type == 40960:     # symlink
         path1_target = os.readlink(path1)
         path2_target = os.readlink(path2)
         if verbose:
-           ic(path1_target)
-           ic(path2_target)
+            ic(path1_target)
+            ic(path2_target)
 
         if path1_target != path2_target:
+            ic(path1, path1_target)
+            ic(path2, path2_target)
             return False
 
     return True
