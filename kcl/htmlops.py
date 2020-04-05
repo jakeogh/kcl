@@ -126,6 +126,21 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
             dom.make_links_absolute(url)
 
         import IPython; IPython.embed()
+
+        for link in dom.iterlinks():
+            link_url = link[2]
+            link_text = link[0].text
+            if strip_fragments:
+                link_url, _ = urldefrag(link_url)
+
+            if link_url not in link_cache:
+                try:
+                    text = link.text.strip()
+                except AttributeError:
+                    text = link.text
+                links.add((link_url, text))
+                link_cache.add(link_url)
+
         for link in dom.cssselect('a'):
             if verbose:
                 ic(link)
@@ -143,7 +158,9 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
                         text = link.text
                     links.add((link_url, text))
                     link_cache.add(link_url)
-            except KeyError:
+            except KeyError as e:
+                if verbose:
+                    ic(e)
                 pass
 
         for link in dom.cssselect('img'):
@@ -158,7 +175,9 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
                         text = link.text
                     links.add((link_url, text))
                     link_cache.add(link_url)
-            except KeyError:
+            except KeyError as e:
+                if verbose:
+                    ic(e)
                 pass
 
         #for link in dom.cssselect('div'):
