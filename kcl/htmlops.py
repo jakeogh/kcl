@@ -126,6 +126,8 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
             dom.make_links_absolute(url)
 
         for link in dom.cssselect('a'):
+            if verbose:
+                ic(link)
             try:
                 link_url = link.attrib['href']
                 if strip_fragments:
@@ -144,6 +146,8 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
                 pass
 
         for link in dom.cssselect('img'):
+            if verbose:
+                ic(link)
             try:
                 link_url = link.attrib['src']
                 if link_url not in link_cache:
