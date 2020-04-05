@@ -88,7 +88,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
     #dom = dom.getroot()  # lxml.etree._Element
     #dom.cssselect()
 
-    assert verbose
+    #assert verbose
     link_cache = set([])
     links = set([])
     parser = HTMLParser(recover=True)
