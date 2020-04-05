@@ -135,9 +135,9 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
 
             if link_url not in link_cache:
                 try:
-                    text = link.text.strip()
+                    text = link_text.strip()
                 except AttributeError:
-                    text = link.text
+                    text = link_text
                 links.add((link_url, text))
                 link_cache.add(link_url)
 
