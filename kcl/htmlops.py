@@ -109,6 +109,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
 
     else:
         ic(len(dom))
+        ic(dom)
         if len(dom) > 0:
             try:
                 dom.make_links_absolute(url)
