@@ -148,6 +148,10 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
 
         #for link in dom.cssselect('div'):
         #    import IPython; IPython.embed()
+
+    if verbose:
+        ic(len(link_cache))
+
     return links, link_cache
 
 
@@ -164,7 +168,7 @@ def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, d
         ic(len(page_html))
 
     if dom_extract:
-        links, link_cache = extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False)
+        links, link_cache = extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=verbose)
     else:
         links = set([])
         link_cache = set([])
