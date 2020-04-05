@@ -146,6 +146,8 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
                 ic(link)
             try:
                 link_url = link.attrib['href']
+                if verbose:
+                    ic(link_url)
                 if strip_fragments:
                     link_url, _ = urldefrag(link_url)
                 if link_url.startswith('javascript:'):
