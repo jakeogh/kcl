@@ -125,7 +125,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
             dom = html.fromstring(clean_html)
             dom.make_links_absolute(url)
 
-        import IPython; IPython.embed()
+        #import IPython; IPython.embed()
 
         for link in dom.iterlinks():
             link_url = link[2]
