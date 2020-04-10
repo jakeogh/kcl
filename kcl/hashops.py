@@ -16,17 +16,17 @@
 # pylint: disable=W0201     # attribute defined outside __init__
 # pylint: disable=W0703     # catching too general exception
 from itertools import product
-import attr
 import os
 import sys
 import hashlib
 import tempfile
 import subprocess
-from icecream import ic
 from pathlib import Path
-from requests.models import Response
 from threading import Thread
 from queue import Queue
+from icecream import ic
+import attr
+from requests.models import Response
 from getdents import paths
 from .printops import ceprint
 from .printops import eprint
@@ -137,7 +137,6 @@ def sha3_256_hash_file(path, block_size=256*128*2, binary=False):
     if binary:
         return sha3.digest()
     return sha3.hexdigest()
-
 
 
 def get_openssl_hash_algs_real():
