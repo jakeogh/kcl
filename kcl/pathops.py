@@ -133,7 +133,8 @@ def path_is_block_special(path, follow_symlinks=False):
 
 
 def path_is_file(path: Path):
-    verify(isinstance(path, Path))
+    if not isinstance(path, Path):
+        path = Path(path)
     if path.is_symlink():
         return False
     if os.path.isfile(path): #unlike os.path.exists(False), os.path.isfile(False) returns False so no need to call path_exists() first.
