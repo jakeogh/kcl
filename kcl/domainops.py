@@ -8,8 +8,9 @@ from kcl.fileops import read_file_bytes
 from kcl.byteops import remove_comments_from_bytes
 from kcl.logops import leprint
 from kcl.logops import LOG
-from kcl.byteops import read_url_bytes_and_cache
+#from kcl.byteops import read_url_bytes_and_cache
 import tldextract
+import requests
 
 TLDEXTRACT_CACHE = '/var/tmp/tldextract_cache'
 TLD_EXTRACT = tldextract.TLDExtract(cache_file=TLDEXTRACT_CACHE)
@@ -98,9 +99,9 @@ def validate_domain_list(domains):
     return valid_domains
 
 
-def extract_domain_from_iri(iri):
-    iri_urlparsed  = requests.utils.urlparse(iri)   # https://hg.python.org/cpython/file/tip/Lib/urllib/parse.py
-    return iri_urlparsed.netloc
+#def extract_domain_from_iri(iri):
+#    iri_urlparsed  = requests.utils.urlparse(iri)   # https://hg.python.org/cpython/file/tip/Lib/urllib/parse.py
+#    return iri_urlparsed.netloc
 
 
 def extract_domain_set_from_dnsgate_format_file(dnsgate_file):
@@ -138,11 +139,11 @@ def extract_domain_set_from_hosts_format_bytes(hosts_format_bytes):
     return domains
 
 
-def extract_domain_set_from_hosts_format_url(url, cache=True):
-    url_bytes = read_url_bytes_and_cache(url, cache)
-    domains = extract_domain_set_from_hosts_format_bytes(url_bytes)
-    leprint("Domains in %s:%s", url, len(domains), level=LOG['DEBUG'])
-    return domains
+#def extract_domain_set_from_hosts_format_url(url, cache=True):
+#    url_bytes = read_url_bytes_and_cache(url, cache)
+#    domains = extract_domain_set_from_hosts_format_bytes(url_bytes)
+#    leprint("Domains in %s:%s", url, len(domains), level=LOG['DEBUG'])
+#    return domains
 
 
 def prune_redundant_rules(domains):
