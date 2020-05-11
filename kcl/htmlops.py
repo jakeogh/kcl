@@ -65,7 +65,6 @@ def parse_html_to_dom(html):
     return dom_tree
 
 
-
 def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
     # METHOD 0: UNTRIED, might be faster
     #root = html5_parser.parse(page)
@@ -210,7 +209,7 @@ def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, d
         link_cache = set([])
 
     if text_extract:
-        for link in extract_iris_from_text(page_html):
+        for link in extract_iris_from_text(page_html, verbose=verbose):
             if link not in link_cache:
                 links.add((link, None))
 
