@@ -190,7 +190,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
     return links, link_cache
 
 
-def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, dom_extract=True, verbose=False):
+def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, dom_extract=True, verbose=False, debug=False):
     #page_html = requests.get(url).text
     if verbose:
         ic(text_extract)
@@ -209,7 +209,7 @@ def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, d
         link_cache = set([])
 
     if text_extract:
-        for link in extract_iris_from_text(page_html, verbose=verbose):
+        for link in extract_iris_from_text(page_html, verbose=verbose, debug=debug):
             if link not in link_cache:
                 links.add((link, None))
 
@@ -295,7 +295,7 @@ def extract_urls_lxml_nofollow(html_file, url):
 
 
 # todo: https://raw.githubusercontent.com/oakkitten/scripts/url_hint/python/url_hint.py
-def extract_iris_from_text(text, verbose=False):  # todo, buggy, already had to add the ~ below
+def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, already had to add the ~ below
     if verbose:
         ic(text)
     if isinstance(text, bytes):
@@ -310,7 +310,7 @@ def extract_iris_from_text(text, verbose=False):  # todo, buggy, already had to 
 
     url_list = []
     for line in clean_text:
-        if verbose:
+        if debug:
             ic(line)
         for word in line.split(' '):
            #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$-_@.&+#]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
@@ -320,6 +320,7 @@ def extract_iris_from_text(text, verbose=False):  # todo, buggy, already had to 
             urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()?i=]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             for url in urls:
                 if verbose:
+                    ic(word)
                     ic(url)
                 url_list.append(url)
 
