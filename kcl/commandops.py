@@ -9,7 +9,12 @@ def run_command(command, verbose=False, shell=True, expected_exit_code=0, stdin=
     if isinstance(command, str):
         command = os.fsencode(command)  # hm.
     if isinstance(command, list):
-        command = b' '.join(command)
+        try:
+            command = b' '.join(command)
+        except TypeError:
+            command = ' '.join(command)
+            command = command.encode('utf8')
+
     output = ''
     if verbose:
         ic(command)
