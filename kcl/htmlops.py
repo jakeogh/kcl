@@ -323,7 +323,8 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                     ic(word)
                     ic(url)
                 if url.endswith(')'):
-                    url = url[:-1]
+                    if '(' not in url:
+                        url = url[:-1]
                 if url.endswith('..'):
                     continue
                 url_list.append(url)
