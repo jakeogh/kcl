@@ -10,6 +10,7 @@ from lxml import etree
 import re
 from urllib.parse import urldefrag
 from kcl.printops import ceprint
+from kcl.printops import eprint
 from kcl.fileops import read_file_bytes
 from lxml import html
 from lxml.etree import tostring
@@ -324,6 +325,7 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                     ic(url)
                 if url.endswith(')'):
                     if '(' not in url:
+                        eprint("removing trailing ) from url:", url)
                         url = url[:-1]
                 if url.endswith('..'):
                     continue
