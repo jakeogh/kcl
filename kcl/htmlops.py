@@ -133,6 +133,9 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
             if strip_fragments:
                 link_url, _ = urldefrag(link_url)
 
+            if link_url.startswith('javascript:'):
+                continue
+
             if link_url not in link_cache:
                 try:
                     text = link_text.strip()
@@ -170,6 +173,8 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
                 ic(link)
             try:
                 link_url = link.attrib['src']
+                if link_url.startswith('javascript:'):
+                    continue
                 if link_url not in link_cache:
                     try:
                         text = link.text.strip()
