@@ -146,7 +146,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
 
         for link in dom.cssselect('a'):
             if verbose:
-                ic(link)
+                ic(dir(link))
             try:
                 link_url = link.attrib['href']
                 if verbose:
