@@ -15,14 +15,24 @@ def click_read_config(click_instance, app_name, verbose=False):
     parser = configparser.RawConfigParser()
     parser.read([cfg])
     rv = {}
+    if verbose:
+        ic(parser.sections())
     for section in parser.sections():
         rv[section] = {}
         for key, value in parser.items(section):
             rv[section][key] = value
     if verbose:
-        ic.enable()
         ic(rv)
     return rv
+
+
+def click_write_config_entry(click_instance, app_name, section, key, value):
+    cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
+    parser = configparser.RawConfigParser()
+    parser.read([cfg])
+    parser[section][key] = value
+    with open(cfg, 'w') as configfile:
+        parser.write(configfile)
 
 
 def read_config_file(config_file):
