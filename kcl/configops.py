@@ -2,16 +2,14 @@
 
 import os
 import configparser
-#import ConfigParser
 from kcl.fileops import empty_file
 from icecream import ic
-
-#import click
 
 
 def click_read_config(click_instance, app_name, verbose=False):
     cfg = os.path.join(click_instance.get_app_dir(app_name), 'config.ini')
-    #ic(cfg)
+    if verbose:
+        ic(cfg)
     parser = configparser.RawConfigParser()
     parser.read([cfg])
     rv = {}
