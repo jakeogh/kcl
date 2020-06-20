@@ -30,7 +30,12 @@ def click_write_config_entry(click_instance, app_name, section, key, value):
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
     parser = configparser.RawConfigParser()
     parser.read([cfg])
-    parser[section][key] = value
+    try:
+        parser[section][key] = value
+    except KeyError:
+        parser[section] = {}
+        parser[section][key] = value
+
     with open(cfg, 'w') as configfile:
         parser.write(configfile)
 
