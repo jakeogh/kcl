@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 
 import os
+from pathlib import Path
 import configparser
 from kcl.fileops import empty_file
 from icecream import ic
 
 
 def click_read_config(click_instance, app_name, verbose=False):
-    cfg = os.path.join(click_instance.get_app_dir(app_name), 'config.ini')
+    cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
+    cfg.parent.mkdir(exist_ok=True)
     if verbose:
         ic(cfg)
     parser = configparser.RawConfigParser()
