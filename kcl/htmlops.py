@@ -101,10 +101,8 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
             ic(e)
         pass
     except ValueError as e:
-        # /mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/.iridb/database.local/data_index/9/4/b/94b8a89ed85e0abeaf71d416f44ce07c770fb398
         if verbose:
             ic(e)
-            #ceprint("ValueError")  # ValueError: Unicode strings with encoding declaration are not supported. Please use bytes input or XML fragments without declaration.
         pass
 
     else:
@@ -320,7 +318,6 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
     text_list = text.split("\n")
     clean_text = filter(None, text_list)
 
-
     url_list = []
     for line in clean_text:
         if debug:
@@ -341,8 +338,10 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                         url = url[:-1]
                 if url.endswith('..'):
                     continue
+                if url.endswith('&'):
+                    eprint("removing trailing % from url:", url)
+                    url = url[:-1]
                 url_list.append(url)
-
 
     url_set = set(url_list)
     return url_set
