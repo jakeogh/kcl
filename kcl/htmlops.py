@@ -338,6 +338,8 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                         url = url[:-1]
                 if url.endswith('..'):
                     continue
+                if '&quot' in url:
+                    url = url.split('&quot')[0]
                 if url.endswith('&'):
                     eprint("removing trailing % from url:", url)
                     url = url[:-1]
