@@ -11,7 +11,7 @@ def embed_ipython():
 def pause(message, ipython=False):
     assert isinstance(message, str)
     if ipython:
-        message += " type 'ipython' to enter shell"
+        message += " (type 'ipython' to enter shell): "
     response = input(message)
     if response == "ipython":
         embed_ipython()
