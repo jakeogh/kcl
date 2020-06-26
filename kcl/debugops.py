@@ -4,16 +4,18 @@
 import ipdb
 
 
-def embed_ipython():
+def embed_ipdb():
     ipdb.set_trace()
 
 
 def pause(message, ipython=False):
     assert isinstance(message, str)
     if ipython:
-        message += " (type 'ipython' to enter shell): "
+        message += " (type 'ipython' to enter shell or 'ipdb' to enter debugger): "
     response = input(message)
-    if response == "ipython":
-        embed_ipython()
+    if response == "ipdb":
+        embed_ipdb()
         pause("press enter to continue execution")
-
+    elif response == "ipython":
+        from IPython import embed; embed()
+        pause("press enter to continue execution")
