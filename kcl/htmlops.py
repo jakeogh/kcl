@@ -308,6 +308,8 @@ def extract_urls_lxml_nofollow(html_file, url):
 
 # todo: https://raw.githubusercontent.com/oakkitten/scripts/url_hint/python/url_hint.py
 def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, already had to add the ~ below
+    if verbose:
+        ic(len(text))
     if debug:
         ic(text)
     if isinstance(text, bytes):
