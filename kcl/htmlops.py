@@ -134,7 +134,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, d
             if link_url.startswith('javascript:'):
                 continue
 
-            if verbose:
+            if debug:
                 ic(link_url)
 
             if link_url not in link_cache:
@@ -154,7 +154,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, d
                     continue
                 if strip_fragments:
                     link_url, _ = urldefrag(link_url)
-                if verbose:
+                if debug:
                     ic(link_url)
 
                 if link_url not in link_cache:
@@ -170,15 +170,15 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, d
                 pass
 
         for link in dom.cssselect('img'):
-            if verbose:
-                ic(link)
+            #if verbose:
+            #    ic(link)  # <Element img at 0x7f993acd6630>
             try:
                 link_url = link.attrib['src']
                 if link_url.startswith('javascript:'):
                     continue
                 if strip_fragments:
                     link_url, _ = urldefrag(link_url)
-                if verbose:
+                if debug:
                     ic(link_url)
                 if link_url not in link_cache:
                     try:
@@ -310,8 +310,8 @@ def extract_urls_lxml_nofollow(html_file, url):
 def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, already had to add the ~ below
     if verbose:
         ic(len(text))
-    if debug:
-        ic(text)
+    #if debug:
+    #    ic(text)
     if isinstance(text, bytes):
         text = text.decode('utf8', 'ignore')
     assert isinstance(text, str)
