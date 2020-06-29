@@ -332,7 +332,7 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
            #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()?]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()?i=]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             for url in urls:
-                if verbose:
+                if debug:
                     ic(word)
                     ic(url)
                 if url.endswith(')'):
