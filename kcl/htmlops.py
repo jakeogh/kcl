@@ -66,7 +66,7 @@ def parse_html_to_dom(html):
     return dom_tree
 
 
-def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
+def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, debug=False):
     # METHOD 0: UNTRIED, might be faster
     #root = html5_parser.parse(page)
     #print(type(root))  # <class 'lxml.etree._Element'>
@@ -204,6 +204,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False):
 def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, dom_extract=True, verbose=False, debug=False):
     #page_html = requests.get(url).text
     if verbose:
+        ic(html_file)
         ic(text_extract)
         ic(dom_extract)
     with open(html_file, 'rb') as fh:
@@ -214,7 +215,7 @@ def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, d
         ic(len(page_html))
 
     if dom_extract:
-        links, link_cache = extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=verbose)
+        links, link_cache = extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=verbose, debug=debug)
     else:
         links = set([])
         link_cache = set([])
@@ -307,7 +308,7 @@ def extract_urls_lxml_nofollow(html_file, url):
 
 # todo: https://raw.githubusercontent.com/oakkitten/scripts/url_hint/python/url_hint.py
 def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, already had to add the ~ below
-    if verbose:
+    if debug:
         ic(text)
     if isinstance(text, bytes):
         text = text.decode('utf8', 'ignore')
@@ -346,6 +347,8 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                 url_list.append(url)
 
     url_set = set(url_list)
+    if verbose:
+        ic(url_set)
     return url_set
 
 
