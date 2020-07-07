@@ -21,6 +21,8 @@ def randomize_iterator(iterator, max_wait=0.01, verbose=False):
     buffer_set.add(next(iterator))
 
     start_time = time.time()
+    if verbose:
+        ic(start_time)
     while ((time.time() - start_time) > max_wait):
         buffer_set.add(next(iterator))
 
