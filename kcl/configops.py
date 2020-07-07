@@ -4,9 +4,10 @@ import os
 import sys
 from pathlib import Path
 import configparser
-from kcl.fileops import empty_file
+#from kcl.fileops import empty_file
 from kcl.timeops import get_mtime
 from icecream import ic
+
 
 class ConfigUnchangedError(ValueError):
     pass
@@ -35,7 +36,7 @@ def click_read_config(click_instance, app_name, verbose=False, last_mtime=None):
     return rv, config_mtime
 
 
-def click_write_config_entry(click_instance, app_name, section, key, value):
+def click_write_config_entry(click_instance, app_name, section, key, value, verbose=False):
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
     parser = configparser.RawConfigParser()
     parser.read([cfg])
@@ -48,5 +49,5 @@ def click_write_config_entry(click_instance, app_name, section, key, value):
     with open(cfg, 'w') as configfile:
         parser.write(configfile)
 
-    config_mtime = get_mtime(cfg)
-    return config_mtime
+    config, config_mtime = click_read_config(click_instance=click_instance, app_name=app_name, verbose=verbose)
+    return config, config_mtime
