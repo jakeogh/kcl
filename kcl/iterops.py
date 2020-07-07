@@ -24,7 +24,12 @@ def randomize_iterator(iterator, max_wait=0.01, verbose=False):
     if verbose:
         ic(start_time)
     while ((time.time() - start_time) > max_wait):
-        buffer_set.add(next(iterator))
+        try:
+            buffer_set.add(next(iterator))
+        except StopIteration as e:
+            if verbose:
+                ic(e)
+            break
 
     random_index = secrets.randbelow(len(buffer_set))
     next_item = list(buffer_set).pop(random_index)
