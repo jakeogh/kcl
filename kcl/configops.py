@@ -15,9 +15,14 @@ class ConfigUnchangedError(ValueError):
 
 def click_read_config(*, click_instance, app_name, verbose=False, last_mtime=None):
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
-    config_mtime = get_mtime(cfg)
-    if config_mtime == last_mtime:
-        raise ConfigUnchangedError
+    try:
+        config_mtime = get_mtime(cfg)
+    except FileNotFoundError:
+        config_mtime = None
+
+    if config_mtime:
+        if config_mtime == last_mtime:
+            raise ConfigUnchangedError
 
     cfg.parent.mkdir(exist_ok=True)
     if verbose:
