@@ -39,7 +39,10 @@ def randomize_iterator(iterator, buffer_set=None, max_wait=0.1, verbose=False, d
 
     if not buffer_set:
         buffer_set = set()
-        buffer_set.add(next(iterator))
+        try:
+            buffer_set.add(next(iterator))
+        except StopIteration:
+            pass
 
     buffer_set = append_to_set_for_time(iterator=iterator,
                                         the_set=buffer_set,
