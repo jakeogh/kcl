@@ -25,7 +25,7 @@ def dmenu_tag(tag_cache_file):
     with open(tag_cache_file, 'r') as fh:
         tag_list = fh.readlines()
     font = "-Misc-Fixed-Medium-R-SemiCondensed--13-120-75-75-C-60-ISO10646-1"
-    #answer = dmenu.show(tag_list, font="-misc-fixed-*-*-*-*-50-*-*-*-*-*-*-*", case_insensitive=True)
+    #font = "-misc-fixed-*-*-*-*-50-*-*-*-*-*-*-*"
     answer = dmenu.show(tag_list, font=font, case_insensitive=True)
     return answer
 
@@ -56,7 +56,7 @@ def input_iterator(null=False,
                    strings=None,
                    verbose=False,
                    debug=False,
-                   output_limit=None):
+                   head=None):
 
     byte = b'\n'
     if null:
@@ -78,7 +78,7 @@ def input_iterator(null=False,
         yield string
         lines_output += 1
 
-        if output_limit:
-            if lines_output >= output_limit:
+        if head:
+            if lines_output >= head:
                 return
 
