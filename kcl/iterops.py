@@ -56,12 +56,13 @@ def randomize_iterator(iterator, buffer_set=None, max_wait=0.1, verbose=False, d
         except StopIteration:
             pass
 
-        random_index = secrets.randbelow(len(buffer_set))
+        buffer_set_length = len(buffer_set)
+        random_index = secrets.randbelow(buffer_set_length)
         #[next_item] = itertools.islice(buffer_set, random_index, 1)
         next_item = list(buffer_set).pop(random_index)
         buffer_set.remove(next_item)
 
         if verbose:
-            eprint("len(buffer_set):", len(buffer_set))
+            eprint("len(buffer_set):", buffer_set_length - 1)
 
         yield next_item
