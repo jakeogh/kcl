@@ -9,9 +9,10 @@ from icecream import ic
 
 
 def put_clipboard(string, verbose=False):
+    pyperclip.set_clipboard('xclip')
     if verbose:
         ic(string)
-    pyperclip.copy(string)
+    pyperclip.copy(string, primary=True)
 
 
 # bug putting snowman http://☃.net in the clipboard results in no iris
