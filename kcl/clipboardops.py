@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import paperclip
+import pyperclip
 import subprocess
 import os
 from kcl.htmlops import extract_iris_from_text
@@ -11,7 +11,7 @@ from icecream import ic
 def put_clipboard(string, verbose=False):
     if verbose:
         ic(string)
-    paperclip.copy(string)
+    pyperclip.copy(string)
 
 
 # bug putting snowman http://☃.net in the clipboard results in no iris
