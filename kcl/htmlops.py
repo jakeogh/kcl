@@ -335,6 +335,8 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                 if debug:
                     ic(word)
                     ic(url)
+                if url.endswith(';'):
+                    url = url[:-1]
                 if url.endswith(')'):
                     if '(' not in url:
                         eprint("removing trailing ) from url:", url)
