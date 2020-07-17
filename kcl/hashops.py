@@ -321,9 +321,14 @@ def shard(hexdigest, width, depth):
                     for i in range(depth)] + [hexdigest])
 
 
-def hexdigest_str_path(root: Path, hexdigest: str, width: int, depth: int) -> Path:
+def hexdigest_str_path_relative(hexdigest: str, width: int, depth: int) -> Path:
     path_elements = shard(hexdigest, width=width, depth=depth)
     rel_path = Path(os.path.join(*path_elements))
+    return rel_path
+
+
+def hexdigest_str_path(root: Path, hexdigest: str, width: int, depth: int) -> Path:
+    rel_path = hexdigest_str_path_relative(hexdigest=hexdigest, width=width, depth=depth)
     path = root / rel_path
     return path
 
