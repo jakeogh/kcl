@@ -35,7 +35,7 @@ def append_to_set_for_time(*, iterator, the_set, max_wait, verbose=False, debug=
 # add time-like memory limit
 # the longer the max_wait, the larger buffer_set will be,
 # resulting in better mixing
-def randomize_iterator(iterator, buffer_set=None, max_wait=0.8, verbose=False, debug=False):
+def randomize_iterator(iterator, buffer_set=None, max_wait=1.6, verbose=False, debug=False):
 
     if not buffer_set:
         buffer_set = set()
