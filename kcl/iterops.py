@@ -38,6 +38,8 @@ def append_to_set(*,
         if time_loops > 1:
             eprint("\nWarning: min_pool_size: {} was not attained in max_wait_time: {} so actual wait time was: {}\n".format(min_pool_size, max_wait_time, max_wait_time*time_loops))
 
+        if len(the_set) < min_pool_size:
+            eprint("\nlen(the_set) is {} waiting for min_pool_size: {}\n".format(len(the_set), min_pool_size))
 
     assert time_loops > 0
 
