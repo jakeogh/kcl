@@ -27,11 +27,11 @@ def append_to_set(*,
     assert max_wait_time > 0.01
     assert min_pool_size >= 2
 
-    start_time = time.time()
 
     time_loops = 0
     eprint("\nWaiting for min_pool_size: {}\n".format(min_pool_size))
     while len(the_set) < min_pool_size:
+        start_time = time.time()
         while (time.time() - start_time) < max_wait_time:
             time_loops += 1
             try:
@@ -39,7 +39,7 @@ def append_to_set(*,
             except StopIteration:
                 pass
         if time_loops > 1:
-            eprint("\nWarning: min_pool_size: {} was not attained in max_wait_time: {} so actual wait time was: {}\n".format(min_pool_size, max_wait_time, max_wait_time*time_loops))
+            eprint("\nWarning: min_pool_size: {} was not attained in max_wait_time: {}s so actual wait time was: {}s\n".format(min_pool_size, max_wait_time, max_wait_time*time_loops))
 
         if len(the_set) < min_pool_size:
             eprint("\nlen(the_set) is {} waiting for min_pool_size: {}\n".format(len(the_set), min_pool_size))
