@@ -20,9 +20,12 @@ def append_to_set(*,
                   iterator,
                   the_set,
                   max_wait_time,
-                  min_pool_size=2,  # the_set always has 1 item
+                  min_pool_size,  # the_set always has 1 item
                   verbose=False,
                   debug=False):
+
+    assert max_wait_time > 0.01
+    assert min_pool_size >= 2
 
     start_time = time.time()
 
@@ -50,11 +53,14 @@ def append_to_set(*,
 # the longer the max_wait, the larger buffer_set will be,
 # resulting in better mixing
 def randomize_iterator(iterator, *,
+                       min_pool_size,
+                       max_wait_time,
                        buffer_set=None,
-                       max_wait_time=1.6,
-                       min_pool_size=2,
                        verbose=False,
                        debug=False):
+
+    assert max_wait_time
+    assert min_pool_size
 
     if not buffer_set:
         buffer_set = set()
