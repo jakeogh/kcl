@@ -20,7 +20,7 @@ def append_to_set(*,
                   iterator,
                   the_set,
                   max_wait_time,
-                  min_pool_size=1,
+                  min_pool_size=2,  # the_set always has 1 item
                   verbose=False,
                   debug=False):
 
@@ -50,7 +50,7 @@ def append_to_set(*,
 def randomize_iterator(iterator, *,
                        buffer_set=None,
                        max_wait_time=1.6,
-                       min_pool_size=1,
+                       min_pool_size=2,
                        verbose=False,
                        debug=False):
 
@@ -63,6 +63,7 @@ def randomize_iterator(iterator, *,
 
     buffer_set = append_to_set(iterator=iterator,
                                the_set=buffer_set,
+                               min_pool_size=min_pool_size,
                                max_wait_time=max_wait_time,
                                verbose=verbose,
                                debug=debug)
