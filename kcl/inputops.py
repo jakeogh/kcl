@@ -69,7 +69,7 @@ def input_iterator(null=False,
 
     lines_output = 0
     for index, string in enumerate(iterator):
-        if verbose:
+        if debug:
             ic(index, string)
 
         if isinstance(string, bytes):
