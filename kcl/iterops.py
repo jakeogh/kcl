@@ -38,8 +38,9 @@ def append_to_set(*,
                 the_set.add(next(iterator))
             except StopIteration:
                 pass
+
         if time_loops > 1:
-            eprint("\nWarning: min_pool_size: {} was not attained in max_wait_time: {}s so actual wait time was: {}s\n".format(min_pool_size, max_wait_time, max_wait_time*time_loops))
+            eprint("\nWarning: min_pool_size: {} was not reached in max_wait_time: {}s so actual wait time was: {}x {}s\n".format(min_pool_size, max_wait_time, time_loops, max_wait_time * time_loops))
 
         if len(the_set) < min_pool_size:
             eprint("\nlen(the_set) is {} waiting for min_pool_size: {}\n".format(len(the_set), min_pool_size))
