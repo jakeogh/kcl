@@ -6,6 +6,14 @@ from kcl.printops import eprint
 from itertools import zip_longest
 from icecream import ic
 
+
+def true_items_in_iterator(iterator, verbose=False):
+    if verbose:
+        ic(iterator)
+    answer = sum(x for x in iterator if x is True)
+    return answer
+
+
 # https://docs.python.org/3/library/itertools.html#itertools-recipes
 def grouper(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
