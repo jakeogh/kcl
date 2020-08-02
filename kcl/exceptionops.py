@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 
-import sys
+#import sys
 import time
+from icecream import ic
 
 
 def retry_on_exception(*, function, exception, kwargs={}, delay=1, delay_multiplier=0.5):
     while True:
         try:
-            return exec(function(**kwargs))  # I need to return what function returned, not None that exec returns
+            return function(**kwargs)
             break
         except exception as e:
-            print(e, file=sys.stderr)
+            ic(e)
+            #print(e, file=sys.stderr)
             delay = delay + (delay * delay_multiplier)
+            ic(delay)
             time.sleep(delay)
 
