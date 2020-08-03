@@ -21,13 +21,16 @@ def _prompt_tag_slmenu(*, cache_file, verbose=False, msg=None):
     if msg:
         eprint(msg, end=None)
     text = os.popen(command).read()
+    if verbose:
+        ic(text)
     #tag_completer = WordCompleter(tags, ignore_case=True)
     #text = prompt('Tag: ', completer=tag_completer,
     #              complete_style=CompleteStyle.READLINE_LIKE, complete_while_typing=True)
     return text
 
 
-def prompt_string(cache_file, verbose=False):
+def prompt_string(*, cache_file, verbose=False, msg=None):
+
     tag = _prompt_tag_dmenu(cache_file=cache_file, verbose=verbose)
     if verbose:
         ic(tag)
