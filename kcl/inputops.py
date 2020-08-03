@@ -21,25 +21,25 @@ def passphrase_prompt(note):
     return passphrase
 
 
-def dmenu_tag(tag_cache_file):
-    with open(tag_cache_file, 'r') as fh:
-        tag_list = fh.readlines()
-    font = "-Misc-Fixed-Medium-R-SemiCondensed--13-120-75-75-C-60-ISO10646-1"
-    #font = "-misc-fixed-*-*-*-*-50-*-*-*-*-*-*-*"
-    answer = dmenu.show(tag_list, font=font, case_insensitive=True)
-    return answer
+#def dmenu_tag(tag_cache_file):
+#    with open(tag_cache_file, 'r') as fh:
+#        tag_list = fh.readlines()
+#    font = "-Misc-Fixed-Medium-R-SemiCondensed--13-120-75-75-C-60-ISO10646-1"
+#    #font = "-misc-fixed-*-*-*-*-50-*-*-*-*-*-*-*"
+#    answer = dmenu.show(tag_list, font=font, case_insensitive=True)
+#    return answer
 
 
-def get_thing_dmenu(cache_file, msg):
-    try:
-        thing = dmenu_tag(cache_file)
-        return thing
-    except Exception as e:
-        ceprint(e)
-        if not msg.endswith(' '):
-            msg += ' '
-        thing = input(msg)
-        return thing
+#def get_thing_dmenu(cache_file, msg):
+#    try:
+#        thing = dmenu_tag(cache_file)
+#        return thing
+#    except Exception as e:
+#        ceprint(e)
+#        if not msg.endswith(' '):
+#            msg += ' '
+#        thing = input(msg)
+#        return thing
 
 
 def human_filesize_to_int(size, verbose=False):
