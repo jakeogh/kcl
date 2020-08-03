@@ -4,6 +4,7 @@
 import os
 from icecream import ic
 from .commandops import run_command
+from .printops import eprint
 
 
 def _prompt_tag_dmenu(*, cache_file, verbose=False):
@@ -15,8 +16,10 @@ def _prompt_tag_dmenu(*, cache_file, verbose=False):
     return text
 
 
-def _prompt_tag_slmenu(*, cache_file, verbose=False):
+def _prompt_tag_slmenu(*, cache_file, verbose=False, msg=None):
     command = "/usr/bin/slmenu -i <" + cache_file
+    if msg:
+        eprint(msg, end=None)
     text = os.popen(command).read()
     #tag_completer = WordCompleter(tags, ignore_case=True)
     #text = prompt('Tag: ', completer=tag_completer,
