@@ -2,6 +2,7 @@
 
 
 import os
+from subprocess import CalledProcessError
 from icecream import ic
 from .commandops import run_command
 from .printops import eprint
@@ -30,7 +31,10 @@ def _prompt_tag_slmenu(*, cache_file, verbose=False, msg=None):
 
 
 def prompt_string(*, cache_file, verbose=False, msg=None):
-
-    tag = _prompt_tag_dmenu(cache_file=cache_file, verbose=verbose)
+    try:
+        tag = _prompt_tag_dmenu(cache_file=cache_file, verbose=verbose)
+    except CalledProcessError:
+        tag = _prompt_tag_slmenu(cache_file=cache_file, verbose=verbose, msg=msg)
     if verbose:
         ic(tag)
+    return tag
