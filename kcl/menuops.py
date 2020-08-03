@@ -27,7 +27,7 @@ def _prompt_tag_slmenu(*, cache_file, verbose=False, msg=None):
     return text
 
 
-def prompt_tag(cache_file, verbose=False):
+def prompt_string(cache_file, verbose=False):
     tag = _prompt_tag_dmenu(cache_file=cache_file, verbose=verbose)
     if verbose:
         ic(tag)
