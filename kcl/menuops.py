@@ -20,7 +20,7 @@ def _prompt_tag_dmenu(*, cache_file, verbose=False):
 def _prompt_tag_slmenu(*, cache_file, verbose=False, msg=None):
     command = "/usr/bin/slmenu -i <" + cache_file
     if msg:
-        eprint(msg, end=None)
+        eprint("\n" + msg, end=None)
     text = os.popen(command).read()
     if verbose:
         ic(text)
