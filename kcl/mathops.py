@@ -20,6 +20,12 @@ import os
 #    bytes = str
 #    basestring = basestring
 
+def is_digits(string):
+    for char in string:
+        if not char.isdigit():
+            return False
+    return True
+
 
 def get_values_from_dict(dict):
     all_uris = list(dict.values())
