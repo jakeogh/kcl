@@ -57,3 +57,20 @@ def click_write_config_entry(*, click_instance, app_name, section, key, value, v
 
     config, config_mtime = click_read_config(click_instance=click_instance, app_name=app_name, verbose=verbose)
     return config, config_mtime
+
+
+def _click_remove_config_entry(*, click_instance, app_name, section, key, value, verbose=False):
+    cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
+    parser = configparser.RawConfigParser()
+    parser.read([cfg])
+    try:
+        parser[section][key] = value
+    except KeyError:
+        parser[section] = {}
+        parser[section][key] = value
+
+    with open(cfg, 'w') as configfile:
+        parser.write(configfile)
+
+    config, config_mtime = click_read_config(click_instance=click_instance, app_name=app_name, verbose=verbose)
+    return config, config_mtime
