@@ -17,7 +17,7 @@ def percent_difference(a, b, verbose=False):
     if verbose:
         ic(percent_total)
 
-    result = 1 - abs(percent_total)
+    result = 100 - abs(percent_total)
     return result
 
 def is_digits(string):
