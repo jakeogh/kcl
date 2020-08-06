@@ -13,7 +13,11 @@ def percent_of_total(*, part, total, verbose=False):
     return result
 
 def percent_difference(a, b, verbose=False):
-    result = 1 - abs(percent_of_total(part=min(a, b), total=max(a, b), verbose=verbose))
+    percent_total = percent_of_total(part=min(a, b), total=max(a, b), verbose=verbose)
+    if verbose:
+        ic(percent_total)
+
+    result = 1 - abs(percent_total)
     return result
 
 def is_digits(string):
