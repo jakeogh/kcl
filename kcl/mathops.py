@@ -5,20 +5,13 @@ import collections
 import binascii
 import os
 
-#try:
-#    unicode = unicode
-#except NameError:
-#    # 'unicode' is undefined, must be Python 3
-#    str = str
-#    unicode = str
-#    bytes = bytes
-#    basestring = (str,bytes)
-#else:
-#    # 'unicode' exists, must be Python 2
-#    str = str
-#    unicode = unicode
-#    bytes = str
-#    basestring = basestring
+
+def percent_of_total(*, part, total, verbose=False):
+    if verbose:
+        ic(part, total)
+    result = (part / total) * 100
+    return result
+
 
 def is_digits(string):
     for char in string:
