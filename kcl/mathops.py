@@ -12,6 +12,9 @@ def percent_of_total(*, part, total, verbose=False):
     result = (part / total) * 100
     return result
 
+def percent_of_difference(*, part, total, verbose=False):
+    result = 1 - percent_of_total(part=part, total=total, verbose=verbose)
+    return result
 
 def is_digits(string):
     for char in string:
