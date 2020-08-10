@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import os
 import time
+import errno
+import signal
+from functools import wraps
 from .assertops import verify
 from .printops import eprint
 from icecream import ic
@@ -53,3 +56,25 @@ def update_mtime_if_older(path, mtime, verbose=False):
             eprint("{} old: {} new: {}".format(path, current_mtime[1], mtime[1]))
         os.utime(path, ns=mtime, follow_symlinks=False)
 
+
+#class TimeoutError(Exception):
+#    pass
+
+
+def timeout(seconds, error_message=os.strerror(errno.ETIME)):
+    def decorator(func):
+        def _handle_timeout(signum, frame):
+            raise TimeoutError(error_message)
+
+        def wrapper(*args, **kwargs):
+            signal.signal(signal.SIGALRM, _handle_timeout)
+            signal.alarm(seconds)
+            try:
+                result = func(*args, **kwargs)
+            finally:
+                signal.alarm(0)
+            return result
+
+        return wraps(func)(wrapper)
+
+    return decorator
