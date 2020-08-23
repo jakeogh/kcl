@@ -41,15 +41,19 @@ class Delay():
         self.multiplier = multiplier
         self.end = end
 
-    def sleep(self):
+    def _sleep(self):
+        ic(self.delay)
         time.sleep(self.delay)
+
+    def sleep(self):
+        self._sleep()
         self.delay = self.delay + (self.delay * self.multiplier)
         while self.delay < self.end:
-            time.sleep(self.delay)
+            self._sleep()
             self.delay = self.delay + (self.delay * self.multiplier)
         self.delay = self.end
         while True:
-            time.sleep(self.delay)
+            self._sleep()
 
 
 def timestamp():
