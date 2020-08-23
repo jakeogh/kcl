@@ -9,6 +9,25 @@ from .printops import eprint
 from icecream import ic
 
 
+def delaygen(start, multiplier, end):
+    start = float(start)
+    multiplier = float(multiplier)
+    end = float(end)
+    assert start >= 0
+    assert end > 0
+    assert multiplier > 0
+    assert start <= end
+    delay = start
+    yield delay
+    delay = delay + (delay * multiplier)
+    while delay < end:
+        yield delay
+        delay = delay + (delay * multiplier)
+    delay = end
+    while True:
+        yield delay
+
+
 def timestamp():
     timestamp = str("%.22f" % time.time())
     return timestamp
