@@ -47,7 +47,7 @@ class Delay():
 
     def _sleep_next(self):
         if self.delay < self.end:
-            self.delay = self.delay + (self.delay * self.multiplier)
+            self.delay = max(self.delay + (self.delay * self.multiplier), self.end)
 
     def sleep(self):
         self._sleep()
