@@ -45,15 +45,13 @@ class Delay():
         ic(self.delay)
         time.sleep(self.delay)
 
+    def _sleep_next(self):
+        if self.delay < self.end:
+            self.delay = self.delay + (self.delay * self.multiplier)
+
     def sleep(self):
         self._sleep()
-        self.delay = self.delay + (self.delay * self.multiplier)
-        while self.delay < self.end:
-            self._sleep()
-            self.delay = self.delay + (self.delay * self.multiplier)
-        self.delay = self.end
-        while True:
-            self._sleep()
+        self._sleep_next()
 
 
 def timestamp():
