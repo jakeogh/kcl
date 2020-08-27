@@ -96,10 +96,13 @@ def randomize_iterator(iterator, *,
         #[next_item] = itertools.islice(buffer_set, random_index, 1)
         next_item = list(buffer_set).pop(random_index)
         buffer_set.remove(next_item)
-        if verbose:
+        if debug:
             eprint("Chose 1 item out of", buffer_set_length)
 
         if debug:
             eprint("len(buffer_set):", buffer_set_length - 1)
+
+        if verbose:
+            ic(len(buffer_set), next_item)
 
         yield next_item
