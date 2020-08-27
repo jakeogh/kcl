@@ -335,6 +335,9 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                 if debug:
                     ic(word)
                     ic(url)
+
+                url = url.strip()
+
                 if url.endswith(';'):
                     url = url[:-1]
                 if url.endswith(')'):
@@ -351,7 +354,6 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                         eprint("removing trailing % from url:", url)
                     url = url[:-1]
 
-                url = url.strip()
                 url_list.append(url)
 
     url_set = set(url_list)
