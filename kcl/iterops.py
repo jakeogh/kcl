@@ -35,7 +35,6 @@ def append_to_set(*,
     assert max_wait_time > 0.01
     assert min_pool_size >= 2
 
-
     time_loops = 0
     eprint("\nWaiting for min_pool_size: {}\n".format(min_pool_size))
     while len(the_set) < min_pool_size:
@@ -54,7 +53,6 @@ def append_to_set(*,
             eprint("\nlen(the_set) is {} waiting for min_pool_size: {}\n".format(len(the_set), min_pool_size))
 
     assert time_loops > 0
-
     return the_set
 
 
