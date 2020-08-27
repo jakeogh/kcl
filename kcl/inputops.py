@@ -82,3 +82,16 @@ def input_iterator(null=False,
             if lines_output >= head:
                 return
 
+
+def enumerate_input(*,
+                    iterator,
+                    null,
+                    verbose=False,
+                    debug=False,
+                    head=None):
+    for index, thing in enumerate(input_iterator(strings=iterator,
+                                                 null=null,
+                                                 head=head,
+                                                 debug=debug,
+                                                 verbose=verbose)):
+        yield index, thing
