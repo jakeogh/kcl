@@ -350,6 +350,8 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                     if verbose:
                         eprint("removing trailing % from url:", url)
                     url = url[:-1]
+
+                url = url.strip()
                 url_list.append(url)
 
     url_set = set(url_list)
