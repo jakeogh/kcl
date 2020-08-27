@@ -9,7 +9,7 @@ from kcl.printops import ceprint
 
 
 @click.command()
-@click.argument('paths', type=str, nargs=-1, required=True)
+@click.argument('paths', type=str, nargs=-1, required=False)
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
 @click.option('--notpaths', is_flag=True)
