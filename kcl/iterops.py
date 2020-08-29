@@ -86,6 +86,7 @@ def randomize_iterator(iterator, *,
     while buffer_set:
         try:
             buffer_set.add(next(iterator))
+            buffer_set.add(next(iterator))
         except StopIteration:
             pass
 
@@ -101,6 +102,6 @@ def randomize_iterator(iterator, *,
             eprint("len(buffer_set):", buffer_set_length - 1)
 
         if verbose:
-            ic(len(buffer_set), next_item)
+            ic(len(buffer_set), random_index, next_item)
 
         yield next_item
