@@ -9,7 +9,7 @@ from icecream import ic
 def delete_database(database):
     ic(database)
     dbpath = 'postgres://postgres@localhost/'
-    assert not database.startswith(dbpath)
+    assert database.startswith(dbpath)
     pg_dbpath = dbpath + 'postgres'
     assert dbpath in database
     dbname = database.split(dbpath)[-1]
