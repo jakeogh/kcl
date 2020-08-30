@@ -13,7 +13,7 @@ class ConfigUnchangedError(ValueError):
     pass
 
 
-def click_read_config(*, click_instance, app_name, verbose=False, last_mtime=None):
+def click_read_config(*, click_instance, app_name, verbose=False, last_mtime=None, keep_case=True):
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
     try:
         config_mtime = get_mtime(cfg)
@@ -28,6 +28,8 @@ def click_read_config(*, click_instance, app_name, verbose=False, last_mtime=Non
     if verbose:
         ic(cfg)
     parser = configparser.RawConfigParser()
+    if keep_case:
+        parser.optionxform = str
     parser.read([cfg])
     rv = {}
     if verbose:
@@ -42,7 +44,7 @@ def click_read_config(*, click_instance, app_name, verbose=False, last_mtime=Non
     return rv, config_mtime
 
 
-def click_write_config_entry(*, click_instance, app_name, section, key, value, verbose=False, keep_case=False):
+def click_write_config_entry(*, click_instance, app_name, section, key, value, verbose=False, keep_case=True):
     if verbose:
         ic(app_name, section, key, value)
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
@@ -64,10 +66,12 @@ def click_write_config_entry(*, click_instance, app_name, section, key, value, v
     return config, config_mtime
 
 
-def _click_remove_config_entry(*, click_instance, app_name, section, key, value, verbose=False):
+def _click_remove_config_entry(*, click_instance, app_name, section, key, value, verbose=False, keep_case=True):
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
     parser = configparser.RawConfigParser()
     parser.read([cfg])
+    if keep_case:
+        parser.optionxform = str
     try:
         parser[section][key] = value
     except KeyError:
