@@ -42,10 +42,14 @@ def click_read_config(*, click_instance, app_name, verbose=False, last_mtime=Non
     return rv, config_mtime
 
 
-def click_write_config_entry(*, click_instance, app_name, section, key, value, verbose=False):
+def click_write_config_entry(*, click_instance, app_name, section, key, value, verbose=False, keep_case=False):
+    if verbose:
+        ic(app_name, section, key, value)
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
     cfg.parent.mkdir(exist_ok=True)
     parser = configparser.RawConfigParser()
+    if keep_case:
+        parser.optionxform = str
     parser.read([cfg])
     try:
         parser[section][key] = value
