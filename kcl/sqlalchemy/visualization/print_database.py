@@ -43,3 +43,6 @@ def print_database(database, table, contents):
                     for result in data:
                         print(' '*pad, end='')
                         pprint.pprint(result)
+
+if __name__ == '__main__':
+    print_database()
