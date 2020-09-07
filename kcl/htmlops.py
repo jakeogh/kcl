@@ -137,6 +137,8 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, d
             if debug:
                 ic(link_url)
 
+            link_url = link_url.strip()
+
             if link_url not in link_cache:
                 try:
                     text = link_text.strip()
@@ -156,6 +158,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, d
                     link_url, _ = urldefrag(link_url)
                 if debug:
                     ic(link_url)
+                link_url = link_url.strip()
 
                 if link_url not in link_cache:
                     try:
@@ -180,6 +183,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, d
                     link_url, _ = urldefrag(link_url)
                 if debug:
                     ic(link_url)
+                link_url = link_url.strip()
                 if link_url not in link_cache:
                     try:
                         text = link.text.strip()
@@ -298,7 +302,7 @@ def extract_urls_lxml_nofollow(html_file, url):
                     if link.attrib['rel'] == 'nofollow':
                         current_url = link.attrib['href']
                         if current_url != 'http://' and current_url != 'https://':
-                            url_list.append(link.attrib['href'])
+                            url_list.append(link.attrib['href'].strip())
                 except:
                     pass
         except:
@@ -354,7 +358,7 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                         eprint("removing trailing % from url:", url)
                     url = url[:-1]
 
-                url_list.append(url)
+                url_list.append(url.strip())
 
     url_set = set(url_list)
     if verbose:

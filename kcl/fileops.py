@@ -10,8 +10,11 @@
 import time
 import os
 import shutil
+from icecream import ic
 from pathlib import Path
 from shutil import copyfileobj
+from contextlib import contextmanager
+import tempfile
 import stat
 import fcntl
 from .printops import eprint
@@ -276,3 +279,18 @@ def combine_files(source, destination, buffer=65535):
 # todo
 # https://github.com/MostAwesomeDude/betterpath/blob/master/bp/filepath.py
 # https://github.com/twisted/twisted/blob/trunk/twisted/python/filepath.py
+# https://stackoverflow.com/questions/1430446/create-a-temporary-fifo-named-pipe-in-python
+@contextmanager
+def temp_fifo(verbose=False):
+    """Context Manager for creating named pipes with temporary names."""
+    tmpdir = tempfile.mkdtemp()
+    filename = os.path.join(tmpdir, 'fifo')  # Temporary filename
+    if verbose:
+        ic(filename)
+    os.mkfifo(filename)  # Create FIFO
+    try:
+        yield filename
+    finally:
+        os.unlink(filename)  # Remove file
+        os.rmdir(tmpdir)  # Remove directory
+
