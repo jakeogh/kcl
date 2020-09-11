@@ -9,6 +9,7 @@ def run_command(command,
                 verbose=False,
                 shell=True,
                 expected_exit_code=0,
+                ignore_exit_code=False,
                 stdin=None,
                 stderr=subprocess.STDOUT,
                 popen=False,
@@ -43,7 +44,8 @@ def run_command(command,
         if exit_code != expected_exit_code:
             ic(command)
             ceprint("exit code:", exit_code, output)
-            raise subprocess.CalledProcessError(cmd=command, returncode=exit_code)
+            if not ignore_exit_code:
+                raise subprocess.CalledProcessError(cmd=command, returncode=exit_code)
 
     else:
         try:
