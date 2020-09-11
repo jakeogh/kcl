@@ -59,6 +59,7 @@ def run_command(command,
                 if not ignore_exit_code:
                     raise error
 
+    ic(output)
     if str_output:
         output = output.decode('utf8')
 
