@@ -49,15 +49,18 @@ def run_command(command,
 
     else:
         try:
-            output = subprocess.check_output(command, stderr=stderr, stdin=stdin, shell=shell)
+            check = True
+            if ignore_exit_code:
+                check = False
+            output = subprocess.check_output(command, stderr=stderr, stdin=stdin, shell=shell, check=check)
             if verbose:
                 ic(output)
         except subprocess.CalledProcessError as error:
             if error.returncode != expected_exit_code:
                 ic(command, ignore_exit_code)
-                ceprint("exit code:", error.returncode, error.output)
+                ic(error.returncode, error.output)
                 if not ignore_exit_code:
-                    raise error
+                   a raise error
 
     ic(output)
     if str_output:
