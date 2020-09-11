@@ -56,7 +56,8 @@ def run_command(command,
             if error.returncode != expected_exit_code:
                 ic(command)
                 ceprint("exit code:", error.returncode, error.output)
-                raise error
+                if not ignore_exit_code:
+                    raise error
 
     if str_output:
         output = output.decode('utf8')
