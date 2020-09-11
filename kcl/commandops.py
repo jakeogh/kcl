@@ -60,7 +60,7 @@ def run_command(command,
                 ic(command, ignore_exit_code)
                 ic(error.returncode, error.output)
                 if not ignore_exit_code:
-                   a raise error
+                   raise error
 
     ic(output)
     if str_output:
