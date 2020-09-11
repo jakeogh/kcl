@@ -54,7 +54,7 @@ def run_command(command,
                 ic(output)
         except subprocess.CalledProcessError as error:
             if error.returncode != expected_exit_code:
-                ic(command)
+                ic(command, ignore_exit_code)
                 ceprint("exit code:", error.returncode, error.output)
                 if not ignore_exit_code:
                     raise error
