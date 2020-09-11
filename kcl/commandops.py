@@ -52,7 +52,7 @@ def run_command(command,
             check = True
             if ignore_exit_code:
                 check = False
-            output = subprocess.check_output(command, stderr=stderr, stdin=stdin, shell=shell, check=check)
+            output = subprocess.check_output(command, stderr=stderr, stdin=stdin, shell=shell)
             if verbose:
                 ic(output)
         except subprocess.CalledProcessError as error:
@@ -60,7 +60,8 @@ def run_command(command,
                 ic(command, ignore_exit_code)
                 ic(error.returncode, error.output)
                 if not ignore_exit_code:
-                   raise error
+                    raise error
+                output = error.output
 
     ic(output)
     if str_output:
