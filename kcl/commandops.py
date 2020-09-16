@@ -5,6 +5,7 @@ from icecream import ic
 from kcl.printops import ceprint
 
 
+# https://docs.python.org/3/library/subprocess.html#subprocess.run
 def run_command(command,
                 verbose=False,
                 shell=True,
