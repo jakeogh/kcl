@@ -69,6 +69,9 @@ def randomize_iterator(iterator, *,
     assert max_wait_time
     assert min_pool_size
 
+    if min_pool_size < 2:
+        min_pool_size = 2
+
     if not buffer_set:
         buffer_set = set()
         try:
