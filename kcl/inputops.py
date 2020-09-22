@@ -6,6 +6,7 @@ import sys
 from icecream import ic
 from .printops import ceprint
 from .byteops import read_by_byte
+from .iterops import randomize_iterator
 
 
 def passphrase_prompt(note):
@@ -54,6 +55,7 @@ def human_filesize_to_int(size, verbose=False):
 
 def input_iterator(null=False,
                    strings=None,
+                   random=False,
                    verbose=False,
                    debug=False,
                    head=None):
@@ -66,6 +68,9 @@ def input_iterator(null=False,
         iterator = strings
     else:
         iterator = read_by_byte(sys.stdin.buffer, byte=byte)
+
+    if random:
+        iterator = randomize_iterator(iterator, min_pool_size=1, max_wait_time=1)
 
     lines_output = 0
     for index, string in enumerate(iterator):
