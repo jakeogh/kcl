@@ -44,7 +44,7 @@ def passphrase_prompt(note):
 
 
 def human_filesize_to_int(size,
-                          verbose=False
+        verbose=False,
                           debug=False):
     u = pint.UnitRegistry()
     i = u.parse_expression(size)
