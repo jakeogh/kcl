@@ -47,6 +47,7 @@ def human_filesize_to_int(size, verbose=False):
     u = pint.UnitRegistry()
     i = u.parse_expression(size)
     result = i.to('bytes').magnitude
+    result = int(result)
     if verbose:
         ic(result)
 
