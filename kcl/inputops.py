@@ -43,15 +43,17 @@ def passphrase_prompt(note):
 #        return thing
 
 
-def human_filesize_to_int(size, verbose=False):
+def human_filesize_to_int(size,
+                          verbose=False
+                          debug=False):
     u = pint.UnitRegistry()
     i = u.parse_expression(size)
     result = i.to('bytes').magnitude
-    result = int(result)
+    #result = int(result)
     if verbose:
         ic(result)
-
-    assert isinstance(result, int)
+    if debug:
+        assert isinstance(result, int)
     return result
 
 
