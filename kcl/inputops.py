@@ -51,6 +51,7 @@ def human_filesize_to_int(size, verbose=False):
     if verbose:
         ic(result)
 
+    assert isinstance(result, int)
     return result
 
 
