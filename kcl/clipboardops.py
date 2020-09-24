@@ -40,7 +40,14 @@ def prompt_tag_slmenu(cache_file="/home/user/.iridb/.dmenu_tag_cache"):
 
 
 def get_clipboard_iri():
-    uri_list = extract_iris_from_text(get_clipboard())
+    clipboard_contents = get_clipboard()
+    if clipboard_contents[0] == "'":
+        if clipboard_contents[-1] == "'":
+            clipboard_contents = clipboard_contents[1:-1]
+    if clipboard_contents[0] == '"':
+        if clipboard_contents[-1] == '"':
+            clipboard_contents = clipboard_contents[1:-1]
+    uri_list = extract_iris_from_text(clipboard_contents)
     #try:
     clean_uri = list(filter(None, uri_list))[0]
     #except IndexError:
@@ -53,6 +60,12 @@ def get_clipboard_iri():
 
 def get_clipboard_iris(verbose=False):
     clipboard_contents = get_clipboard(verbose=verbose)
+    if clipboard_contents[0] == "'":
+        if clipboard_contents[-1] == "'":
+            clipboard_contents = clipboard_contents[1:-1]
+    if clipboard_contents[0] == '"':
+        if clipboard_contents[-1] == '"':
+            clipboard_contents = clipboard_contents[1:-1]
     if verbose:
         ic(clipboard_contents)
     iri_list = extract_iris_from_text(clipboard_contents, verbose=True)
