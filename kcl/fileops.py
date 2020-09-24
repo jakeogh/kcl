@@ -7,21 +7,38 @@
 #
 # common file functions
 
+# pylint: disable=C0111  # docstrings are always outdated and wrong
+# pylint: disable=W0511  # todo is encouraged
+# pylint: disable=C0301  # line too long
+# pylint: disable=R0902  # too many instance attributes
+# pylint: disable=C0302  # too many lines in module
+# pylint: disable=C0103  # single letter var names, func name too descriptive
+# pylint: disable=R0911  # too many return statements
+# pylint: disable=R0912  # too many branches
+# pylint: disable=R0915  # too many statements
+# pylint: disable=R0913  # too many arguments
+# pylint: disable=R1702  # too many nested blocks
+# pylint: disable=R0914  # too many local variables
+# pylint: disable=R0903  # too few public methods
+# pylint: disable=E1101  # no member for base
+# pylint: disable=W0201  # attribute defined outside __init__
+
+
 import time
 import os
 import shutil
-from icecream import ic
 from pathlib import Path
 from shutil import copyfileobj
 from contextlib import contextmanager
 import tempfile
 import stat
 import fcntl
+from icecream import ic
+import magic  # sys-apps/file  #PIA
 from .printops import eprint
 from .assertops import verify
 from .pathops import path_is_file
 from .pathops import path_exists
-import magic  # sys-apps/file  #PIA
 
 
 def comment_out_line_in_file(file_path, line_to_match):
@@ -35,34 +52,29 @@ def comment_out_line_in_file(file_path, line_to_match):
     if line_to_match is found and all instances already commented return True
     if line_to_match is not found return False
     '''
-    with open(file_path, 'r') as rfh:
+    with open(file_path, 'r') as rfh:  # bug should hold the fh
         lines = rfh.read().splitlines()
     newlines = []
-    commented = False
+    #commented = False
     for line in lines:
         if line_to_match in line:
             line_stripped = line.strip()
             if line_stripped.startswith('#'):
                 newlines.append(line)
-                commented = True
+                #commented = True
                 continue
-            else:
-                if line_stripped == line:
-                    newlines.append('#' + line)
-                    commented = True
-                    continue
-                else:
-                    newlines.append(line)
-                    continue
-        else:
+            if line_stripped == line:
+                newlines.append('#' + line)
+                #commented = True
+                continue
             newlines.append(line)
+            continue
+        newlines.append(line)
     if lines != newlines:
         with open(file_path, 'w') as rfh:
             rfh.write('\n'.join(newlines) + '\n')
         return True
-    elif commented:
-        return True
-    return False
+    return True
 
 
 def uncomment_line_in_file(file_path, line_to_match):
@@ -76,7 +88,7 @@ def uncomment_line_in_file(file_path, line_to_match):
     if line_to_match is found and all instances already uncommented return True
     if line_to_match is not found return False
     '''
-    with open(file_path, 'r') as rfh:
+    with open(file_path, 'r') as rfh:  # bug should hold the fh
         lines = rfh.read().splitlines()
     newlines = []
     uncommented = False
@@ -87,16 +99,13 @@ def uncomment_line_in_file(file_path, line_to_match):
                 newlines.append(line[1:])
                 uncommented = True
                 continue
-            else:
-                if line_stripped == line:
-                    newlines.append(line)
-                    uncommented = True
-                    continue
-                else:
-                    newlines.append(line)
-                    continue
-        else:
+            if line_stripped == line:
+                newlines.append(line)
+                uncommented = True
+                continue
             newlines.append(line)
+            continue
+        newlines.append(line)
     if lines != newlines:
         with open(file_path, 'w') as rfh:
             rfh.write('\n'.join(newlines) + '\n')
@@ -106,21 +115,28 @@ def uncomment_line_in_file(file_path, line_to_match):
     return False
 
 
-def write_unique_line_to_file(line, file_to_write, make_new=True):
+def write_line_to_file(line, file_to_write, unique=False, make_new=True):
+    '''
+    Write line to file_to_write
+    if unique_line == True, write line iff line not in file_to_write.
+    '''
     if isinstance(line, str):
         line = line.encode('UTF8')
     assert isinstance(line, bytes)
     assert line.count(b'\n') == 1
     assert line.endswith(b'\n')
-    '''
-    Write line to file_to_write iff line not in file_to_write.
-    '''
+
     try:
         with open(file_to_write, 'rb+') as fh:
+            if not unique:
+                fh.write(line)
+                return True
+
             if line not in fh:
                 fh.write(line)
                 return True
             return False
+
     except FileNotFoundError as e:
         if make_new:
             with open(file_to_write, 'xb') as fh:
@@ -128,6 +144,30 @@ def write_unique_line_to_file(line, file_to_write, make_new=True):
                 return True
         else:
             raise e
+
+
+#def write_unique_line_to_file(line, file_to_write, make_new=True):
+#    if isinstance(line, str):
+#        line = line.encode('UTF8')
+#    assert isinstance(line, bytes)
+#    assert line.count(b'\n') == 1
+#    assert line.endswith(b'\n')
+#    '''
+#    Write line to file_to_write iff line not in file_to_write.
+#    '''
+#    try:
+#        with open(file_to_write, 'rb+') as fh:
+#            if line not in fh:
+#                fh.write(line)
+#                return True
+#            return False
+#    except FileNotFoundError as e:
+#        if make_new:
+#            with open(file_to_write, 'xb') as fh:
+#                fh.write(line)
+#                return True
+#        else:
+#            raise e
 
 
 def line_exists_in_file(line, file_to_check):
