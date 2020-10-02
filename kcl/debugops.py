@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #from IPython import embed; embed()
-import ipdb
 
 
 def embed_ipdb():
+    import ipdb
     ipdb.set_trace()
 
 
