@@ -8,7 +8,7 @@ def embed_ipdb():
     ipdb.set_trace()
 
 
-def pause(message, ipython=False):
+def pause(message='', ipython=False):
     assert isinstance(message, str)
     if ipython:
         message += " (type 'ipython' to enter shell or 'ipdb' to enter debugger): "
