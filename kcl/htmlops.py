@@ -336,27 +336,35 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
            #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()?]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()?i=]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             for url in urls:
-                if debug:
-                    ic(word)
-                    ic(url)
-
-                url = url.strip()
-
-                if url.endswith(';'):
-                    url = url[:-1]
-                if url.endswith(')'):
-                    if '(' not in url:
-                        if verbose:
-                            eprint("removing trailing ) from url:", url)
-                        url = url[:-1]
                 if url.endswith('..'):
                     continue
-                if '&quot' in url:
-                    url = url.split('&quot')[0]
-                if url.endswith('&'):
-                    if verbose:
-                        eprint("removing trailing % from url:", url)
-                    url = url[:-1]
+                while True:
+                    if debug:
+                        ic(word)
+                        ic(url)
+
+                    url = url.strip()
+                    if url.endswith(','):
+                        url = url[:-1]
+                        continue
+                    if url.endswith(';'):
+                        url = url[:-1]
+                        continue
+                    if url.endswith(')'):
+                        if '(' not in url:
+                            if verbose:
+                                eprint("removing trailing ) from url:", url)
+                            url = url[:-1]
+                            continue
+                    if '&quot' in url:
+                        url = url.split('&quot')[0]
+                        continue
+                    if url.endswith('&'):
+                        if verbose:
+                            eprint("removing trailing % from url:", url)
+                        url = url[:-1]
+                        continue
+                    break
 
                 url_list.append(url.strip())
 
