@@ -2,18 +2,15 @@
 
 
 def one(thing):
-    #eeprint("thing:", thing)
     count = 0
     for x in thing:
         #eprint("x:", x, bool(x))
         if bool(x):
             count += 1
     #count = sum(1 for x in thing if bool(x))
-    #eprint("count", count)
     if count == 1:
         return True
-    return False
-    #return count == 1
+    raise ValueError(thing)
 
 
 def maxone(thing):
@@ -21,9 +18,9 @@ def maxone(thing):
     for x in thing:
         if bool(x):
             count += 1
-    if count <= 1:
+    if count in [0, 1]:
         return True
-    return False
+    raise ValueError(thing)
 
 
 def minone(thing):
@@ -33,7 +30,7 @@ def minone(thing):
             count += 1
     if count >= 1:
         return True
-    return False
+    raise ValueError(thing)
 
 
 def verify(thing):
