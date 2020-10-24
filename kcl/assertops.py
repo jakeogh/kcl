@@ -33,8 +33,13 @@ def minone(thing):
     raise ValueError(thing)
 
 
-def verify(exception, thing):
+import sys
+def verify(exception, thing, verbose=False):
     if not issubclass(exception, Exception):
         raise TypeError(exception)
-    if not thing:
-        raise exception(thing)
+    try:
+        thing
+    except Exception as e:
+        if verbose:
+            print(e, file=sys.stderr)
+        raise exception(e)
