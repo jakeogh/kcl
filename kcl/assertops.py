@@ -42,5 +42,6 @@ def verify(exception, thing, verbose=False):
         assert thing
     except Exception as e:
         if verbose:
-            print(e, file=sys.stderr)
-        raise exception(str(e))
+            e_type = type(e)
+            print(e_type, file=sys.stderr)
+        raise exception(e_type)
