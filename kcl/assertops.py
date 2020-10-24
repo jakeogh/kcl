@@ -33,7 +33,7 @@ def minone(thing):
     raise ValueError(thing)
 
 
-def verify(thing):
+def verify(exception, thing):
+    verify(TypeError, isinstance(exception, Exception))
     if not thing:
-        #eeprint("thing:", thing)
-        raise ValueError(thing)
+        raise exception(thing)
