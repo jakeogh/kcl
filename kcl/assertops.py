@@ -43,4 +43,4 @@ def verify(exception, thing, verbose=False):
     except Exception as e:
         if verbose:
             print(e, file=sys.stderr)
-        raise exception(e)
+        raise exception(str(e))
