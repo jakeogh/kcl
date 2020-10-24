@@ -34,7 +34,7 @@ def minone(thing):
 
 
 def verify(exception, thing):
-    if not isinstance(exception, Exception):
+    if not issubclass(exception, Exception):
         raise TypeError(exception)
     if not thing:
         raise exception(thing)
