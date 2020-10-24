@@ -38,7 +38,8 @@ def verify(exception, thing, verbose=False):
     if not issubclass(exception, Exception):
         raise TypeError(exception)
     try:
-        thing
+        #thing  # nope, want thing=False to raise
+        assert thing
     except Exception as e:
         if verbose:
             print(e, file=sys.stderr)
