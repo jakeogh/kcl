@@ -34,9 +34,9 @@ def minone(thing):
 
 
 import sys
-def verify(exception, thing, verbose=False):
-    #if not issubclass(exception, Exception):  # nope error, I was passing exception Classes, not class instances
-    if not isinstance(exception, Exception):
+def old_verify(exception, thing, verbose=False):
+    if not issubclass(exception, Exception):
+    #if not isinstance(exception, Exception):  # cant pass class instances and thn call them later
         raise TypeError(exception)
     try:
         #thing  # nope, want thing=False to raise
@@ -46,3 +46,8 @@ def verify(exception, thing, verbose=False):
         if verbose:
             print(e_type, file=sys.stderr)
         raise exception(e_type)
+
+
+def verify(exc_type, thing):
+    if not thing:
+        raise exc_type('something failed')
