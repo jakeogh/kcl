@@ -41,7 +41,7 @@ def verify(exception, thing, verbose=False):
         #thing  # nope, want thing=False to raise
         assert thing
     except Exception as e:
+        e_type = type(e)
         if verbose:
-            e_type = type(e)
             print(e_type, file=sys.stderr)
         raise exception(e_type)
