@@ -34,6 +34,7 @@ def minone(thing):
 
 
 def verify(exception, thing):
-    verify(TypeError, isinstance(exception, Exception))
+    if not isinstance(exception, Exception):
+        raise TypeError(exception)
     if not thing:
         raise exception(thing)
