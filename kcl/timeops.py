@@ -22,6 +22,7 @@ import time
 import errno
 import signal
 from functools import wraps
+from humanize import naturaltime
 from .assertops import verify
 from .printops import eprint
 from icecream import ic
@@ -123,3 +124,7 @@ def timeout(seconds, error_message=os.strerror(errno.ETIME)):
         return wraps(func)(wrapper)
 
     return decorator
+
+
+def seconds_to_human_readable(seconds):
+    return naturaltime(seconds)
