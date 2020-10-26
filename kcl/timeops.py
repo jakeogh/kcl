@@ -23,6 +23,7 @@ import errno
 import signal
 from functools import wraps
 from humanize import naturaltime
+from humanize import naturaldelta
 from .assertops import verify
 from .printops import eprint
 from icecream import ic
@@ -126,5 +127,7 @@ def timeout(seconds, error_message=os.strerror(errno.ETIME)):
     return decorator
 
 
-def seconds_to_human_readable(seconds):
-    return naturaltime(seconds)
+def seconds_to_human_readable(seconds, ago):
+    if ago:
+        return naturaltime(seconds)
+    return naturaldelta(seconds)
