@@ -20,4 +20,4 @@ def _lxml(config, path, iri, link_text, verbose):
         if link_text:
             print(url[0], url[1])
         else:
-            print(url)
+            print(url[0])
