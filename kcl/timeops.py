@@ -93,7 +93,7 @@ def get_amtime(infile):
     return amtime
 
 
-def update_mtime_if_older(path, mtime, verbose=False):
+def update_mtime_if_older(*, path, mtime, verbose=False):
     verify(isinstance(mtime, tuple))
     verify(isinstance(mtime[0], int))
     verify(isinstance(mtime[1], int))
