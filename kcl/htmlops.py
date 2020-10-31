@@ -4,7 +4,6 @@
 
 from icecream import ic
 from bs4 import BeautifulSoup
-import lxml.html
 from lxml.etree import ParserError
 from lxml import etree
 import re
@@ -347,6 +346,9 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                     if url.endswith(','):
                         url = url[:-1]
                         continue
+                    if url.endswith('.'):
+                        url = url[:-1]
+                        continue
                     if url.endswith(';'):
                         url = url[:-1]
                         continue
@@ -358,6 +360,9 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
                             continue
                     if '&quot' in url:
                         url = url.split('&quot')[0]
+                        continue
+                    if url.endswith("&nbsp"):
+                        url = url.split('&nbsp')[0]
                         continue
                     if url.endswith('&'):
                         if verbose:
