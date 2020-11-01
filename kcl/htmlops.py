@@ -14,7 +14,6 @@ from kcl.fileops import read_file_bytes
 from lxml import html
 from lxml.etree import tostring
 from lxml.etree import HTMLParser
-from lxml.etree import ParserError
 #import html5_parser
 
 
@@ -61,7 +60,7 @@ def extract_title_from_file(data_file, verbose=False):
 
 
 def parse_html_to_dom(html):
-    dom_tree = lxml.html.fromstring(html)
+    dom_tree = html.fromstring(html)
     return dom_tree
 
 
@@ -289,7 +288,7 @@ def extract_urls_lxml_nofollow(html_file, url):
         html_bytes = fh.read()
     html = html_bytes.decode('utf8', 'ignore')
     url_list = []
-    dom = lxml.html.fromstring(html)
+    dom = html.fromstring(html)
     dom.make_links_absolute(url)
     links = dom.cssselect('a')
     for link in links:
@@ -405,6 +404,3 @@ def convert_html_file_to_text(html_file):
 #    text = convert_html_file_to_text(html_file)
 #    url_set = extract_iris_from_text(text)
 #    return url_set
-
-#
-#
