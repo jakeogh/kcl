@@ -60,19 +60,21 @@ def get_clipboard_iri():
 
 def get_clipboard_iris(verbose=False):
     clipboard_contents = get_clipboard(verbose=verbose)
-    if clipboard_contents.startswith("'"):
-        if clipboard_contents.endswith("'"):
-            clipboard_contents = clipboard_contents[1:-1]
-            ic(clipboard_contents)
-    if clipboard_contents.startswith('"'):
-        if clipboard_contents.endswith('"'):
-            clipboard_contents = clipboard_contents[1:-1]
-            ic(clipboard_contents)
-    if verbose:
-        ic(clipboard_contents)
-    iri_list = extract_iris_from_text(clipboard_contents, verbose=True)
-    if verbose:
-        ic(iri_list)
-    return iri_list
+    iri_list = extract_iris_from_text(clipboard_contents, verbose=verbose)
+    for iri in iri_list:
+        iri = iri.strip()
+        if iri.startswith("'"):
+            if iri.endswith("'"):
+                iri = iri[1:-1]
+                ic(iri)
+        if iri.startswith('"'):
+            if iri.endswith('"'):
+                iri = iri[1:-1]
+                ic(iri)
+        if verbose:
+            ic(iri)
+
+    for iri in iri_list:
+        yield iri
 
 
