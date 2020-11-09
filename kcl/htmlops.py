@@ -60,7 +60,7 @@ def extract_title_from_file(data_file, verbose=False):
 
 
 def parse_html_to_dom(html):
-    assert not instance(html, bytes)
+    assert not isinstance(html, bytes)
     dom_tree = html.fromstring(html)
     return dom_tree
 
