@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
+import sys
 import time
 import secrets
 from kcl.printops import eprint
+from kcl.byteops import read_by_byte
 from itertools import zip_longest
 from icecream import ic
 
@@ -95,7 +97,6 @@ def randomize_iterator(iterator, *,
 
         buffer_set_length = len(buffer_set)
         random_index = secrets.randbelow(buffer_set_length)
-        #[next_item] = itertools.islice(buffer_set, random_index, 1)
         next_item = list(buffer_set).pop(random_index)
         buffer_set.remove(next_item)
         if debug:
@@ -108,3 +109,55 @@ def randomize_iterator(iterator, *,
             ic(len(buffer_set), random_index, next_item)
 
         yield next_item
+
+
+def input_iterator(null=False,
+                   strings=None,
+                   dont_decode=False,
+                   random=False,
+                   loop=False,
+                   verbose=False,
+                   debug=False,
+                   head=None):
+
+    byte = b'\n'
+    if null:
+        byte = b'\x00'
+
+    if strings:
+        iterator = strings
+    else:
+        iterator = read_by_byte(sys.stdin.buffer, byte=byte)
+
+    if random:
+        iterator = randomize_iterator(iterator, min_pool_size=1, max_wait_time=1)
+
+    lines_output = 0
+    for index, string in enumerate(iterator):
+        if debug:
+            ic(index, string)
+
+        if not dont_decode:
+            if isinstance(string, bytes):
+                string = string.decode('utf8')
+
+        yield string
+        lines_output += 1
+
+        if head:
+            if lines_output >= head:
+                return
+
+
+def enumerate_input(*,
+                    iterator,
+                    null,
+                    verbose=False,
+                    debug=False,
+                    head=None):
+    for index, thing in enumerate(input_iterator(strings=iterator,
+                                                 null=null,
+                                                 head=head,
+                                                 debug=debug,
+                                                 verbose=verbose)):
+        yield index, thing
