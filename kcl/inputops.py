@@ -60,6 +60,7 @@ def human_filesize_to_int(size,
 def input_iterator(null=False,
                    strings=None,
                    random=False,
+                   loop=False,
                    verbose=False,
                    debug=False,
                    head=None):
