@@ -4,7 +4,7 @@ import click
 from icecream import ic
 from kcl.htmlops import extract_iris_from_text_file
 from kcl.htmlops import extract_iris_from_text
-from kcl.inputops import enumerate_input
+from kcl.iterops import enumerate_input
 from kcl.printops import ceprint
 
 

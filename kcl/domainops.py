@@ -13,7 +13,7 @@ import tldextract
 import requests
 
 TLDEXTRACT_CACHE = '/var/tmp/tldextract_cache'
-TLD_EXTRACT = tldextract.TLDExtract(cache_file=TLDEXTRACT_CACHE)
+TLD_EXTRACT = tldextract.TLDExtract(cache_dir=TLDEXTRACT_CACHE)
 
 
 def group_by_tld(domains):
