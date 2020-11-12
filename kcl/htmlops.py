@@ -2,6 +2,7 @@
 
 # /mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/.iridb/database.local/data_index/8/9/6/89689beecc6ebf06cb1859b8085ec9154e7edb1b
 
+import lxml
 from icecream import ic
 from bs4 import BeautifulSoup
 from lxml.etree import ParserError
@@ -11,7 +12,7 @@ from urllib.parse import urldefrag
 from kcl.printops import ceprint
 from kcl.printops import eprint
 from kcl.fileops import read_file_bytes
-from lxml import html
+#from lxml import html
 from lxml.etree import tostring
 from lxml.etree import HTMLParser
 #import html5_parser
@@ -66,7 +67,7 @@ def parse_html_to_dom(html, verbose):
     if verbose:
         ic(type(html))
 
-    html = html.decode('utf8')
+    html = lxml.html.decode('utf8')
     assert not isinstance(html, bytes)
     dom_tree = html.fromstring(html)
     return dom_tree
