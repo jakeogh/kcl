@@ -15,15 +15,16 @@ def get_current_virtural_terminal():
 # assumes a single X session is running
 def in_xorg(verbose=False):
     vt = get_current_virtural_terminal()
+    tty = 'tty' + str(vt)
     if verbose:
         ic(vt)
     output = run_command(['w', '--no-header']).decode('utf8').splitlines()
     if verbose:
         ic(output)
-    tty = 'tty' + str(vt)
-    output = output[0].split()
-    if output[1] == tty:
-        return True
+    if 'xinit' in output:
+        output = output[0].split()
+        if output[1] == tty:
+            return True
     return False
 
 
