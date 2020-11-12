@@ -22,7 +22,11 @@ def in_xorg(verbose=False):
     if verbose:
         ic(output)
     if 'xinit' in output:
+        if verbose:
+            ic('xinit in output')
         output = output[0].split()
+        if verbose:
+            ic(output[1])
         if output[1] == tty:
             return True
     return False
