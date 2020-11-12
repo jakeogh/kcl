@@ -20,7 +20,7 @@ def in_xorg(verbose=False):
     output = run_command(['w', '--no-header']).decode('utf8').splitlines()
     if verbose:
         ic(output)
-    tty = 'tty' + vt
+    tty = 'tty' + str(vt)
     output = output[0].split()
     if output[1] == tty:
         return True
