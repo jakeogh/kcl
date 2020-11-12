@@ -14,7 +14,7 @@ def in_xorg(verbose=False):
     vt = get_current_virtural_terminal()
     if verbose:
         ic(vt)
-    output = run_command('w').decode('utf8').splitlines()
+    output = run_command(['w', '--no-header']).decode('utf8').splitlines()
     if verbose:
         ic(output)
     for line in output:
