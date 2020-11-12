@@ -68,9 +68,9 @@ def parse_html_to_dom(html, verbose):
     if verbose:
         ic(type(html))
 
-    html = lxmlhtml.decode('utf8')
+    html = html.decode('utf8')
     assert not isinstance(html, bytes)
-    dom_tree = html.fromstring(html)
+    dom_tree = lxmlhtml.fromstring(html)
     return dom_tree
 
 
