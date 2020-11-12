@@ -10,6 +10,9 @@ def get_current_virtural_terminal():
     return int(output)
 
 
+# find out if this is executing in a xorg session
+# note the xorg sesion is started under the user, but we could be root, or any user
+# assumes a single X session is running
 def in_xorg(verbose=False):
     vt = get_current_virtural_terminal()
     if verbose:
@@ -17,10 +20,10 @@ def in_xorg(verbose=False):
     output = run_command(['w', '--no-header']).decode('utf8').splitlines()
     if verbose:
         ic(output)
-    for line in output:
-        if '/usr/bin/X' in line:
-            if line.endswith('vt' + str(vt)):
-                return True
+    tty = 'tty' + vt
+    output = output[0].split()
+    if output[1] == tty:
+        return True
     return False
 
 
