@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import shutil
+from icecream import ic
 from .commandops import run_command
 
 
@@ -9,9 +10,13 @@ def get_current_virtural_terminal():
     return int(output)
 
 
-def in_xorg():
+def in_xorg(verbose=False):
     vt = get_current_virtural_terminal()
+    if verbose:
+        ic(vt)
     output = run_command('w').decode('utf8').splitlines()
+    if verbose:
+        ic(output)
     for line in output:
         if '/usr/bin/X' in line:
             if line.endswith('vt' + str(vt)):
