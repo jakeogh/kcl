@@ -102,7 +102,7 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, d
     parser = HTMLParser(recover=True)
 
     try:
-        dom = html.fromstring(page_html)
+        dom = lxmlhtml.fromstring(page_html)
     except ParserError as e:
         if verbose:
             #ceprint("ParserError")
@@ -126,9 +126,9 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, d
                 pass
         else:
             if verbose: ceprint("len(dom) == 0, parsing malformed html")
-            root = html.fromstring(page_html, parser=parser, base_url=url).getroottree()  # lxml.etree._Element
+            root = lxmlhtml.fromstring(page_html, parser=parser, base_url=url).getroottree()  # lxml.etree._Element
             clean_html = tostring(root)
-            dom = html.fromstring(clean_html)
+            dom = lxmlhtml.fromstring(clean_html)
             dom.make_links_absolute(url)
 
         #import IPython; IPython.embed()
