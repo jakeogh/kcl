@@ -65,6 +65,8 @@ def extract_title_from_file(data_file, verbose=False):
 def parse_html_to_dom(html, verbose):
     if verbose:
         ic(type(html))
+
+    html = html.encode('utf8')
     assert not isinstance(html, bytes)
     dom_tree = html.fromstring(html)
     return dom_tree
