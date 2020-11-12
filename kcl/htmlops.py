@@ -59,7 +59,9 @@ def extract_title_from_file(data_file, verbose=False):
     return title
 
 
-def parse_html_to_dom(html):
+def parse_html_to_dom(html, verbose=False):
+    if verbose:
+        ic(type(html))
     assert not isinstance(html, bytes)
     dom_tree = html.fromstring(html)
     return dom_tree
