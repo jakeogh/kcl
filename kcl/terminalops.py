@@ -21,7 +21,7 @@ def in_xorg(verbose=False):
     output = run_command(['w', '--no-header']).decode('utf8').splitlines()
     if verbose:
         ic(output)
-    assert len(output) == 0
+    assert len(output) == 1
     if 'xinit' in output[0]:
         if verbose:
             ic('xinit in output')
