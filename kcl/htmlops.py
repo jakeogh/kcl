@@ -35,7 +35,7 @@ def get_title_from_dom_tree(dom_tree):
 def extract_title_from_file(data_file, verbose=False):
     content = read_file_bytes(data_file)
     try:
-        dom_tree = parse_html_to_dom(content)
+        dom_tree = parse_html_to_dom(content, verbose=verbose)
     except ParserError:
         return None
     try:
@@ -59,7 +59,7 @@ def extract_title_from_file(data_file, verbose=False):
     return title
 
 
-def parse_html_to_dom(html, verbose=False):
+def parse_html_to_dom(html, verbose):
     if verbose:
         ic(type(html))
     assert not isinstance(html, bytes)
