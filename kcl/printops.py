@@ -11,6 +11,20 @@ import attr
 from icecream import ic
 
 
+def render_line(*, line, null):
+    line = [str(thing) for thing in line]   # angryfiles...
+    if len(line) == 1:
+        print(line[0], end='')
+    else:
+        line = ' '.join(line)
+        print(line, end='')
+
+    line_end = '\n'
+    if null:
+        line_end = '\0'
+    print(line_end, end='')
+
+
 def ceprint(*args, **kwargs):
     '''Simple debugging replacement for print()'''
     caller = sys._getframe(1).f_code.co_name
