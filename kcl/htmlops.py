@@ -68,7 +68,7 @@ def parse_html_to_dom(html, verbose):
     if verbose:
         ic(type(html))
 
-    #html = html.decode('utf8', errors='ignore')
+    html = html.decode('utf8', errors='ignore')
     #assert not isinstance(html, bytes)
     #dom_tree = lxmlhtml.fromstring(html)
     # https://stackoverflow.com/questions/57833080/how-to-fix-unicode-strings-with-encoding-declaration-are-not-supported
