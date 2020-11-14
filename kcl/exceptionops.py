@@ -11,6 +11,7 @@ def retry_on_exception(*,
                        errno,
                        kwargs={},
                        delay=1,
+                       verbose=False,
                        delay_multiplier=0.5,):
 
     if not isinstance(exceptions, tuple):
@@ -20,9 +21,11 @@ def retry_on_exception(*,
             return function(**kwargs)
             break
         except exceptions as e:
-            ic(function)
+            if verbose:
+                ic(e, e.errno)
             if not e.errno == errno:
                 raise e
+            ic(function)
             ic(e)
             ic(exceptions)
             #print(e, file=sys.stderr)
