@@ -20,6 +20,7 @@ def retry_on_exception(*,
             return function(**kwargs)
             break
         except exceptions as e:
+            ic(function)
             if not e.errno == errno:
                 raise e
             ic(e)
