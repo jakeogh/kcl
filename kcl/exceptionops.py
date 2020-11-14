@@ -13,6 +13,7 @@ def retry_on_exception(*, function, exceptions, kwargs={}, delay=1, delay_multip
             break
         except exceptions as e:
             ic(e)
+            ic(exceptions)
             #print(e, file=sys.stderr)
             delay = delay + (delay * delay_multiplier)
             ic(delay)
