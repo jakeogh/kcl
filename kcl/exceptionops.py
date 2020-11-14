@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import time
+#import errno as error_number
 from icecream import ic
 
 
@@ -19,6 +20,8 @@ def retry_on_exception(*,
             return function(**kwargs)
             break
         except exceptions as e:
+            if not e.errno == errno:
+                raise e
             ic(e)
             ic(exceptions)
             #print(e, file=sys.stderr)
