@@ -21,9 +21,11 @@ import os
 import time
 import errno
 import signal
+import dateparser
 from functools import wraps
 from humanize import naturaltime
 from humanize import naturaldelta
+
 from .assertops import verify
 from .printops import eprint
 from icecream import ic
@@ -121,6 +123,11 @@ def timeout(seconds, error_message=os.strerror(errno.ETIME)):
         return wraps(func)(wrapper)
 
     return decorator
+
+
+def human_date_to_timestamp(date):
+    dt = dateparser(date)
+    return dt.timestamp()
 
 
 def seconds_duration_to_human_readable(seconds, ago):
