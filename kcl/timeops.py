@@ -123,7 +123,7 @@ def timeout(seconds, error_message=os.strerror(errno.ETIME)):
     return decorator
 
 
-def seconds_to_human_readable(seconds, ago):
+def seconds_duration_to_human_readable(seconds, ago):
     seconds = float(seconds)
     if ago:
         return naturaltime(seconds)
