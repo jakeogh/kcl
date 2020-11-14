@@ -104,10 +104,6 @@ def update_mtime_if_older(*, path, mtime, verbose=False):
         os.utime(path, ns=mtime, follow_symlinks=False)
 
 
-#class TimeoutError(Exception):
-#    pass
-
-
 def timeout(seconds, error_message=os.strerror(errno.ETIME)):
     def decorator(func):
         def _handle_timeout(signum, frame):
@@ -128,6 +124,7 @@ def timeout(seconds, error_message=os.strerror(errno.ETIME)):
 
 
 def seconds_to_human_readable(seconds, ago):
+    seconds = float(seconds)
     if ago:
         return naturaltime(seconds)
     return naturaldelta(seconds)
