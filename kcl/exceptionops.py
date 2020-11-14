@@ -8,7 +8,7 @@ from icecream import ic
 def retry_on_exception(*,
                        function,
                        exceptions,
-                       errno,
+                       errno=None,
                        kwargs={},
                        delay=1,
                        verbose=False,
@@ -23,8 +23,9 @@ def retry_on_exception(*,
         except exceptions as e:
             #if verbose:
             ic(e, e.errno)
-            if not e.errno == errno:
-                raise e
+            if errno:
+                if not e.errno == errno:
+                    raise e
             ic(function)
             ic(e)
             ic(exceptions)
