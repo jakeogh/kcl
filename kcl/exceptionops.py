@@ -21,8 +21,8 @@ def retry_on_exception(*,
             return function(**kwargs)
             break
         except exceptions as e:
-            #if verbose:
-            ic(e, e.errno)
+            if verbose:
+                ic(e, e.errno)
             if errno:
                 if not e.errno == errno:
                     raise e
