@@ -27,8 +27,8 @@ def retry_on_exception(*,
                 if not e.errno == errno:
                     raise e
             ic(function)
-            ic(e)
             ic(exceptions)
+            ic(e, e.errno)
             #print(e, file=sys.stderr)
             delay = delay + (delay * delay_multiplier)
             ic(delay)
