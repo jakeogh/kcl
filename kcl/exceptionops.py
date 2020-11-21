@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import time
+
 #import errno as error_number
 from icecream import ic
 
@@ -10,6 +11,7 @@ def retry_on_exception(*,
                        exceptions,
                        errno=None,
                        kwargs={},
+                       args=(),
                        delay=1,
                        verbose=False,
                        delay_multiplier=0.5,):
@@ -18,7 +20,7 @@ def retry_on_exception(*,
         raise ValueError('exceptions must be a tuple, not:', type(exceptions))
     while True:
         try:
-            return function(**kwargs)
+            return function(*args, **kwargs)
             break
         except exceptions as e:
             if verbose:
