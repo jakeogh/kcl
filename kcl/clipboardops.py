@@ -16,7 +16,7 @@ def put_clipboard(string, verbose=False):
 
 
 # bug putting snowman http://☃.net in the clipboard results in no iris
-def get_clipboard(verbose=False):
+def get_clipboard(verbose=False, one_line=False, dont_decode=False):
     command = [b"xclip", b"-o", b"-selection", b"primary"]
     if verbose:
         ic(command)
@@ -26,7 +26,14 @@ def get_clipboard(verbose=False):
     #    subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).stdout.read()
     if verbose:
         ic(string)
-    return string.decode("utf-8")
+    if not dont_decode:
+        string = string.decode("utf-8")
+
+    if one_line:
+        string = string.split()
+        return string[0]
+
+    return string
 
 
 def prompt_tag_slmenu(cache_file="/home/user/.iridb/.dmenu_tag_cache"):
