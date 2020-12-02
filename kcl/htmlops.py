@@ -2,20 +2,20 @@
 
 # /mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/.iridb/database.local/data_index/8/9/6/89689beecc6ebf06cb1859b8085ec9154e7edb1b
 
-#import lxml
-from icecream import ic
-from bs4 import BeautifulSoup
-from lxml.etree import ParserError
-from lxml import etree
-from lxml import html as lxmlhtml
 import re
 from urllib.parse import urldefrag
-from kcl.printops import ceprint
-from kcl.printops import eprint
-from kcl.fileops import read_file_bytes
+
+from bs4 import BeautifulSoup
+#import lxml
+from icecream import ic
+from lxml import etree
+from lxml import html as lxmlhtml
 #from lxml import html
-from lxml.etree import tostring
-from lxml.etree import HTMLParser
+from lxml.etree import HTMLParser, ParserError, tostring
+
+from kcl.fileops import read_file_bytes
+from kcl.printops import ceprint, eprint
+
 #import html5_parser
 
 
@@ -340,17 +340,19 @@ def extract_iris_from_text(text, verbose=False, debug=False):  # todo, buggy, al
         if debug:
             ic(line)
         for word in line.split():
-           #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$-_@.&+#]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
-           #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
-           #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
-           #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()?]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
-            urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()?i=]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
+            if debug:
+                ic(word)
+            #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$-_@.&+#]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
+            #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
+            #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
+            #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()?]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
+            #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()?i=]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
+            urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;:()?i=]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             for url in urls:
                 if url.endswith('..'):
                     continue
                 while True:
                     if debug:
-                        ic(word)
                         ic(url)
 
                     url = url.strip()
