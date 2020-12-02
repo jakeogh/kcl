@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
-import pyperclip
-import subprocess
 import os
-from kcl.htmlops import extract_iris_from_text
-from kcl.commandops import run_command
+import subprocess
+
+import pyperclip
 from icecream import ic
+
+from kcl.commandops import run_command
+from kcl.htmlops import extract_iris_from_text
 
 
 def put_clipboard(string, verbose=False):
@@ -65,9 +67,11 @@ def get_clipboard_iri():
     return clean_uri
 
 
-def get_clipboard_iris(verbose=False):
+def get_clipboard_iris(verbose=False, debug=False):
     clipboard_contents = get_clipboard(verbose=verbose)
-    iri_list = extract_iris_from_text(clipboard_contents, verbose=verbose)
+    iri_list = extract_iris_from_text(clipboard_contents,
+                                      verbose=verbose,
+                                      debug=debug,)
     for iri in iri_list:
         iri = iri.strip()
         if iri.startswith("'"):
