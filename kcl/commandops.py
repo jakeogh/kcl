@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-import subprocess
 import os
+import subprocess
+
 from icecream import ic
-from kcl.printops import ceprint
 
 
 # https://docs.python.org/3/library/subprocess.html#subprocess.run
 def run_command(command,
                 verbose=False,
+                debug=False,
                 shell=True,
                 expected_exit_code=0,
                 ignore_exit_code=False,
@@ -27,24 +28,22 @@ def run_command(command,
 
     output = ''
     if verbose:
-        ic(command)
-        ic(shell)
+        ic(command, shell)
     if popen:
         if isinstance(command, bytes):
             command = command.decode('utf8')
         #popen_instance = os.popen(command, stderr=stderr)
         popen_instance = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=stderr, stdin=stdin, shell=shell)
-        if verbose:
+        if debug:
             ic(popen_instance)
         #output = popen_instance.read()
         output, errors = popen_instance.communicate()
         if verbose:
-            ic(output)
-            ic(errors)
+            ic(output, errors)
         exit_code = popen_instance.returncode
         if exit_code != expected_exit_code:
             #ic(command)
-            ceprint("exit code:", exit_code, output)
+            ic('exit code:', exit_code, output)
             if not ignore_exit_code:
                 raise subprocess.CalledProcessError(cmd=command, returncode=exit_code)
 
