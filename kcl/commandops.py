@@ -54,7 +54,8 @@ def run_command(command,
                 check = False
             output = subprocess.check_output(command, stderr=stderr, stdin=stdin, shell=shell)
             if verbose:
-                ic(output)
+                if output:
+                    ic(output)
         except subprocess.CalledProcessError as error:
             if error.returncode != expected_exit_code:
                 #ic(command, ignore_exit_code)
@@ -63,7 +64,6 @@ def run_command(command,
                     raise error
                 output = error.output
 
-    #ic(output)
     if str_output:
         output = output.decode('utf8')
 
