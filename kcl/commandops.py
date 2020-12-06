@@ -59,7 +59,8 @@ def run_command(command,
         except subprocess.CalledProcessError as error:
             if error.returncode != expected_exit_code:
                 #ic(command, ignore_exit_code)
-                #ic(error.returncode, error.output)
+                if verbose:
+                    ic(error.returncode, error.output)
                 if not ignore_exit_code:
                     raise error
                 output = error.output
