@@ -100,6 +100,7 @@ def autoprint(tuple_list, end, verbose=False):
         print(sep, file=out, end='')
         out.flush()
     print('', file=sys.stdout, end=end)
+    sys.stdout.flush()
 
 
 def epprint(*args, **kwargs):
