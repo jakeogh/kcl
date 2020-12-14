@@ -11,11 +11,14 @@
 import os
 #import attr
 import shutil
-from psutil import disk_usage
+
 from icecream import ic
-from .printops import eprint
+from psutil import disk_usage
+
 from .fileops import path_exists
 from .pathops import path_is_dir
+from .printops import eprint
+
 #from .printops import ceprint
 #from pathlib import Path
 
@@ -114,11 +117,11 @@ def target_generator(target_list, min_free_space, verbose=True):
 #
 
 
-def count_files(folder):  # calls lstat on every entry to see if its a file
-    total = 0
-    for root, dirs, files in os.walk(folder):
-        total += len(files)
-    return total
+#def count_files(folder):  # calls lstat on every entry to see if its a file
+#    total = 0
+#    for root, dirs, files in os.walk(folder):
+#        total += len(files)
+#    return total
 #
 #
 #def list_files(folder):
