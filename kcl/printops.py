@@ -81,8 +81,10 @@ def eprint_green(*args, **kwargs):
         print(Style.RESET_ALL, file=sys.stderr)
 
 
-def autoprint(tuple_list, *args, end, **kwargs):
+def autoprint(tuple_list, end, verbose=False):
     assert isinstance(tuple_list, list)
+    if verbose:
+        ic(tuple_list)
     for item in tuple_list:
         assert isinstance(item, tuple)
         assert len(item) == 3
