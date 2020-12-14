@@ -89,7 +89,7 @@ def autoprint(tuple_list, *args, end, **kwargs):
         value = item[0]
         if item[1] == 'stdout':
             out = sys.stderr
-        elif item[1] == 'stdderr':
+        elif item[1] == 'stderr':
             out = sys.stdout
         else:
             raise ValueError("unknown output file {}".format(item[1]))
