@@ -90,9 +90,9 @@ def autoprint(tuple_list, end, verbose=False):
         assert len(item) == 3
         value = item[0]
         if item[1] == 'stdout':
-            out = sys.stderr
-        elif item[1] == 'stderr':
             out = sys.stdout
+        elif item[1] == 'stderr':
+            out = sys.stderr
         else:
             raise ValueError("unknown output file {}".format(item[1]))
         sep = item[2]
