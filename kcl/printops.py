@@ -96,10 +96,10 @@ def autoprint(tuple_list, end, verbose=False):
         else:
             raise ValueError("unknown output file {}".format(item[1]))
         sep = item[2]
-        print(value, file=out, end=None)
-        print(sep, file=out, end=None)
+        print(value, file=out, end='')
+        print(sep, file=out, end='')
         out.flush()
-    print(end, file=sys.stdout, end=None)
+    print('', file=sys.stdout, end=end)
 
 
 def epprint(*args, **kwargs):
