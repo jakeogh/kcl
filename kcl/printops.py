@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
+import inspect
 import os
 import sys
 import time
-import inspect
-from colorama import Fore
-from colorama import Style
 from pprint import pprint
+
 import attr
+from colorama import Fore, Style
 from icecream import ic
 
 
@@ -79,6 +79,22 @@ def eprint_green(*args, **kwargs):
     else:
         print(*args, file=sys.stderr, **kwargs, end='')
         print(Style.RESET_ALL, file=sys.stderr)
+
+
+def autoprint(tuple_list, *args, **kwargs):
+    assert isinstance(tuple_list, list)
+    for item in tuple_list:
+        assert isinstance(item, tuple)
+        assert len(item) == 3
+        value = item[0]
+        if item[1] == 'stdout':
+            out = sys.stderr
+        elif item[1] == 'stdderr':
+            out = sys.stdout
+        else:
+            raise ValueError("unknown output file {}".format(item[1])
+        end = item[2]
+        print(value, file=out, end=end)
 
 
 def epprint(*args, **kwargs):
