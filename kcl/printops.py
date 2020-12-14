@@ -84,21 +84,16 @@ def eprint_green(*args, **kwargs):
 def autoprint(tuple_list, end, verbose=False):
     assert isinstance(tuple_list, list)
     if verbose:
-        ic(tuple_list)
+        ic(tuple_list, end)
     for item in tuple_list:
         assert isinstance(item, tuple)
         assert len(item) == 3
         value = item[0]
-        if item[1] == 'stdout':
-            out = sys.stdout
-        elif item[1] == 'stderr':
-            out = sys.stderr
-        else:
-            raise ValueError("unknown output file {}".format(item[1]))
+        output = item[1]
         sep = item[2]
-        print(value, file=out, end='')
-        print(sep, file=out, end='')
-        out.flush()
+        print(value, file=output, end='')
+        print(sep, file=output, end='')
+        output.flush()
     print(end, file=sys.stdout, end='')
     sys.stdout.flush()
 
