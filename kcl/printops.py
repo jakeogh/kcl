@@ -99,7 +99,7 @@ def autoprint(tuple_list, end, verbose=False):
         print(value, file=out, end='')
         print(sep, file=out, end='')
         out.flush()
-    print('', file=sys.stdout, end=end)
+    print(end, file=sys.stdout, end='')
     sys.stdout.flush()
 
 
