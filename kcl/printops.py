@@ -92,7 +92,7 @@ def autoprint(tuple_list, *args, **kwargs):
         elif item[1] == 'stdderr':
             out = sys.stdout
         else:
-            raise ValueError("unknown output file {}".format(item[1])
+            raise ValueError("unknown output file {}".format(item[1]))
         end = item[2]
         print(value, file=out, end=end)
 
