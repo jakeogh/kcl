@@ -81,7 +81,7 @@ def eprint_green(*args, **kwargs):
         print(Style.RESET_ALL, file=sys.stderr)
 
 
-def autoprint(tuple_list, *args, **kwargs):
+def autoprint(tuple_list, *args, end, **kwargs):
     assert isinstance(tuple_list, list)
     for item in tuple_list:
         assert isinstance(item, tuple)
@@ -93,8 +93,9 @@ def autoprint(tuple_list, *args, **kwargs):
             out = sys.stdout
         else:
             raise ValueError("unknown output file {}".format(item[1]))
-        end = item[2]
-        print(value, file=out, end=end)
+        sep = item[2]
+        print(value, file=out, end=sep)
+    print(end, file=sys.stdout, end=None)
 
 
 def epprint(*args, **kwargs):
