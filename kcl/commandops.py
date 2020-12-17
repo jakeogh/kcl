@@ -10,7 +10,7 @@ def run_command(command,
                 verbose=False,
                 debug=False,
                 shell=True,
-                expected_exit_code=0,
+                expected_exit_status=0,
                 ignore_exit_code=False,
                 stdin=None,
                 stderr=subprocess.STDOUT,
@@ -41,7 +41,7 @@ def run_command(command,
         if verbose:
             ic(output, errors)
         exit_code = popen_instance.returncode
-        if exit_code != expected_exit_code:
+        if exit_code != expected_exit_status:
             #ic(command)
             ic('exit code:', exit_code, output)
             if not ignore_exit_code:
@@ -57,7 +57,7 @@ def run_command(command,
                 if output:
                     ic(output)
         except subprocess.CalledProcessError as error:
-            if error.returncode != expected_exit_code:
+            if error.returncode != expected_exit_status:
                 #ic(command, ignore_exit_code)
                 if verbose:
                     ic(error.returncode, error.output)
