@@ -28,7 +28,7 @@ def start_database(verbose=False):
 
 @retry_on_exception(exception=OperationalError,
                     in_e_args="could not connect to server: Connection refused",
-                    max_delay=1,
+                    max_delay=10,
                     call_function_once=start_database,
                     call_function_once_kwargs={'verbose':True},
                     debug=True,
