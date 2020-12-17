@@ -1,9 +1,18 @@
 #!/usr/bin/env python3
-from decimal import Decimal
-from decimal import getcontext
-import collections
+
 import binascii
+import collections
 import os
+from decimal import Decimal, getcontext
+
+
+def sort_versions(versions, verbose=False):
+    if verbose:
+        ic(versions)
+    versions.sort(key=lambda s: list(map(int, s.split('.'))))
+    if verbose:
+        ic(versions)
+    return versions
 
 
 def percent_of_total(*, part, total, verbose=False):
