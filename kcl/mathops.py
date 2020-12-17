@@ -11,7 +11,7 @@ from icecream import ic
 def sort_versions(versions, verbose=False):
     if verbose:
         ic(versions)
-    versions.sort(key=lambda s: list(map(int, s.split('.'))))
+    versions.sort(key=lambda s: list(map(int, s.split('.'))), reverse=True)
     if verbose:
         ic(versions)
     return versions
