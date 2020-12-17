@@ -25,10 +25,12 @@ def start_database(verbose=False):
         ic(command)
     os.system(command)
 
+
 @retry_on_exception(exception=psycopg2.OperationalError,
                     in_e_args="could not connect to server: Connection refused",
                     max_delay=1,
                     call_function_once=start_database,
+                    call_function_once_kwargs={'verbose':True},
                     debug=True,
                     verbose=True,)
 def database_already_exists(db_url):
