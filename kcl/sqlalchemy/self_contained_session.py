@@ -1,26 +1,34 @@
 #!/usr/bin/env python3
 
 import contextlib
+import os
+
 from icecream import ic
+#: (psycopg2.OperationalError) could not connect to server: Connection refused
+from kcl.serviceops import get_latest_postgresql_version
+from retry_on_exception import retry_on_exception
+from sqlalchemy_utils.functions import create_database, database_exists
+
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import sessionmaker
-#from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.pool import NullPool
-from sqlalchemy_utils.functions import create_database
-from sqlalchemy_utils.functions import database_exists
 #from kcl.printops import eprint
 from sqlalchemy.exc import OperationalError
-from retry_on_exception import retry_on_exception
-#: (psycopg2.OperationalError) could not connect to server: Connection refused
+from sqlalchemy.orm import scoped_session, sessionmaker
+#from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.pool import NullPool
 
 
-def start_database():
-    os.system()
+def start_database(verbose=False):
+    latest = get_latest_postgresql_version(verbose=False)
+    command = "/etc/init.d/postgresql-{} start".format(latest)
+    if verbose:
+        ic(command)
+    os.system(command)
+
 
 @retry_on_exception(exception=OperationalError,
                     in_e_args="could not connect to server: Connection refused",
-                    max_delay=1,)
+                    max_delay=1,
+                    call_function_once=start_database,)
 def database_already_exists(db_url):
     return database_exists(db_url)
 
