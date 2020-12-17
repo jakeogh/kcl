@@ -5,6 +5,8 @@ import collections
 import os
 from decimal import Decimal, getcontext
 
+from icecream import ic
+
 
 def sort_versions(versions, verbose=False):
     if verbose:
@@ -21,6 +23,7 @@ def percent_of_total(*, part, total, verbose=False):
     result = (part / total) * 100
     return result
 
+
 def percent_difference(a, b, verbose=False):
     percent_total = percent_of_total(part=min(a, b), total=max(a, b), verbose=verbose)
     if verbose:
@@ -29,16 +32,12 @@ def percent_difference(a, b, verbose=False):
     result = 100 - abs(percent_total)
     return result
 
+
 def is_digits(string):
     for char in string:
         if not char.isdigit():
             return False
     return True
-
-
-def get_values_from_dict(dict):
-    all_uris = list(dict.values())
-    return all_uris
 
 
 def make_flatten_generator(l):
@@ -50,13 +49,13 @@ def make_flatten_generator(l):
             yield el
 
 
-def flatten_list(list):
-    return [item for item in make_flatten_generator(list)]
+def flatten_list(l):
+    return [item for item in make_flatten_generator(l)]
 
 
-def list_of_lists_to_list_of_sets(list):
+def list_of_lists_to_list_of_sets(l):
     list_of_sets = []
-    for item in list:
+    for item in l:
         list_of_sets.append(set(item))
     return list_of_sets
 
@@ -130,6 +129,3 @@ def get_random_hex_digits(count):
     ans = get_random_hex_bytes(bytes_needed)[0:count]
     assert len(ans) == count
     return ans.decode('UTF8')
-
-
-

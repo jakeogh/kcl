@@ -15,8 +15,11 @@ from retry_on_exception import retry_on_exception
 #: (psycopg2.OperationalError) could not connect to server: Connection refused
 
 
+def start_database():
+    os.system()
+
 @retry_on_exception(exception=OperationalError,
-                    e_args="could not connect to server: Connection refused",
+                    in_e_args="could not connect to server: Connection refused",
                     max_delay=1,)
 def database_already_exists(db_url):
     return database_exists(db_url)
