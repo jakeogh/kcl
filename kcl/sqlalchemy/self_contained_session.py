@@ -5,6 +5,7 @@ import os
 
 #import psycopg2  # import OperationalError
 from icecream import ic
+from kcl.commandops import run_command
 #: (psycopg2.OperationalError) could not connect to server: Connection refused
 from kcl.serviceops import get_latest_postgresql_version
 from retry_on_exception import retry_on_exception
@@ -20,10 +21,11 @@ from sqlalchemy.pool import NullPool
 
 def start_database(verbose=False):
     latest = get_latest_postgresql_version(verbose=False)
-    command = "/etc/init.d/postgresql-{} start".format(latest)
+    command = ["/etc/init.d/postgresql-{}".format(latest), "start"]
     if verbose:
         ic(command)
-    os.system(command)
+    result = run_command(command, verbose=verbose, expected_exit_status=0)
+    ic(result)
 
 
 @retry_on_exception(exception=OperationalError,
