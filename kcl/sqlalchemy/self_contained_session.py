@@ -29,6 +29,7 @@ def start_database(verbose=False):
                     in_e_args="could not connect to server: Connection refused",
                     max_delay=1,
                     call_function_once=start_database,
+                    debug=True,
                     verbose=True,)
 def database_already_exists(db_url):
     return database_exists(db_url)
