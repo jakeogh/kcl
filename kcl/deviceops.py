@@ -84,7 +84,7 @@ def luksformat(ctx, device, force, skipdestroy, simulate):
     if simulate:
         eprint(luks_command)
     else:
-        run_command(luks_command, verbose=True, expected_exit_code=0, stdin=read)
+        run_command(luks_command, verbose=True, expected_exit_status=0, stdin=read)
     #  xts with essiv is redundant, but there is no downside to using it
 
 
@@ -115,19 +115,19 @@ def destroy_block_device(ctx, device, force):
     ctx.invoke(destroy_block_device_head, device=device, source='zero', size=4092)
     luks_command = "cryptsetup open --type plain -d /dev/urandom " + device + " " + device_name
     print(luks_command)
-    run_command(luks_command, verbose=True, expected_exit_code=0)
+    run_command(luks_command, verbose=True, expected_exit_status=0)
     assert path_is_block_special(luks_mapper, follow_symlinks=True)
     assert not block_special_path_is_mounted(luks_mapper)
     wipe_command = "dd_rescue --color=1 --abort_we /dev/zero " + luks_mapper
     #wipe_command = "dd if=/dev/" + source + " of=" + device
     print(wipe_command)
-    #run_command(wipe_command, verbose=True, expected_exit_code=0)
+    #run_command(wipe_command, verbose=True, expected_exit_status=0)
     os.system(wipe_command)
     time.sleep(1) # so "cryptsetup close" doesnt throw an error
-    #run_command(wipe_command, verbose=True, expected_exit_code=1)  # dd returns 1 when it hits the end of the device
+    #run_command(wipe_command, verbose=True, expected_exit_status=1)  # dd returns 1 when it hits the end of the device
     close_command = "cryptsetup close " + device_name
     print(close_command)
-    run_command(close_command, verbose=True, expected_exit_code=0)
+    run_command(close_command, verbose=True, expected_exit_status=0)
 
 
 @deviceops.command()

@@ -21,7 +21,7 @@ from sqlalchemy.pool import NullPool
 
 def start_database(verbose=False):
     latest = get_latest_postgresql_version(verbose=False)
-    command = ["/etc/init.d/postgresql-{}".format(latest), "start"]
+    command = ["sudo", "/etc/init.d/postgresql-{}".format(latest), "start"]
     if verbose:
         ic(command)
     result = run_command(command, verbose=verbose, expected_exit_status=0)
