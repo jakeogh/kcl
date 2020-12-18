@@ -139,7 +139,12 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, d
             link_url = link[2]
             link_text = link[0].text
             if strip_fragments:
-                link_url, _ = urldefrag(link_url)
+                try:
+                    link_url, _ = urldefrag(link_url)
+                except ValueError as e:
+                    if e.args == "Invalid IPv6 URL":
+                        continue
+                    raise e
 
             if link_url.startswith('javascript:'):
                 continue
