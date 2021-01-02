@@ -15,23 +15,24 @@
 # pylint: disable=E1101     # no uhashfs member for base
 # pylint: disable=W0201     # attribute defined outside __init__
 # pylint: disable=W0703     # catching too general exception
-from itertools import product
-import os
-import sys
 import hashlib
-import tempfile
+import os
 import subprocess
+import sys
+import tempfile
+from itertools import product
 from pathlib import Path
-from threading import Thread
 from queue import Queue
-from icecream import ic
+from threading import Thread
+
 import attr
-from requests.models import Response
 from getdents import paths
-from .printops import ceprint
-from .printops import eprint
+from icecream import ic
+from requests.models import Response
+
 from .assertops import verify
 from .iterops import compact
+from .printops import ceprint, eprint
 
 
 @attr.s(auto_attribs=True)
@@ -52,7 +53,9 @@ class WDgen():
                 yield (w, d)
 
 
-def generate_hash(data, verbose=False):
+def generate_hash(data, *,
+                  verbose: bool,
+                  debug: bool,):
     if not data:
         raise ValueError
     sha1 = hashlib.sha1()
@@ -119,7 +122,11 @@ def generate_hash(data, verbose=False):
         return return_dict
 
 
-def sha1_hash_file(path, block_size=256*128*2, binary=False):
+def sha1_hash_file(path, *,
+                   verbose: bool,
+                   debug: bool,
+                   block_size=256*128*2,
+                   binary=False):
     sha1 = hashlib.sha1()
     with open(path, 'rb') as f:
         for chunk in iter(lambda: f.read(block_size), b''):
