@@ -17,18 +17,18 @@
 # pylint: disable=W0201     # attribute defined outside __init__
 
 
-import os
-import time
 import errno
+import os
 import signal
-import dateparser
+import time
 from functools import wraps
-from humanize import naturaltime
-from humanize import naturaldelta
+
+import dateparser
+from humanize import naturaldelta, naturaltime
+from icecream import ic
 
 from .assertops import verify
 from .printops import eprint
-from icecream import ic
 
 
 class Delay():
@@ -95,7 +95,7 @@ def get_amtime(infile):
     return amtime
 
 
-def update_mtime_if_older(*, path, mtime, verbose=False):
+def update_mtime_if_older(*, path, mtime, verbose, debug):
     verify(isinstance(mtime, tuple))
     verify(isinstance(mtime[0], int))
     verify(isinstance(mtime[1], int))
