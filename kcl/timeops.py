@@ -133,5 +133,11 @@ def human_date_to_timestamp(date):
 def seconds_duration_to_human_readable(seconds, ago):
     seconds = float(seconds)
     if ago:
-        return naturaltime(seconds)
-    return naturaldelta(seconds)
+        result = naturaltime(seconds)
+    else:
+        result = naturaldelta(seconds)
+
+    result = result.replace(" minutes", "min")
+    result = result.replace(" hours", "hr")
+    result = result.replace(" days", "days")
+    return result
