@@ -7,7 +7,7 @@ from icecream import ic
 #from .iterops import randomize_iterator
 
 
-def passphrase_prompt(note):
+def passphrase_prompt(note, verbose, debug):
     note = note.strip()
     assert len(note) > 0
     prompt = "Enter {} passphrase: ".format(note)
@@ -17,6 +17,8 @@ def passphrase_prompt(note):
     passphrase_v = passphrase_v.encode('ascii')
     assert passphrase == passphrase_v
     assert len(passphrase) > 12
+    if verbose:
+        ic(passphrase)
     return passphrase
 
 
