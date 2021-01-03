@@ -1,19 +1,27 @@
 #!/usr/bin/env python3
 
+import configparser
 import os
 import sys
 from pathlib import Path
-import configparser
+
+from icecream import ic
+
 #from kcl.fileops import empty_file
 from kcl.timeops import get_mtime
-from icecream import ic
 
 
 class ConfigUnchangedError(ValueError):
     pass
 
 
-def click_read_config(*, click_instance, app_name, verbose=False, last_mtime=None, keep_case=True):
+def click_read_config(*,
+                      click_instance,
+                      app_name,
+                      verbose: bool,
+                      debug: bool,
+                      last_mtime=None,
+                      keep_case=True,):
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
     try:
         config_mtime = get_mtime(cfg)
@@ -44,7 +52,15 @@ def click_read_config(*, click_instance, app_name, verbose=False, last_mtime=Non
     return rv, config_mtime
 
 
-def click_write_config_entry(*, click_instance, app_name, section, key, value, verbose=False, keep_case=True):
+def click_write_config_entry(*,
+                             click_instance,
+                             app_name,
+                             section,
+                             key,
+                             value,
+                             verbose: bool,
+                             debug: bool,
+                             keep_case=True):
     if verbose:
         ic(app_name, section, key, value)
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
@@ -62,11 +78,22 @@ def click_write_config_entry(*, click_instance, app_name, section, key, value, v
     with open(cfg, 'w') as configfile:
         parser.write(configfile)
 
-    config, config_mtime = click_read_config(click_instance=click_instance, app_name=app_name, verbose=verbose)
+    config, config_mtime = click_read_config(click_instance=click_instance,
+                                             app_name=app_name,
+                                             verbose=verbose,
+                                             debug=debug,)
     return config, config_mtime
 
 
-def _click_remove_config_entry(*, click_instance, app_name, section, key, value, verbose=False, keep_case=True):
+def _click_remove_config_entry(*,
+                               click_instance,
+                               app_name,
+                               section,
+                               key,
+                               value,
+                               verbose: bool,
+                               debug: bool,
+                               keep_case=True,):
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
     parser = configparser.RawConfigParser()
     parser.read([cfg])
@@ -81,5 +108,8 @@ def _click_remove_config_entry(*, click_instance, app_name, section, key, value,
     with open(cfg, 'w') as configfile:
         parser.write(configfile)
 
-    config, config_mtime = click_read_config(click_instance=click_instance, app_name=app_name, verbose=verbose)
+    config, config_mtime = click_read_config(click_instance=click_instance,
+                                             app_name=app_name,
+                                             verbose=verbose,
+                                             debug=debug,)
     return config, config_mtime
