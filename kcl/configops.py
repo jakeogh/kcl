@@ -33,20 +33,20 @@ def click_read_config(*,
             raise ConfigUnchangedError
 
     cfg.parent.mkdir(exist_ok=True)
-    if verbose:
+    if debug:
         ic(cfg)
     parser = configparser.RawConfigParser()
     if keep_case:
         parser.optionxform = str
     parser.read([cfg])
     rv = {}
-    if verbose:
+    if debug:
         ic(parser.sections())
     for section in parser.sections():
         rv[section] = {}
         for key, value in parser.items(section):
             rv[section][key] = value
-    if verbose:
+    if debug:
         ic(rv)
 
     return rv, config_mtime
@@ -61,7 +61,7 @@ def click_write_config_entry(*,
                              verbose: bool,
                              debug: bool,
                              keep_case=True):
-    if verbose:
+    if debug:
         ic(app_name, section, key, value)
     cfg = Path(os.path.join(click_instance.get_app_dir(app_name), 'config.ini'))
     cfg.parent.mkdir(exist_ok=True)
