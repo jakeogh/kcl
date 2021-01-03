@@ -1,6 +1,22 @@
 #!/usr/bin/env python3
 
-# /mnt/t420s_256GB_samsung_ssd_S2R5NX0J707260P/.iridb/database.local/data_index/8/9/6/89689beecc6ebf06cb1859b8085ec9154e7edb1b
+# pylint: disable=C0111  # docstrings are always outdated and wrong
+# pylint: disable=W0511  # todo is encouraged
+# pylint: disable=C0301  # line too long
+# pylint: disable=R0902  # too many instance attributes
+# pylint: disable=C0302  # too many lines in module
+# pylint: disable=C0103  # single letter var names, func name too descriptive
+# pylint: disable=R0911  # too many return statements
+# pylint: disable=R0912  # too many branches
+# pylint: disable=R0915  # too many statements
+# pylint: disable=R0913  # too many arguments
+# pylint: disable=R1702  # too many nested blocks
+# pylint: disable=R0914  # too many local variables
+# pylint: disable=R0903  # too few public methods
+# pylint: disable=E1101  # no member for base
+# pylint: disable=W0201  # attribute defined outside __init__
+# pylint: disable=R0916  # Too many boolean expressions in if statement
+
 
 import re
 from urllib.parse import urldefrag
@@ -8,7 +24,7 @@ from urllib.parse import urldefrag
 from bs4 import BeautifulSoup
 #import lxml
 from icecream import ic
-from lxml import etree
+#from lxml import etree
 from lxml import html as lxmlhtml
 #from lxml import html
 from lxml.etree import HTMLParser, ParserError, tostring
@@ -34,13 +50,17 @@ def get_title_from_dom_tree(dom_tree):
     return dom_tree.find(".//title").text
 
 
-def extract_title_from_file(data_file, verbose=False):
+def extract_title_from_file(data_file,
+                            verbose: bool,
+                            debug: bool):
     content = read_file_bytes(data_file)
     if verbose:
         ic(type(content))
         ic(len(content))
     try:
-        dom_tree = parse_html_to_dom(content, verbose=verbose)
+        dom_tree = parse_html_to_dom(content,
+                                     verbose=verbose,
+                                     debug=debug,)
     except ParserError:
         return None
     try:
@@ -49,7 +69,8 @@ def extract_title_from_file(data_file, verbose=False):
         return None
     title = title.replace('\r', ' ').replace('\n', ' ')
     if title == 'YouTube':
-        if verbose: ic(data_file)
+        if verbose:
+            ic(data_file)
         try:
             split_marker = b'''\\",\\"title\\":\\"'''  # \",\"title\":\"
             title = content.split(split_marker)[1].split(b'''\\",\\"''')[0]
@@ -59,12 +80,15 @@ def extract_title_from_file(data_file, verbose=False):
                 split_marker = b'''","title":"'''
                 title = content.split(split_marker)[1].split(b'''","''')[0]
                 title = title.decode('utf8')
-            except:  # todo
+            except Exception as e:
+                ic(e) # todo
                 pass
     return title
 
 
-def parse_html_to_dom(html, verbose):
+def parse_html_to_dom(html,
+                      verbose: bool,
+                      debug: bool,):
     if verbose:
         ic(type(html))
 
@@ -76,7 +100,11 @@ def parse_html_to_dom(html, verbose):
     return dom_tree
 
 
-def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, debug=False):
+def extract_urls_from_html_dom(page_html, *,
+                               url,
+                               strip_fragments,
+                               verbose: bool,
+                               debug: bool,):
     # METHOD 0: UNTRIED, might be faster
     #root = html5_parser.parse(page)
     #print(type(root))  # <class 'lxml.etree._Element'>
@@ -220,7 +248,15 @@ def extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=False, d
     return links, link_cache
 
 
-def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, dom_extract=True, verbose=False, debug=False):
+def extract_urls_from_file(*,
+                           html_file,
+                           url,
+                           strip_fragments,
+                           verbose: bool,
+                           debug: bool,
+                           text_extract=True,
+                           dom_extract=True,):
+
     #page_html = requests.get(url).text
     if verbose:
         ic(html_file)
@@ -300,7 +336,11 @@ def extract_urls_from_file(html_file, url, strip_fragments, text_extract=True, d
     #return set(url_list)
 
 
-def extract_urls_lxml_nofollow(html_file, url):
+def extract_urls_lxml_nofollow(*,
+                               html_file,
+                               url,
+                               verbose: bool,
+                               debug: bool,):
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
     html = html_bytes.decode('utf8', 'ignore')
@@ -328,8 +368,8 @@ def extract_urls_lxml_nofollow(html_file, url):
 # todo: https://raw.githubusercontent.com/oakkitten/scripts/url_hint/python/url_hint.py
 def extract_iris_from_text(text,
                            *,
-                           verbose=False,
-                           debug=False):  # todo, buggy, already had to add the ~ below
+                           verbose: bool,
+                           debug: bool):  # todo, buggy, already had to add the ~ below
     if verbose:
         ic(len(text))
     #if debug:
@@ -401,7 +441,9 @@ def extract_iris_from_text(text,
     return url_set
 
 
-def extract_iris_from_text_file(text_file):
+def extract_iris_from_text_file(text_file,
+                                verbose: bool,
+                                debug: bool,):
     with open(text_file, 'rb') as fh:
         text_bytes = fh.read()
     text = text_bytes.decode('utf8', 'ignore')
@@ -410,7 +452,9 @@ def extract_iris_from_text_file(text_file):
 
 
 # note this removes all links, produces a text version of a page printout
-def convert_html_file_to_text(html_file):
+def convert_html_file_to_text(html_file,
+                              verbose: bool,
+                              debug: bool,):
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
     html = html_bytes.decode('utf8', 'ignore')
