@@ -137,6 +137,8 @@ def seconds_duration_to_human_readable(seconds, ago):
     else:
         result = naturaldelta(seconds)
 
+    result = result.replace(" seconds", "s")
+    result = result.replace("a second", "1s")
     result = result.replace(" minutes", "min")
     result = result.replace("a minute", "1min")
     result = result.replace(" hours", "hr")
