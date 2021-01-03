@@ -270,7 +270,11 @@ def extract_urls_from_file(*,
         ic(len(page_html))
 
     if dom_extract:
-        links, link_cache = extract_urls_from_html_dom(page_html, url, strip_fragments, verbose=verbose, debug=debug)
+        links, link_cache = extract_urls_from_html_dom(page_html=page_html,
+                                                       url=url,
+                                                       strip_fragments=strip_fragments,
+                                                       verbose=verbose,
+                                                       debug=debug,)
     else:
         links = set([])
         link_cache = set([])
