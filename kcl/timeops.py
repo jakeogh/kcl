@@ -147,4 +147,5 @@ def seconds_duration_to_human_readable(seconds, ago):
     result = result.replace("a day", "1day")
     result = result.replace(" years", "yrs")
     result = result.replace("a year", "1yr")
+    result = result.replace(" ago", "_ago")
     return result
