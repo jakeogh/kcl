@@ -131,6 +131,8 @@ def human_date_to_timestamp(date):
 
 
 def seconds_duration_to_human_readable(seconds, ago):
+    if seconds is None:
+        return None
     seconds = float(seconds)
     if ago:
         result = naturaltime(seconds)
