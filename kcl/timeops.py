@@ -151,8 +151,8 @@ def seconds_duration_to_human_readable(seconds, ago):
     result = result.replace(" days", "days")
     result = result.replace("a day", "1day")
 
-    result = result.replace(" months", "months")
-    result = result.replace("a month", "1month")
+    result = result.replace(" months", "mo")
+    result = result.replace("a month", "1mo")
 
     result = result.replace(" years", "yrs")
     result = result.replace("a year", "1yr")
