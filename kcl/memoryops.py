@@ -8,6 +8,6 @@ from kcl.commandops import run_command
 
 
 def pmap():
-    command = ['pmap', os.getpid()]
+    command = ['pmap', str(os.getpid())]
     result = run_command(command)
     return result
