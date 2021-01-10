@@ -4,10 +4,10 @@ import os
 
 from icecream import ic
 
-from .commandops import execute_command
+from kcl.commandops import run_command
 
 
 def pmap():
     command = ['pmap', os.getpid()]
-    result = execute_command(command)
+    result = run_command(command)
     return result
