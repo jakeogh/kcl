@@ -11,7 +11,10 @@ def pmap():
     command = ['pmap', str(os.getpid())]
     result = run_command(command).decode('utf8')
     result = result.split('\n')
+    ic(result)
     result = result[-1]
+    ic(result)
     result = result.split(' ')
+    ic(result)
     result = result[-1]
     return result
