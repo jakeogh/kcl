@@ -58,6 +58,8 @@ def get_clipboard_iri(verbose: bool = False,
     if clipboard_contents[0] == '"':
         if clipboard_contents[-1] == '"':
             clipboard_contents = clipboard_contents[1:-1]
+    if verbose:
+        ic(clipboard_contents)
     uri_list = extract_iris_from_text(clipboard_contents,
                                       strip_fragments=False,
                                       verbose=verbose,
@@ -93,5 +95,4 @@ def get_clipboard_iris(verbose=False, debug=False):
 
     for iri in iri_list:
         yield iri
-
 
