@@ -24,24 +24,31 @@
 # pylint: disable=W0201  # attribute defined outside __init__
 
 
-import time
+import errno
+import fcntl
 import os
 import shutil
+import stat
+import tempfile
+import time
+from contextlib import contextmanager
 from pathlib import Path
 from shutil import copyfileobj
-from contextlib import contextmanager
-import tempfile
-import stat
-import fcntl
-from icecream import ic
+
 import magic  # sys-apps/file  #PIA
-from .printops import eprint
+from icecream import ic
+from retry_on_exception import retry_on_exception
+
 from .assertops import verify
-from .pathops import path_is_file
-from .pathops import path_exists
+from .pathops import path_exists, path_is_file
+from .printops import eprint
 
 
-def comment_out_line_in_file(file_path, line_to_match):
+def comment_out_line_in_file(*,
+                             file_path,
+                             line_to_match,
+                             verbose: bool,
+                             debug: bool,):
     '''
     add a # to the beginning of all instances of line_to_match
     iff there is not already a # preceding line_to_match and
@@ -77,7 +84,11 @@ def comment_out_line_in_file(file_path, line_to_match):
     return True
 
 
-def uncomment_line_in_file(file_path, line_to_match):
+def uncomment_line_in_file(*,
+                           file_path,
+                           line_to_match,
+                           verbose: bool,
+                           debug: bool,):
     '''
     remove # from the beginning of all instances of line_to_match
     iff there is already a # preceding line_to_match and
@@ -115,7 +126,15 @@ def uncomment_line_in_file(file_path, line_to_match):
     return False
 
 
-def write_line_to_file(line, file_to_write, unique=False, make_new=True):
+@retry_on_exception(exception=OSError,
+                    errno=errno.ENOSPC,)
+def write_line_to_file(*,
+                       line,
+                       file_to_write,
+                       verbose: bool,
+                       debug: bool,
+                       unique: bool = False,
+                       make_new: bool = True,):
     '''
     Write line to file_to_write
     if unique_line == True, write line iff line not in file_to_write.
@@ -170,7 +189,11 @@ def write_line_to_file(line, file_to_write, unique=False, make_new=True):
 #            raise e
 
 
-def line_exists_in_file(line, file_to_check):
+def line_exists_in_file(*,
+                        line,
+                        file_to_check,
+                        verbose: bool,
+                        debug: bool,):
     if isinstance(line, str):
         line = line.encode('UTF8')
     assert isinstance(line, bytes)
