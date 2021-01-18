@@ -280,7 +280,10 @@ def extract_urls_from_file(*,
         link_cache = set([])
 
     if text_extract:
-        for link in extract_iris_from_text(page_html, verbose=verbose, debug=debug):
+        for link in extract_iris_from_text(page_html,
+                                           strip_fragments=strip_fragments,
+                                           verbose=verbose,
+                                           debug=debug,):
             if link not in link_cache:
                 links.add((link, None))
 
@@ -288,7 +291,13 @@ def extract_urls_from_file(*,
     if verbose:
         ic(len(links))
 
-    return links
+    for link in links:
+        if strip_fragments:
+            assert '#' not in link
+            #link, _ = urldefrag(link)
+        yield link
+
+    #return links
 
 
     #parser = etree.HTMLParser(recover=True)
@@ -372,6 +381,7 @@ def extract_urls_lxml_nofollow(*,
 # todo: https://raw.githubusercontent.com/oakkitten/scripts/url_hint/python/url_hint.py
 def extract_iris_from_text(text,
                            *,
+                           strip_fragments: bool,
                            verbose: bool,
                            debug: bool):  # todo, buggy, already had to add the ~ below
     if verbose:
@@ -442,7 +452,13 @@ def extract_iris_from_text(text,
     url_set = set(url_list)
     if verbose:
         ic(len(url_set))
-    return url_set
+
+    for link in url_set:
+        if strip_fragments:
+            link, _ = urldefrag(link)
+        yield link
+
+    #return url_set
 
 
 def extract_iris_from_text_file(text_file,
