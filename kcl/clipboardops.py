@@ -51,27 +51,31 @@ def prompt_tag_slmenu(cache_file="/home/user/.iridb/.dmenu_tag_cache"):
 def get_clipboard_iri(verbose: bool = False,
                       debug: bool = False,):
 
-    clipboard_contents = get_clipboard()
-    if clipboard_contents[0] == "'":
-        if clipboard_contents[-1] == "'":
-            clipboard_contents = clipboard_contents[1:-1]
-    if clipboard_contents[0] == '"':
-        if clipboard_contents[-1] == '"':
-            clipboard_contents = clipboard_contents[1:-1]
-    if verbose:
-        ic(clipboard_contents)
-    uri_list = extract_iris_from_text(clipboard_contents,
-                                      strip_fragments=False,
-                                      verbose=verbose,
-                                      debug=debug,)
-    #try:
-    clean_uri = list(filter(None, uri_list))[0]
-    #except IndexError:
-    #    ceprint("Clipboard has no uris. Exiting.")
-    #    #bug: looking for URLs when should be looking for URIs. /home/user/something should work
-    #    os._exit(1)
+    iris = get_clipboard_iris(verbose=verbose,
+                              debug=debug,)
 
-    return clean_uri
+    #clipboard_contents = get_clipboard()
+    #if clipboard_contents[0] == "'":
+    #    if clipboard_contents[-1] == "'":
+    #        clipboard_contents = clipboard_contents[1:-1]
+    #if clipboard_contents[0] == '"':
+    #    if clipboard_contents[-1] == '"':
+    #        clipboard_contents = clipboard_contents[1:-1]
+    #if verbose:
+    #    ic(clipboard_contents)
+    #uri_list = extract_iris_from_text(clipboard_contents,
+    #                                  strip_fragments=False,
+    #                                  verbose=verbose,
+    #                                  debug=debug,)
+    ##try:
+    #clean_uri = list(filter(None, uri_list))[0]
+    ##except IndexError:
+    ##    ceprint("Clipboard has no uris. Exiting.")
+    ##    #bug: looking for URLs when should be looking for URIs. /home/user/something should work
+    ##    os._exit(1)
+
+    #return clean_uri
+    return iris[0]
 
 
 def get_clipboard_iris(verbose=False, debug=False):
