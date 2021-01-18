@@ -93,6 +93,5 @@ def get_clipboard_iris(verbose=False, debug=False):
         if verbose:
             ic(iri)
 
-    for iri in iri_list:
         yield iri
 
