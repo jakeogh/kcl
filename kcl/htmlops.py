@@ -245,7 +245,13 @@ def extract_urls_from_html_dom(page_html, *,
     if verbose:
         ic(len(link_cache))
 
-    return links, link_cache
+    for link in links:
+        if strip_fragments:
+            #assert '#' not in link
+            link, _ = urldefrag(link)
+        yield link
+
+    #return links, link_cache
 
 
 def extract_urls_from_file(*,
@@ -270,11 +276,11 @@ def extract_urls_from_file(*,
         ic(len(page_html))
 
     if dom_extract:
-        links, link_cache = extract_urls_from_html_dom(page_html=page_html,
-                                                       url=url,
-                                                       strip_fragments=strip_fragments,
-                                                       verbose=verbose,
-                                                       debug=debug,)
+        links = list(extract_urls_from_html_dom(page_html=page_html,
+                                                url=url,
+                                                strip_fragments=strip_fragments,
+                                                verbose=verbose,
+                                                debug=debug,))
     else:
         links = set([])
         link_cache = set([])
