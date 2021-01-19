@@ -215,7 +215,6 @@ def extract_urls_from_html_dom(page_html, *,
             except KeyError as e:
                 if verbose:
                     ic(e)
-                pass
 
         for link in dom.cssselect('img'):
             #if verbose:
@@ -240,7 +239,6 @@ def extract_urls_from_html_dom(page_html, *,
             except KeyError as e:
                 if verbose:
                     ic(e)
-                pass
 
         #for link in dom.cssselect('div'):
         #    import IPython; IPython.embed()
@@ -293,13 +291,9 @@ def extract_urls_from_file(*,
                                            strip_fragments=strip_fragments,
                                            verbose=verbose,
                                            debug=debug,):
-            #if link not in link_cache:
-            #    links.add((link, None))
+            if verbose:
+                ic(link)
             links.add(link)
-
-    #links = set(links)  #pointless...
-    #if verbose:
-    #    ic(len(links))
 
     for link in links:
         if strip_fragments:
@@ -307,7 +301,6 @@ def extract_urls_from_file(*,
             #link, _ = urldefrag(link)
         yield link
 
-    #return links
 
 
     #parser = etree.HTMLParser(recover=True)
@@ -464,6 +457,8 @@ def extract_iris_from_text(text,
         ic(len(url_set))
 
     for link in url_set:
+        if verbose:
+            ic(link)
         if strip_fragments:
             link, _ = urldefrag(link)
         yield link
@@ -472,12 +467,16 @@ def extract_iris_from_text(text,
 
 
 def extract_iris_from_text_file(text_file,
+                                strip_fragments: bool,
                                 verbose: bool,
                                 debug: bool,):
     with open(text_file, 'rb') as fh:
         text_bytes = fh.read()
     text = text_bytes.decode('utf8', 'ignore')
-    url_set = list(extract_iris_from_text(text))
+    url_set = list(extract_iris_from_text(text,
+                                          strip_fragments=strip_fragments,
+                                          verbose=verbose,
+                                          debug=debug))
     return url_set
 
 
