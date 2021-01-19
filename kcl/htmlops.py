@@ -137,11 +137,9 @@ def extract_urls_from_html_dom(page_html, *,
         if verbose:
             #ceprint("ParserError")
             ic(e)
-        pass
     except ValueError as e:
         if verbose:
             ic(e)
-        pass
 
     else:
         #ic(len(dom))
@@ -153,9 +151,9 @@ def extract_urls_from_html_dom(page_html, *,
                 if verbose:
                     ic(e)
                     ceprint("WARNING dom.make_links_absolute(url) failed due to ValueError")
-                pass
         else:
-            if verbose: ceprint("len(dom) == 0, parsing malformed html")
+            if verbose:
+                ceprint("len(dom) == 0, parsing malformed html")
             root = lxmlhtml.fromstring(page_html, parser=parser, base_url=url).getroottree()  # lxml.etree._Element
             clean_html = tostring(root)
             dom = lxmlhtml.fromstring(clean_html)
@@ -165,7 +163,9 @@ def extract_urls_from_html_dom(page_html, *,
 
         for link in dom.iterlinks():
             link_url = link[2]
-            link_text = link[0].text
+            if verbose:
+                ic(link_url)
+            #link_text = link[0].text
             if strip_fragments:
                 try:
                     link_url, _ = urldefrag(link_url)
@@ -192,8 +192,8 @@ def extract_urls_from_html_dom(page_html, *,
             #    link_cache.add(link_url)
 
         for link in dom.cssselect('a'):
-            #if verbose:
-            #    ic(link)
+            if verbose:
+                ic(link)
             try:
                 link_url = link.attrib['href']
                 if link_url.startswith('javascript:'):
@@ -243,9 +243,6 @@ def extract_urls_from_html_dom(page_html, *,
         #for link in dom.cssselect('div'):
         #    import IPython; IPython.embed()
 
-    #if verbose:
-    #    ic(len(link_cache))
-
     for link in links:
         if strip_fragments:
             #assert '#' not in link
@@ -261,20 +258,21 @@ def extract_urls_from_file(*,
                            strip_fragments,
                            verbose: bool,
                            debug: bool,
-                           text_extract=True,
-                           dom_extract=True,):
+                           text_extract: bool,
+                           dom_extract: bool,):
 
     #page_html = requests.get(url).text
     if verbose:
         ic(html_file)
-        ic(text_extract)
-        ic(dom_extract)
+        ic(text_extract, dom_extract)
+
     with open(html_file, 'rb') as fh:
         html_bytes = fh.read()
     page_html = html_bytes.decode('utf8', 'ignore')
 
     if verbose:
         ic(len(page_html))
+
     links = set()
     if dom_extract:
         for link in extract_urls_from_html_dom(page_html=page_html,
@@ -282,10 +280,12 @@ def extract_urls_from_file(*,
                                                strip_fragments=strip_fragments,
                                                verbose=verbose,
                                                debug=debug,):
+            if verbose:
+                ic(link)
             links.add(link)
 
     if text_extract:
-        for link in extract_iris_from_text(page_html,
+        for link in extract_iris_from_text(text=page_html,
                                            strip_fragments=strip_fragments,
                                            verbose=verbose,
                                            debug=debug,):
