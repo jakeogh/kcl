@@ -127,8 +127,8 @@ def extract_urls_from_html_dom(page_html, *,
     #dom.cssselect()
 
     #assert verbose
-    link_cache = set([])
-    links = set([])
+    #link_cache = set([])
+    links = set()
     parser = HTMLParser(recover=True)
 
     try:
@@ -181,14 +181,15 @@ def extract_urls_from_html_dom(page_html, *,
                 ic(link_url)
 
             link_url = link_url.strip()
+            links.add(link_url)
 
-            if link_url not in link_cache:
-                try:
-                    text = link_text.strip()
-                except AttributeError:
-                    text = link_text
-                links.add((link_url, text))
-                link_cache.add(link_url)
+            #if link_url not in link_cache:
+            #    try:
+            #        text = link_text.strip()
+            #    except AttributeError:
+            #        text = link_text
+            #    links.add((link_url, text))
+            #    link_cache.add(link_url)
 
         for link in dom.cssselect('a'):
             #if verbose:
@@ -202,14 +203,15 @@ def extract_urls_from_html_dom(page_html, *,
                 if debug:
                     ic(link_url)
                 link_url = link_url.strip()
+                links.add(link_url)
 
-                if link_url not in link_cache:
-                    try:
-                        text = link.text.strip()
-                    except AttributeError:
-                        text = link.text
-                    links.add((link_url, text))
-                    link_cache.add(link_url)
+                #if link_url not in link_cache:
+                #    try:
+                #        text = link.text.strip()
+                #    except AttributeError:
+                #        text = link.text
+                #    links.add((link_url, text))
+                #    link_cache.add(link_url)
             except KeyError as e:
                 if verbose:
                     ic(e)
@@ -227,13 +229,14 @@ def extract_urls_from_html_dom(page_html, *,
                 if debug:
                     ic(link_url)
                 link_url = link_url.strip()
-                if link_url not in link_cache:
-                    try:
-                        text = link.text.strip()
-                    except AttributeError:
-                        text = link.text
-                    links.add((link_url, text))
-                    link_cache.add(link_url)
+                links.add(link_url)
+                #if link_url not in link_cache:
+                #    try:
+                #        text = link.text.strip()
+                #    except AttributeError:
+                #        text = link.text
+                #    links.add((link_url, text))
+                #    link_cache.add(link_url)
             except KeyError as e:
                 if verbose:
                     ic(e)
@@ -242,8 +245,8 @@ def extract_urls_from_html_dom(page_html, *,
         #for link in dom.cssselect('div'):
         #    import IPython; IPython.embed()
 
-    if verbose:
-        ic(len(link_cache))
+    #if verbose:
+    #    ic(len(link_cache))
 
     for link in links:
         if strip_fragments:
