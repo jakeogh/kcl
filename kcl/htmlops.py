@@ -276,26 +276,27 @@ def extract_urls_from_file(*,
         ic(len(page_html))
 
     if dom_extract:
-        links = list(extract_urls_from_html_dom(page_html=page_html,
-                                                url=url,
-                                                strip_fragments=strip_fragments,
-                                                verbose=verbose,
-                                                debug=debug,))
+        links = set(list(extract_urls_from_html_dom(page_html=page_html,
+                                                    url=url,
+                                                    strip_fragments=strip_fragments,
+                                                    verbose=verbose,
+                                                    debug=debug,)))
     else:
-        links = set([])
-        link_cache = set([])
+        links = set()
+        #link_cache = set([])
 
     if text_extract:
         for link in extract_iris_from_text(page_html,
                                            strip_fragments=strip_fragments,
                                            verbose=verbose,
                                            debug=debug,):
-            if link not in link_cache:
-                links.add((link, None))
+            #if link not in link_cache:
+            #    links.add((link, None))
+            links.add(link)
 
-    links = set(links)  #pointless...
-    if verbose:
-        ic(len(links))
+    #links = set(links)  #pointless...
+    #if verbose:
+    #    ic(len(links))
 
     for link in links:
         if strip_fragments:
