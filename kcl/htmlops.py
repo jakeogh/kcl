@@ -248,7 +248,7 @@ def extract_urls_from_html_dom(page_html, *,
     for link in links:
         if strip_fragments:
             #assert '#' not in link
-            link, _ = urldefrag(link)
+            link, _ = urldefrag(link[0])
         yield link
 
     #return links, link_cache
