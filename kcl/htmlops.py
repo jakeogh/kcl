@@ -477,7 +477,7 @@ def extract_iris_from_text_file(text_file,
     with open(text_file, 'rb') as fh:
         text_bytes = fh.read()
     text = text_bytes.decode('utf8', 'ignore')
-    url_set = extract_iris_from_text(text)
+    url_set = list(extract_iris_from_text(text))
     return url_set
 
 
