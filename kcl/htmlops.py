@@ -406,6 +406,9 @@ def extract_iris_from_text(text,
             if debug:
                 ic(word)
             assert '\n' not in word
+            # http://www.noah.org/wiki/RegEx_Python#URL_regex_pattern
+            #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', page)
+
             #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$-_@.&+#]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)
             #urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[~$\-/_@.&+#;()]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', word)

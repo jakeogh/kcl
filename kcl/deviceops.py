@@ -72,7 +72,7 @@ def luksformat(ctx, device, force, skipdestroy, simulate):
         if not simulate:
             warn((device,))
 
-    passphrase = passphrase_prompt("LUKS")
+    passphrase = passphrase_prompt("LUKS", verbose=False, debug=False,)
     assert passphrase
     read, write = os.pipe()
     os.write(write, passphrase)
